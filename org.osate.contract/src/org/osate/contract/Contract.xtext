@@ -1,0 +1,325 @@
+/*******************************************************************************
+ * Assurance Contract Annex Plugin for OSATE
+ * Copyright 2023 Carnegie Mellon University.
+ * NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
+ * MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
+ * WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
+ * NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
+ * RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
+ * ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+ * INFRINGEMENT.
+ * Released under a BSD (SEI)-style license, please see license.txt or contact 
+ * permission@sei.cmu.edu for full terms.
+ * [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
+ * unlimited distribution.  Please see Copyright notice for non-US Government use and 
+ * distribution.
+ * Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+ * Mellon University.
+ * This Software includes and/or makes use of the following Third-Party Software subject 
+ * to its own license:
+ * 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+ * Corporation.
+ * 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+ * contributors and others.
+ * DM23-0575
+ *******************************************************************************/
+grammar org.osate.contract.Contract with org.osate.xtext.aadl2.properties.Properties
+
+generate contract "http://www.osate.org/contract/Contract"
+
+import "http://aadl.info/AADL/2.0" as aadl2
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+AnnexLibrary returns aadl2::AnnexLibrary:
+	ContractLibrary 
+;
+
+AnnexSubclause returns aadl2::AnnexSubclause:
+	ContractSubclause
+;
+
+Element returns aadl2::Element:
+	Lambda | Parameter | Query
+;
+
+NamedElement returns aadl2::NamedElement:
+	ContractElement | SingleValDeclaration | TupleName | SingleParameter
+;
+
+ContractLibrary:
+	{ContractLibrary} contractElements+=ContractElement*
+;
+
+ContractElement:
+	Implementation | Domain | Argument | Contract | VerificationPlan	
+;
+
+Contract:
+	'contract' name=ID '{'
+	('domains'
+		Domains
+	)?
+	('queries' 
+		Queries
+	)?
+	('input' 'assumptions'
+		inputs+=InputAssumption*
+	)?
+	('assumptions'
+		Assumptions
+	)?
+	('guarantee'
+		Exact guarantee=Guarantee ';'
+	)?
+	(('invocation' | 'analysis')
+		Analyses
+	)?
+	'}'
+;
+
+fragment Exact*:
+	'=>'
+	| exact?='<=>'
+;
+
+fragment Queries*:
+	(queries+=Query? ';')*	
+;
+
+fragment Domains*:
+	(domains+=[Domain|QPREF]? ';')*	
+;
+
+fragment Assumptions*:
+	(assumptions+=AssumptionElement? ';')*	
+;
+
+fragment Analyses*:
+	(analyses+=Analysis? ';')*
+		
+;
+
+InputAssumption:
+	{InputAssumption}
+	(code=Source)? ';'
+;
+
+AssumptionElement:
+	(
+		{ContractAssumption} 'contract' contract=[ContractElement|QPREF]
+		| {ArgumentAssumption} 'argument' argument=[ContractElement|QPREF]
+		| {CodeAssumption} code=Source 	(Exact guarantee=Guarantee)?
+	)
+;
+
+Guarantee:
+	code=Source
+;
+
+Analysis:
+	code=Source
+;
+
+Source:
+	(language=Language)?
+	(source=SSTRING | inter=IString)
+;
+
+Implementation:
+	'contract' 'implementation' name=ID '{'
+		code=Source
+	'}'
+;
+
+Domain:
+	'domain' name=ID '{'
+	('queries' 
+		Queries
+	)?
+	('declarations'
+		code=Source
+	)?
+	'}'
+;
+
+Argument:
+	'argument' name=ID '{'
+	('domains'
+		Domains
+	)?
+	('guarantee'
+		Exact guarantee=Guarantee ';'
+	)?
+	('argument'
+		argumentExpression=ArgumentExpression
+	)?
+	'}'
+;
+
+ArgumentExpression:
+	{ArgumentExpression}
+	'or' '('
+	 (
+	 	'contract' contracts+=[ContractElement|QPREF]
+	 	| 'argument' arguments+=[ContractElement|QPREF]
+	 )*
+	')' ';'
+;
+
+VerificationPlan:
+	'verification' 'plan' name=ID '{'
+	'component'
+		ID ':' componentImplementation=[aadl2::ComponentImplementation|QCREF] ';'
+	('domains'
+		Domains
+	)?
+	('claims'
+		Claims
+	)?
+	('contracts'
+		(contracts+=[Contract|QPREF]? ';')*
+	)?
+	'}'
+;
+
+fragment Claims*:
+	(claims+=Source? ';')*
+;
+
+enum Language:
+	PYTHON='python' | JAVA='java' | SMT='smt'
+;
+
+Query:
+	SingleValDeclaration |
+	{TupleDeclaration} 'val' '(' names+=TupleName (',' names+=TupleName)+ ')' '=' value=Expression
+;
+
+SingleValDeclaration:
+	'val' name=ID '=' value=Expression
+;
+
+TupleName:
+	name=ID
+;
+
+Expression:
+	AndExpression ({OrExpression.left=current} '||' right=AndExpression)*
+;
+
+AndExpression returns Expression:
+	NotExpression ({AndExpression.left=current} '&&' right=NotExpression)*
+;
+
+NotExpression returns Expression:
+	CallExpression | {NotExpression} '!' operand=CallExpression
+;
+
+CallExpression returns Expression:
+	TerminalExpression (
+		{MemberCall.left=current} '.' right=ID ('(' argument=[aadl2::NamedElement] ')')? lambda=Lambda? |
+		{PropertyLookup.left=current} '#' right=[aadl2::Property|QPREF]
+	)*
+;
+
+Lambda:
+	'{' parameter=Parameter '->' Queries returnValue=Expression '}'
+;
+
+Parameter:
+	SingleParameter |
+	{TupleParameter} '(' names+=TupleName (',' names+=TupleName)+ ')'
+;
+
+SingleParameter:
+	name=ID
+;
+
+TerminalExpression returns Expression:
+	{SelfExpression} 'self' |
+	{RootExpression} 'root' |
+	{NameReference} reference=[aadl2::NamedElement] |
+	/*
+	 * Handles both parentheses and tuples. Combining these is necessary to avoid a left recursion problem. The
+	 * following doesn't work:
+	 * 
+	 * {TupleExpression} '(' elements+=Expression (',' elements+=Expression)+ ')' |
+	 * '(' Expression ')'
+	 */
+	'(' Expression ({TupleExpression.elements+=current} (',' elements+=Expression)+)? ')'
+;
+
+ContractSubclause:
+	{ContractSubclause} ('use' useQueries+=[Contract|QPREF])*
+	('verify' verifyPlans+=[VerificationPlan|QPREF] ';')*
+;
+
+// interpolated strings
+
+IString:
+	parts+=IStringLiteral
+	| parts+=IStringLeftLiteral parts+=IStringInter?
+	  (parts+=IStringMiddleLiteral parts+=IStringInter?)*
+	  parts+=IStringRightLiteral
+;
+
+IStringPart:
+	IStringLiteral | IStringInter
+;
+
+IStringLiteral:
+	value=ISTRING_TEXT
+;
+
+IStringLeftLiteral returns IStringLiteral:
+	value=ISTRING_LEFT
+;
+
+IStringMiddleLiteral returns IStringLiteral:
+	value=ISTRING_MIDDLE
+;
+
+IStringRightLiteral returns IStringLiteral:
+	value=ISTRING_RIGHT
+;
+
+IStringInter returns IStringVar:
+	direct?=":"? (domain=[Domain|ID] '::')? query=[SingleValDeclaration|ID]
+;
+
+terminal ISTRING_TEXT:
+	"'''" IN_ISTRING* ("'''" | ("'" "'"?)? EOF)
+;
+
+terminal ISTRING_LEFT:
+	"'''" IN_ISTRING* ("'" "'"?)? "${"
+;
+
+terminal ISTRING_MIDDLE:
+	"$}" IN_ISTRING* ("'" "'"?)? "${"
+;
+
+terminal ISTRING_RIGHT:
+	"$}" IN_ISTRING* ("'''" | ("'" "'"?)? EOF)
+;
+
+terminal fragment IN_ISTRING:
+	"''" !"'"
+	| "'" !"'"
+	| "$" !"{"
+	| !("'" | "$")
+;
+
+OptionalQualifiedName:
+	(ID '::')? ID
+;
+
+terminal SSTRING:
+	"`" !("`")* "`"
+;
+
+@Override
+terminal SL_COMMENT:
+	'--' !('\n'|'\r')* ('\r'? '\n')?
+;

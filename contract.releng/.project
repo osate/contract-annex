@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>contract.releng</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>README.md</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/README.md</locationURI>
+		</link>
+		<link>
+			<name>TODO.md</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TODO.md</locationURI>
+		</link>
+		<link>
+			<name>contract-annex.setup</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/contract-annex.setup</locationURI>
+		</link>
+		<link>
+			<name>pom.xml</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pom.xml</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>

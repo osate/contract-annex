@@ -1,0 +1,65 @@
+-- Assurance Contract Annex Plugin for OSATE
+-- Copyright 2023 Carnegie Mellon University.
+-- NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
+-- MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
+-- WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
+-- NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
+-- RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
+-- ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+-- INFRINGEMENT.
+-- Released under a BSD (SEI)-style license, please see license.txt or contact 
+-- permission@sei.cmu.edu for full terms.
+-- [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
+-- unlimited distribution.  Please see Copyright notice for non-US Government use and 
+-- distribution.
+-- Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+-- Mellon University.
+-- This Software includes and/or makes use of the following Third-Party Software subject 
+-- to its own license:
+-- 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+-- Corporation.
+-- 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+-- contributors and others.
+-- DM23-0575
+
+package component_instance_test
+public
+	annex contract {**
+		contract ComponentInstanceTest {
+			queries
+				val v1 = self.name;
+				val v2 = self.category;
+				val v3 = self.subcomponents;
+				val v4 = self.allSubcomponents;
+				val v5 = self.features;
+				val v6 = self.allFeatures;
+				val v7 = self.localModes;
+				val v8 = self.allModes;
+				val v9 = self.modeTransitions;
+				val v10 = self.allModeTransitions;
+				val v11 = self.flowSpecifications;
+				val v12 = self.allFlowSpecifications;
+				val v13 = self.endToEndFlows;
+				val v14 = self.allEndToEndFlows;
+				val v15 = self.connections;
+				val v16 = self.allConnections;
+				val v17 = self.inModes;
+				val v18 = self.parent;
+				val v19 = self.isAbstract;
+				val v20 = self.isBus;
+				val v21 = self.isData;
+				val v22 = self.isDevice;
+				val v23 = self.isMemory;
+				val v24 = self.isProcess;
+				val v25 = self.isProcessor;
+				val v26 = self.isSubprogram;
+				val v27 = self.isSubprogramGroup;
+				val v28 = self.isSystem;
+				val v29 = self.isThread;
+				val v30 = self.isThreadGroup;
+				val v31 = self.isVirtualBus;
+				val v32 = self.isVirtualProcessor;
+				val v33 = self.processorBindingSources;
+		}
+	**};
+end component_instance_test;

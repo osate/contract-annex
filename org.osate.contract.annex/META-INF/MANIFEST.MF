@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Annex
+Bundle-SymbolicName: org.osate.contract.annex;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.osate.contract.annex
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext,
+ org.osate.annexsupport,
+ org.osate.contract,
+ org.osate.aadl2,
+ org.osate.aadl2.modelsupport

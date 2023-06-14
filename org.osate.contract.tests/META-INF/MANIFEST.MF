@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.osate.contract.tests
+Bundle-ManifestVersion: 2
+Bundle-Name: org.osate.contract.tests
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: org.osate.contract.tests; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.osate.contract,
+ org.junit.jupiter.api;bundle-version="[5.1.0,6.0.0)",
+ org.osate.aadl2;bundle-version="4.0.3",
+ org.osate.testsupport;bundle-version="3.1.0",
+ org.osate.pluginsupport;bundle-version="7.2.1",
+ org.osate.aadl2.instantiation,
+ org.eclipse.xsemantics.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Export-Package: org.osate.contract.tests;x-internal=true

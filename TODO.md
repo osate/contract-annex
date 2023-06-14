@@ -1,0 +1,23 @@
+- Queries
+  - ~~Boolean operators~~
+  - ~~Parenthesized expressions~~
+  - Other bindings
+  - List.contains
+  - Use qualified name to refer to Domain::Query
+  - Add validation complaining if using non-qualified name when the name appears in multiple imported domains
+  - ~In string interpolation, refer to imported query without qualified name~\
+    works out of the box for some reason
+  - re-think optional everything
+
+- Contracts
+  - add error reporting
+  - add more feedback
+  - create execution trace for debugging?
+  - add full contract tests
+  - snippet (s.add(...)) deduplication?
+  - example for passing java object to python
+  - document python generation patterns
+  - cleaner string interpolation
+  - parse python code (at least defs)
+  - do we need any preference settings?
+  - pass dictionaries to python

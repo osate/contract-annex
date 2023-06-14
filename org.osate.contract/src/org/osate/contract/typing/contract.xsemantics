@@ -1,0 +1,308 @@
+/*******************************************************************************
+ * Assurance Contract Annex Plugin for OSATE
+ * Copyright 2023 Carnegie Mellon University.
+ * NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
+ * MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
+ * WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
+ * NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
+ * RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
+ * ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+ * INFRINGEMENT.
+ * Released under a BSD (SEI)-style license, please see license.txt or contact 
+ * permission@sei.cmu.edu for full terms.
+ * [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
+ * unlimited distribution.  Please see Copyright notice for non-US Government use and 
+ * distribution.
+ * Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+ * Mellon University.
+ * This Software includes and/or makes use of the following Third-Party Software subject 
+ * to its own license:
+ * 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+ * Corporation.
+ * 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+ * contributors and others.
+ * DM23-0575
+ *******************************************************************************/
+import org.eclipse.xtext.EcoreUtil2
+import org.osate.aadl2.NamedElement
+import org.osate.contract.contract.AndExpression
+import org.osate.contract.contract.ContractPackage
+import org.osate.contract.contract.Expression
+import org.osate.contract.contract.Lambda
+import org.osate.contract.contract.MemberCall
+import org.osate.contract.contract.NameReference
+import org.osate.contract.contract.NotExpression
+import org.osate.contract.contract.OrExpression
+import org.osate.contract.contract.PropertyLookup
+import org.osate.contract.contract.RootExpression
+import org.osate.contract.contract.SelfExpression
+import org.osate.contract.contract.SingleParameter
+import org.osate.contract.contract.SingleValDeclaration
+import org.osate.contract.contract.TupleDeclaration
+import org.osate.contract.contract.TupleExpression
+import org.osate.contract.contract.TupleName
+import org.osate.contract.contract.TupleParameter
+import org.osate.contract.validation.AbstractContractValidator
+
+system org.osate.contract.typing.ContractTypeSystem
+
+validatorExtends AbstractContractValidator
+
+judgments {
+	expressionType |- Expression expression : output Type
+	namedType ||- NamedElement named : output Type
+}
+
+axiom OrExpression
+	G |- OrExpression expression : BooleanType.INSTANCE
+
+axiom AndExpression
+	G |- AndExpression expression : BooleanType.INSTANCE
+
+axiom NotExpression
+	G |- NotExpression expression : BooleanType.INSTANCE
+
+rule MemberCall
+	G |- MemberCall expression : Type type
+from {
+	G |- expression.left : var Type leftType
+	type = switch member : leftType?.members?.get(expression.right) {
+		SimpleMember: member.returnType
+		MemberWithArgument: member.getReturnType(expression.argument)
+		MemberWithLambda case expression.lambda !== null: {
+			G |- expression.lambda.returnValue : var Type lambdaType
+			member.getReturnType(lambdaType)
+		}
+	}
+}
+
+rule PropertyLookup
+	G |- PropertyLookup expression : Type type
+from {
+	G |- expression.left : var Type leftType
+	if (leftType instanceof PropertyLookupSupportedType) {
+		type = new OptionalType(TypeSystemUtils.convertPropertyType(expression.right.propertyType))
+	}
+}
+
+axiom SelfExpression
+	G |- SelfExpression expression : ComponentInstanceType.INSTANCE
+
+axiom RootExpression
+	G |- RootExpression expression : SystemInstanceType.INSTANCE
+
+rule TupleExpression
+	G |- TupleExpression expression : TupleType type
+from {
+	val elementTypes = newArrayList
+	for (element : expression.elements) {
+		G |- element : var Type elementType
+		elementTypes += elementType
+	}
+	type = new TupleType(elementTypes)
+}
+
+rule NameReference
+	G |- NameReference expression : Type type
+from {
+	val named = expression.reference
+	if (!named.eIsProxy) {
+		G ||- named : type
+	}
+}
+
+rule SingleValDeclaration
+	G ||- SingleValDeclaration named : Type type
+from {
+	G |- named.value : type
+}
+
+rule TupleName
+	G ||- TupleName named : Type type
+from {
+	val parent = named.eContainer
+	if (parent instanceof TupleDeclaration) {
+		G |- parent.value : var Type valueType
+		if (valueType instanceof TupleType) {
+			val index = parent.names.indexOf(named)
+			if (index < valueType.elementTypes.size) {
+				type = valueType.elementTypes.get(index)
+			}
+		}
+	} else if (parent instanceof TupleParameter) {
+		val memberCall = EcoreUtil2.getContainerOfType(parent, MemberCall)
+		G |- memberCall.left : var Type leftType
+		val member = leftType.members.get(memberCall.right)
+		if (member instanceof MemberWithLambda) {
+			val leftElementType = member.lambdaParameterType
+			if (leftElementType instanceof TupleType) {
+				val index = parent.names.indexOf(named)
+				if (index < leftElementType.elementTypes.size) {
+					type = leftElementType.elementTypes.get(index)
+				}
+			}
+		}
+	}
+}
+
+rule SingleParameter
+	G ||- SingleParameter parameter : Type type
+from {
+	val memberCall = EcoreUtil2.getContainerOfType(parameter, MemberCall)
+	G |- memberCall.left : var Type leftType
+	val member = leftType.members.get(memberCall.right)
+	if (member instanceof MemberWithLambda) {
+		type = member.lambdaParameterType
+	}
+}
+
+checkrule CheckOrExpression for
+	OrExpression expression
+from {
+	empty |- expression.left : var Type leftType
+	empty |- expression.right : var Type rightType
+	if (!(leftType instanceof BooleanType) || !(rightType instanceof BooleanType)) {
+		fail
+			error "The operator || is undefined for the argument types " + leftType + ", " + rightType
+			source expression
+	}
+}
+
+checkrule CheckAndExpression for
+	AndExpression expression
+from {
+	empty |- expression.left : var Type leftType
+	empty |- expression.right : var Type rightType
+	if (!(leftType instanceof BooleanType) || !(rightType instanceof BooleanType)) {
+		fail
+			error "The operator && is undefined for the argument types " + leftType + ", " + rightType
+			source expression
+	}
+}
+
+checkrule CheckNotExpression for
+	NotExpression expression
+from {
+	empty |- expression.operand : var Type operandType
+	if (!(operandType instanceof BooleanType)) {
+		fail
+			error "The operator ! is undefined for the argument type " + operandType
+			source expression
+	}
+}
+
+checkrule CheckMemberCall for
+	MemberCall expression
+from {
+	empty |- expression.left : var Type leftType
+	if (leftType !== null) {
+		val member = leftType.members.get(expression.right)
+		if (member === null) {
+			fail
+				error "'" + expression.right + "' is not a member of the type " + leftType
+				source expression
+				feature ContractPackage.eINSTANCE.memberCall_Right
+		} else {
+			val expectArgument = member instanceof MemberWithArgument
+			if (expectArgument && expression.argument === null) {
+				fail
+					error "Argument expected for call to '" + expression.right + "'"
+					source expression
+					feature ContractPackage.eINSTANCE.memberCall_Right
+			} else if (!expectArgument && expression.argument !== null) {
+				fail
+					error "Unexpected argument for call to '" + expression.right + "'"
+					source expression
+					feature ContractPackage.eINSTANCE.memberCall_Argument
+			}
+			val expectLambda = member instanceof MemberWithLambda
+			if (expectLambda && expression.lambda === null) {
+				fail
+					error "Lambda expected for call to '" + expression.right + "'"
+					source expression
+					feature ContractPackage.eINSTANCE.memberCall_Right
+			} else if (!expectLambda && expression.lambda !== null) {
+				fail
+					error "Unexpected lambda for call to '" + expression.right + "'"
+					source expression.lambda
+			}
+		}
+	}
+}
+
+checkrule CheckLambdaReturnType for
+	Lambda lambda
+from {
+	val memberCall = EcoreUtil2.getContainerOfType(lambda, MemberCall)
+	empty |- memberCall.left : var Type leftType
+	val member = leftType.members.get(memberCall.right)
+	if (member instanceof MemberWithLambda) {
+		empty |- lambda.returnValue : var Type returnType
+		if (returnType !== null) {
+			val finalReturnType = returnType
+			member.validateLambdaReturnType(returnType).ifPresent[requiredReturnTypeName |
+				fail
+					error "Expected " + requiredReturnTypeName + "; found " + finalReturnType
+					source lambda.returnValue
+			]
+		}
+	}
+}
+
+checkrule CheckPropertyLookup for
+	PropertyLookup expression
+from {
+	empty |- expression.left : var Type leftType
+	if (leftType !== null && !(leftType instanceof PropertyLookupSupportedType)) {
+		fail
+			error "Cannot lookup property on a " + leftType
+			source expression
+	}
+}
+
+checkrule CheckTupleDeclarationSize for
+	TupleDeclaration tupleDeclaration
+from {
+	empty |- tupleDeclaration.value : var Type type
+	if (type instanceof TupleType) {
+		val expectedCount = tupleDeclaration.names.size
+		val actualCount = type.elementTypes.size
+		if (expectedCount != actualCount) {
+			fail
+				error "Expected tuple with " + expectedCount + " elements; found tuple with " + actualCount +
+					" elements"
+				source tupleDeclaration
+				feature ContractPackage.eINSTANCE.query_Value
+		}
+	} else {
+		fail
+			error "Expected tuple; found " + type
+			source tupleDeclaration
+			feature ContractPackage.eINSTANCE.query_Value
+	}
+}
+
+checkrule CheckTupleParameterSize for
+	TupleParameter tupleParameter
+from {
+	val memberCall = EcoreUtil2.getContainerOfType(tupleParameter, MemberCall)
+	empty |- memberCall.left : var Type leftType
+	val member = leftType.members.get(memberCall.right)
+	if (member instanceof MemberWithLambda) {
+		val leftElementType = member.lambdaParameterType
+		if (leftElementType instanceof TupleType) {
+			val declarationCount = tupleParameter.names.size
+			val requiredCount = leftElementType.elementTypes.size
+			if (declarationCount != requiredCount) {
+				fail
+					error "Tuple declared with " + declarationCount + " elements, but should have " + requiredCount +
+						" elements"
+					source tupleParameter
+			}
+		} else if (leftElementType !== null) {
+			fail
+				error "Cannot destructure lambda parameter of type " + leftElementType
+				source tupleParameter
+		}
+	}
+}

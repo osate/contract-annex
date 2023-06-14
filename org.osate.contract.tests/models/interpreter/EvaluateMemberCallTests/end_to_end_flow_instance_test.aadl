@@ -1,0 +1,84 @@
+-- Assurance Contract Annex Plugin for OSATE
+-- Copyright 2023 Carnegie Mellon University.
+-- NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
+-- MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
+-- WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
+-- NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
+-- RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
+-- ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+-- INFRINGEMENT.
+-- Released under a BSD (SEI)-style license, please see license.txt or contact 
+-- permission@sei.cmu.edu for full terms.
+-- [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
+-- unlimited distribution.  Please see Copyright notice for non-US Government use and 
+-- distribution.
+-- Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+-- Mellon University.
+-- This Software includes and/or makes use of the following Third-Party Software subject 
+-- to its own license:
+-- 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+-- Corporation.
+-- 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+-- contributors and others.
+-- DM23-0575
+
+package end_to_end_flow_instance_test
+public
+	annex contract {**
+		contract endToEndFlowInstanceTest {
+			queries
+				val v1 = self.endToEndFlows.map { etef -> etef.flowSpecifications };
+				val v2 = self.endToEndFlows.map { etef -> etef.connections };
+				val v3 = self.endToEndFlows.map { etef -> etef.components };
+		}
+	**};
+	
+	system s
+	end s;
+	
+	system implementation s.i
+		subcomponents
+			left: system left;
+			middle: system middle;
+			right: system right;
+			d: data;
+		connections
+			left_to_middle: feature left.outf -> middle.inf;
+			middle_to_right: feature middle.outf -> right.inf;
+			d_to_middle_data_access: data access d -> middle.rda; 
+			middle_to_right_data_access: data access middle.pda -> right.rda;
+		flows
+			simple_etef: end to end flow left.source1 -> left_to_middle -> middle.path1;
+			reference_to_etef: end to end flow simple_etef -> middle_to_right -> right.sink1;
+			reference_to_component: end to end flow d -> d_to_middle_data_access -> middle.path2;
+			reference_to_component_in_etef: end to end flow reference_to_component -> middle_to_right_data_access ->
+				right.sink2;
+	end s.i;
+	
+	system left
+		features
+			outf: out feature;
+		flows
+			source1: flow source outf;
+	end left;
+	
+	system middle
+		features
+			inf: in feature;
+			outf: out feature;
+			rda: requires data access;
+			pda: provides data access;
+		flows
+			path1: flow path inf -> outf;
+			path2: flow path rda -> pda;
+	end middle;
+	
+	system right
+		features
+			inf: in feature;
+			rda: requires data access;
+		flows
+			sink1: flow sink inf;
+			sink2: flow sink rda;
+	end right;
+end end_to_end_flow_instance_test;

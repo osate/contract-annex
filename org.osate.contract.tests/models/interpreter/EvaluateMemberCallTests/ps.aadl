@@ -1,0 +1,24 @@
+property set ps is
+	integer_range_without_units: range of aadlinteger applies to (all);
+	integer_range_with_units: range of aadlinteger units Time_Units applies to (all);
+	real_range_without_units: range of aadlreal applies to (all);
+	real_range_with_units: range of aadlreal units Time_Units applies to (all);
+	record_property: record (
+		empty: aadlboolean;
+		boolean: aadlboolean;
+		string: aadlstring;
+		classifier_field: classifier;
+		enum: enumeration (red, green, blue);
+		integer: aadlinteger;
+		integer_with_units: aadlinteger units Time_Units;
+		real: aadlreal;
+		real_with_units: aadlreal units Time_Units;
+		integer_range: range of aadlinteger;
+		integer_range_with_units: range of aadlinteger units Time_Units;
+		real_range: range of aadlreal;
+		real_range_with_units: range of aadlreal units Time_Units;
+		nested_record: record (nested_field: aadlstring;);
+		reference_field: reference;
+		list_field: list of aadlstring;
+	) applies to (all);
+end ps;

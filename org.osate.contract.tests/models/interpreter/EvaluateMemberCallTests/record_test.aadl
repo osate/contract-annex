@@ -1,0 +1,76 @@
+-- Assurance Contract Annex Plugin for OSATE
+-- Copyright 2023 Carnegie Mellon University.
+-- NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
+-- MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
+-- WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
+-- NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
+-- RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
+-- ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+-- INFRINGEMENT.
+-- Released under a BSD (SEI)-style license, please see license.txt or contact 
+-- permission@sei.cmu.edu for full terms.
+-- [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
+-- unlimited distribution.  Please see Copyright notice for non-US Government use and 
+-- distribution.
+-- Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+-- Mellon University.
+-- This Software includes and/or makes use of the following Third-Party Software subject 
+-- to its own license:
+-- 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+-- Corporation.
+-- 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+-- contributors and others.
+-- DM23-0575
+
+package record_test
+public
+	with ps;
+
+	annex contract {**
+		contract RecordTest {
+			queries
+				val v1 = self#ps::record_property.map { property -> property.get(empty) };
+				val v2 = self#ps::record_property.map { property -> property.get(boolean) };
+				val v3 = self#ps::record_property.map { property -> property.get(string) };
+				val v4 = self#ps::record_property.map { property -> property.get(classifier_field) };
+				val v5 = self#ps::record_property.map { property -> property.get(enum) };
+				val v6 = self#ps::record_property.map { property -> property.get(integer) };
+				val v7 = self#ps::record_property.map { property -> property.get(integer_with_units) };
+				val v8 = self#ps::record_property.map { property -> property.get(real) };
+				val v9 = self#ps::record_property.map { property -> property.get(real_with_units) };
+				val v10 = self#ps::record_property.map { property -> property.get(integer_range) };
+				val v11 = self#ps::record_property.map { property -> property.get(integer_range_with_units) };
+				val v12 = self#ps::record_property.map { property -> property.get(real_range) };
+				val v13 = self#ps::record_property.map { property -> property.get(real_range_with_units) };
+				val v14 = self#ps::record_property.map { property -> property.get(nested_record) };
+				val v15 = self#ps::record_property.map { property -> property.get(reference_field) };
+				val v16 = self#ps::record_property.map { property -> property.get(list_field) };
+		}
+	**};
+	
+	system s
+	end s;
+
+	system implementation s.i
+		subcomponents
+			sub1: system;
+		properties
+			ps::record_property => [
+				boolean => true;
+				string => "string value";
+				classifier_field => classifier (s);
+				enum => red;
+				integer => 1;
+				integer_with_units => 2 ms;
+				real => 3.4;
+				real_with_units => 5.6 min;
+				integer_range => 7 .. 70;
+				integer_range_with_units => 8 hr .. 80 hr;
+				real_range => 9.9 .. 10.01;
+				real_range_with_units => 11.11 ms .. 12.12 ms;
+				nested_record => [nested_field => "nested value";];
+				reference_field => reference (sub1);
+				list_field => ("one", "two", "three");
+			];
+	end s.i;
+end record_test;

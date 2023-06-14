@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setup:Project
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:git="http://www.eclipse.org/oomph/setup/git/1.0"
+    xmlns:predicates="http://www.eclipse.org/oomph/predicates/1.0"
+    xmlns:setup="http://www.eclipse.org/oomph/setup/1.0"
+    xmlns:setup.p2="http://www.eclipse.org/oomph/setup/p2/1.0"
+    xmlns:setup.targlets="http://www.eclipse.org/oomph/setup/targlets/1.0"
+    xmlns:setup.workingsets="http://www.eclipse.org/oomph/setup/workingsets/1.0"
+    xsi:schemaLocation="http://www.eclipse.org/oomph/setup/git/1.0 http://git.eclipse.org/c/oomph/org.eclipse.oomph.git/plain/setups/models/Git.ecore http://www.eclipse.org/oomph/predicates/1.0 http://git.eclipse.org/c/oomph/org.eclipse.oomph.git/plain/setups/models/Predicates.ecore http://www.eclipse.org/oomph/setup/targlets/1.0 http://git.eclipse.org/c/oomph/org.eclipse.oomph.git/plain/setups/models/SetupTarglets.ecore http://www.eclipse.org/oomph/setup/workingsets/1.0 http://git.eclipse.org/c/oomph/org.eclipse.oomph.git/plain/setups/models/SetupWorkingSets.ecore"
+    name="contract-annex"
+    label="Contract Annex">
+  <setupTask
+      xsi:type="setup:VariableTask"
+      name="eclipse.target.platform"
+      defaultValue="2023-03"
+      storageURI="scope://Workspace"/>
+  <setupTask
+      xsi:type="setup.p2:P2Task">
+    <description>Install the tools needed in the IDE to work with the source code for ${scope.project.label}</description>
+  </setupTask>
+  <setupTask
+      xsi:type="setup:VariableTask"
+      name="sei.user.id"
+      defaultValue="anonymous"
+      label="SEI user ID">
+    <description>The user ID of the SEI Bitbucket account</description>
+  </setupTask>
+  <setupTask
+      xsi:type="setup:VariableTask"
+      name="code.sei.remoteURIs"
+      label="Bitbucket repository">
+    <choice
+        value="ssh://git@code.sei.cmu.edu:7999/@{remoteURI}.git"
+        label="Git (read-write)"/>
+    <choice
+        value="https://${sei.user.id|username}@code.sei.cmu.edu/bitbucket/scm/@{remoteURI}.git"
+        label="HTTPS (read-write)">
+      <annotation
+          source="http://www.eclipse.org/oomph/setup/MatchChoice"/>
+    </choice>
+    <choice
+        value="https://code.sei.cmu.edu/bitbucket/scm/@{remoteURI}.git"
+        label="HTTPS (read-only, anonymous)"/>
+    <description>Choose from the available SEI Bitbucket URIs</description>
+  </setupTask>
+  <setupTask
+      xsi:type="git:GitCloneTask"
+      id="git.clone.contract-annex"
+      filter=""
+      remoteURI="etmac/contract-annex"
+      pushURI="">
+    <annotation
+        source="http://www.eclipse.org/oomph/setup/InducedChoices">
+      <detail
+          key="inherit">
+        <value>code.sei.remoteURIs</value>
+      </detail>
+      <detail
+          key="label">
+        <value>OSATE2 Github repository</value>
+      </detail>
+      <detail
+          key="target">
+        <value>remoteURI</value>
+      </detail>
+    </annotation>
+    <description>Clone Contract Annex Repository</description>
+  </setupTask>
+  <setupTask
+      xsi:type="setup.targlets:TargletTask">
+    <targlet
+        name="${scope.project.label}"
+        activeRepositoryList="${eclipse.target.platform}">
+      <requirement
+          name="*"/>
+      <sourceLocator
+          rootFolder="${git.clone.contract-annex.location}"/>
+      <repositoryList
+          name="2023-03">
+        <repository
+            url="http://download.eclipse.org/releases/2023-03"/>
+      </repositoryList>
+      <repositoryList
+          name="2022-06">
+        <repository
+            url="http://download.eclipse.org/releases/2022-06"/>
+      </repositoryList>
+    </targlet>
+  </setupTask>
+  <setupTask
+      xsi:type="setup.workingsets:WorkingSetTask"
+      filter=""
+      prefix="">
+    <workingSet
+        name="${scope.project.name}">
+      <predicate
+          xsi:type="predicates:AndPredicate">
+        <operand
+            xsi:type="predicates:RepositoryPredicate"
+            project="org.osate.contract"/>
+      </predicate>
+    </workingSet>
+    <description>The dynamic working sets for ${scope.project.label}</description>
+  </setupTask>
+  <stream name="master"
+      label="Master">
+    <setupTask
+        xsi:type="setup:EclipseIniTask"
+        option="-Doomph.redirection.contract-annex"
+        value="=https://code.sei.cmu.edu/bitbucket/projects/ETMAC/repos/contract-annex/raw/contract-annex.setup?at=refs/heads/master->${git.clone.contract-annex.location|uri}/contract-annex.setup"
+        vm="true">
+      <description></description>
+    </setupTask>
+  </stream>
+  <logicalProjectContainer
+      xsi:type="setup:ProjectCatalog"
+      href="index:/org.eclipse.setup#//@projectCatalogs[name='com.github']"/>
+  <description>ETMAC project: Contract annex</description>
+</setup:Project>

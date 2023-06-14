@@ -1,0 +1,72 @@
+-- Assurance Contract Annex Plugin for OSATE
+-- Copyright 2023 Carnegie Mellon University.
+-- NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
+-- MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
+-- WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
+-- NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
+-- RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
+-- ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+-- INFRINGEMENT.
+-- Released under a BSD (SEI)-style license, please see license.txt or contact 
+-- permission@sei.cmu.edu for full terms.
+-- [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
+-- unlimited distribution.  Please see Copyright notice for non-US Government use and 
+-- distribution.
+-- Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+-- Mellon University.
+-- This Software includes and/or makes use of the following Third-Party Software subject 
+-- to its own license:
+-- 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+-- Corporation.
+-- 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+-- contributors and others.
+-- DM23-0575
+
+package list_test
+public
+	annex contract {**
+		contract listTest {
+			queries
+				val v1 = self.features.size;
+				val v2 = self.subcomponents.size;
+				
+				val v3 = self.features.empty;
+				val v4 = self.subcomponents.empty;
+				
+				val v5 = self.features.first;
+				val v6 = self.subcomponents.first;
+				
+				val v7 = self.subcomponents
+					.filter { subcomponent -> subcomponent.features.empty };
+				val v8 = self.subcomponents
+					.map { subcomponent -> (subcomponent.name, subcomponent) }
+					.filter { (name, subcomponent) -> subcomponent.features.empty };
+				
+				val v9 = self.subcomponents
+					.map { subcomponent -> subcomponent.name };
+				val v10 = self.subcomponents
+					.map { subcomponent -> (subcomponent.name, subcomponent.category) }
+					.map { (name, category) -> name };
+		}
+	**};
+	
+	system s
+	end s;
+	
+	system implementation s.i
+		subcomponents
+			process_1: process ps_without_features;
+			process_2: process ps_without_features;
+			process_3: process ps_without_features;
+			ps_with_features: process ps_with_features;
+	end s.i;
+	
+	process ps_without_features
+	end ps_without_features;
+	
+	process ps_with_features
+		features
+			f1: feature;
+			f2: feature;
+	end ps_with_features;
+end list_test;

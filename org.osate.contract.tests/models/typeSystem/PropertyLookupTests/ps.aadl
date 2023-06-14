@@ -1,0 +1,79 @@
+-- Assurance Contract Annex Plugin for OSATE
+-- Copyright 2023 Carnegie Mellon University.
+-- NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
+-- MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
+-- WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
+-- NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
+-- RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
+-- ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+-- INFRINGEMENT.
+-- Released under a BSD (SEI)-style license, please see license.txt or contact 
+-- permission@sei.cmu.edu for full terms.
+-- [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
+-- unlimited distribution.  Please see Copyright notice for non-US Government use and 
+-- distribution.
+-- Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+-- Mellon University.
+-- This Software includes and/or makes use of the following Third-Party Software subject 
+-- to its own license:
+-- 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+-- Corporation.
+-- 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+-- contributors and others.
+-- DM23-0575
+
+property set ps is
+	string1: aadlstring applies to (all);
+	real1: aadlreal applies to (all);
+	integer_range1: range of aadlinteger applies to (all);
+	real_range1: range of aadlreal applies to (all);
+	real_range_with_units1: range of aadlreal units Time_Units applies to (all);
+	
+	property_with_enum: enumeration (a, b, c) applies to (all);
+	property_with_list_of_enum: list of list of enumeration (red, green, blue) applies to (all);
+	property_with_record_with_enum: record (field1: enumeration (y, x, z);) applies to (all);
+	property_with_list_of_record_with_list_of_enum: list of list of record (
+		field1: list of list of enumeration (bob, bill);
+	) applies to (all);
+	property_with_deeply_nested: record (
+		field1: record (field2: record (field3: enumeration (l, m, n);););
+	) applies to (all);
+	
+	record_with_enum: type record (field1: enumeration (good, bad););
+	record_with_enum_property: ps::record_with_enum applies to (all);
+	record_with_list_of_enum: type record (field1: list of list of enumeration (San_Francisco, San_Jose, Oakland););
+	record_with_list_of_enum_property: ps::record_with_list_of_enum applies to (all);
+	record_with_deeply_nested: type record (
+		field1: record (feidl2: record (field3: enumeration (up, down, left, right);););
+	);
+	record_with_deeply_nested_property: ps::record_with_deeply_nested applies to (all);
+	
+	integer_type_with_units: type aadlinteger units (mm, cm => mm * 10, m => cm * 100);
+	named_integer_with_unnamed_units: ps::integer_type_with_units applies to (all);
+	real_type_with_units: type aadlreal units (m, km => m * 1000);
+	named_real_with_unnamed_units: ps::real_type_with_units applies to (all);
+	range_type_of_integer_with_units: type range of aadlinteger units (inch, foot => inch * 12);
+	named_range_with_unnamed_integer_with_unnamed_units: ps::range_type_of_integer_with_units applies to (all);
+	range_type_of_real_with_units: type range of aadlreal units (yard, mile => yard * 1760);
+	named_range_with_unnamed_real_with_unnamed_units: ps::range_type_of_real_with_units applies to (all);
+	record_with_integer: type record (field1: aadlinteger units (g, kg => g * 100););
+	record_with_integer_property: ps::record_with_integer applies to (all);
+	record_with_range_of_integer: type record (field1: range of aadlinteger units (bits, bytes => bits * 8););
+	record_with_range_of_integer_property: ps::record_with_range_of_integer applies to (all);
+	record_with_range_of_real: type record (field1: range of aadlreal units (KB, MB => KB * 1024););
+	record_with_range_of_real_property: ps::record_with_range_of_real applies to (all);
+	record_with_list_of_integer: type record (field1: list of list of aadlinteger units (pint, gallon => pint * 8););
+	record_with_list_of_integer_property: ps::record_with_list_of_integer applies to (all);
+	record_with_deeply_nested_integer: type record (
+		field1: record (field2: record (field3: aadlinteger units (ml, l => ml * 1000);););
+	);
+	record_with_deeply_nested_integer_property: ps::record_with_deeply_nested_integer applies to (all);
+	
+	property_with_integer_with_units: aadlinteger units (unit1, unit2 => unit1 * 10) applies to (all);
+	property_with_deeply_nested_with_integer: record (
+		field1: record (field2: record (field3: aadlinteger units (unit3, unit4 => unit3 * 10);););
+	) applies to (all);
+	property_with_real_with_units: aadlreal units (unit5, unit6 => unit5 * 10) applies to (all);
+	property_with_integer_range_with_units: range of aadlinteger units (unit7, unit8 => unit7 * 10) applies to (all);
+	property_with_real_range_with_units: range of aadlreal units (unit9, unit10 => unit9 * 10) applies to (all);
+end ps;

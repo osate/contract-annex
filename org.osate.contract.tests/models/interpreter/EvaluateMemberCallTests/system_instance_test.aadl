@@ -1,0 +1,169 @@
+-- Assurance Contract Annex Plugin for OSATE
+-- Copyright 2023 Carnegie Mellon University.
+-- NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
+-- MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
+-- WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
+-- NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
+-- RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
+-- ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+-- INFRINGEMENT.
+-- Released under a BSD (SEI)-style license, please see license.txt or contact 
+-- permission@sei.cmu.edu for full terms.
+-- [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
+-- unlimited distribution.  Please see Copyright notice for non-US Government use and 
+-- distribution.
+-- Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+-- Mellon University.
+-- This Software includes and/or makes use of the following Third-Party Software subject 
+-- to its own license:
+-- 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+-- Corporation.
+-- 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+-- contributors and others.
+-- DM23-0575
+
+package system_instance_test
+public
+	annex contract {**
+		contract systemInstanceTest {
+			queries
+				val v1 = root;
+				val v2 = root.name;
+				val v3 = root.category;
+				val v4 = root.subcomponents;
+				val v5 = root.allSubcomponents;
+				val v6 = root.features;
+				val v7 = root.allFeatures;
+				val v8 = root.localModes;
+				val v9 = root.allModes;
+				val v10 = root.modeTransitions;
+				val v11 = root.allModeTransitions;
+				val v12 = root.flowSpecifications;
+				val v13 = root.allFlowSpecifications;
+				val v14 = root.endToEndFlows;
+				val v15 = root.allEndToEndFlows;
+				val v16 = root.connections;
+				val v17 = root.allConnections;
+				val v18 = root.systemOperationModes;
+				val v19 = root#Period;
+				
+				val v20 = root.isAbstract;
+				val v21 = root.isBus;
+				val v22 = root.isData;
+				val v23 = root.isDevice;
+				val v24 = root.isMemory;
+				val v25 = root.isProcess;
+				val v26 = root.isProcessor;
+				val v27 = root.isSubprogram;
+				val v28 = root.isSubprogramGroup;
+				val v29 = root.isSystem;
+				val v30 = root.isThread;
+				val v31 = root.isThreadGroup;
+				val v32 = root.isVirtualBus;
+				val v33 = root.isVirtualProcessor;
+		}
+	**};
+	
+	system s
+		features
+			ep1: in event port;
+		flows
+			outer_flow_spec: flow sink ep1;
+		modes
+			outer_m1: initial mode;
+			outer_m2: mode;
+			outer_transition1: outer_m1 -[ep1]-> outer_m2;
+	end s;
+	
+	system implementation s.i
+		subcomponents
+			left_process: process left_process.i;
+			right_process: process right_process.i;
+			nested_sub: system s2.i;
+		connections
+			across: port left_process.left_process_port -> right_process.right_process_port;
+		flows
+			etef1: end to end flow left_process.left_source -> across -> right_process.right_sink;
+	end s.i;
+	
+	system s2
+	end s2;
+	
+	system implementation s2.i
+		subcomponents
+			left_process: process left_process.i;
+			right_process: process right_process.i;
+		connections
+			across: port left_process.left_process_port -> right_process.right_process_port;
+		flows
+			etef2: end to end flow left_process.left_source -> across -> right_process.right_sink;
+	end s2.i;
+	
+	process left_process
+		features
+			left_process_port: out data port d;
+		flows
+			left_source: flow source left_process_port;
+	end left_process;
+	
+	process implementation left_process.i
+		subcomponents
+			left_thread: thread left_thread;
+		connections
+			up: port left_thread.left_thread_port -> left_process_port;
+		flows
+			left_source: flow source left_thread.left_thread_source -> up -> left_process_port;
+	end left_process.i;
+	
+	thread left_thread
+		features
+			left_thread_port: out data port d;
+			ep2: in event port;
+		flows
+			left_thread_source: flow source left_thread_port;
+		modes
+			inner_m1: initial mode;
+			inner_m2: mode;
+			inner_transition1: inner_m1 -[ep2]-> inner_m2;
+	end left_thread;
+	
+	process right_process
+		features
+			right_process_port: in data port d;
+		flows
+			right_sink: flow sink right_process_port;
+	end right_process;
+	
+	process implementation right_process.i
+		subcomponents
+			right_thread: thread right_thread;
+		connections
+			down: port right_process_port -> right_thread.right_thread_port;
+		flows
+			right_sink: flow sink right_process_port -> down -> right_thread.right_thread_sink;
+	end right_process.i;
+	
+	thread right_thread
+		features
+			right_thread_port: in data port d;
+		flows
+			right_thread_sink: flow sink right_thread_port;
+	end right_thread;
+	
+	data d
+	end d;
+	
+	system in_modes_test
+		modes
+			m1: initial mode;
+			m2: mode;
+	end in_modes_test;
+	
+	system implementation in_modes_test.i
+		subcomponents
+			sub1: system s3 in modes (m1);
+	end in_modes_test.i;
+	
+	system s3
+	end s3;
+end system_instance_test;

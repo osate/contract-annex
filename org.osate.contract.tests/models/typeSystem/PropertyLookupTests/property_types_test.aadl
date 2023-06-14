@@ -1,0 +1,71 @@
+-- Assurance Contract Annex Plugin for OSATE
+-- Copyright 2023 Carnegie Mellon University.
+-- NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
+-- MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
+-- WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
+-- NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
+-- RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
+-- ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+-- INFRINGEMENT.
+-- Released under a BSD (SEI)-style license, please see license.txt or contact 
+-- permission@sei.cmu.edu for full terms.
+-- [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
+-- unlimited distribution.  Please see Copyright notice for non-US Government use and 
+-- distribution.
+-- Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+-- Mellon University.
+-- This Software includes and/or makes use of the following Third-Party Software subject 
+-- to its own license:
+-- 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+-- Corporation.
+-- 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+-- contributors and others.
+-- DM23-0575
+
+package property_types_test
+public
+	annex contract {**
+		contract PropertyTypesTest {
+			queries
+				val booleanProperty = self#Synchronized_Component;
+				val stringProperty = self#ps::string1;
+				val classifierProperty = self#Implemented_As;
+				val enumProperty = self#Hardware_Source_Language;
+				val integer = self#Priority;
+				val integerWithUnits = self#Data_Rate;
+				val real = self#ps::real1;
+				val realWithUnits = self#Processor_Capacity;
+				val rangeOfInteger = self#ps::integer_range1;
+				val rangeOfIntegerWithUnits = self#Actual_Latency;
+				val rangeOfReal = self#ps::real_range1;
+				val rangeOfRealWithUnits = self#ps::real_range_with_units1;
+				val recordProperty = self#Transmission_Time;
+				val referenceProperty = self#Reference_Time;
+				val listProperty = self#Provided_Connection_Quality_Of_Service;
+				
+				val unnamedEnum1 = self#ps::property_with_enum;
+				val unnamedEnum2 = self#ps::property_with_list_of_enum;
+				val unnamedEnum3 = self#ps::property_with_record_with_enum;
+				val unnamedEnum4 = self#ps::property_with_list_of_record_with_list_of_enum;
+				val unnamedEnum5 = self#ps::property_with_deeply_nested;
+				val unnamedEnum6 = self#ps::record_with_enum_property;
+				val unnamedEnum7 = self#ps::record_with_list_of_enum_property;
+				val unnamedEnum8 = self#ps::record_with_deeply_nested_property;
+				
+				val unnamedUnits1 = self#ps::named_integer_with_unnamed_units;
+				val unnamedUnits2 = self#ps::named_real_with_unnamed_units;
+				val unnamedUnits3 = self#ps::named_range_with_unnamed_integer_with_unnamed_units;
+				val unnamedUnits4 = self#ps::named_range_with_unnamed_real_with_unnamed_units;
+				val unnamedUnits5 = self#ps::record_with_integer_property;
+				val unnamedUnits6 = self#ps::record_with_range_of_integer_property;
+				val unnamedUnits7 = self#ps::record_with_range_of_real_property;
+				val unnamedUnits8 = self#ps::record_with_list_of_integer_property;
+				val unnamedUnits9 = self#ps::record_with_deeply_nested_integer_property;
+				val unnamedUnits10 = self#ps::property_with_integer_with_units;
+				val unnamedUnits11 = self#ps::property_with_deeply_nested_with_integer;
+				val unnamedUnits12 = self#ps::property_with_real_with_units;
+				val unnamedUnits13 = self#ps::property_with_integer_range_with_units;
+				val unnamedUnits14 = self#ps::property_with_real_range_with_units;
+		}
+	**};
+end property_types_test;

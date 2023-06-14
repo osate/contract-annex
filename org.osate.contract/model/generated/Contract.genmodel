@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="Assurance Contract Annex Plugin for OSATE&#xA;Copyright 2023 Carnegie Mellon University.&#xA;NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE &#xA;MATERIAL IS FURNISHED ON AN &quot;AS-IS&quot; BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO &#xA;WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT &#xA;NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR &#xA;RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE &#xA;ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT &#xA;INFRINGEMENT.&#xA;Released under a BSD (SEI)-style license, please see license.txt or contact &#xA;permission@sei.cmu.edu for full terms.&#xA;[DISTRIBUTION STATEMENT A] This material has been approved for public release and &#xA;unlimited distribution.  Please see Copyright notice for non-US Government use and &#xA;distribution.&#xA;Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie &#xA;Mellon University.&#xA;This Software includes and/or makes use of the following Third-Party Software subject &#xA;to its own license:&#xA;1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft &#xA;Corporation.&#xA;2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse &#xA;contributors and others.&#xA;DM23-0575"
+    modelDirectory="/org.osate.contract/src-gen" modelPluginID="org.osate.contract"
+    forceOverwrite="true" modelName="Contract" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    complianceLevel="8.0" copyrightFields="false" runtimeVersion="2.20" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/resource/org.osate.aadl2/model/aadl2.genmodel#//aadl2">
+  <genPackages prefix="Contract" basePackage="org.osate.contract" disposableProviderFactory="true"
+      fileExtensions="contract" ecorePackage="Contract.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Contract.ecore#//Language">
+      <genEnumLiterals ecoreEnumLiteral="Contract.ecore#//Language/PYTHON"/>
+      <genEnumLiterals ecoreEnumLiteral="Contract.ecore#//Language/JAVA"/>
+      <genEnumLiterals ecoreEnumLiteral="Contract.ecore#//Language/SMT"/>
+    </genEnums>
+    <genClasses ecoreClass="Contract.ecore#//ContractLibrary">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//ContractLibrary/contractElements"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//ContractElement"/>
+    <genClasses ecoreClass="Contract.ecore#//Contract">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//Contract/domains"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//Contract/queries"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//Contract/inputs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//Contract/assumptions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//Contract/exact"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//Contract/guarantee"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//Contract/analyses"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//InputAssumption">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//InputAssumption/code"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//AssumptionElement"/>
+    <genClasses ecoreClass="Contract.ecore#//Guarantee">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//Guarantee/code"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//Analysis">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//Analysis/code"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//Source">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//Source/language"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//Source/source"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//Source/inter"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//Implementation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//Implementation/code"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//Domain">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//Domain/queries"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//Domain/code"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//Argument">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//Argument/domains"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//Argument/exact"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//Argument/guarantee"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//Argument/argumentExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//ArgumentExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//ArgumentExpression/contracts"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//ArgumentExpression/arguments"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//VerificationPlan">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//VerificationPlan/componentImplementation"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//VerificationPlan/domains"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//VerificationPlan/claims"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//VerificationPlan/contracts"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//Query">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//Query/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//SingleValDeclaration"/>
+    <genClasses ecoreClass="Contract.ecore#//TupleName"/>
+    <genClasses ecoreClass="Contract.ecore#//Expression"/>
+    <genClasses ecoreClass="Contract.ecore#//Lambda">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//Lambda/parameter"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//Lambda/queries"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//Lambda/returnValue"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//Parameter"/>
+    <genClasses ecoreClass="Contract.ecore#//SingleParameter"/>
+    <genClasses ecoreClass="Contract.ecore#//ContractSubclause">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//ContractSubclause/useQueries"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//ContractSubclause/verifyPlans"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//IString">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//IString/parts"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//IStringPart"/>
+    <genClasses ecoreClass="Contract.ecore#//IStringLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//IStringLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//IStringVar">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//IStringVar/direct"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//IStringVar/domain"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//IStringVar/query"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//ContractAssumption">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//ContractAssumption/contract"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//ArgumentAssumption">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//ArgumentAssumption/argument"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//CodeAssumption">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//CodeAssumption/code"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//CodeAssumption/exact"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//CodeAssumption/guarantee"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//TupleDeclaration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//TupleDeclaration/names"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//OrExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//OrExpression/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//OrExpression/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//AndExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//AndExpression/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//AndExpression/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//NotExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//NotExpression/operand"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//MemberCall">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//MemberCall/left"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//MemberCall/right"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//MemberCall/argument"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//MemberCall/lambda"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//PropertyLookup">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//PropertyLookup/left"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//PropertyLookup/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//TupleParameter">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//TupleParameter/names"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//SelfExpression"/>
+    <genClasses ecoreClass="Contract.ecore#//RootExpression"/>
+    <genClasses ecoreClass="Contract.ecore#//NameReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//NameReference/reference"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//TupleExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//TupleExpression/elements"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
