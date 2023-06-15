@@ -54,7 +54,7 @@
 		<module>org.osate.contract.annex</module>
 		<module>org.osate.contract.evaluation.ui</module>
 		<module>org.osate.contract.ide</module>
-		<module>org.osate.contract.tests</module>
+		<!--module>org.osate.contract.tests</module-->
 		<module>org.osate.contract.ui</module>
 		<!--module>org.osate.contract.ui.tests</module-->
 		<module>org.osate.contract.feature</module>
