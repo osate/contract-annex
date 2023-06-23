@@ -230,6 +230,29 @@ from {
 	}
 }
 
+checkrule CheckArgumentType for
+	MemberCall expression
+from {
+	empty |- expression.left : var Type leftType
+	/*
+	 * Special handling for LongWithUnits.scaledTo() and Record.get(). Argument should be a single NameReference which
+	 * is not nested in a deep expression. If it is a single NameReference, then the scope provider ensures that the
+	 * type is correct.
+	 */
+	val requiredArgumentType = switch leftType {
+		LongWithUnitsType case expression.right == "scaledTo": "UnitLiteral"
+		RecordType case expression.right == "get": "RecordField"
+	}
+	val argument = expression.argument
+	if (requiredArgumentType !== null && argument !== null && !(argument instanceof NameReference)) {
+		empty |- argument : var Type argumentType
+		fail
+			error "Expected " + requiredArgumentType + "; found " + argumentType
+			source expression
+			feature ContractPackage.eINSTANCE.memberCall_Argument
+	}
+}
+
 checkrule CheckLambdaReturnType for
 	Lambda lambda
 from {

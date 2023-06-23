@@ -119,6 +119,10 @@ public class ContractScopeProvider extends AbstractContractScopeProvider {
 	}
 
 	private IScope scopeForNameReferenceReference(EObject context) {
+		/*
+		 * Special handling for LongWithUnits.scaledTo() and Record.get(). Scoping looks up the names of the argument
+		 * based on the type of the left side of the MemberCall expression.
+		 */
 		if (context instanceof NameReference nameReference
 				&& nameReference.eContainer() instanceof MemberCall memberCall
 				&& memberCall.getArgument() == nameReference) {

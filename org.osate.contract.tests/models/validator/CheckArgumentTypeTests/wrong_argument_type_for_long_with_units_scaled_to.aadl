@@ -1,0 +1,10 @@
+package wrong_argument_type_for_long_with_units_scaled_to
+public
+	annex contract {**
+		contract WrongArgumentTypeForLongWithUnitsScaledTo {
+			queries
+				val valid = self#Period.map { period -> period.scaledTo(ms) };
+				val invalid = self#Period.map { period -> period.scaledTo(self) };
+		}
+	**};
+end wrong_argument_type_for_long_with_units_scaled_to;
