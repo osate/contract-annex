@@ -131,6 +131,9 @@
     </genClasses>
     <genClasses ecoreClass="Contract.ecore#//SelfExpression"/>
     <genClasses ecoreClass="Contract.ecore#//RootExpression"/>
+    <genClasses ecoreClass="Contract.ecore#//StringLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//StringLiteral/value"/>
+    </genClasses>
     <genClasses ecoreClass="Contract.ecore#//NameReference">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//NameReference/reference"/>
     </genClasses>

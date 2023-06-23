@@ -23,6 +23,7 @@
  * contributors and others.
  * DM23-0575
  *******************************************************************************/
+
 import org.eclipse.xtext.EcoreUtil2
 import org.osate.aadl2.NamedElement
 import org.osate.contract.contract.AndExpression
@@ -38,6 +39,7 @@ import org.osate.contract.contract.RootExpression
 import org.osate.contract.contract.SelfExpression
 import org.osate.contract.contract.SingleParameter
 import org.osate.contract.contract.SingleValDeclaration
+import org.osate.contract.contract.StringLiteral
 import org.osate.contract.contract.TupleDeclaration
 import org.osate.contract.contract.TupleExpression
 import org.osate.contract.contract.TupleName
@@ -90,6 +92,9 @@ axiom SelfExpression
 
 axiom RootExpression
 	G |- RootExpression expression : SystemInstanceType.INSTANCE
+
+axiom StringLiteral
+	G |- StringLiteral expression : StringType.INSTANCE
 
 rule TupleExpression
 	G |- TupleExpression expression : TupleType type

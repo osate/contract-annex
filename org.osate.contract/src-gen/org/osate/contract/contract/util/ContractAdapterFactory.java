@@ -289,6 +289,11 @@ public class ContractAdapterFactory extends AdapterFactoryImpl
         return createRootExpressionAdapter();
       }
       @Override
+      public Adapter caseStringLiteral(StringLiteral object)
+      {
+        return createStringLiteralAdapter();
+      }
+      @Override
       public Adapter caseNameReference(NameReference object)
       {
         return createNameReferenceAdapter();
@@ -896,6 +901,21 @@ public class ContractAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createRootExpressionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.osate.contract.contract.StringLiteral <em>String Literal</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.osate.contract.contract.StringLiteral
+   * @generated
+   */
+  public Adapter createStringLiteralAdapter()
   {
     return null;
   }

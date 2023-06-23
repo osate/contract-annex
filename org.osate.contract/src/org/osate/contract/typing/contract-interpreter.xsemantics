@@ -23,6 +23,7 @@
  * contributors and others.
  * DM23-0575
  *******************************************************************************/
+
 import java.util.Map
 import java.util.Optional
 import org.eclipse.xsemantics.runtime.RuleEnvironment
@@ -45,6 +46,7 @@ import org.osate.contract.contract.RootExpression
 import org.osate.contract.contract.SelfExpression
 import org.osate.contract.contract.SingleParameter
 import org.osate.contract.contract.SingleValDeclaration
+import org.osate.contract.contract.StringLiteral
 import org.osate.contract.contract.TupleDeclaration
 import org.osate.contract.contract.TupleExpression
 import org.osate.contract.contract.TupleName
@@ -160,6 +162,9 @@ axiom EvaluateSelfExpression
 
 axiom EvaluateRootExpression
 	G |- RootExpression expression ~> EcoreUtil2.getContainerOfType(env(G, "self", ComponentInstance), SystemInstance)
+
+axiom EvaluateStringLiteral
+	G |- StringLiteral expression ~> expression.value
 
 rule EvaluateTupleExpression
 	G |- TupleExpression expression ~> Tuple result

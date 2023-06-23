@@ -303,6 +303,9 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 			case ContractPackage.SOURCE:
 				sequence_Source(context, (Source) semanticObject); 
 				return; 
+			case ContractPackage.STRING_LITERAL:
+				sequence_TerminalExpression(context, (org.osate.contract.contract.StringLiteral) semanticObject); 
+				return; 
 			case ContractPackage.TUPLE_DECLARATION:
 				sequence_Query(context, (TupleDeclaration) semanticObject); 
 				return; 
@@ -379,7 +382,7 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	 *     CallExpression.MemberCall_1_0_0 returns AndExpression
 	 *     CallExpression.PropertyLookup_1_1_0 returns AndExpression
 	 *     TerminalExpression returns AndExpression
-	 *     TerminalExpression.TupleExpression_3_2_0 returns AndExpression
+	 *     TerminalExpression.TupleExpression_4_2_0 returns AndExpression
 	 *
 	 * Constraint:
 	 *     (left=AndExpression_AndExpression_1_0 right=NotExpression)
@@ -495,7 +498,7 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	 *     CallExpression.MemberCall_1_0_0 returns MemberCall
 	 *     CallExpression.PropertyLookup_1_1_0 returns MemberCall
 	 *     TerminalExpression returns MemberCall
-	 *     TerminalExpression.TupleExpression_3_2_0 returns MemberCall
+	 *     TerminalExpression.TupleExpression_4_2_0 returns MemberCall
 	 *
 	 * Constraint:
 	 *     (left=CallExpression_MemberCall_1_0_0 right=ID argument=Expression? lambda=Lambda?)
@@ -518,7 +521,7 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	 *     CallExpression.MemberCall_1_0_0 returns PropertyLookup
 	 *     CallExpression.PropertyLookup_1_1_0 returns PropertyLookup
 	 *     TerminalExpression returns PropertyLookup
-	 *     TerminalExpression.TupleExpression_3_2_0 returns PropertyLookup
+	 *     TerminalExpression.TupleExpression_4_2_0 returns PropertyLookup
 	 *
 	 * Constraint:
 	 *     (left=CallExpression_PropertyLookup_1_1_0 right=[Property|QPREF])
@@ -612,7 +615,7 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	 *     CallExpression.MemberCall_1_0_0 returns OrExpression
 	 *     CallExpression.PropertyLookup_1_1_0 returns OrExpression
 	 *     TerminalExpression returns OrExpression
-	 *     TerminalExpression.TupleExpression_3_2_0 returns OrExpression
+	 *     TerminalExpression.TupleExpression_4_2_0 returns OrExpression
 	 *
 	 * Constraint:
 	 *     (left=Expression_OrExpression_1_0 right=AndExpression)
@@ -831,7 +834,7 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	 *     CallExpression.MemberCall_1_0_0 returns NotExpression
 	 *     CallExpression.PropertyLookup_1_1_0 returns NotExpression
 	 *     TerminalExpression returns NotExpression
-	 *     TerminalExpression.TupleExpression_3_2_0 returns NotExpression
+	 *     TerminalExpression.TupleExpression_4_2_0 returns NotExpression
 	 *
 	 * Constraint:
 	 *     operand=CallExpression
@@ -953,7 +956,7 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	 *     CallExpression.MemberCall_1_0_0 returns NameReference
 	 *     CallExpression.PropertyLookup_1_1_0 returns NameReference
 	 *     TerminalExpression returns NameReference
-	 *     TerminalExpression.TupleExpression_3_2_0 returns NameReference
+	 *     TerminalExpression.TupleExpression_4_2_0 returns NameReference
 	 *
 	 * Constraint:
 	 *     reference=[NamedElement|ID]
@@ -965,7 +968,7 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ContractPackage.Literals.NAME_REFERENCE__REFERENCE));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getTerminalExpressionAccess().getReferenceNamedElementIDTerminalRuleCall_2_1_0_1(), semanticObject.eGet(ContractPackage.Literals.NAME_REFERENCE__REFERENCE, false));
+		feeder.accept(grammarAccess.getTerminalExpressionAccess().getReferenceNamedElementIDTerminalRuleCall_3_1_0_1(), semanticObject.eGet(ContractPackage.Literals.NAME_REFERENCE__REFERENCE, false));
 		feeder.finish();
 	}
 	
@@ -982,7 +985,7 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	 *     CallExpression.MemberCall_1_0_0 returns RootExpression
 	 *     CallExpression.PropertyLookup_1_1_0 returns RootExpression
 	 *     TerminalExpression returns RootExpression
-	 *     TerminalExpression.TupleExpression_3_2_0 returns RootExpression
+	 *     TerminalExpression.TupleExpression_4_2_0 returns RootExpression
 	 *
 	 * Constraint:
 	 *     {RootExpression}
@@ -1005,7 +1008,7 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	 *     CallExpression.MemberCall_1_0_0 returns SelfExpression
 	 *     CallExpression.PropertyLookup_1_1_0 returns SelfExpression
 	 *     TerminalExpression returns SelfExpression
-	 *     TerminalExpression.TupleExpression_3_2_0 returns SelfExpression
+	 *     TerminalExpression.TupleExpression_4_2_0 returns SelfExpression
 	 *
 	 * Constraint:
 	 *     {SelfExpression}
@@ -1013,6 +1016,35 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	 */
 	protected void sequence_TerminalExpression(ISerializationContext context, SelfExpression semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
+	 *     Expression returns StringLiteral
+	 *     Expression.OrExpression_1_0 returns StringLiteral
+	 *     AndExpression returns StringLiteral
+	 *     AndExpression.AndExpression_1_0 returns StringLiteral
+	 *     NotExpression returns StringLiteral
+	 *     CallExpression returns StringLiteral
+	 *     CallExpression.MemberCall_1_0_0 returns StringLiteral
+	 *     CallExpression.PropertyLookup_1_1_0 returns StringLiteral
+	 *     TerminalExpression returns StringLiteral
+	 *     TerminalExpression.TupleExpression_4_2_0 returns StringLiteral
+	 *
+	 * Constraint:
+	 *     value=STRING
+	 * </pre>
+	 */
+	protected void sequence_TerminalExpression(ISerializationContext context, org.osate.contract.contract.StringLiteral semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ContractPackage.Literals.STRING_LITERAL__VALUE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ContractPackage.Literals.STRING_LITERAL__VALUE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getTerminalExpressionAccess().getValueSTRINGTerminalRuleCall_2_1_0(), semanticObject.getValue());
+		feeder.finish();
 	}
 	
 	
@@ -1028,10 +1060,10 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	 *     CallExpression.MemberCall_1_0_0 returns TupleExpression
 	 *     CallExpression.PropertyLookup_1_1_0 returns TupleExpression
 	 *     TerminalExpression returns TupleExpression
-	 *     TerminalExpression.TupleExpression_3_2_0 returns TupleExpression
+	 *     TerminalExpression.TupleExpression_4_2_0 returns TupleExpression
 	 *
 	 * Constraint:
-	 *     (elements+=TerminalExpression_TupleExpression_3_2_0 elements+=Expression+)
+	 *     (elements+=TerminalExpression_TupleExpression_4_2_0 elements+=Expression+)
 	 * </pre>
 	 */
 	protected void sequence_TerminalExpression(ISerializationContext context, TupleExpression semanticObject) {

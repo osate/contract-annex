@@ -239,6 +239,7 @@ SingleParameter:
 TerminalExpression returns Expression:
 	{SelfExpression} 'self' |
 	{RootExpression} 'root' |
+	{StringLiteral} value=STRING |
 	{NameReference} reference=[aadl2::NamedElement] |
 	/*
 	 * Handles both parentheses and tuples. Combining these is necessary to avoid a left recursion problem. The
