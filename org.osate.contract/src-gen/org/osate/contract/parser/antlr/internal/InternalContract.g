@@ -1943,13 +1943,19 @@ ruleCallExpression returns [EObject current=null]
 					(
 						(
 							{
-								if ($current==null) {
-									$current = createModelElement(grammarAccess.getCallExpressionRule());
-								}
+								newCompositeNode(grammarAccess.getCallExpressionAccess().getArgumentExpressionParserRuleCall_1_0_3_1_0());
 							}
-							otherlv_5=RULE_ID
+							lv_argument_5_0=ruleExpression
 							{
-								newLeafNode(otherlv_5, grammarAccess.getCallExpressionAccess().getArgumentNamedElementCrossReference_1_0_3_1_0());
+								if ($current==null) {
+									$current = createModelElementForParent(grammarAccess.getCallExpressionRule());
+								}
+								set(
+									$current,
+									"argument",
+									lv_argument_5_0,
+									"org.osate.contract.Contract.Expression");
+								afterParserOrEnumRuleCall();
 							}
 						)
 					)

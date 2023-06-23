@@ -386,7 +386,6 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
   {
     super(eNS_URI, ContractFactory.eINSTANCE);
   }
-
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1866,7 +1865,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     initEClass(memberCallEClass, MemberCall.class, "MemberCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getMemberCall_Left(), this.getExpression(), null, "left", null, 0, 1, MemberCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getMemberCall_Right(), theEcorePackage.getEString(), "right", null, 0, 1, MemberCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMemberCall_Argument(), theAadl2Package.getNamedElement(), null, "argument", null, 0, 1, MemberCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMemberCall_Argument(), this.getExpression(), null, "argument", null, 0, 1, MemberCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMemberCall_Lambda(), this.getLambda(), null, "lambda", null, 0, 1, MemberCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(propertyLookupEClass, PropertyLookup.class, "PropertyLookup", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

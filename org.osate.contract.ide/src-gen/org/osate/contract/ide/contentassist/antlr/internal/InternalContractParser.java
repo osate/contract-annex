@@ -7407,11 +7407,6 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
             case 26:
                 {
                 switch ( input.LA(2) ) {
-                case RULE_ID:
-                    {
-                    alt24=3;
-                    }
-                    break;
                 case RULE_INTEGER_LIT:
                     {
                     alt24=2;
@@ -7420,6 +7415,11 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
                 case RULE_REAL_LIT:
                     {
                     alt24=1;
+                    }
+                    break;
+                case RULE_ID:
+                    {
+                    alt24=3;
                     }
                     break;
                 default:
@@ -19757,7 +19757,7 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
             // InternalContract.g:6380:1: ( rule__CallExpression__Group_1_0_3__0__Impl rule__CallExpression__Group_1_0_3__1 )
             // InternalContract.g:6381:2: rule__CallExpression__Group_1_0_3__0__Impl rule__CallExpression__Group_1_0_3__1
             {
-            pushFollow(FOLLOW_8);
+            pushFollow(FOLLOW_37);
             rule__CallExpression__Group_1_0_3__0__Impl();
 
             state._fsp--;
@@ -34218,29 +34218,25 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__CallExpression__ArgumentAssignment_1_0_3_1"
-    // InternalContract.g:11271:1: rule__CallExpression__ArgumentAssignment_1_0_3_1 : ( ( RULE_ID ) ) ;
+    // InternalContract.g:11271:1: rule__CallExpression__ArgumentAssignment_1_0_3_1 : ( ruleExpression ) ;
     public final void rule__CallExpression__ArgumentAssignment_1_0_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11275:1: ( ( ( RULE_ID ) ) )
-            // InternalContract.g:11276:2: ( ( RULE_ID ) )
+            // InternalContract.g:11275:1: ( ( ruleExpression ) )
+            // InternalContract.g:11276:2: ( ruleExpression )
             {
-            // InternalContract.g:11276:2: ( ( RULE_ID ) )
-            // InternalContract.g:11277:3: ( RULE_ID )
+            // InternalContract.g:11276:2: ( ruleExpression )
+            // InternalContract.g:11277:3: ruleExpression
             {
-             before(grammarAccess.getCallExpressionAccess().getArgumentNamedElementCrossReference_1_0_3_1_0()); 
-            // InternalContract.g:11278:3: ( RULE_ID )
-            // InternalContract.g:11279:4: RULE_ID
-            {
-             before(grammarAccess.getCallExpressionAccess().getArgumentNamedElementIDTerminalRuleCall_1_0_3_1_0_1()); 
-            match(input,RULE_ID,FOLLOW_2); 
-             after(grammarAccess.getCallExpressionAccess().getArgumentNamedElementIDTerminalRuleCall_1_0_3_1_0_1()); 
+             before(grammarAccess.getCallExpressionAccess().getArgumentExpressionParserRuleCall_1_0_3_1_0()); 
+            pushFollow(FOLLOW_2);
+            ruleExpression();
 
-            }
+            state._fsp--;
 
-             after(grammarAccess.getCallExpressionAccess().getArgumentNamedElementCrossReference_1_0_3_1_0()); 
+             after(grammarAccess.getCallExpressionAccess().getArgumentExpressionParserRuleCall_1_0_3_1_0()); 
 
             }
 
@@ -34263,17 +34259,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__CallExpression__LambdaAssignment_1_0_4"
-    // InternalContract.g:11290:1: rule__CallExpression__LambdaAssignment_1_0_4 : ( ruleLambda ) ;
+    // InternalContract.g:11286:1: rule__CallExpression__LambdaAssignment_1_0_4 : ( ruleLambda ) ;
     public final void rule__CallExpression__LambdaAssignment_1_0_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11294:1: ( ( ruleLambda ) )
-            // InternalContract.g:11295:2: ( ruleLambda )
+            // InternalContract.g:11290:1: ( ( ruleLambda ) )
+            // InternalContract.g:11291:2: ( ruleLambda )
             {
-            // InternalContract.g:11295:2: ( ruleLambda )
-            // InternalContract.g:11296:3: ruleLambda
+            // InternalContract.g:11291:2: ( ruleLambda )
+            // InternalContract.g:11292:3: ruleLambda
             {
              before(grammarAccess.getCallExpressionAccess().getLambdaLambdaParserRuleCall_1_0_4_0()); 
             pushFollow(FOLLOW_2);
@@ -34304,21 +34300,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__CallExpression__RightAssignment_1_1_2"
-    // InternalContract.g:11305:1: rule__CallExpression__RightAssignment_1_1_2 : ( ( ruleQPREF ) ) ;
+    // InternalContract.g:11301:1: rule__CallExpression__RightAssignment_1_1_2 : ( ( ruleQPREF ) ) ;
     public final void rule__CallExpression__RightAssignment_1_1_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11309:1: ( ( ( ruleQPREF ) ) )
-            // InternalContract.g:11310:2: ( ( ruleQPREF ) )
+            // InternalContract.g:11305:1: ( ( ( ruleQPREF ) ) )
+            // InternalContract.g:11306:2: ( ( ruleQPREF ) )
             {
-            // InternalContract.g:11310:2: ( ( ruleQPREF ) )
-            // InternalContract.g:11311:3: ( ruleQPREF )
+            // InternalContract.g:11306:2: ( ( ruleQPREF ) )
+            // InternalContract.g:11307:3: ( ruleQPREF )
             {
              before(grammarAccess.getCallExpressionAccess().getRightPropertyCrossReference_1_1_2_0()); 
-            // InternalContract.g:11312:3: ( ruleQPREF )
-            // InternalContract.g:11313:4: ruleQPREF
+            // InternalContract.g:11308:3: ( ruleQPREF )
+            // InternalContract.g:11309:4: ruleQPREF
             {
              before(grammarAccess.getCallExpressionAccess().getRightPropertyQPREFParserRuleCall_1_1_2_0_1()); 
             pushFollow(FOLLOW_2);
@@ -34353,17 +34349,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__Lambda__ParameterAssignment_1"
-    // InternalContract.g:11324:1: rule__Lambda__ParameterAssignment_1 : ( ruleParameter ) ;
+    // InternalContract.g:11320:1: rule__Lambda__ParameterAssignment_1 : ( ruleParameter ) ;
     public final void rule__Lambda__ParameterAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11328:1: ( ( ruleParameter ) )
-            // InternalContract.g:11329:2: ( ruleParameter )
+            // InternalContract.g:11324:1: ( ( ruleParameter ) )
+            // InternalContract.g:11325:2: ( ruleParameter )
             {
-            // InternalContract.g:11329:2: ( ruleParameter )
-            // InternalContract.g:11330:3: ruleParameter
+            // InternalContract.g:11325:2: ( ruleParameter )
+            // InternalContract.g:11326:3: ruleParameter
             {
              before(grammarAccess.getLambdaAccess().getParameterParameterParserRuleCall_1_0()); 
             pushFollow(FOLLOW_2);
@@ -34394,17 +34390,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__Lambda__ReturnValueAssignment_4"
-    // InternalContract.g:11339:1: rule__Lambda__ReturnValueAssignment_4 : ( ruleExpression ) ;
+    // InternalContract.g:11335:1: rule__Lambda__ReturnValueAssignment_4 : ( ruleExpression ) ;
     public final void rule__Lambda__ReturnValueAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11343:1: ( ( ruleExpression ) )
-            // InternalContract.g:11344:2: ( ruleExpression )
+            // InternalContract.g:11339:1: ( ( ruleExpression ) )
+            // InternalContract.g:11340:2: ( ruleExpression )
             {
-            // InternalContract.g:11344:2: ( ruleExpression )
-            // InternalContract.g:11345:3: ruleExpression
+            // InternalContract.g:11340:2: ( ruleExpression )
+            // InternalContract.g:11341:3: ruleExpression
             {
              before(grammarAccess.getLambdaAccess().getReturnValueExpressionParserRuleCall_4_0()); 
             pushFollow(FOLLOW_2);
@@ -34435,17 +34431,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__Parameter__NamesAssignment_1_2"
-    // InternalContract.g:11354:1: rule__Parameter__NamesAssignment_1_2 : ( ruleTupleName ) ;
+    // InternalContract.g:11350:1: rule__Parameter__NamesAssignment_1_2 : ( ruleTupleName ) ;
     public final void rule__Parameter__NamesAssignment_1_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11358:1: ( ( ruleTupleName ) )
-            // InternalContract.g:11359:2: ( ruleTupleName )
+            // InternalContract.g:11354:1: ( ( ruleTupleName ) )
+            // InternalContract.g:11355:2: ( ruleTupleName )
             {
-            // InternalContract.g:11359:2: ( ruleTupleName )
-            // InternalContract.g:11360:3: ruleTupleName
+            // InternalContract.g:11355:2: ( ruleTupleName )
+            // InternalContract.g:11356:3: ruleTupleName
             {
              before(grammarAccess.getParameterAccess().getNamesTupleNameParserRuleCall_1_2_0()); 
             pushFollow(FOLLOW_2);
@@ -34476,17 +34472,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__Parameter__NamesAssignment_1_3_1"
-    // InternalContract.g:11369:1: rule__Parameter__NamesAssignment_1_3_1 : ( ruleTupleName ) ;
+    // InternalContract.g:11365:1: rule__Parameter__NamesAssignment_1_3_1 : ( ruleTupleName ) ;
     public final void rule__Parameter__NamesAssignment_1_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11373:1: ( ( ruleTupleName ) )
-            // InternalContract.g:11374:2: ( ruleTupleName )
+            // InternalContract.g:11369:1: ( ( ruleTupleName ) )
+            // InternalContract.g:11370:2: ( ruleTupleName )
             {
-            // InternalContract.g:11374:2: ( ruleTupleName )
-            // InternalContract.g:11375:3: ruleTupleName
+            // InternalContract.g:11370:2: ( ruleTupleName )
+            // InternalContract.g:11371:3: ruleTupleName
             {
              before(grammarAccess.getParameterAccess().getNamesTupleNameParserRuleCall_1_3_1_0()); 
             pushFollow(FOLLOW_2);
@@ -34517,17 +34513,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__SingleParameter__NameAssignment"
-    // InternalContract.g:11384:1: rule__SingleParameter__NameAssignment : ( RULE_ID ) ;
+    // InternalContract.g:11380:1: rule__SingleParameter__NameAssignment : ( RULE_ID ) ;
     public final void rule__SingleParameter__NameAssignment() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11388:1: ( ( RULE_ID ) )
-            // InternalContract.g:11389:2: ( RULE_ID )
+            // InternalContract.g:11384:1: ( ( RULE_ID ) )
+            // InternalContract.g:11385:2: ( RULE_ID )
             {
-            // InternalContract.g:11389:2: ( RULE_ID )
-            // InternalContract.g:11390:3: RULE_ID
+            // InternalContract.g:11385:2: ( RULE_ID )
+            // InternalContract.g:11386:3: RULE_ID
             {
              before(grammarAccess.getSingleParameterAccess().getNameIDTerminalRuleCall_0()); 
             match(input,RULE_ID,FOLLOW_2); 
@@ -34554,21 +34550,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__TerminalExpression__ReferenceAssignment_2_1"
-    // InternalContract.g:11399:1: rule__TerminalExpression__ReferenceAssignment_2_1 : ( ( RULE_ID ) ) ;
+    // InternalContract.g:11395:1: rule__TerminalExpression__ReferenceAssignment_2_1 : ( ( RULE_ID ) ) ;
     public final void rule__TerminalExpression__ReferenceAssignment_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11403:1: ( ( ( RULE_ID ) ) )
-            // InternalContract.g:11404:2: ( ( RULE_ID ) )
+            // InternalContract.g:11399:1: ( ( ( RULE_ID ) ) )
+            // InternalContract.g:11400:2: ( ( RULE_ID ) )
             {
-            // InternalContract.g:11404:2: ( ( RULE_ID ) )
-            // InternalContract.g:11405:3: ( RULE_ID )
+            // InternalContract.g:11400:2: ( ( RULE_ID ) )
+            // InternalContract.g:11401:3: ( RULE_ID )
             {
              before(grammarAccess.getTerminalExpressionAccess().getReferenceNamedElementCrossReference_2_1_0()); 
-            // InternalContract.g:11406:3: ( RULE_ID )
-            // InternalContract.g:11407:4: RULE_ID
+            // InternalContract.g:11402:3: ( RULE_ID )
+            // InternalContract.g:11403:4: RULE_ID
             {
              before(grammarAccess.getTerminalExpressionAccess().getReferenceNamedElementIDTerminalRuleCall_2_1_0_1()); 
             match(input,RULE_ID,FOLLOW_2); 
@@ -34599,17 +34595,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__TerminalExpression__ElementsAssignment_3_2_1_1"
-    // InternalContract.g:11418:1: rule__TerminalExpression__ElementsAssignment_3_2_1_1 : ( ruleExpression ) ;
+    // InternalContract.g:11414:1: rule__TerminalExpression__ElementsAssignment_3_2_1_1 : ( ruleExpression ) ;
     public final void rule__TerminalExpression__ElementsAssignment_3_2_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11422:1: ( ( ruleExpression ) )
-            // InternalContract.g:11423:2: ( ruleExpression )
+            // InternalContract.g:11418:1: ( ( ruleExpression ) )
+            // InternalContract.g:11419:2: ( ruleExpression )
             {
-            // InternalContract.g:11423:2: ( ruleExpression )
-            // InternalContract.g:11424:3: ruleExpression
+            // InternalContract.g:11419:2: ( ruleExpression )
+            // InternalContract.g:11420:3: ruleExpression
             {
              before(grammarAccess.getTerminalExpressionAccess().getElementsExpressionParserRuleCall_3_2_1_1_0()); 
             pushFollow(FOLLOW_2);
@@ -34640,21 +34636,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ContractSubclause__UseQueriesAssignment_1_1"
-    // InternalContract.g:11433:1: rule__ContractSubclause__UseQueriesAssignment_1_1 : ( ( ruleQPREF ) ) ;
+    // InternalContract.g:11429:1: rule__ContractSubclause__UseQueriesAssignment_1_1 : ( ( ruleQPREF ) ) ;
     public final void rule__ContractSubclause__UseQueriesAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11437:1: ( ( ( ruleQPREF ) ) )
-            // InternalContract.g:11438:2: ( ( ruleQPREF ) )
+            // InternalContract.g:11433:1: ( ( ( ruleQPREF ) ) )
+            // InternalContract.g:11434:2: ( ( ruleQPREF ) )
             {
-            // InternalContract.g:11438:2: ( ( ruleQPREF ) )
-            // InternalContract.g:11439:3: ( ruleQPREF )
+            // InternalContract.g:11434:2: ( ( ruleQPREF ) )
+            // InternalContract.g:11435:3: ( ruleQPREF )
             {
              before(grammarAccess.getContractSubclauseAccess().getUseQueriesContractCrossReference_1_1_0()); 
-            // InternalContract.g:11440:3: ( ruleQPREF )
-            // InternalContract.g:11441:4: ruleQPREF
+            // InternalContract.g:11436:3: ( ruleQPREF )
+            // InternalContract.g:11437:4: ruleQPREF
             {
              before(grammarAccess.getContractSubclauseAccess().getUseQueriesContractQPREFParserRuleCall_1_1_0_1()); 
             pushFollow(FOLLOW_2);
@@ -34689,21 +34685,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ContractSubclause__VerifyPlansAssignment_2_1"
-    // InternalContract.g:11452:1: rule__ContractSubclause__VerifyPlansAssignment_2_1 : ( ( ruleQPREF ) ) ;
+    // InternalContract.g:11448:1: rule__ContractSubclause__VerifyPlansAssignment_2_1 : ( ( ruleQPREF ) ) ;
     public final void rule__ContractSubclause__VerifyPlansAssignment_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11456:1: ( ( ( ruleQPREF ) ) )
-            // InternalContract.g:11457:2: ( ( ruleQPREF ) )
+            // InternalContract.g:11452:1: ( ( ( ruleQPREF ) ) )
+            // InternalContract.g:11453:2: ( ( ruleQPREF ) )
             {
-            // InternalContract.g:11457:2: ( ( ruleQPREF ) )
-            // InternalContract.g:11458:3: ( ruleQPREF )
+            // InternalContract.g:11453:2: ( ( ruleQPREF ) )
+            // InternalContract.g:11454:3: ( ruleQPREF )
             {
              before(grammarAccess.getContractSubclauseAccess().getVerifyPlansVerificationPlanCrossReference_2_1_0()); 
-            // InternalContract.g:11459:3: ( ruleQPREF )
-            // InternalContract.g:11460:4: ruleQPREF
+            // InternalContract.g:11455:3: ( ruleQPREF )
+            // InternalContract.g:11456:4: ruleQPREF
             {
              before(grammarAccess.getContractSubclauseAccess().getVerifyPlansVerificationPlanQPREFParserRuleCall_2_1_0_1()); 
             pushFollow(FOLLOW_2);
@@ -34738,17 +34734,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__IString__PartsAssignment_0"
-    // InternalContract.g:11471:1: rule__IString__PartsAssignment_0 : ( ruleIStringLiteral ) ;
+    // InternalContract.g:11467:1: rule__IString__PartsAssignment_0 : ( ruleIStringLiteral ) ;
     public final void rule__IString__PartsAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11475:1: ( ( ruleIStringLiteral ) )
-            // InternalContract.g:11476:2: ( ruleIStringLiteral )
+            // InternalContract.g:11471:1: ( ( ruleIStringLiteral ) )
+            // InternalContract.g:11472:2: ( ruleIStringLiteral )
             {
-            // InternalContract.g:11476:2: ( ruleIStringLiteral )
-            // InternalContract.g:11477:3: ruleIStringLiteral
+            // InternalContract.g:11472:2: ( ruleIStringLiteral )
+            // InternalContract.g:11473:3: ruleIStringLiteral
             {
              before(grammarAccess.getIStringAccess().getPartsIStringLiteralParserRuleCall_0_0()); 
             pushFollow(FOLLOW_2);
@@ -34779,17 +34775,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__IString__PartsAssignment_1_0"
-    // InternalContract.g:11486:1: rule__IString__PartsAssignment_1_0 : ( ruleIStringLeftLiteral ) ;
+    // InternalContract.g:11482:1: rule__IString__PartsAssignment_1_0 : ( ruleIStringLeftLiteral ) ;
     public final void rule__IString__PartsAssignment_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11490:1: ( ( ruleIStringLeftLiteral ) )
-            // InternalContract.g:11491:2: ( ruleIStringLeftLiteral )
+            // InternalContract.g:11486:1: ( ( ruleIStringLeftLiteral ) )
+            // InternalContract.g:11487:2: ( ruleIStringLeftLiteral )
             {
-            // InternalContract.g:11491:2: ( ruleIStringLeftLiteral )
-            // InternalContract.g:11492:3: ruleIStringLeftLiteral
+            // InternalContract.g:11487:2: ( ruleIStringLeftLiteral )
+            // InternalContract.g:11488:3: ruleIStringLeftLiteral
             {
              before(grammarAccess.getIStringAccess().getPartsIStringLeftLiteralParserRuleCall_1_0_0()); 
             pushFollow(FOLLOW_2);
@@ -34820,17 +34816,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__IString__PartsAssignment_1_1"
-    // InternalContract.g:11501:1: rule__IString__PartsAssignment_1_1 : ( ruleIStringInter ) ;
+    // InternalContract.g:11497:1: rule__IString__PartsAssignment_1_1 : ( ruleIStringInter ) ;
     public final void rule__IString__PartsAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11505:1: ( ( ruleIStringInter ) )
-            // InternalContract.g:11506:2: ( ruleIStringInter )
+            // InternalContract.g:11501:1: ( ( ruleIStringInter ) )
+            // InternalContract.g:11502:2: ( ruleIStringInter )
             {
-            // InternalContract.g:11506:2: ( ruleIStringInter )
-            // InternalContract.g:11507:3: ruleIStringInter
+            // InternalContract.g:11502:2: ( ruleIStringInter )
+            // InternalContract.g:11503:3: ruleIStringInter
             {
              before(grammarAccess.getIStringAccess().getPartsIStringInterParserRuleCall_1_1_0()); 
             pushFollow(FOLLOW_2);
@@ -34861,17 +34857,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__IString__PartsAssignment_1_2_0"
-    // InternalContract.g:11516:1: rule__IString__PartsAssignment_1_2_0 : ( ruleIStringMiddleLiteral ) ;
+    // InternalContract.g:11512:1: rule__IString__PartsAssignment_1_2_0 : ( ruleIStringMiddleLiteral ) ;
     public final void rule__IString__PartsAssignment_1_2_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11520:1: ( ( ruleIStringMiddleLiteral ) )
-            // InternalContract.g:11521:2: ( ruleIStringMiddleLiteral )
+            // InternalContract.g:11516:1: ( ( ruleIStringMiddleLiteral ) )
+            // InternalContract.g:11517:2: ( ruleIStringMiddleLiteral )
             {
-            // InternalContract.g:11521:2: ( ruleIStringMiddleLiteral )
-            // InternalContract.g:11522:3: ruleIStringMiddleLiteral
+            // InternalContract.g:11517:2: ( ruleIStringMiddleLiteral )
+            // InternalContract.g:11518:3: ruleIStringMiddleLiteral
             {
              before(grammarAccess.getIStringAccess().getPartsIStringMiddleLiteralParserRuleCall_1_2_0_0()); 
             pushFollow(FOLLOW_2);
@@ -34902,17 +34898,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__IString__PartsAssignment_1_2_1"
-    // InternalContract.g:11531:1: rule__IString__PartsAssignment_1_2_1 : ( ruleIStringInter ) ;
+    // InternalContract.g:11527:1: rule__IString__PartsAssignment_1_2_1 : ( ruleIStringInter ) ;
     public final void rule__IString__PartsAssignment_1_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11535:1: ( ( ruleIStringInter ) )
-            // InternalContract.g:11536:2: ( ruleIStringInter )
+            // InternalContract.g:11531:1: ( ( ruleIStringInter ) )
+            // InternalContract.g:11532:2: ( ruleIStringInter )
             {
-            // InternalContract.g:11536:2: ( ruleIStringInter )
-            // InternalContract.g:11537:3: ruleIStringInter
+            // InternalContract.g:11532:2: ( ruleIStringInter )
+            // InternalContract.g:11533:3: ruleIStringInter
             {
              before(grammarAccess.getIStringAccess().getPartsIStringInterParserRuleCall_1_2_1_0()); 
             pushFollow(FOLLOW_2);
@@ -34943,17 +34939,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__IString__PartsAssignment_1_3"
-    // InternalContract.g:11546:1: rule__IString__PartsAssignment_1_3 : ( ruleIStringRightLiteral ) ;
+    // InternalContract.g:11542:1: rule__IString__PartsAssignment_1_3 : ( ruleIStringRightLiteral ) ;
     public final void rule__IString__PartsAssignment_1_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11550:1: ( ( ruleIStringRightLiteral ) )
-            // InternalContract.g:11551:2: ( ruleIStringRightLiteral )
+            // InternalContract.g:11546:1: ( ( ruleIStringRightLiteral ) )
+            // InternalContract.g:11547:2: ( ruleIStringRightLiteral )
             {
-            // InternalContract.g:11551:2: ( ruleIStringRightLiteral )
-            // InternalContract.g:11552:3: ruleIStringRightLiteral
+            // InternalContract.g:11547:2: ( ruleIStringRightLiteral )
+            // InternalContract.g:11548:3: ruleIStringRightLiteral
             {
              before(grammarAccess.getIStringAccess().getPartsIStringRightLiteralParserRuleCall_1_3_0()); 
             pushFollow(FOLLOW_2);
@@ -34984,17 +34980,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__IStringLiteral__ValueAssignment"
-    // InternalContract.g:11561:1: rule__IStringLiteral__ValueAssignment : ( RULE_ISTRING_TEXT ) ;
+    // InternalContract.g:11557:1: rule__IStringLiteral__ValueAssignment : ( RULE_ISTRING_TEXT ) ;
     public final void rule__IStringLiteral__ValueAssignment() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11565:1: ( ( RULE_ISTRING_TEXT ) )
-            // InternalContract.g:11566:2: ( RULE_ISTRING_TEXT )
+            // InternalContract.g:11561:1: ( ( RULE_ISTRING_TEXT ) )
+            // InternalContract.g:11562:2: ( RULE_ISTRING_TEXT )
             {
-            // InternalContract.g:11566:2: ( RULE_ISTRING_TEXT )
-            // InternalContract.g:11567:3: RULE_ISTRING_TEXT
+            // InternalContract.g:11562:2: ( RULE_ISTRING_TEXT )
+            // InternalContract.g:11563:3: RULE_ISTRING_TEXT
             {
              before(grammarAccess.getIStringLiteralAccess().getValueISTRING_TEXTTerminalRuleCall_0()); 
             match(input,RULE_ISTRING_TEXT,FOLLOW_2); 
@@ -35021,17 +35017,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__IStringLeftLiteral__ValueAssignment"
-    // InternalContract.g:11576:1: rule__IStringLeftLiteral__ValueAssignment : ( RULE_ISTRING_LEFT ) ;
+    // InternalContract.g:11572:1: rule__IStringLeftLiteral__ValueAssignment : ( RULE_ISTRING_LEFT ) ;
     public final void rule__IStringLeftLiteral__ValueAssignment() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11580:1: ( ( RULE_ISTRING_LEFT ) )
-            // InternalContract.g:11581:2: ( RULE_ISTRING_LEFT )
+            // InternalContract.g:11576:1: ( ( RULE_ISTRING_LEFT ) )
+            // InternalContract.g:11577:2: ( RULE_ISTRING_LEFT )
             {
-            // InternalContract.g:11581:2: ( RULE_ISTRING_LEFT )
-            // InternalContract.g:11582:3: RULE_ISTRING_LEFT
+            // InternalContract.g:11577:2: ( RULE_ISTRING_LEFT )
+            // InternalContract.g:11578:3: RULE_ISTRING_LEFT
             {
              before(grammarAccess.getIStringLeftLiteralAccess().getValueISTRING_LEFTTerminalRuleCall_0()); 
             match(input,RULE_ISTRING_LEFT,FOLLOW_2); 
@@ -35058,17 +35054,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__IStringMiddleLiteral__ValueAssignment"
-    // InternalContract.g:11591:1: rule__IStringMiddleLiteral__ValueAssignment : ( RULE_ISTRING_MIDDLE ) ;
+    // InternalContract.g:11587:1: rule__IStringMiddleLiteral__ValueAssignment : ( RULE_ISTRING_MIDDLE ) ;
     public final void rule__IStringMiddleLiteral__ValueAssignment() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11595:1: ( ( RULE_ISTRING_MIDDLE ) )
-            // InternalContract.g:11596:2: ( RULE_ISTRING_MIDDLE )
+            // InternalContract.g:11591:1: ( ( RULE_ISTRING_MIDDLE ) )
+            // InternalContract.g:11592:2: ( RULE_ISTRING_MIDDLE )
             {
-            // InternalContract.g:11596:2: ( RULE_ISTRING_MIDDLE )
-            // InternalContract.g:11597:3: RULE_ISTRING_MIDDLE
+            // InternalContract.g:11592:2: ( RULE_ISTRING_MIDDLE )
+            // InternalContract.g:11593:3: RULE_ISTRING_MIDDLE
             {
              before(grammarAccess.getIStringMiddleLiteralAccess().getValueISTRING_MIDDLETerminalRuleCall_0()); 
             match(input,RULE_ISTRING_MIDDLE,FOLLOW_2); 
@@ -35095,17 +35091,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__IStringRightLiteral__ValueAssignment"
-    // InternalContract.g:11606:1: rule__IStringRightLiteral__ValueAssignment : ( RULE_ISTRING_RIGHT ) ;
+    // InternalContract.g:11602:1: rule__IStringRightLiteral__ValueAssignment : ( RULE_ISTRING_RIGHT ) ;
     public final void rule__IStringRightLiteral__ValueAssignment() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11610:1: ( ( RULE_ISTRING_RIGHT ) )
-            // InternalContract.g:11611:2: ( RULE_ISTRING_RIGHT )
+            // InternalContract.g:11606:1: ( ( RULE_ISTRING_RIGHT ) )
+            // InternalContract.g:11607:2: ( RULE_ISTRING_RIGHT )
             {
-            // InternalContract.g:11611:2: ( RULE_ISTRING_RIGHT )
-            // InternalContract.g:11612:3: RULE_ISTRING_RIGHT
+            // InternalContract.g:11607:2: ( RULE_ISTRING_RIGHT )
+            // InternalContract.g:11608:3: RULE_ISTRING_RIGHT
             {
              before(grammarAccess.getIStringRightLiteralAccess().getValueISTRING_RIGHTTerminalRuleCall_0()); 
             match(input,RULE_ISTRING_RIGHT,FOLLOW_2); 
@@ -35132,21 +35128,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__IStringInter__DirectAssignment_0"
-    // InternalContract.g:11621:1: rule__IStringInter__DirectAssignment_0 : ( ( ':' ) ) ;
+    // InternalContract.g:11617:1: rule__IStringInter__DirectAssignment_0 : ( ( ':' ) ) ;
     public final void rule__IStringInter__DirectAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11625:1: ( ( ( ':' ) ) )
-            // InternalContract.g:11626:2: ( ( ':' ) )
+            // InternalContract.g:11621:1: ( ( ( ':' ) ) )
+            // InternalContract.g:11622:2: ( ( ':' ) )
             {
-            // InternalContract.g:11626:2: ( ( ':' ) )
-            // InternalContract.g:11627:3: ( ':' )
+            // InternalContract.g:11622:2: ( ( ':' ) )
+            // InternalContract.g:11623:3: ( ':' )
             {
              before(grammarAccess.getIStringInterAccess().getDirectColonKeyword_0_0()); 
-            // InternalContract.g:11628:3: ( ':' )
-            // InternalContract.g:11629:4: ':'
+            // InternalContract.g:11624:3: ( ':' )
+            // InternalContract.g:11625:4: ':'
             {
              before(grammarAccess.getIStringInterAccess().getDirectColonKeyword_0_0()); 
             match(input,50,FOLLOW_2); 
@@ -35177,21 +35173,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__IStringInter__DomainAssignment_1_0"
-    // InternalContract.g:11640:1: rule__IStringInter__DomainAssignment_1_0 : ( ( RULE_ID ) ) ;
+    // InternalContract.g:11636:1: rule__IStringInter__DomainAssignment_1_0 : ( ( RULE_ID ) ) ;
     public final void rule__IStringInter__DomainAssignment_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11644:1: ( ( ( RULE_ID ) ) )
-            // InternalContract.g:11645:2: ( ( RULE_ID ) )
+            // InternalContract.g:11640:1: ( ( ( RULE_ID ) ) )
+            // InternalContract.g:11641:2: ( ( RULE_ID ) )
             {
-            // InternalContract.g:11645:2: ( ( RULE_ID ) )
-            // InternalContract.g:11646:3: ( RULE_ID )
+            // InternalContract.g:11641:2: ( ( RULE_ID ) )
+            // InternalContract.g:11642:3: ( RULE_ID )
             {
              before(grammarAccess.getIStringInterAccess().getDomainDomainCrossReference_1_0_0()); 
-            // InternalContract.g:11647:3: ( RULE_ID )
-            // InternalContract.g:11648:4: RULE_ID
+            // InternalContract.g:11643:3: ( RULE_ID )
+            // InternalContract.g:11644:4: RULE_ID
             {
              before(grammarAccess.getIStringInterAccess().getDomainDomainIDTerminalRuleCall_1_0_0_1()); 
             match(input,RULE_ID,FOLLOW_2); 
@@ -35222,21 +35218,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__IStringInter__QueryAssignment_2"
-    // InternalContract.g:11659:1: rule__IStringInter__QueryAssignment_2 : ( ( RULE_ID ) ) ;
+    // InternalContract.g:11655:1: rule__IStringInter__QueryAssignment_2 : ( ( RULE_ID ) ) ;
     public final void rule__IStringInter__QueryAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11663:1: ( ( ( RULE_ID ) ) )
-            // InternalContract.g:11664:2: ( ( RULE_ID ) )
+            // InternalContract.g:11659:1: ( ( ( RULE_ID ) ) )
+            // InternalContract.g:11660:2: ( ( RULE_ID ) )
             {
-            // InternalContract.g:11664:2: ( ( RULE_ID ) )
-            // InternalContract.g:11665:3: ( RULE_ID )
+            // InternalContract.g:11660:2: ( ( RULE_ID ) )
+            // InternalContract.g:11661:3: ( RULE_ID )
             {
              before(grammarAccess.getIStringInterAccess().getQuerySingleValDeclarationCrossReference_2_0()); 
-            // InternalContract.g:11666:3: ( RULE_ID )
-            // InternalContract.g:11667:4: RULE_ID
+            // InternalContract.g:11662:3: ( RULE_ID )
+            // InternalContract.g:11663:4: RULE_ID
             {
              before(grammarAccess.getIStringInterAccess().getQuerySingleValDeclarationIDTerminalRuleCall_2_0_1()); 
             match(input,RULE_ID,FOLLOW_2); 
@@ -35267,21 +35263,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ContainedPropertyAssociation__PropertyAssignment_0"
-    // InternalContract.g:11678:1: rule__ContainedPropertyAssociation__PropertyAssignment_0 : ( ( ruleQPREF ) ) ;
+    // InternalContract.g:11674:1: rule__ContainedPropertyAssociation__PropertyAssignment_0 : ( ( ruleQPREF ) ) ;
     public final void rule__ContainedPropertyAssociation__PropertyAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11682:1: ( ( ( ruleQPREF ) ) )
-            // InternalContract.g:11683:2: ( ( ruleQPREF ) )
+            // InternalContract.g:11678:1: ( ( ( ruleQPREF ) ) )
+            // InternalContract.g:11679:2: ( ( ruleQPREF ) )
             {
-            // InternalContract.g:11683:2: ( ( ruleQPREF ) )
-            // InternalContract.g:11684:3: ( ruleQPREF )
+            // InternalContract.g:11679:2: ( ( ruleQPREF ) )
+            // InternalContract.g:11680:3: ( ruleQPREF )
             {
              before(grammarAccess.getContainedPropertyAssociationAccess().getPropertyPropertyCrossReference_0_0()); 
-            // InternalContract.g:11685:3: ( ruleQPREF )
-            // InternalContract.g:11686:4: ruleQPREF
+            // InternalContract.g:11681:3: ( ruleQPREF )
+            // InternalContract.g:11682:4: ruleQPREF
             {
              before(grammarAccess.getContainedPropertyAssociationAccess().getPropertyPropertyQPREFParserRuleCall_0_0_1()); 
             pushFollow(FOLLOW_2);
@@ -35316,21 +35312,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ContainedPropertyAssociation__AppendAssignment_1_1"
-    // InternalContract.g:11697:1: rule__ContainedPropertyAssociation__AppendAssignment_1_1 : ( ( '+=>' ) ) ;
+    // InternalContract.g:11693:1: rule__ContainedPropertyAssociation__AppendAssignment_1_1 : ( ( '+=>' ) ) ;
     public final void rule__ContainedPropertyAssociation__AppendAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11701:1: ( ( ( '+=>' ) ) )
-            // InternalContract.g:11702:2: ( ( '+=>' ) )
+            // InternalContract.g:11697:1: ( ( ( '+=>' ) ) )
+            // InternalContract.g:11698:2: ( ( '+=>' ) )
             {
-            // InternalContract.g:11702:2: ( ( '+=>' ) )
-            // InternalContract.g:11703:3: ( '+=>' )
+            // InternalContract.g:11698:2: ( ( '+=>' ) )
+            // InternalContract.g:11699:3: ( '+=>' )
             {
              before(grammarAccess.getContainedPropertyAssociationAccess().getAppendPlusSignEqualsSignGreaterThanSignKeyword_1_1_0()); 
-            // InternalContract.g:11704:3: ( '+=>' )
-            // InternalContract.g:11705:4: '+=>'
+            // InternalContract.g:11700:3: ( '+=>' )
+            // InternalContract.g:11701:4: '+=>'
             {
              before(grammarAccess.getContainedPropertyAssociationAccess().getAppendPlusSignEqualsSignGreaterThanSignKeyword_1_1_0()); 
             match(input,80,FOLLOW_2); 
@@ -35361,21 +35357,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ContainedPropertyAssociation__ConstantAssignment_2"
-    // InternalContract.g:11716:1: rule__ContainedPropertyAssociation__ConstantAssignment_2 : ( ( 'constant' ) ) ;
+    // InternalContract.g:11712:1: rule__ContainedPropertyAssociation__ConstantAssignment_2 : ( ( 'constant' ) ) ;
     public final void rule__ContainedPropertyAssociation__ConstantAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11720:1: ( ( ( 'constant' ) ) )
-            // InternalContract.g:11721:2: ( ( 'constant' ) )
+            // InternalContract.g:11716:1: ( ( ( 'constant' ) ) )
+            // InternalContract.g:11717:2: ( ( 'constant' ) )
             {
-            // InternalContract.g:11721:2: ( ( 'constant' ) )
-            // InternalContract.g:11722:3: ( 'constant' )
+            // InternalContract.g:11717:2: ( ( 'constant' ) )
+            // InternalContract.g:11718:3: ( 'constant' )
             {
              before(grammarAccess.getContainedPropertyAssociationAccess().getConstantConstantKeyword_2_0()); 
-            // InternalContract.g:11723:3: ( 'constant' )
-            // InternalContract.g:11724:4: 'constant'
+            // InternalContract.g:11719:3: ( 'constant' )
+            // InternalContract.g:11720:4: 'constant'
             {
              before(grammarAccess.getContainedPropertyAssociationAccess().getConstantConstantKeyword_2_0()); 
             match(input,81,FOLLOW_2); 
@@ -35406,17 +35402,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ContainedPropertyAssociation__OwnedValueAssignment_3_0"
-    // InternalContract.g:11735:1: rule__ContainedPropertyAssociation__OwnedValueAssignment_3_0 : ( ruleOptionalModalPropertyValue ) ;
+    // InternalContract.g:11731:1: rule__ContainedPropertyAssociation__OwnedValueAssignment_3_0 : ( ruleOptionalModalPropertyValue ) ;
     public final void rule__ContainedPropertyAssociation__OwnedValueAssignment_3_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11739:1: ( ( ruleOptionalModalPropertyValue ) )
-            // InternalContract.g:11740:2: ( ruleOptionalModalPropertyValue )
+            // InternalContract.g:11735:1: ( ( ruleOptionalModalPropertyValue ) )
+            // InternalContract.g:11736:2: ( ruleOptionalModalPropertyValue )
             {
-            // InternalContract.g:11740:2: ( ruleOptionalModalPropertyValue )
-            // InternalContract.g:11741:3: ruleOptionalModalPropertyValue
+            // InternalContract.g:11736:2: ( ruleOptionalModalPropertyValue )
+            // InternalContract.g:11737:3: ruleOptionalModalPropertyValue
             {
              before(grammarAccess.getContainedPropertyAssociationAccess().getOwnedValueOptionalModalPropertyValueParserRuleCall_3_0_0()); 
             pushFollow(FOLLOW_2);
@@ -35447,17 +35443,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ContainedPropertyAssociation__OwnedValueAssignment_3_1_1"
-    // InternalContract.g:11750:1: rule__ContainedPropertyAssociation__OwnedValueAssignment_3_1_1 : ( ruleOptionalModalPropertyValue ) ;
+    // InternalContract.g:11746:1: rule__ContainedPropertyAssociation__OwnedValueAssignment_3_1_1 : ( ruleOptionalModalPropertyValue ) ;
     public final void rule__ContainedPropertyAssociation__OwnedValueAssignment_3_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11754:1: ( ( ruleOptionalModalPropertyValue ) )
-            // InternalContract.g:11755:2: ( ruleOptionalModalPropertyValue )
+            // InternalContract.g:11750:1: ( ( ruleOptionalModalPropertyValue ) )
+            // InternalContract.g:11751:2: ( ruleOptionalModalPropertyValue )
             {
-            // InternalContract.g:11755:2: ( ruleOptionalModalPropertyValue )
-            // InternalContract.g:11756:3: ruleOptionalModalPropertyValue
+            // InternalContract.g:11751:2: ( ruleOptionalModalPropertyValue )
+            // InternalContract.g:11752:3: ruleOptionalModalPropertyValue
             {
              before(grammarAccess.getContainedPropertyAssociationAccess().getOwnedValueOptionalModalPropertyValueParserRuleCall_3_1_1_0()); 
             pushFollow(FOLLOW_2);
@@ -35488,17 +35484,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ContainedPropertyAssociation__AppliesToAssignment_4_1"
-    // InternalContract.g:11765:1: rule__ContainedPropertyAssociation__AppliesToAssignment_4_1 : ( ruleContainmentPath ) ;
+    // InternalContract.g:11761:1: rule__ContainedPropertyAssociation__AppliesToAssignment_4_1 : ( ruleContainmentPath ) ;
     public final void rule__ContainedPropertyAssociation__AppliesToAssignment_4_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11769:1: ( ( ruleContainmentPath ) )
-            // InternalContract.g:11770:2: ( ruleContainmentPath )
+            // InternalContract.g:11765:1: ( ( ruleContainmentPath ) )
+            // InternalContract.g:11766:2: ( ruleContainmentPath )
             {
-            // InternalContract.g:11770:2: ( ruleContainmentPath )
-            // InternalContract.g:11771:3: ruleContainmentPath
+            // InternalContract.g:11766:2: ( ruleContainmentPath )
+            // InternalContract.g:11767:3: ruleContainmentPath
             {
              before(grammarAccess.getContainedPropertyAssociationAccess().getAppliesToContainmentPathParserRuleCall_4_1_0()); 
             pushFollow(FOLLOW_2);
@@ -35529,17 +35525,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ContainedPropertyAssociation__AppliesToAssignment_4_2_1"
-    // InternalContract.g:11780:1: rule__ContainedPropertyAssociation__AppliesToAssignment_4_2_1 : ( ruleContainmentPath ) ;
+    // InternalContract.g:11776:1: rule__ContainedPropertyAssociation__AppliesToAssignment_4_2_1 : ( ruleContainmentPath ) ;
     public final void rule__ContainedPropertyAssociation__AppliesToAssignment_4_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11784:1: ( ( ruleContainmentPath ) )
-            // InternalContract.g:11785:2: ( ruleContainmentPath )
+            // InternalContract.g:11780:1: ( ( ruleContainmentPath ) )
+            // InternalContract.g:11781:2: ( ruleContainmentPath )
             {
-            // InternalContract.g:11785:2: ( ruleContainmentPath )
-            // InternalContract.g:11786:3: ruleContainmentPath
+            // InternalContract.g:11781:2: ( ruleContainmentPath )
+            // InternalContract.g:11782:3: ruleContainmentPath
             {
              before(grammarAccess.getContainedPropertyAssociationAccess().getAppliesToContainmentPathParserRuleCall_4_2_1_0()); 
             pushFollow(FOLLOW_2);
@@ -35570,21 +35566,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ContainedPropertyAssociation__InBindingAssignment_5_2"
-    // InternalContract.g:11795:1: rule__ContainedPropertyAssociation__InBindingAssignment_5_2 : ( ( ruleQCREF ) ) ;
+    // InternalContract.g:11791:1: rule__ContainedPropertyAssociation__InBindingAssignment_5_2 : ( ( ruleQCREF ) ) ;
     public final void rule__ContainedPropertyAssociation__InBindingAssignment_5_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11799:1: ( ( ( ruleQCREF ) ) )
-            // InternalContract.g:11800:2: ( ( ruleQCREF ) )
+            // InternalContract.g:11795:1: ( ( ( ruleQCREF ) ) )
+            // InternalContract.g:11796:2: ( ( ruleQCREF ) )
             {
-            // InternalContract.g:11800:2: ( ( ruleQCREF ) )
-            // InternalContract.g:11801:3: ( ruleQCREF )
+            // InternalContract.g:11796:2: ( ( ruleQCREF ) )
+            // InternalContract.g:11797:3: ( ruleQCREF )
             {
              before(grammarAccess.getContainedPropertyAssociationAccess().getInBindingClassifierCrossReference_5_2_0()); 
-            // InternalContract.g:11802:3: ( ruleQCREF )
-            // InternalContract.g:11803:4: ruleQCREF
+            // InternalContract.g:11798:3: ( ruleQCREF )
+            // InternalContract.g:11799:4: ruleQCREF
             {
              before(grammarAccess.getContainedPropertyAssociationAccess().getInBindingClassifierQCREFParserRuleCall_5_2_0_1()); 
             pushFollow(FOLLOW_2);
@@ -35619,17 +35615,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ContainmentPath__PathAssignment"
-    // InternalContract.g:11814:1: rule__ContainmentPath__PathAssignment : ( ruleContainmentPathElement ) ;
+    // InternalContract.g:11810:1: rule__ContainmentPath__PathAssignment : ( ruleContainmentPathElement ) ;
     public final void rule__ContainmentPath__PathAssignment() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11818:1: ( ( ruleContainmentPathElement ) )
-            // InternalContract.g:11819:2: ( ruleContainmentPathElement )
+            // InternalContract.g:11814:1: ( ( ruleContainmentPathElement ) )
+            // InternalContract.g:11815:2: ( ruleContainmentPathElement )
             {
-            // InternalContract.g:11819:2: ( ruleContainmentPathElement )
-            // InternalContract.g:11820:3: ruleContainmentPathElement
+            // InternalContract.g:11815:2: ( ruleContainmentPathElement )
+            // InternalContract.g:11816:3: ruleContainmentPathElement
             {
              before(grammarAccess.getContainmentPathAccess().getPathContainmentPathElementParserRuleCall_0()); 
             pushFollow(FOLLOW_2);
@@ -35660,17 +35656,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__OptionalModalPropertyValue__OwnedValueAssignment_0"
-    // InternalContract.g:11829:1: rule__OptionalModalPropertyValue__OwnedValueAssignment_0 : ( rulePropertyExpression ) ;
+    // InternalContract.g:11825:1: rule__OptionalModalPropertyValue__OwnedValueAssignment_0 : ( rulePropertyExpression ) ;
     public final void rule__OptionalModalPropertyValue__OwnedValueAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11833:1: ( ( rulePropertyExpression ) )
-            // InternalContract.g:11834:2: ( rulePropertyExpression )
+            // InternalContract.g:11829:1: ( ( rulePropertyExpression ) )
+            // InternalContract.g:11830:2: ( rulePropertyExpression )
             {
-            // InternalContract.g:11834:2: ( rulePropertyExpression )
-            // InternalContract.g:11835:3: rulePropertyExpression
+            // InternalContract.g:11830:2: ( rulePropertyExpression )
+            // InternalContract.g:11831:3: rulePropertyExpression
             {
              before(grammarAccess.getOptionalModalPropertyValueAccess().getOwnedValuePropertyExpressionParserRuleCall_0_0()); 
             pushFollow(FOLLOW_2);
@@ -35701,21 +35697,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__OptionalModalPropertyValue__InModeAssignment_1_2"
-    // InternalContract.g:11844:1: rule__OptionalModalPropertyValue__InModeAssignment_1_2 : ( ( RULE_ID ) ) ;
+    // InternalContract.g:11840:1: rule__OptionalModalPropertyValue__InModeAssignment_1_2 : ( ( RULE_ID ) ) ;
     public final void rule__OptionalModalPropertyValue__InModeAssignment_1_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11848:1: ( ( ( RULE_ID ) ) )
-            // InternalContract.g:11849:2: ( ( RULE_ID ) )
+            // InternalContract.g:11844:1: ( ( ( RULE_ID ) ) )
+            // InternalContract.g:11845:2: ( ( RULE_ID ) )
             {
-            // InternalContract.g:11849:2: ( ( RULE_ID ) )
-            // InternalContract.g:11850:3: ( RULE_ID )
+            // InternalContract.g:11845:2: ( ( RULE_ID ) )
+            // InternalContract.g:11846:3: ( RULE_ID )
             {
              before(grammarAccess.getOptionalModalPropertyValueAccess().getInModeModeCrossReference_1_2_0()); 
-            // InternalContract.g:11851:3: ( RULE_ID )
-            // InternalContract.g:11852:4: RULE_ID
+            // InternalContract.g:11847:3: ( RULE_ID )
+            // InternalContract.g:11848:4: RULE_ID
             {
              before(grammarAccess.getOptionalModalPropertyValueAccess().getInModeModeIDTerminalRuleCall_1_2_0_1()); 
             match(input,RULE_ID,FOLLOW_2); 
@@ -35746,21 +35742,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__OptionalModalPropertyValue__InModeAssignment_1_3_1"
-    // InternalContract.g:11863:1: rule__OptionalModalPropertyValue__InModeAssignment_1_3_1 : ( ( RULE_ID ) ) ;
+    // InternalContract.g:11859:1: rule__OptionalModalPropertyValue__InModeAssignment_1_3_1 : ( ( RULE_ID ) ) ;
     public final void rule__OptionalModalPropertyValue__InModeAssignment_1_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11867:1: ( ( ( RULE_ID ) ) )
-            // InternalContract.g:11868:2: ( ( RULE_ID ) )
+            // InternalContract.g:11863:1: ( ( ( RULE_ID ) ) )
+            // InternalContract.g:11864:2: ( ( RULE_ID ) )
             {
-            // InternalContract.g:11868:2: ( ( RULE_ID ) )
-            // InternalContract.g:11869:3: ( RULE_ID )
+            // InternalContract.g:11864:2: ( ( RULE_ID ) )
+            // InternalContract.g:11865:3: ( RULE_ID )
             {
              before(grammarAccess.getOptionalModalPropertyValueAccess().getInModeModeCrossReference_1_3_1_0()); 
-            // InternalContract.g:11870:3: ( RULE_ID )
-            // InternalContract.g:11871:4: RULE_ID
+            // InternalContract.g:11866:3: ( RULE_ID )
+            // InternalContract.g:11867:4: RULE_ID
             {
              before(grammarAccess.getOptionalModalPropertyValueAccess().getInModeModeIDTerminalRuleCall_1_3_1_0_1()); 
             match(input,RULE_ID,FOLLOW_2); 
@@ -35791,17 +35787,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__PropertyValue__OwnedValueAssignment"
-    // InternalContract.g:11882:1: rule__PropertyValue__OwnedValueAssignment : ( rulePropertyExpression ) ;
+    // InternalContract.g:11878:1: rule__PropertyValue__OwnedValueAssignment : ( rulePropertyExpression ) ;
     public final void rule__PropertyValue__OwnedValueAssignment() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11886:1: ( ( rulePropertyExpression ) )
-            // InternalContract.g:11887:2: ( rulePropertyExpression )
+            // InternalContract.g:11882:1: ( ( rulePropertyExpression ) )
+            // InternalContract.g:11883:2: ( rulePropertyExpression )
             {
-            // InternalContract.g:11887:2: ( rulePropertyExpression )
-            // InternalContract.g:11888:3: rulePropertyExpression
+            // InternalContract.g:11883:2: ( rulePropertyExpression )
+            // InternalContract.g:11884:3: rulePropertyExpression
             {
              before(grammarAccess.getPropertyValueAccess().getOwnedValuePropertyExpressionParserRuleCall_0()); 
             pushFollow(FOLLOW_2);
@@ -35832,21 +35828,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__LiteralorReferenceTerm__NamedValueAssignment"
-    // InternalContract.g:11897:1: rule__LiteralorReferenceTerm__NamedValueAssignment : ( ( ruleQPREF ) ) ;
+    // InternalContract.g:11893:1: rule__LiteralorReferenceTerm__NamedValueAssignment : ( ( ruleQPREF ) ) ;
     public final void rule__LiteralorReferenceTerm__NamedValueAssignment() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11901:1: ( ( ( ruleQPREF ) ) )
-            // InternalContract.g:11902:2: ( ( ruleQPREF ) )
+            // InternalContract.g:11897:1: ( ( ( ruleQPREF ) ) )
+            // InternalContract.g:11898:2: ( ( ruleQPREF ) )
             {
-            // InternalContract.g:11902:2: ( ( ruleQPREF ) )
-            // InternalContract.g:11903:3: ( ruleQPREF )
+            // InternalContract.g:11898:2: ( ( ruleQPREF ) )
+            // InternalContract.g:11899:3: ( ruleQPREF )
             {
              before(grammarAccess.getLiteralorReferenceTermAccess().getNamedValueAbstractNamedValueCrossReference_0()); 
-            // InternalContract.g:11904:3: ( ruleQPREF )
-            // InternalContract.g:11905:4: ruleQPREF
+            // InternalContract.g:11900:3: ( ruleQPREF )
+            // InternalContract.g:11901:4: ruleQPREF
             {
              before(grammarAccess.getLiteralorReferenceTermAccess().getNamedValueAbstractNamedValueQPREFParserRuleCall_0_1()); 
             pushFollow(FOLLOW_2);
@@ -35881,21 +35877,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__BooleanLiteral__ValueAssignment_1_0"
-    // InternalContract.g:11916:1: rule__BooleanLiteral__ValueAssignment_1_0 : ( ( 'true' ) ) ;
+    // InternalContract.g:11912:1: rule__BooleanLiteral__ValueAssignment_1_0 : ( ( 'true' ) ) ;
     public final void rule__BooleanLiteral__ValueAssignment_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11920:1: ( ( ( 'true' ) ) )
-            // InternalContract.g:11921:2: ( ( 'true' ) )
+            // InternalContract.g:11916:1: ( ( ( 'true' ) ) )
+            // InternalContract.g:11917:2: ( ( 'true' ) )
             {
-            // InternalContract.g:11921:2: ( ( 'true' ) )
-            // InternalContract.g:11922:3: ( 'true' )
+            // InternalContract.g:11917:2: ( ( 'true' ) )
+            // InternalContract.g:11918:3: ( 'true' )
             {
              before(grammarAccess.getBooleanLiteralAccess().getValueTrueKeyword_1_0_0()); 
-            // InternalContract.g:11923:3: ( 'true' )
-            // InternalContract.g:11924:4: 'true'
+            // InternalContract.g:11919:3: ( 'true' )
+            // InternalContract.g:11920:4: 'true'
             {
              before(grammarAccess.getBooleanLiteralAccess().getValueTrueKeyword_1_0_0()); 
             match(input,82,FOLLOW_2); 
@@ -35926,21 +35922,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ConstantValue__NamedValueAssignment"
-    // InternalContract.g:11935:1: rule__ConstantValue__NamedValueAssignment : ( ( ruleQPREF ) ) ;
+    // InternalContract.g:11931:1: rule__ConstantValue__NamedValueAssignment : ( ( ruleQPREF ) ) ;
     public final void rule__ConstantValue__NamedValueAssignment() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11939:1: ( ( ( ruleQPREF ) ) )
-            // InternalContract.g:11940:2: ( ( ruleQPREF ) )
+            // InternalContract.g:11935:1: ( ( ( ruleQPREF ) ) )
+            // InternalContract.g:11936:2: ( ( ruleQPREF ) )
             {
-            // InternalContract.g:11940:2: ( ( ruleQPREF ) )
-            // InternalContract.g:11941:3: ( ruleQPREF )
+            // InternalContract.g:11936:2: ( ( ruleQPREF ) )
+            // InternalContract.g:11937:3: ( ruleQPREF )
             {
              before(grammarAccess.getConstantValueAccess().getNamedValuePropertyConstantCrossReference_0()); 
-            // InternalContract.g:11942:3: ( ruleQPREF )
-            // InternalContract.g:11943:4: ruleQPREF
+            // InternalContract.g:11938:3: ( ruleQPREF )
+            // InternalContract.g:11939:4: ruleQPREF
             {
              before(grammarAccess.getConstantValueAccess().getNamedValuePropertyConstantQPREFParserRuleCall_0_1()); 
             pushFollow(FOLLOW_2);
@@ -35975,17 +35971,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ReferenceTerm__PathAssignment_2"
-    // InternalContract.g:11954:1: rule__ReferenceTerm__PathAssignment_2 : ( ruleContainmentPathElement ) ;
+    // InternalContract.g:11950:1: rule__ReferenceTerm__PathAssignment_2 : ( ruleContainmentPathElement ) ;
     public final void rule__ReferenceTerm__PathAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11958:1: ( ( ruleContainmentPathElement ) )
-            // InternalContract.g:11959:2: ( ruleContainmentPathElement )
+            // InternalContract.g:11954:1: ( ( ruleContainmentPathElement ) )
+            // InternalContract.g:11955:2: ( ruleContainmentPathElement )
             {
-            // InternalContract.g:11959:2: ( ruleContainmentPathElement )
-            // InternalContract.g:11960:3: ruleContainmentPathElement
+            // InternalContract.g:11955:2: ( ruleContainmentPathElement )
+            // InternalContract.g:11956:3: ruleContainmentPathElement
             {
              before(grammarAccess.getReferenceTermAccess().getPathContainmentPathElementParserRuleCall_2_0()); 
             pushFollow(FOLLOW_2);
@@ -36016,17 +36012,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__RecordTerm__OwnedFieldValueAssignment_1"
-    // InternalContract.g:11969:1: rule__RecordTerm__OwnedFieldValueAssignment_1 : ( ruleFieldPropertyAssociation ) ;
+    // InternalContract.g:11965:1: rule__RecordTerm__OwnedFieldValueAssignment_1 : ( ruleFieldPropertyAssociation ) ;
     public final void rule__RecordTerm__OwnedFieldValueAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11973:1: ( ( ruleFieldPropertyAssociation ) )
-            // InternalContract.g:11974:2: ( ruleFieldPropertyAssociation )
+            // InternalContract.g:11969:1: ( ( ruleFieldPropertyAssociation ) )
+            // InternalContract.g:11970:2: ( ruleFieldPropertyAssociation )
             {
-            // InternalContract.g:11974:2: ( ruleFieldPropertyAssociation )
-            // InternalContract.g:11975:3: ruleFieldPropertyAssociation
+            // InternalContract.g:11970:2: ( ruleFieldPropertyAssociation )
+            // InternalContract.g:11971:3: ruleFieldPropertyAssociation
             {
              before(grammarAccess.getRecordTermAccess().getOwnedFieldValueFieldPropertyAssociationParserRuleCall_1_0()); 
             pushFollow(FOLLOW_2);
@@ -36057,17 +36053,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ComputedTerm__FunctionAssignment_2"
-    // InternalContract.g:11984:1: rule__ComputedTerm__FunctionAssignment_2 : ( RULE_ID ) ;
+    // InternalContract.g:11980:1: rule__ComputedTerm__FunctionAssignment_2 : ( RULE_ID ) ;
     public final void rule__ComputedTerm__FunctionAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:11988:1: ( ( RULE_ID ) )
-            // InternalContract.g:11989:2: ( RULE_ID )
+            // InternalContract.g:11984:1: ( ( RULE_ID ) )
+            // InternalContract.g:11985:2: ( RULE_ID )
             {
-            // InternalContract.g:11989:2: ( RULE_ID )
-            // InternalContract.g:11990:3: RULE_ID
+            // InternalContract.g:11985:2: ( RULE_ID )
+            // InternalContract.g:11986:3: RULE_ID
             {
              before(grammarAccess.getComputedTermAccess().getFunctionIDTerminalRuleCall_2_0()); 
             match(input,RULE_ID,FOLLOW_2); 
@@ -36094,21 +36090,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ComponentClassifierTerm__ClassifierAssignment_2"
-    // InternalContract.g:11999:1: rule__ComponentClassifierTerm__ClassifierAssignment_2 : ( ( ruleQCREF ) ) ;
+    // InternalContract.g:11995:1: rule__ComponentClassifierTerm__ClassifierAssignment_2 : ( ( ruleQCREF ) ) ;
     public final void rule__ComponentClassifierTerm__ClassifierAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:12003:1: ( ( ( ruleQCREF ) ) )
-            // InternalContract.g:12004:2: ( ( ruleQCREF ) )
+            // InternalContract.g:11999:1: ( ( ( ruleQCREF ) ) )
+            // InternalContract.g:12000:2: ( ( ruleQCREF ) )
             {
-            // InternalContract.g:12004:2: ( ( ruleQCREF ) )
-            // InternalContract.g:12005:3: ( ruleQCREF )
+            // InternalContract.g:12000:2: ( ( ruleQCREF ) )
+            // InternalContract.g:12001:3: ( ruleQCREF )
             {
              before(grammarAccess.getComponentClassifierTermAccess().getClassifierComponentClassifierCrossReference_2_0()); 
-            // InternalContract.g:12006:3: ( ruleQCREF )
-            // InternalContract.g:12007:4: ruleQCREF
+            // InternalContract.g:12002:3: ( ruleQCREF )
+            // InternalContract.g:12003:4: ruleQCREF
             {
              before(grammarAccess.getComponentClassifierTermAccess().getClassifierComponentClassifierQCREFParserRuleCall_2_0_1()); 
             pushFollow(FOLLOW_2);
@@ -36143,17 +36139,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ListTerm__OwnedListElementAssignment_2_0"
-    // InternalContract.g:12018:1: rule__ListTerm__OwnedListElementAssignment_2_0 : ( rulePropertyExpression ) ;
+    // InternalContract.g:12014:1: rule__ListTerm__OwnedListElementAssignment_2_0 : ( rulePropertyExpression ) ;
     public final void rule__ListTerm__OwnedListElementAssignment_2_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:12022:1: ( ( rulePropertyExpression ) )
-            // InternalContract.g:12023:2: ( rulePropertyExpression )
+            // InternalContract.g:12018:1: ( ( rulePropertyExpression ) )
+            // InternalContract.g:12019:2: ( rulePropertyExpression )
             {
-            // InternalContract.g:12023:2: ( rulePropertyExpression )
-            // InternalContract.g:12024:3: rulePropertyExpression
+            // InternalContract.g:12019:2: ( rulePropertyExpression )
+            // InternalContract.g:12020:3: rulePropertyExpression
             {
              before(grammarAccess.getListTermAccess().getOwnedListElementPropertyExpressionParserRuleCall_2_0_0()); 
             pushFollow(FOLLOW_2);
@@ -36184,17 +36180,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ListTerm__OwnedListElementAssignment_2_1_1"
-    // InternalContract.g:12033:1: rule__ListTerm__OwnedListElementAssignment_2_1_1 : ( rulePropertyExpression ) ;
+    // InternalContract.g:12029:1: rule__ListTerm__OwnedListElementAssignment_2_1_1 : ( rulePropertyExpression ) ;
     public final void rule__ListTerm__OwnedListElementAssignment_2_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:12037:1: ( ( rulePropertyExpression ) )
-            // InternalContract.g:12038:2: ( rulePropertyExpression )
+            // InternalContract.g:12033:1: ( ( rulePropertyExpression ) )
+            // InternalContract.g:12034:2: ( rulePropertyExpression )
             {
-            // InternalContract.g:12038:2: ( rulePropertyExpression )
-            // InternalContract.g:12039:3: rulePropertyExpression
+            // InternalContract.g:12034:2: ( rulePropertyExpression )
+            // InternalContract.g:12035:3: rulePropertyExpression
             {
              before(grammarAccess.getListTermAccess().getOwnedListElementPropertyExpressionParserRuleCall_2_1_1_0()); 
             pushFollow(FOLLOW_2);
@@ -36225,21 +36221,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__FieldPropertyAssociation__PropertyAssignment_0"
-    // InternalContract.g:12048:1: rule__FieldPropertyAssociation__PropertyAssignment_0 : ( ( RULE_ID ) ) ;
+    // InternalContract.g:12044:1: rule__FieldPropertyAssociation__PropertyAssignment_0 : ( ( RULE_ID ) ) ;
     public final void rule__FieldPropertyAssociation__PropertyAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:12052:1: ( ( ( RULE_ID ) ) )
-            // InternalContract.g:12053:2: ( ( RULE_ID ) )
+            // InternalContract.g:12048:1: ( ( ( RULE_ID ) ) )
+            // InternalContract.g:12049:2: ( ( RULE_ID ) )
             {
-            // InternalContract.g:12053:2: ( ( RULE_ID ) )
-            // InternalContract.g:12054:3: ( RULE_ID )
+            // InternalContract.g:12049:2: ( ( RULE_ID ) )
+            // InternalContract.g:12050:3: ( RULE_ID )
             {
              before(grammarAccess.getFieldPropertyAssociationAccess().getPropertyBasicPropertyCrossReference_0_0()); 
-            // InternalContract.g:12055:3: ( RULE_ID )
-            // InternalContract.g:12056:4: RULE_ID
+            // InternalContract.g:12051:3: ( RULE_ID )
+            // InternalContract.g:12052:4: RULE_ID
             {
              before(grammarAccess.getFieldPropertyAssociationAccess().getPropertyBasicPropertyIDTerminalRuleCall_0_0_1()); 
             match(input,RULE_ID,FOLLOW_2); 
@@ -36270,17 +36266,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__FieldPropertyAssociation__OwnedValueAssignment_2"
-    // InternalContract.g:12067:1: rule__FieldPropertyAssociation__OwnedValueAssignment_2 : ( rulePropertyExpression ) ;
+    // InternalContract.g:12063:1: rule__FieldPropertyAssociation__OwnedValueAssignment_2 : ( rulePropertyExpression ) ;
     public final void rule__FieldPropertyAssociation__OwnedValueAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:12071:1: ( ( rulePropertyExpression ) )
-            // InternalContract.g:12072:2: ( rulePropertyExpression )
+            // InternalContract.g:12067:1: ( ( rulePropertyExpression ) )
+            // InternalContract.g:12068:2: ( rulePropertyExpression )
             {
-            // InternalContract.g:12072:2: ( rulePropertyExpression )
-            // InternalContract.g:12073:3: rulePropertyExpression
+            // InternalContract.g:12068:2: ( rulePropertyExpression )
+            // InternalContract.g:12069:3: rulePropertyExpression
             {
              before(grammarAccess.getFieldPropertyAssociationAccess().getOwnedValuePropertyExpressionParserRuleCall_2_0()); 
             pushFollow(FOLLOW_2);
@@ -36311,21 +36307,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ContainmentPathElement__NamedElementAssignment_0_0"
-    // InternalContract.g:12082:1: rule__ContainmentPathElement__NamedElementAssignment_0_0 : ( ( RULE_ID ) ) ;
+    // InternalContract.g:12078:1: rule__ContainmentPathElement__NamedElementAssignment_0_0 : ( ( RULE_ID ) ) ;
     public final void rule__ContainmentPathElement__NamedElementAssignment_0_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:12086:1: ( ( ( RULE_ID ) ) )
-            // InternalContract.g:12087:2: ( ( RULE_ID ) )
+            // InternalContract.g:12082:1: ( ( ( RULE_ID ) ) )
+            // InternalContract.g:12083:2: ( ( RULE_ID ) )
             {
-            // InternalContract.g:12087:2: ( ( RULE_ID ) )
-            // InternalContract.g:12088:3: ( RULE_ID )
+            // InternalContract.g:12083:2: ( ( RULE_ID ) )
+            // InternalContract.g:12084:3: ( RULE_ID )
             {
              before(grammarAccess.getContainmentPathElementAccess().getNamedElementNamedElementCrossReference_0_0_0()); 
-            // InternalContract.g:12089:3: ( RULE_ID )
-            // InternalContract.g:12090:4: RULE_ID
+            // InternalContract.g:12085:3: ( RULE_ID )
+            // InternalContract.g:12086:4: RULE_ID
             {
              before(grammarAccess.getContainmentPathElementAccess().getNamedElementNamedElementIDTerminalRuleCall_0_0_0_1()); 
             match(input,RULE_ID,FOLLOW_2); 
@@ -36356,17 +36352,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ContainmentPathElement__ArrayRangeAssignment_0_1"
-    // InternalContract.g:12101:1: rule__ContainmentPathElement__ArrayRangeAssignment_0_1 : ( ruleArrayRange ) ;
+    // InternalContract.g:12097:1: rule__ContainmentPathElement__ArrayRangeAssignment_0_1 : ( ruleArrayRange ) ;
     public final void rule__ContainmentPathElement__ArrayRangeAssignment_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:12105:1: ( ( ruleArrayRange ) )
-            // InternalContract.g:12106:2: ( ruleArrayRange )
+            // InternalContract.g:12101:1: ( ( ruleArrayRange ) )
+            // InternalContract.g:12102:2: ( ruleArrayRange )
             {
-            // InternalContract.g:12106:2: ( ruleArrayRange )
-            // InternalContract.g:12107:3: ruleArrayRange
+            // InternalContract.g:12102:2: ( ruleArrayRange )
+            // InternalContract.g:12103:3: ruleArrayRange
             {
              before(grammarAccess.getContainmentPathElementAccess().getArrayRangeArrayRangeParserRuleCall_0_1_0()); 
             pushFollow(FOLLOW_2);
@@ -36397,17 +36393,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ContainmentPathElement__PathAssignment_1_1"
-    // InternalContract.g:12116:1: rule__ContainmentPathElement__PathAssignment_1_1 : ( ruleContainmentPathElement ) ;
+    // InternalContract.g:12112:1: rule__ContainmentPathElement__PathAssignment_1_1 : ( ruleContainmentPathElement ) ;
     public final void rule__ContainmentPathElement__PathAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:12120:1: ( ( ruleContainmentPathElement ) )
-            // InternalContract.g:12121:2: ( ruleContainmentPathElement )
+            // InternalContract.g:12116:1: ( ( ruleContainmentPathElement ) )
+            // InternalContract.g:12117:2: ( ruleContainmentPathElement )
             {
-            // InternalContract.g:12121:2: ( ruleContainmentPathElement )
-            // InternalContract.g:12122:3: ruleContainmentPathElement
+            // InternalContract.g:12117:2: ( ruleContainmentPathElement )
+            // InternalContract.g:12118:3: ruleContainmentPathElement
             {
              before(grammarAccess.getContainmentPathElementAccess().getPathContainmentPathElementParserRuleCall_1_1_0()); 
             pushFollow(FOLLOW_2);
@@ -36438,17 +36434,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__StringTerm__ValueAssignment"
-    // InternalContract.g:12131:1: rule__StringTerm__ValueAssignment : ( ruleNoQuoteString ) ;
+    // InternalContract.g:12127:1: rule__StringTerm__ValueAssignment : ( ruleNoQuoteString ) ;
     public final void rule__StringTerm__ValueAssignment() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:12135:1: ( ( ruleNoQuoteString ) )
-            // InternalContract.g:12136:2: ( ruleNoQuoteString )
+            // InternalContract.g:12131:1: ( ( ruleNoQuoteString ) )
+            // InternalContract.g:12132:2: ( ruleNoQuoteString )
             {
-            // InternalContract.g:12136:2: ( ruleNoQuoteString )
-            // InternalContract.g:12137:3: ruleNoQuoteString
+            // InternalContract.g:12132:2: ( ruleNoQuoteString )
+            // InternalContract.g:12133:3: ruleNoQuoteString
             {
              before(grammarAccess.getStringTermAccess().getValueNoQuoteStringParserRuleCall_0()); 
             pushFollow(FOLLOW_2);
@@ -36479,17 +36475,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ArrayRange__LowerBoundAssignment_2"
-    // InternalContract.g:12146:1: rule__ArrayRange__LowerBoundAssignment_2 : ( ruleINTVALUE ) ;
+    // InternalContract.g:12142:1: rule__ArrayRange__LowerBoundAssignment_2 : ( ruleINTVALUE ) ;
     public final void rule__ArrayRange__LowerBoundAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:12150:1: ( ( ruleINTVALUE ) )
-            // InternalContract.g:12151:2: ( ruleINTVALUE )
+            // InternalContract.g:12146:1: ( ( ruleINTVALUE ) )
+            // InternalContract.g:12147:2: ( ruleINTVALUE )
             {
-            // InternalContract.g:12151:2: ( ruleINTVALUE )
-            // InternalContract.g:12152:3: ruleINTVALUE
+            // InternalContract.g:12147:2: ( ruleINTVALUE )
+            // InternalContract.g:12148:3: ruleINTVALUE
             {
              before(grammarAccess.getArrayRangeAccess().getLowerBoundINTVALUEParserRuleCall_2_0()); 
             pushFollow(FOLLOW_2);
@@ -36520,17 +36516,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ArrayRange__UpperBoundAssignment_3_1"
-    // InternalContract.g:12161:1: rule__ArrayRange__UpperBoundAssignment_3_1 : ( ruleINTVALUE ) ;
+    // InternalContract.g:12157:1: rule__ArrayRange__UpperBoundAssignment_3_1 : ( ruleINTVALUE ) ;
     public final void rule__ArrayRange__UpperBoundAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:12165:1: ( ( ruleINTVALUE ) )
-            // InternalContract.g:12166:2: ( ruleINTVALUE )
+            // InternalContract.g:12161:1: ( ( ruleINTVALUE ) )
+            // InternalContract.g:12162:2: ( ruleINTVALUE )
             {
-            // InternalContract.g:12166:2: ( ruleINTVALUE )
-            // InternalContract.g:12167:3: ruleINTVALUE
+            // InternalContract.g:12162:2: ( ruleINTVALUE )
+            // InternalContract.g:12163:3: ruleINTVALUE
             {
              before(grammarAccess.getArrayRangeAccess().getUpperBoundINTVALUEParserRuleCall_3_1_0()); 
             pushFollow(FOLLOW_2);
@@ -36561,17 +36557,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__SignedConstant__OpAssignment_0"
-    // InternalContract.g:12176:1: rule__SignedConstant__OpAssignment_0 : ( rulePlusMinus ) ;
+    // InternalContract.g:12172:1: rule__SignedConstant__OpAssignment_0 : ( rulePlusMinus ) ;
     public final void rule__SignedConstant__OpAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:12180:1: ( ( rulePlusMinus ) )
-            // InternalContract.g:12181:2: ( rulePlusMinus )
+            // InternalContract.g:12176:1: ( ( rulePlusMinus ) )
+            // InternalContract.g:12177:2: ( rulePlusMinus )
             {
-            // InternalContract.g:12181:2: ( rulePlusMinus )
-            // InternalContract.g:12182:3: rulePlusMinus
+            // InternalContract.g:12177:2: ( rulePlusMinus )
+            // InternalContract.g:12178:3: rulePlusMinus
             {
              before(grammarAccess.getSignedConstantAccess().getOpPlusMinusParserRuleCall_0_0()); 
             pushFollow(FOLLOW_2);
@@ -36602,17 +36598,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__SignedConstant__OwnedPropertyExpressionAssignment_1"
-    // InternalContract.g:12191:1: rule__SignedConstant__OwnedPropertyExpressionAssignment_1 : ( ruleConstantValue ) ;
+    // InternalContract.g:12187:1: rule__SignedConstant__OwnedPropertyExpressionAssignment_1 : ( ruleConstantValue ) ;
     public final void rule__SignedConstant__OwnedPropertyExpressionAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:12195:1: ( ( ruleConstantValue ) )
-            // InternalContract.g:12196:2: ( ruleConstantValue )
+            // InternalContract.g:12191:1: ( ( ruleConstantValue ) )
+            // InternalContract.g:12192:2: ( ruleConstantValue )
             {
-            // InternalContract.g:12196:2: ( ruleConstantValue )
-            // InternalContract.g:12197:3: ruleConstantValue
+            // InternalContract.g:12192:2: ( ruleConstantValue )
+            // InternalContract.g:12193:3: ruleConstantValue
             {
              before(grammarAccess.getSignedConstantAccess().getOwnedPropertyExpressionConstantValueParserRuleCall_1_0()); 
             pushFollow(FOLLOW_2);
@@ -36643,17 +36639,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__IntegerTerm__ValueAssignment_0"
-    // InternalContract.g:12206:1: rule__IntegerTerm__ValueAssignment_0 : ( ruleSignedInt ) ;
+    // InternalContract.g:12202:1: rule__IntegerTerm__ValueAssignment_0 : ( ruleSignedInt ) ;
     public final void rule__IntegerTerm__ValueAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:12210:1: ( ( ruleSignedInt ) )
-            // InternalContract.g:12211:2: ( ruleSignedInt )
+            // InternalContract.g:12206:1: ( ( ruleSignedInt ) )
+            // InternalContract.g:12207:2: ( ruleSignedInt )
             {
-            // InternalContract.g:12211:2: ( ruleSignedInt )
-            // InternalContract.g:12212:3: ruleSignedInt
+            // InternalContract.g:12207:2: ( ruleSignedInt )
+            // InternalContract.g:12208:3: ruleSignedInt
             {
              before(grammarAccess.getIntegerTermAccess().getValueSignedIntParserRuleCall_0_0()); 
             pushFollow(FOLLOW_2);
@@ -36684,21 +36680,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__IntegerTerm__UnitAssignment_1"
-    // InternalContract.g:12221:1: rule__IntegerTerm__UnitAssignment_1 : ( ( RULE_ID ) ) ;
+    // InternalContract.g:12217:1: rule__IntegerTerm__UnitAssignment_1 : ( ( RULE_ID ) ) ;
     public final void rule__IntegerTerm__UnitAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:12225:1: ( ( ( RULE_ID ) ) )
-            // InternalContract.g:12226:2: ( ( RULE_ID ) )
+            // InternalContract.g:12221:1: ( ( ( RULE_ID ) ) )
+            // InternalContract.g:12222:2: ( ( RULE_ID ) )
             {
-            // InternalContract.g:12226:2: ( ( RULE_ID ) )
-            // InternalContract.g:12227:3: ( RULE_ID )
+            // InternalContract.g:12222:2: ( ( RULE_ID ) )
+            // InternalContract.g:12223:3: ( RULE_ID )
             {
              before(grammarAccess.getIntegerTermAccess().getUnitUnitLiteralCrossReference_1_0()); 
-            // InternalContract.g:12228:3: ( RULE_ID )
-            // InternalContract.g:12229:4: RULE_ID
+            // InternalContract.g:12224:3: ( RULE_ID )
+            // InternalContract.g:12225:4: RULE_ID
             {
              before(grammarAccess.getIntegerTermAccess().getUnitUnitLiteralIDTerminalRuleCall_1_0_1()); 
             match(input,RULE_ID,FOLLOW_2); 
@@ -36729,17 +36725,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__RealTerm__ValueAssignment_0"
-    // InternalContract.g:12240:1: rule__RealTerm__ValueAssignment_0 : ( ruleSignedReal ) ;
+    // InternalContract.g:12236:1: rule__RealTerm__ValueAssignment_0 : ( ruleSignedReal ) ;
     public final void rule__RealTerm__ValueAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:12244:1: ( ( ruleSignedReal ) )
-            // InternalContract.g:12245:2: ( ruleSignedReal )
+            // InternalContract.g:12240:1: ( ( ruleSignedReal ) )
+            // InternalContract.g:12241:2: ( ruleSignedReal )
             {
-            // InternalContract.g:12245:2: ( ruleSignedReal )
-            // InternalContract.g:12246:3: ruleSignedReal
+            // InternalContract.g:12241:2: ( ruleSignedReal )
+            // InternalContract.g:12242:3: ruleSignedReal
             {
              before(grammarAccess.getRealTermAccess().getValueSignedRealParserRuleCall_0_0()); 
             pushFollow(FOLLOW_2);
@@ -36770,21 +36766,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__RealTerm__UnitAssignment_1"
-    // InternalContract.g:12255:1: rule__RealTerm__UnitAssignment_1 : ( ( RULE_ID ) ) ;
+    // InternalContract.g:12251:1: rule__RealTerm__UnitAssignment_1 : ( ( RULE_ID ) ) ;
     public final void rule__RealTerm__UnitAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:12259:1: ( ( ( RULE_ID ) ) )
-            // InternalContract.g:12260:2: ( ( RULE_ID ) )
+            // InternalContract.g:12255:1: ( ( ( RULE_ID ) ) )
+            // InternalContract.g:12256:2: ( ( RULE_ID ) )
             {
-            // InternalContract.g:12260:2: ( ( RULE_ID ) )
-            // InternalContract.g:12261:3: ( RULE_ID )
+            // InternalContract.g:12256:2: ( ( RULE_ID ) )
+            // InternalContract.g:12257:3: ( RULE_ID )
             {
              before(grammarAccess.getRealTermAccess().getUnitUnitLiteralCrossReference_1_0()); 
-            // InternalContract.g:12262:3: ( RULE_ID )
-            // InternalContract.g:12263:4: RULE_ID
+            // InternalContract.g:12258:3: ( RULE_ID )
+            // InternalContract.g:12259:4: RULE_ID
             {
              before(grammarAccess.getRealTermAccess().getUnitUnitLiteralIDTerminalRuleCall_1_0_1()); 
             match(input,RULE_ID,FOLLOW_2); 
@@ -36815,17 +36811,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__NumericRangeTerm__MinimumAssignment_0"
-    // InternalContract.g:12274:1: rule__NumericRangeTerm__MinimumAssignment_0 : ( ruleNumAlt ) ;
+    // InternalContract.g:12270:1: rule__NumericRangeTerm__MinimumAssignment_0 : ( ruleNumAlt ) ;
     public final void rule__NumericRangeTerm__MinimumAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:12278:1: ( ( ruleNumAlt ) )
-            // InternalContract.g:12279:2: ( ruleNumAlt )
+            // InternalContract.g:12274:1: ( ( ruleNumAlt ) )
+            // InternalContract.g:12275:2: ( ruleNumAlt )
             {
-            // InternalContract.g:12279:2: ( ruleNumAlt )
-            // InternalContract.g:12280:3: ruleNumAlt
+            // InternalContract.g:12275:2: ( ruleNumAlt )
+            // InternalContract.g:12276:3: ruleNumAlt
             {
              before(grammarAccess.getNumericRangeTermAccess().getMinimumNumAltParserRuleCall_0_0()); 
             pushFollow(FOLLOW_2);
@@ -36856,17 +36852,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__NumericRangeTerm__MaximumAssignment_2"
-    // InternalContract.g:12289:1: rule__NumericRangeTerm__MaximumAssignment_2 : ( ruleNumAlt ) ;
+    // InternalContract.g:12285:1: rule__NumericRangeTerm__MaximumAssignment_2 : ( ruleNumAlt ) ;
     public final void rule__NumericRangeTerm__MaximumAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:12293:1: ( ( ruleNumAlt ) )
-            // InternalContract.g:12294:2: ( ruleNumAlt )
+            // InternalContract.g:12289:1: ( ( ruleNumAlt ) )
+            // InternalContract.g:12290:2: ( ruleNumAlt )
             {
-            // InternalContract.g:12294:2: ( ruleNumAlt )
-            // InternalContract.g:12295:3: ruleNumAlt
+            // InternalContract.g:12290:2: ( ruleNumAlt )
+            // InternalContract.g:12291:3: ruleNumAlt
             {
              before(grammarAccess.getNumericRangeTermAccess().getMaximumNumAltParserRuleCall_2_0()); 
             pushFollow(FOLLOW_2);
@@ -36897,17 +36893,17 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__NumericRangeTerm__DeltaAssignment_3_1"
-    // InternalContract.g:12304:1: rule__NumericRangeTerm__DeltaAssignment_3_1 : ( ruleNumAlt ) ;
+    // InternalContract.g:12300:1: rule__NumericRangeTerm__DeltaAssignment_3_1 : ( ruleNumAlt ) ;
     public final void rule__NumericRangeTerm__DeltaAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:12308:1: ( ( ruleNumAlt ) )
-            // InternalContract.g:12309:2: ( ruleNumAlt )
+            // InternalContract.g:12304:1: ( ( ruleNumAlt ) )
+            // InternalContract.g:12305:2: ( ruleNumAlt )
             {
-            // InternalContract.g:12309:2: ( ruleNumAlt )
-            // InternalContract.g:12310:3: ruleNumAlt
+            // InternalContract.g:12305:2: ( ruleNumAlt )
+            // InternalContract.g:12306:3: ruleNumAlt
             {
              before(grammarAccess.getNumericRangeTermAccess().getDeltaNumAltParserRuleCall_3_1_0()); 
             pushFollow(FOLLOW_2);

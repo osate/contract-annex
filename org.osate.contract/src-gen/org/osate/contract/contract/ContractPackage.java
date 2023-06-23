@@ -1754,7 +1754,7 @@ public interface ContractPackage extends EPackage
   int MEMBER_CALL__RIGHT = EXPRESSION_FEATURE_COUNT + 1;
 
   /**
-   * The feature id for the '<em><b>Argument</b></em>' reference.
+   * The feature id for the '<em><b>Argument</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -2860,10 +2860,10 @@ public interface ContractPackage extends EPackage
   EAttribute getMemberCall_Right();
 
   /**
-   * Returns the meta object for the reference '{@link org.osate.contract.contract.MemberCall#getArgument <em>Argument</em>}'.
+   * Returns the meta object for the containment reference '{@link org.osate.contract.contract.MemberCall#getArgument <em>Argument</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the reference '<em>Argument</em>'.
+   * @return the meta object for the containment reference '<em>Argument</em>'.
    * @see org.osate.contract.contract.MemberCall#getArgument()
    * @see #getMemberCall()
    * @generated
@@ -3768,7 +3768,7 @@ public interface ContractPackage extends EPackage
     EAttribute MEMBER_CALL__RIGHT = eINSTANCE.getMemberCall_Right();
 
     /**
-     * The meta object literal for the '<em><b>Argument</b></em>' reference feature.
+     * The meta object literal for the '<em><b>Argument</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated

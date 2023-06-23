@@ -1437,8 +1437,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final Group cGroup_1_0_3 = (Group)cGroup_1_0.eContents().get(3);
 		private final Keyword cLeftParenthesisKeyword_1_0_3_0 = (Keyword)cGroup_1_0_3.eContents().get(0);
 		private final Assignment cArgumentAssignment_1_0_3_1 = (Assignment)cGroup_1_0_3.eContents().get(1);
-		private final CrossReference cArgumentNamedElementCrossReference_1_0_3_1_0 = (CrossReference)cArgumentAssignment_1_0_3_1.eContents().get(0);
-		private final RuleCall cArgumentNamedElementIDTerminalRuleCall_1_0_3_1_0_1 = (RuleCall)cArgumentNamedElementCrossReference_1_0_3_1_0.eContents().get(1);
+		private final RuleCall cArgumentExpressionParserRuleCall_1_0_3_1_0 = (RuleCall)cArgumentAssignment_1_0_3_1.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_1_0_3_2 = (Keyword)cGroup_1_0_3.eContents().get(2);
 		private final Assignment cLambdaAssignment_1_0_4 = (Assignment)cGroup_1_0.eContents().get(4);
 		private final RuleCall cLambdaLambdaParserRuleCall_1_0_4_0 = (RuleCall)cLambdaAssignment_1_0_4.eContents().get(0);
@@ -1451,14 +1450,14 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		
 		//CallExpression returns Expression:
 		//    TerminalExpression (
-		//        {MemberCall.left=current} '.' right=ID ('(' argument=[aadl2::NamedElement] ')')? lambda=Lambda? |
+		//        {MemberCall.left=current} '.' right=ID ('(' argument=Expression ')')? lambda=Lambda? |
 		//        {PropertyLookup.left=current} '#' right=[aadl2::Property|QPREF]
 		//    )*
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//TerminalExpression (
-		//    {MemberCall.left=current} '.' right=ID ('(' argument=[aadl2::NamedElement] ')')? lambda=Lambda? |
+		//    {MemberCall.left=current} '.' right=ID ('(' argument=Expression ')')? lambda=Lambda? |
 		//    {PropertyLookup.left=current} '#' right=[aadl2::Property|QPREF]
 		//)*
 		public Group getGroup() { return cGroup; }
@@ -1467,12 +1466,12 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		public RuleCall getTerminalExpressionParserRuleCall_0() { return cTerminalExpressionParserRuleCall_0; }
 		
 		//(
-		//       {MemberCall.left=current} '.' right=ID ('(' argument=[aadl2::NamedElement] ')')? lambda=Lambda? |
+		//       {MemberCall.left=current} '.' right=ID ('(' argument=Expression ')')? lambda=Lambda? |
 		//       {PropertyLookup.left=current} '#' right=[aadl2::Property|QPREF]
 		//   )*
 		public Alternatives getAlternatives_1() { return cAlternatives_1; }
 		
-		//{MemberCall.left=current} '.' right=ID ('(' argument=[aadl2::NamedElement] ')')? lambda=Lambda?
+		//{MemberCall.left=current} '.' right=ID ('(' argument=Expression ')')? lambda=Lambda?
 		public Group getGroup_1_0() { return cGroup_1_0; }
 		
 		//{MemberCall.left=current}
@@ -1487,20 +1486,17 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//ID
 		public RuleCall getRightIDTerminalRuleCall_1_0_2_0() { return cRightIDTerminalRuleCall_1_0_2_0; }
 		
-		//('(' argument=[aadl2::NamedElement] ')')?
+		//('(' argument=Expression ')')?
 		public Group getGroup_1_0_3() { return cGroup_1_0_3; }
 		
 		//'('
 		public Keyword getLeftParenthesisKeyword_1_0_3_0() { return cLeftParenthesisKeyword_1_0_3_0; }
 		
-		//argument=[aadl2::NamedElement]
+		//argument=Expression
 		public Assignment getArgumentAssignment_1_0_3_1() { return cArgumentAssignment_1_0_3_1; }
 		
-		//[aadl2::NamedElement]
-		public CrossReference getArgumentNamedElementCrossReference_1_0_3_1_0() { return cArgumentNamedElementCrossReference_1_0_3_1_0; }
-		
-		//ID
-		public RuleCall getArgumentNamedElementIDTerminalRuleCall_1_0_3_1_0_1() { return cArgumentNamedElementIDTerminalRuleCall_1_0_3_1_0_1; }
+		//Expression
+		public RuleCall getArgumentExpressionParserRuleCall_1_0_3_1_0() { return cArgumentExpressionParserRuleCall_1_0_3_1_0; }
 		
 		//')'
 		public Keyword getRightParenthesisKeyword_1_0_3_2() { return cRightParenthesisKeyword_1_0_3_2; }
@@ -2655,7 +2651,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	
 	//CallExpression returns Expression:
 	//    TerminalExpression (
-	//        {MemberCall.left=current} '.' right=ID ('(' argument=[aadl2::NamedElement] ')')? lambda=Lambda? |
+	//        {MemberCall.left=current} '.' right=ID ('(' argument=Expression ')')? lambda=Lambda? |
 	//        {PropertyLookup.left=current} '#' right=[aadl2::Property|QPREF]
 	//    )*
 	//;

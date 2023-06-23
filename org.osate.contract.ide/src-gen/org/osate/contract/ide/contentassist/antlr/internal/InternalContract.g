@@ -11274,13 +11274,9 @@ rule__CallExpression__ArgumentAssignment_1_0_3_1
 	}
 :
 	(
-		{ before(grammarAccess.getCallExpressionAccess().getArgumentNamedElementCrossReference_1_0_3_1_0()); }
-		(
-			{ before(grammarAccess.getCallExpressionAccess().getArgumentNamedElementIDTerminalRuleCall_1_0_3_1_0_1()); }
-			RULE_ID
-			{ after(grammarAccess.getCallExpressionAccess().getArgumentNamedElementIDTerminalRuleCall_1_0_3_1_0_1()); }
-		)
-		{ after(grammarAccess.getCallExpressionAccess().getArgumentNamedElementCrossReference_1_0_3_1_0()); }
+		{ before(grammarAccess.getCallExpressionAccess().getArgumentExpressionParserRuleCall_1_0_3_1_0()); }
+		ruleExpression
+		{ after(grammarAccess.getCallExpressionAccess().getArgumentExpressionParserRuleCall_1_0_3_1_0()); }
 	)
 ;
 finally {

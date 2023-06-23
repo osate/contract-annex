@@ -29,12 +29,9 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.osate.aadl2.NamedElement;
 
 import org.osate.contract.contract.ContractPackage;
 import org.osate.contract.contract.Expression;
@@ -90,14 +87,14 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
   protected String right = RIGHT_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getArgument() <em>Argument</em>}' reference.
+   * The cached value of the '{@link #getArgument() <em>Argument</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getArgument()
    * @generated
    * @ordered
    */
-  protected NamedElement argument;
+  protected Expression argument;
 
   /**
    * The cached value of the '{@link #getLambda() <em>Lambda</em>}' containment reference.
@@ -211,18 +208,8 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
    * @generated
    */
   @Override
-  public NamedElement getArgument()
+  public Expression getArgument()
   {
-    if (argument != null && ((EObject)argument).eIsProxy())
-    {
-      InternalEObject oldArgument = (InternalEObject)argument;
-      argument = (NamedElement)eResolveProxy(oldArgument);
-      if (argument != oldArgument)
-      {
-        if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, ContractPackage.MEMBER_CALL__ARGUMENT, oldArgument, argument));
-      }
-    }
     return argument;
   }
 
@@ -231,9 +218,16 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
    * <!-- end-user-doc -->
    * @generated
    */
-  public NamedElement basicGetArgument()
+  public NotificationChain basicSetArgument(Expression newArgument, NotificationChain msgs)
   {
-    return argument;
+    Expression oldArgument = argument;
+    argument = newArgument;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ContractPackage.MEMBER_CALL__ARGUMENT, oldArgument, newArgument);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
   }
 
   /**
@@ -242,12 +236,20 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
    * @generated
    */
   @Override
-  public void setArgument(NamedElement newArgument)
+  public void setArgument(Expression newArgument)
   {
-    NamedElement oldArgument = argument;
-    argument = newArgument;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.MEMBER_CALL__ARGUMENT, oldArgument, argument));
+    if (newArgument != argument)
+    {
+      NotificationChain msgs = null;
+      if (argument != null)
+        msgs = ((InternalEObject)argument).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ContractPackage.MEMBER_CALL__ARGUMENT, null, msgs);
+      if (newArgument != null)
+        msgs = ((InternalEObject)newArgument).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ContractPackage.MEMBER_CALL__ARGUMENT, null, msgs);
+      msgs = basicSetArgument(newArgument, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.MEMBER_CALL__ARGUMENT, newArgument, newArgument));
   }
 
   /**
@@ -312,6 +314,8 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
     {
       case ContractPackage.MEMBER_CALL__LEFT:
         return basicSetLeft(null, msgs);
+      case ContractPackage.MEMBER_CALL__ARGUMENT:
+        return basicSetArgument(null, msgs);
       case ContractPackage.MEMBER_CALL__LAMBDA:
         return basicSetLambda(null, msgs);
     }
@@ -333,8 +337,7 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
       case ContractPackage.MEMBER_CALL__RIGHT:
         return getRight();
       case ContractPackage.MEMBER_CALL__ARGUMENT:
-        if (resolve) return getArgument();
-        return basicGetArgument();
+        return getArgument();
       case ContractPackage.MEMBER_CALL__LAMBDA:
         return getLambda();
     }
@@ -358,7 +361,7 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
         setRight((String)newValue);
         return;
       case ContractPackage.MEMBER_CALL__ARGUMENT:
-        setArgument((NamedElement)newValue);
+        setArgument((Expression)newValue);
         return;
       case ContractPackage.MEMBER_CALL__LAMBDA:
         setLambda((Lambda)newValue);
@@ -384,7 +387,7 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
         setRight(RIGHT_EDEFAULT);
         return;
       case ContractPackage.MEMBER_CALL__ARGUMENT:
-        setArgument((NamedElement)null);
+        setArgument((Expression)null);
         return;
       case ContractPackage.MEMBER_CALL__LAMBDA:
         setLambda((Lambda)null);
