@@ -12,3 +12,4 @@ Require-Bundle: org.osate.aadl2;bundle-version="5.0.0",
 Automatic-Module-Name: org.osate.FIA.contrib
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.osate.fia.analysis
+Bundle-Vendor: CMU/SEI
