@@ -28,7 +28,9 @@ import java.util.Map
 import java.util.Optional
 import org.eclipse.xsemantics.runtime.RuleEnvironment
 import org.eclipse.xtext.EcoreUtil2
+import org.osate.aadl2.BasicProperty
 import org.osate.aadl2.NamedElement
+import org.osate.aadl2.UnitLiteral
 import org.osate.aadl2.instance.ComponentInstance
 import org.osate.aadl2.instance.SystemInstance
 import org.osate.aadl2.properties.PropertyDoesNotApplyToHolderException
@@ -118,7 +120,10 @@ from {
 	G |- expression.left ~> var Object leftValue
 	result = switch member : leftType.members.get(expression.right) {
 		SimpleMember: member.evaluate(leftValue)
-		MemberWithArgument: member.evaluate(leftValue, expression.argument)
+		MemberWithArgument: {
+			G |- expression.argument ~> var Object argumentValue
+			member.evaluate(leftValue, argumentValue)
+		}
 		MemberWithLambda: {
 			val lambda = expression.lambda
 			val parameter = lambda.parameter
@@ -193,5 +198,10 @@ from {
 			val index = tupleDeclaration.names.indexOf(named)
 			result = tupleResult.elements.get(index)
 		}
+		/*
+		 * Special handling for LongWithUnits.scaledTo() and Record.get(). 
+		 */
+		UnitLiteral,
+		BasicProperty: result = named
 	}
 }

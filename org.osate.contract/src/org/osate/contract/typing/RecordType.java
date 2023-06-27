@@ -51,8 +51,7 @@ public final class RecordType implements Type {
 								&& reference.getReference() instanceof BasicProperty field
 										? new OptionalType(TypeSystemUtils.convertPropertyType(field.getPropertyType()))
 										: null,
-						(receiver, argument) -> get((RecordValueHolder) receiver,
-								(BasicProperty) ((NameReference) argument).getReference())));
+						(receiver, argument) -> get((RecordValueHolder) receiver, (BasicProperty) argument)));
 
 		if (recordType.getName() != null) {
 			label = "Record<" + recordType.getQualifiedName() + '>';

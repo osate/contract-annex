@@ -34,7 +34,6 @@ import org.osate.aadl2.PropertyType;
 import org.osate.aadl2.RecordField;
 import org.osate.aadl2.UnitLiteral;
 import org.osate.aadl2.UnitsType;
-import org.osate.contract.contract.NameReference;
 
 public final class LongWithUnitsType implements Type {
 	private final UnitsType unitsType;
@@ -47,8 +46,7 @@ public final class LongWithUnitsType implements Type {
 		members = new LinkedHashMap<>();
 		members.put("scaledTo",
 				new MemberWithArgument(argument -> DoubleType.INSTANCE,
-						(receiver, argument) -> scaledTo((IntegerLiteral) receiver,
-								(UnitLiteral) ((NameReference) argument).getReference())));
+						(receiver, argument) -> scaledTo((IntegerLiteral) receiver, (UnitLiteral) argument)));
 
 		if (unitsType.getName() != null) {
 			label = "LongWithUnits<" + unitsType.getQualifiedName() + '>';

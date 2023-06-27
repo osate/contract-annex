@@ -32,10 +32,10 @@ import org.osate.contract.contract.Expression;
 
 public final class MemberWithArgument implements Member {
 	private final Function<Expression, Type> returnTypeFunction;
-	private final BiFunction<Object, Expression, Object> evaluateFunction;
+	private final BiFunction<Object, Object, Object> evaluateFunction;
 
 	public MemberWithArgument(Function<Expression, Type> returnTypeFunction,
-			BiFunction<Object, Expression, Object> evaluateFunction) {
+			BiFunction<Object, Object, Object> evaluateFunction) {
 		this.returnTypeFunction = returnTypeFunction;
 		this.evaluateFunction = evaluateFunction;
 	}
@@ -44,7 +44,7 @@ public final class MemberWithArgument implements Member {
 		return returnTypeFunction.apply(argument);
 	}
 
-	public Object evaluate(Object receiver, Expression argument) {
+	public Object evaluate(Object receiver, Object argument) {
 		return evaluateFunction.apply(receiver, argument);
 	}
 }
