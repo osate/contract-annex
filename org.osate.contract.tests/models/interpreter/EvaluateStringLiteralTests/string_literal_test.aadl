@@ -1,0 +1,15 @@
+package string_literal_test
+public
+	annex contract {**
+		contract StringLiteralTest {
+			queries
+				val v1 = "I am a string.";
+		}
+	**};
+	
+	system s
+	end s;
+	
+	system implementation s.i
+	end s.i;
+end string_literal_test;

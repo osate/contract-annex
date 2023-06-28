@@ -42,6 +42,8 @@ public
 					.map { subcomponent -> subcomponent.name };
 				val v8 = self.subcomponents
 					.map { subcomponent -> subcomponent.category };
+				
+				val v9 = self.subcomponents.contains(self);
 		}
 	**};
 end list_test;

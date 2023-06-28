@@ -73,6 +73,7 @@ import org.osate.contract.contract.SelfExpression;
 import org.osate.contract.contract.SingleParameter;
 import org.osate.contract.contract.SingleValDeclaration;
 import org.osate.contract.contract.Source;
+import org.osate.contract.contract.StringLiteral;
 import org.osate.contract.contract.TupleDeclaration;
 import org.osate.contract.contract.TupleExpression;
 import org.osate.contract.contract.TupleName;
@@ -351,6 +352,13 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass stringLiteralEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass nameReferenceEClass = null;
 
   /**
@@ -386,7 +394,6 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
   {
     super(eNS_URI, ContractFactory.eINSTANCE);
   }
-
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1463,6 +1470,28 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   @Override
+  public EClass getStringLiteral()
+  {
+    return stringLiteralEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getStringLiteral_Value()
+  {
+    return (EAttribute)stringLiteralEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getNameReference()
   {
     return nameReferenceEClass;
@@ -1673,6 +1702,9 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
 
     rootExpressionEClass = createEClass(ROOT_EXPRESSION);
 
+    stringLiteralEClass = createEClass(STRING_LITERAL);
+    createEAttribute(stringLiteralEClass, STRING_LITERAL__VALUE);
+
     nameReferenceEClass = createEClass(NAME_REFERENCE);
     createEReference(nameReferenceEClass, NAME_REFERENCE__REFERENCE);
 
@@ -1746,6 +1778,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     tupleParameterEClass.getESuperTypes().add(this.getParameter());
     selfExpressionEClass.getESuperTypes().add(this.getExpression());
     rootExpressionEClass.getESuperTypes().add(this.getExpression());
+    stringLiteralEClass.getESuperTypes().add(this.getExpression());
     nameReferenceEClass.getESuperTypes().add(this.getExpression());
     tupleExpressionEClass.getESuperTypes().add(this.getExpression());
 
@@ -1866,7 +1899,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     initEClass(memberCallEClass, MemberCall.class, "MemberCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getMemberCall_Left(), this.getExpression(), null, "left", null, 0, 1, MemberCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getMemberCall_Right(), theEcorePackage.getEString(), "right", null, 0, 1, MemberCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMemberCall_Argument(), theAadl2Package.getNamedElement(), null, "argument", null, 0, 1, MemberCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMemberCall_Argument(), this.getExpression(), null, "argument", null, 0, 1, MemberCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMemberCall_Lambda(), this.getLambda(), null, "lambda", null, 0, 1, MemberCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(propertyLookupEClass, PropertyLookup.class, "PropertyLookup", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1879,6 +1912,9 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     initEClass(selfExpressionEClass, SelfExpression.class, "SelfExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(rootExpressionEClass, RootExpression.class, "RootExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(stringLiteralEClass, StringLiteral.class, "StringLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getStringLiteral_Value(), theEcorePackage.getEString(), "value", null, 0, 1, StringLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(nameReferenceEClass, NameReference.class, "NameReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getNameReference_Reference(), theAadl2Package.getNamedElement(), null, "reference", null, 0, 1, NameReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

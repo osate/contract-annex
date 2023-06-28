@@ -1,25 +1,25 @@
 /*******************************************************************************
  * Assurance Contract Annex Plugin for OSATE
  * Copyright 2023 Carnegie Mellon University.
- * NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
- * MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
- * WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
- * NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
- * RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
- * ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+ * NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE
+ * MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO
+ * WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT
+ * NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR
+ * RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE
+ * ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT
  * INFRINGEMENT.
- * Released under a BSD (SEI)-style license, please see license.txt or contact 
+ * Released under a BSD (SEI)-style license, please see license.txt or contact
  * permission@sei.cmu.edu for full terms.
- * [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
- * unlimited distribution.  Please see Copyright notice for non-US Government use and 
+ * [DISTRIBUTION STATEMENT A] This material has been approved for public release and
+ * unlimited distribution.  Please see Copyright notice for non-US Government use and
  * distribution.
- * Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+ * Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie
  * Mellon University.
- * This Software includes and/or makes use of the following Third-Party Software subject 
+ * This Software includes and/or makes use of the following Third-Party Software subject
  * to its own license:
- * 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+ * 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft
  * Corporation.
- * 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+ * 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse
  * contributors and others.
  * DM23-0575
  *******************************************************************************/
@@ -51,6 +51,7 @@ import org.osate.contract.contract.Domain;
 import org.osate.contract.contract.IStringVar;
 import org.osate.contract.contract.Lambda;
 import org.osate.contract.contract.MemberCall;
+import org.osate.contract.contract.NameReference;
 import org.osate.contract.contract.SingleParameter;
 import org.osate.contract.contract.SingleValDeclaration;
 import org.osate.contract.contract.TupleDeclaration;
@@ -86,8 +87,6 @@ public class ContractScopeProvider extends AbstractContractScopeProvider {
 			return scopeForNameReferenceReference(context);
 		} else if (reference.equals(ContractPackage.eINSTANCE.getIStringVar_Query())) {
 			return scopeForQueryReference(context);
-		} else if (reference.equals(ContractPackage.eINSTANCE.getMemberCall_Argument())) {
-			return scopeForMemberCallArgument(context);
 		} else if (reference.equals(ContractPackage.eINSTANCE.getArgument_Domains())
 				|| reference.equals(ContractPackage.eINSTANCE.getArgumentAssumption_Argument())
 				|| reference.equals(ContractPackage.eINSTANCE.getContractAssumption_Contract())
@@ -119,7 +118,30 @@ public class ContractScopeProvider extends AbstractContractScopeProvider {
 		return new SimpleScope(descriptions);
 	}
 
-	private static IScope scopeForNameReferenceReference(EObject context) {
+	private IScope scopeForNameReferenceReference(EObject context) {
+		/*
+		 * Special handling for LongWithUnits.scaledTo() and Record.get(). Scoping looks up the names of the argument
+		 * based on the type of the left side of the MemberCall expression.
+		 */
+		if (context instanceof NameReference nameReference
+				&& nameReference.eContainer() instanceof MemberCall memberCall
+				&& memberCall.getArgument() == nameReference) {
+			if (memberCall.getRight().equals("scaledTo") && typeSystem.expressionType(memberCall.getLeft())
+					.getValue() instanceof LongWithUnitsType leftType) {
+				var descriptions = new ArrayList<IEObjectDescription>();
+				for (var literal : leftType.getUnitsType().getOwnedLiterals()) {
+					descriptions.add(EObjectDescription.create(literal.getName(), literal));
+				}
+				return new SimpleScope(descriptions, true);
+			} else if (memberCall.getRight().equals("get")
+					&& typeSystem.expressionType(memberCall.getLeft()).getValue() instanceof RecordType leftType) {
+				var descriptions = new ArrayList<IEObjectDescription>();
+				for (var field : leftType.getRecordType().getOwnedFields()) {
+					descriptions.add(EObjectDescription.create(field.getName(), field));
+				}
+				return new SimpleScope(descriptions, true);
+			}
+		}
 		var names = new ArrayList<NamedElement>();
 		for (var current = context.eContainer(); current != null; current = current.eContainer()) {
 			if (current instanceof Lambda lambda) {
@@ -183,30 +205,6 @@ public class ContractScopeProvider extends AbstractContractScopeProvider {
 					(d) -> d.getEObjectOrProxy() instanceof SingleValDeclaration);
 		}
 		return IScope.NULLSCOPE;
-	}
-
-	private IScope scopeForMemberCallArgument(EObject context) {
-		if (context instanceof MemberCall memberCall) {
-			if (memberCall.getRight().equals("scaledTo") && typeSystem.expressionType(memberCall.getLeft())
-					.getValue() instanceof LongWithUnitsType leftType) {
-				var descriptions = new ArrayList<IEObjectDescription>();
-				for (var literal : leftType.getUnitsType().getOwnedLiterals()) {
-					descriptions.add(EObjectDescription.create(literal.getName(), literal));
-				}
-				return new SimpleScope(descriptions, true);
-			} else if (memberCall.getRight().equals("get")
-					&& typeSystem.expressionType(memberCall.getLeft()).getValue() instanceof RecordType leftType) {
-				var descriptions = new ArrayList<IEObjectDescription>();
-				for (var field : leftType.getRecordType().getOwnedFields()) {
-					descriptions.add(EObjectDescription.create(field.getName(), field));
-				}
-				return new SimpleScope(descriptions, true);
-			} else {
-				return IScope.NULLSCOPE;
-			}
-		} else {
-			return IScope.NULLSCOPE;
-		}
 	}
 
 	private IScope annexLibraryScope(EObject context, EReference reference) {

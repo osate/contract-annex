@@ -2,7 +2,7 @@
   - ~~Boolean operators~~
   - ~~Parenthesized expressions~~
   - Other bindings
-  - List.contains
+  - ~~List.contains~~
   - Use qualified name to refer to Domain::Query
   - Add validation complaining if using non-qualified name when the name appears in multiple imported domains
   - ~In string interpolation, refer to imported query without qualified name~\

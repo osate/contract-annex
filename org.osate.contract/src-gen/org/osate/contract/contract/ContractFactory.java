@@ -379,6 +379,15 @@ public interface ContractFactory extends EFactory
   RootExpression createRootExpression();
 
   /**
+   * Returns a new object of class '<em>String Literal</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>String Literal</em>'.
+   * @generated
+   */
+  StringLiteral createStringLiteral();
+
+  /**
    * Returns a new object of class '<em>Name Reference</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

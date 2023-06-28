@@ -218,7 +218,7 @@ NotExpression returns Expression:
 
 CallExpression returns Expression:
 	TerminalExpression (
-		{MemberCall.left=current} '.' right=ID ('(' argument=[aadl2::NamedElement] ')')? lambda=Lambda? |
+		{MemberCall.left=current} '.' right=ID ('(' argument=Expression ')')? lambda=Lambda? |
 		{PropertyLookup.left=current} '#' right=[aadl2::Property|QPREF]
 	)*
 ;
@@ -239,6 +239,7 @@ SingleParameter:
 TerminalExpression returns Expression:
 	{SelfExpression} 'self' |
 	{RootExpression} 'root' |
+	{StringLiteral} value=STRING |
 	{NameReference} reference=[aadl2::NamedElement] |
 	/*
 	 * Handles both parentheses and tuples. Combining these is necessary to avoid a left recursion problem. The

@@ -1437,8 +1437,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final Group cGroup_1_0_3 = (Group)cGroup_1_0.eContents().get(3);
 		private final Keyword cLeftParenthesisKeyword_1_0_3_0 = (Keyword)cGroup_1_0_3.eContents().get(0);
 		private final Assignment cArgumentAssignment_1_0_3_1 = (Assignment)cGroup_1_0_3.eContents().get(1);
-		private final CrossReference cArgumentNamedElementCrossReference_1_0_3_1_0 = (CrossReference)cArgumentAssignment_1_0_3_1.eContents().get(0);
-		private final RuleCall cArgumentNamedElementIDTerminalRuleCall_1_0_3_1_0_1 = (RuleCall)cArgumentNamedElementCrossReference_1_0_3_1_0.eContents().get(1);
+		private final RuleCall cArgumentExpressionParserRuleCall_1_0_3_1_0 = (RuleCall)cArgumentAssignment_1_0_3_1.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_1_0_3_2 = (Keyword)cGroup_1_0_3.eContents().get(2);
 		private final Assignment cLambdaAssignment_1_0_4 = (Assignment)cGroup_1_0.eContents().get(4);
 		private final RuleCall cLambdaLambdaParserRuleCall_1_0_4_0 = (RuleCall)cLambdaAssignment_1_0_4.eContents().get(0);
@@ -1451,14 +1450,14 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		
 		//CallExpression returns Expression:
 		//    TerminalExpression (
-		//        {MemberCall.left=current} '.' right=ID ('(' argument=[aadl2::NamedElement] ')')? lambda=Lambda? |
+		//        {MemberCall.left=current} '.' right=ID ('(' argument=Expression ')')? lambda=Lambda? |
 		//        {PropertyLookup.left=current} '#' right=[aadl2::Property|QPREF]
 		//    )*
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//TerminalExpression (
-		//    {MemberCall.left=current} '.' right=ID ('(' argument=[aadl2::NamedElement] ')')? lambda=Lambda? |
+		//    {MemberCall.left=current} '.' right=ID ('(' argument=Expression ')')? lambda=Lambda? |
 		//    {PropertyLookup.left=current} '#' right=[aadl2::Property|QPREF]
 		//)*
 		public Group getGroup() { return cGroup; }
@@ -1467,12 +1466,12 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		public RuleCall getTerminalExpressionParserRuleCall_0() { return cTerminalExpressionParserRuleCall_0; }
 		
 		//(
-		//       {MemberCall.left=current} '.' right=ID ('(' argument=[aadl2::NamedElement] ')')? lambda=Lambda? |
+		//       {MemberCall.left=current} '.' right=ID ('(' argument=Expression ')')? lambda=Lambda? |
 		//       {PropertyLookup.left=current} '#' right=[aadl2::Property|QPREF]
 		//   )*
 		public Alternatives getAlternatives_1() { return cAlternatives_1; }
 		
-		//{MemberCall.left=current} '.' right=ID ('(' argument=[aadl2::NamedElement] ')')? lambda=Lambda?
+		//{MemberCall.left=current} '.' right=ID ('(' argument=Expression ')')? lambda=Lambda?
 		public Group getGroup_1_0() { return cGroup_1_0; }
 		
 		//{MemberCall.left=current}
@@ -1487,20 +1486,17 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//ID
 		public RuleCall getRightIDTerminalRuleCall_1_0_2_0() { return cRightIDTerminalRuleCall_1_0_2_0; }
 		
-		//('(' argument=[aadl2::NamedElement] ')')?
+		//('(' argument=Expression ')')?
 		public Group getGroup_1_0_3() { return cGroup_1_0_3; }
 		
 		//'('
 		public Keyword getLeftParenthesisKeyword_1_0_3_0() { return cLeftParenthesisKeyword_1_0_3_0; }
 		
-		//argument=[aadl2::NamedElement]
+		//argument=Expression
 		public Assignment getArgumentAssignment_1_0_3_1() { return cArgumentAssignment_1_0_3_1; }
 		
-		//[aadl2::NamedElement]
-		public CrossReference getArgumentNamedElementCrossReference_1_0_3_1_0() { return cArgumentNamedElementCrossReference_1_0_3_1_0; }
-		
-		//ID
-		public RuleCall getArgumentNamedElementIDTerminalRuleCall_1_0_3_1_0_1() { return cArgumentNamedElementIDTerminalRuleCall_1_0_3_1_0_1; }
+		//Expression
+		public RuleCall getArgumentExpressionParserRuleCall_1_0_3_1_0() { return cArgumentExpressionParserRuleCall_1_0_3_1_0; }
 		
 		//')'
 		public Keyword getRightParenthesisKeyword_1_0_3_2() { return cRightParenthesisKeyword_1_0_3_2; }
@@ -1657,24 +1653,29 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final Action cRootExpressionAction_1_0 = (Action)cGroup_1.eContents().get(0);
 		private final Keyword cRootKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
 		private final Group cGroup_2 = (Group)cAlternatives.eContents().get(2);
-		private final Action cNameReferenceAction_2_0 = (Action)cGroup_2.eContents().get(0);
-		private final Assignment cReferenceAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
-		private final CrossReference cReferenceNamedElementCrossReference_2_1_0 = (CrossReference)cReferenceAssignment_2_1.eContents().get(0);
-		private final RuleCall cReferenceNamedElementIDTerminalRuleCall_2_1_0_1 = (RuleCall)cReferenceNamedElementCrossReference_2_1_0.eContents().get(1);
+		private final Action cStringLiteralAction_2_0 = (Action)cGroup_2.eContents().get(0);
+		private final Assignment cValueAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
+		private final RuleCall cValueSTRINGTerminalRuleCall_2_1_0 = (RuleCall)cValueAssignment_2_1.eContents().get(0);
 		private final Group cGroup_3 = (Group)cAlternatives.eContents().get(3);
-		private final Keyword cLeftParenthesisKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
-		private final RuleCall cExpressionParserRuleCall_3_1 = (RuleCall)cGroup_3.eContents().get(1);
-		private final Group cGroup_3_2 = (Group)cGroup_3.eContents().get(2);
-		private final Action cTupleExpressionElementsAction_3_2_0 = (Action)cGroup_3_2.eContents().get(0);
-		private final Group cGroup_3_2_1 = (Group)cGroup_3_2.eContents().get(1);
-		private final Keyword cCommaKeyword_3_2_1_0 = (Keyword)cGroup_3_2_1.eContents().get(0);
-		private final Assignment cElementsAssignment_3_2_1_1 = (Assignment)cGroup_3_2_1.eContents().get(1);
-		private final RuleCall cElementsExpressionParserRuleCall_3_2_1_1_0 = (RuleCall)cElementsAssignment_3_2_1_1.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_3_3 = (Keyword)cGroup_3.eContents().get(3);
+		private final Action cNameReferenceAction_3_0 = (Action)cGroup_3.eContents().get(0);
+		private final Assignment cReferenceAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
+		private final CrossReference cReferenceNamedElementCrossReference_3_1_0 = (CrossReference)cReferenceAssignment_3_1.eContents().get(0);
+		private final RuleCall cReferenceNamedElementIDTerminalRuleCall_3_1_0_1 = (RuleCall)cReferenceNamedElementCrossReference_3_1_0.eContents().get(1);
+		private final Group cGroup_4 = (Group)cAlternatives.eContents().get(4);
+		private final Keyword cLeftParenthesisKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
+		private final RuleCall cExpressionParserRuleCall_4_1 = (RuleCall)cGroup_4.eContents().get(1);
+		private final Group cGroup_4_2 = (Group)cGroup_4.eContents().get(2);
+		private final Action cTupleExpressionElementsAction_4_2_0 = (Action)cGroup_4_2.eContents().get(0);
+		private final Group cGroup_4_2_1 = (Group)cGroup_4_2.eContents().get(1);
+		private final Keyword cCommaKeyword_4_2_1_0 = (Keyword)cGroup_4_2_1.eContents().get(0);
+		private final Assignment cElementsAssignment_4_2_1_1 = (Assignment)cGroup_4_2_1.eContents().get(1);
+		private final RuleCall cElementsExpressionParserRuleCall_4_2_1_1_0 = (RuleCall)cElementsAssignment_4_2_1_1.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_4_3 = (Keyword)cGroup_4.eContents().get(3);
 		
 		//TerminalExpression returns Expression:
 		//    {SelfExpression} 'self' |
 		//    {RootExpression} 'root' |
+		//    {StringLiteral} value=STRING |
 		//    {NameReference} reference=[aadl2::NamedElement] |
 		//    /*
 		//     * Handles both parentheses and tuples. Combining these is necessary to avoid a left recursion problem. The
@@ -1689,6 +1690,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		
 		//{SelfExpression} 'self' |
 		//{RootExpression} 'root' |
+		//{StringLiteral} value=STRING |
 		//{NameReference} reference=[aadl2::NamedElement] |
 		///*
 		// * Handles both parentheses and tuples. Combining these is necessary to avoid a left recursion problem. The
@@ -1718,20 +1720,32 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//'root'
 		public Keyword getRootKeyword_1_1() { return cRootKeyword_1_1; }
 		
-		//{NameReference} reference=[aadl2::NamedElement]
+		//{StringLiteral} value=STRING
 		public Group getGroup_2() { return cGroup_2; }
 		
+		//{StringLiteral}
+		public Action getStringLiteralAction_2_0() { return cStringLiteralAction_2_0; }
+		
+		//value=STRING
+		public Assignment getValueAssignment_2_1() { return cValueAssignment_2_1; }
+		
+		//STRING
+		public RuleCall getValueSTRINGTerminalRuleCall_2_1_0() { return cValueSTRINGTerminalRuleCall_2_1_0; }
+		
+		//{NameReference} reference=[aadl2::NamedElement]
+		public Group getGroup_3() { return cGroup_3; }
+		
 		//{NameReference}
-		public Action getNameReferenceAction_2_0() { return cNameReferenceAction_2_0; }
+		public Action getNameReferenceAction_3_0() { return cNameReferenceAction_3_0; }
 		
 		//reference=[aadl2::NamedElement]
-		public Assignment getReferenceAssignment_2_1() { return cReferenceAssignment_2_1; }
+		public Assignment getReferenceAssignment_3_1() { return cReferenceAssignment_3_1; }
 		
 		//[aadl2::NamedElement]
-		public CrossReference getReferenceNamedElementCrossReference_2_1_0() { return cReferenceNamedElementCrossReference_2_1_0; }
+		public CrossReference getReferenceNamedElementCrossReference_3_1_0() { return cReferenceNamedElementCrossReference_3_1_0; }
 		
 		//ID
-		public RuleCall getReferenceNamedElementIDTerminalRuleCall_2_1_0_1() { return cReferenceNamedElementIDTerminalRuleCall_2_1_0_1; }
+		public RuleCall getReferenceNamedElementIDTerminalRuleCall_3_1_0_1() { return cReferenceNamedElementIDTerminalRuleCall_3_1_0_1; }
 		
 		///*
 		// * Handles both parentheses and tuples. Combining these is necessary to avoid a left recursion problem. The
@@ -1741,7 +1755,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		// * '(' Expression ')'
 		// */
 		//'(' Expression ({TupleExpression.elements+=current} (',' elements+=Expression)+)? ')'
-		public Group getGroup_3() { return cGroup_3; }
+		public Group getGroup_4() { return cGroup_4; }
 		
 		///*
 		// * Handles both parentheses and tuples. Combining these is necessary to avoid a left recursion problem. The
@@ -1751,31 +1765,31 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		// * '(' Expression ')'
 		// */
 		//'('
-		public Keyword getLeftParenthesisKeyword_3_0() { return cLeftParenthesisKeyword_3_0; }
+		public Keyword getLeftParenthesisKeyword_4_0() { return cLeftParenthesisKeyword_4_0; }
 		
 		//Expression
-		public RuleCall getExpressionParserRuleCall_3_1() { return cExpressionParserRuleCall_3_1; }
+		public RuleCall getExpressionParserRuleCall_4_1() { return cExpressionParserRuleCall_4_1; }
 		
 		//({TupleExpression.elements+=current} (',' elements+=Expression)+)?
-		public Group getGroup_3_2() { return cGroup_3_2; }
+		public Group getGroup_4_2() { return cGroup_4_2; }
 		
 		//{TupleExpression.elements+=current}
-		public Action getTupleExpressionElementsAction_3_2_0() { return cTupleExpressionElementsAction_3_2_0; }
+		public Action getTupleExpressionElementsAction_4_2_0() { return cTupleExpressionElementsAction_4_2_0; }
 		
 		//(',' elements+=Expression)+
-		public Group getGroup_3_2_1() { return cGroup_3_2_1; }
+		public Group getGroup_4_2_1() { return cGroup_4_2_1; }
 		
 		//','
-		public Keyword getCommaKeyword_3_2_1_0() { return cCommaKeyword_3_2_1_0; }
+		public Keyword getCommaKeyword_4_2_1_0() { return cCommaKeyword_4_2_1_0; }
 		
 		//elements+=Expression
-		public Assignment getElementsAssignment_3_2_1_1() { return cElementsAssignment_3_2_1_1; }
+		public Assignment getElementsAssignment_4_2_1_1() { return cElementsAssignment_4_2_1_1; }
 		
 		//Expression
-		public RuleCall getElementsExpressionParserRuleCall_3_2_1_1_0() { return cElementsExpressionParserRuleCall_3_2_1_1_0; }
+		public RuleCall getElementsExpressionParserRuleCall_4_2_1_1_0() { return cElementsExpressionParserRuleCall_4_2_1_1_0; }
 		
 		//')'
-		public Keyword getRightParenthesisKeyword_3_3() { return cRightParenthesisKeyword_3_3; }
+		public Keyword getRightParenthesisKeyword_4_3() { return cRightParenthesisKeyword_4_3; }
 	}
 	public class ContractSubclauseElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.ContractSubclause");
@@ -2655,7 +2669,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	
 	//CallExpression returns Expression:
 	//    TerminalExpression (
-	//        {MemberCall.left=current} '.' right=ID ('(' argument=[aadl2::NamedElement] ')')? lambda=Lambda? |
+	//        {MemberCall.left=current} '.' right=ID ('(' argument=Expression ')')? lambda=Lambda? |
 	//        {PropertyLookup.left=current} '#' right=[aadl2::Property|QPREF]
 	//    )*
 	//;
@@ -2704,6 +2718,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	//TerminalExpression returns Expression:
 	//    {SelfExpression} 'self' |
 	//    {RootExpression} 'root' |
+	//    {StringLiteral} value=STRING |
 	//    {NameReference} reference=[aadl2::NamedElement] |
 	//    /*
 	//     * Handles both parentheses and tuples. Combining these is necessary to avoid a left recursion problem. The

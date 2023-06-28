@@ -23,6 +23,7 @@
  * contributors and others.
  * DM23-0575
  *******************************************************************************/
+
 import org.eclipse.xtext.EcoreUtil2
 import org.osate.aadl2.NamedElement
 import org.osate.contract.contract.AndExpression
@@ -38,6 +39,7 @@ import org.osate.contract.contract.RootExpression
 import org.osate.contract.contract.SelfExpression
 import org.osate.contract.contract.SingleParameter
 import org.osate.contract.contract.SingleValDeclaration
+import org.osate.contract.contract.StringLiteral
 import org.osate.contract.contract.TupleDeclaration
 import org.osate.contract.contract.TupleExpression
 import org.osate.contract.contract.TupleName
@@ -90,6 +92,9 @@ axiom SelfExpression
 
 axiom RootExpression
 	G |- RootExpression expression : SystemInstanceType.INSTANCE
+
+axiom StringLiteral
+	G |- StringLiteral expression : StringType.INSTANCE
 
 rule TupleExpression
 	G |- TupleExpression expression : TupleType type
@@ -227,6 +232,29 @@ from {
 					source expression.lambda
 			}
 		}
+	}
+}
+
+checkrule CheckArgumentType for
+	MemberCall expression
+from {
+	empty |- expression.left : var Type leftType
+	/*
+	 * Special handling for LongWithUnits.scaledTo() and Record.get(). Argument should be a single NameReference which
+	 * is not nested in a deep expression. If it is a single NameReference, then the scope provider ensures that the
+	 * type is correct.
+	 */
+	val requiredArgumentType = switch leftType {
+		LongWithUnitsType case expression.right == "scaledTo": "UnitLiteral"
+		RecordType case expression.right == "get": "RecordField"
+	}
+	val argument = expression.argument
+	if (requiredArgumentType !== null && argument !== null && !(argument instanceof NameReference)) {
+		empty |- argument : var Type argumentType
+		fail
+			error "Expected " + requiredArgumentType + "; found " + argumentType
+			source expression
+			feature ContractPackage.eINSTANCE.memberCall_Argument
 	}
 }
 

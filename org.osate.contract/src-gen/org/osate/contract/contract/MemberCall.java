@@ -25,7 +25,6 @@
  */
 package org.osate.contract.contract;
 
-import org.osate.aadl2.NamedElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -93,26 +92,26 @@ public interface MemberCall extends Expression
   void setRight(String value);
 
   /**
-   * Returns the value of the '<em><b>Argument</b></em>' reference.
+   * Returns the value of the '<em><b>Argument</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Argument</em>' reference.
-   * @see #setArgument(NamedElement)
+   * @return the value of the '<em>Argument</em>' containment reference.
+   * @see #setArgument(Expression)
    * @see org.osate.contract.contract.ContractPackage#getMemberCall_Argument()
-   * @model
+   * @model containment="true"
    * @generated
    */
-  NamedElement getArgument();
+  Expression getArgument();
 
   /**
-   * Sets the value of the '{@link org.osate.contract.contract.MemberCall#getArgument <em>Argument</em>}' reference.
+   * Sets the value of the '{@link org.osate.contract.contract.MemberCall#getArgument <em>Argument</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Argument</em>' reference.
+   * @param value the new value of the '<em>Argument</em>' containment reference.
    * @see #getArgument()
    * @generated
    */
-  void setArgument(NamedElement value);
+  void setArgument(Expression value);
 
   /**
    * Returns the value of the '<em><b>Lambda</b></em>' containment reference.

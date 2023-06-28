@@ -3,7 +3,7 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="Assurance Contract Annex Plugin for OSATE&#xA;Copyright 2023 Carnegie Mellon University.&#xA;NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE &#xA;MATERIAL IS FURNISHED ON AN &quot;AS-IS&quot; BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO &#xA;WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT &#xA;NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR &#xA;RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE &#xA;ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT &#xA;INFRINGEMENT.&#xA;Released under a BSD (SEI)-style license, please see license.txt or contact &#xA;permission@sei.cmu.edu for full terms.&#xA;[DISTRIBUTION STATEMENT A] This material has been approved for public release and &#xA;unlimited distribution.  Please see Copyright notice for non-US Government use and &#xA;distribution.&#xA;Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie &#xA;Mellon University.&#xA;This Software includes and/or makes use of the following Third-Party Software subject &#xA;to its own license:&#xA;1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft &#xA;Corporation.&#xA;2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse &#xA;contributors and others.&#xA;DM23-0575"
     modelDirectory="/org.osate.contract/src-gen" modelPluginID="org.osate.contract"
     forceOverwrite="true" modelName="Contract" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
-    complianceLevel="8.0" copyrightFields="false" runtimeVersion="2.20" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/resource/org.osate.aadl2/model/aadl2.genmodel#//aadl2">
+    complianceLevel="11.0" copyrightFields="false" runtimeVersion="2.29" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/resource/org.osate.aadl2/model/aadl2.genmodel#//aadl2">
   <genPackages prefix="Contract" basePackage="org.osate.contract" disposableProviderFactory="true"
       fileExtensions="contract" ecorePackage="Contract.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Contract.ecore#//Language">
@@ -119,7 +119,7 @@
     <genClasses ecoreClass="Contract.ecore#//MemberCall">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//MemberCall/left"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//MemberCall/right"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//MemberCall/argument"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//MemberCall/argument"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//MemberCall/lambda"/>
     </genClasses>
     <genClasses ecoreClass="Contract.ecore#//PropertyLookup">
@@ -131,6 +131,9 @@
     </genClasses>
     <genClasses ecoreClass="Contract.ecore#//SelfExpression"/>
     <genClasses ecoreClass="Contract.ecore#//RootExpression"/>
+    <genClasses ecoreClass="Contract.ecore#//StringLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//StringLiteral/value"/>
+    </genClasses>
     <genClasses ecoreClass="Contract.ecore#//NameReference">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//NameReference/reference"/>
     </genClasses>

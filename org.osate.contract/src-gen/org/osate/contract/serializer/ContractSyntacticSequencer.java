@@ -57,8 +57,8 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected AbstractElementAlias match_Domains_SemicolonKeyword_1_p;
 	protected AbstractElementAlias match_Queries_SemicolonKeyword_1_a;
 	protected AbstractElementAlias match_Queries_SemicolonKeyword_1_p;
-	protected AbstractElementAlias match_TerminalExpression_LeftParenthesisKeyword_3_0_a;
-	protected AbstractElementAlias match_TerminalExpression_LeftParenthesisKeyword_3_0_p;
+	protected AbstractElementAlias match_TerminalExpression_LeftParenthesisKeyword_4_0_a;
+	protected AbstractElementAlias match_TerminalExpression_LeftParenthesisKeyword_4_0_p;
 	protected AbstractElementAlias match_VerificationPlan_SemicolonKeyword_11_1_1_a;
 	protected AbstractElementAlias match_VerificationPlan_SemicolonKeyword_11_1_1_p;
 	protected AbstractElementAlias match_VerificationPlan___ContractsKeyword_11_0_SemicolonKeyword_11_1_1_a__q;
@@ -78,8 +78,8 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 		match_Domains_SemicolonKeyword_1_p = new TokenAlias(true, false, grammarAccess.getDomainsAccess().getSemicolonKeyword_1());
 		match_Queries_SemicolonKeyword_1_a = new TokenAlias(true, true, grammarAccess.getQueriesAccess().getSemicolonKeyword_1());
 		match_Queries_SemicolonKeyword_1_p = new TokenAlias(true, false, grammarAccess.getQueriesAccess().getSemicolonKeyword_1());
-		match_TerminalExpression_LeftParenthesisKeyword_3_0_a = new TokenAlias(true, true, grammarAccess.getTerminalExpressionAccess().getLeftParenthesisKeyword_3_0());
-		match_TerminalExpression_LeftParenthesisKeyword_3_0_p = new TokenAlias(true, false, grammarAccess.getTerminalExpressionAccess().getLeftParenthesisKeyword_3_0());
+		match_TerminalExpression_LeftParenthesisKeyword_4_0_a = new TokenAlias(true, true, grammarAccess.getTerminalExpressionAccess().getLeftParenthesisKeyword_4_0());
+		match_TerminalExpression_LeftParenthesisKeyword_4_0_p = new TokenAlias(true, false, grammarAccess.getTerminalExpressionAccess().getLeftParenthesisKeyword_4_0());
 		match_VerificationPlan_SemicolonKeyword_11_1_1_a = new TokenAlias(true, true, grammarAccess.getVerificationPlanAccess().getSemicolonKeyword_11_1_1());
 		match_VerificationPlan_SemicolonKeyword_11_1_1_p = new TokenAlias(true, false, grammarAccess.getVerificationPlanAccess().getSemicolonKeyword_11_1_1());
 		match_VerificationPlan___ContractsKeyword_11_0_SemicolonKeyword_11_1_1_a__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getVerificationPlanAccess().getContractsKeyword_11_0()), new TokenAlias(true, true, grammarAccess.getVerificationPlanAccess().getSemicolonKeyword_11_1_1()));
@@ -174,10 +174,10 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_Queries_SemicolonKeyword_1_a(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_Queries_SemicolonKeyword_1_p.equals(syntax))
 				emit_Queries_SemicolonKeyword_1_p(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_TerminalExpression_LeftParenthesisKeyword_3_0_a.equals(syntax))
-				emit_TerminalExpression_LeftParenthesisKeyword_3_0_a(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_TerminalExpression_LeftParenthesisKeyword_3_0_p.equals(syntax))
-				emit_TerminalExpression_LeftParenthesisKeyword_3_0_p(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_TerminalExpression_LeftParenthesisKeyword_4_0_a.equals(syntax))
+				emit_TerminalExpression_LeftParenthesisKeyword_4_0_a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_TerminalExpression_LeftParenthesisKeyword_4_0_p.equals(syntax))
+				emit_TerminalExpression_LeftParenthesisKeyword_4_0_p(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_VerificationPlan_SemicolonKeyword_11_1_1_a.equals(syntax))
 				emit_VerificationPlan_SemicolonKeyword_11_1_1_a(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_VerificationPlan_SemicolonKeyword_11_1_1_p.equals(syntax))
@@ -412,6 +412,7 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) 'root' (rule start)
 	 *     (rule start) (ambiguity) 'self' (rule start)
 	 *     (rule start) (ambiguity) reference=[NamedElement|ID]
+	 *     (rule start) (ambiguity) value=STRING
 	 *     (rule start) (ambiguity) {AndExpression.left=}
 	 *     (rule start) (ambiguity) {MemberCall.left=}
 	 *     (rule start) (ambiguity) {OrExpression.left=}
@@ -420,7 +421,7 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	 
 	 * </pre>
 	 */
-	protected void emit_TerminalExpression_LeftParenthesisKeyword_3_0_a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_TerminalExpression_LeftParenthesisKeyword_4_0_a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -434,6 +435,7 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) 'root' (rule start)
 	 *     (rule start) (ambiguity) 'self' (rule start)
 	 *     (rule start) (ambiguity) reference=[NamedElement|ID]
+	 *     (rule start) (ambiguity) value=STRING
 	 *     (rule start) (ambiguity) {AndExpression.left=}
 	 *     (rule start) (ambiguity) {MemberCall.left=}
 	 *     (rule start) (ambiguity) {OrExpression.left=}
@@ -442,7 +444,7 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	 
 	 * </pre>
 	 */
-	protected void emit_TerminalExpression_LeftParenthesisKeyword_3_0_p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_TerminalExpression_LeftParenthesisKeyword_4_0_p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

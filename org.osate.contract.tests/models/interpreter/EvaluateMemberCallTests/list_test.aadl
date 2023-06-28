@@ -47,6 +47,13 @@ public
 				val v10 = self.subcomponents
 					.map { subcomponent -> (subcomponent.name, subcomponent.category) }
 					.map { (name, category) -> name };
+				
+				val v11 = self.subcomponents
+					.map { subcomponent -> subcomponent.name }
+					.contains("process_1");
+				val v12 = self.subcomponents
+					.map { subcomponent -> subcomponent.name }
+					.contains("fake subcomponent");
 		}
 	**};
 	
