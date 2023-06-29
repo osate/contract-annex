@@ -8,8 +8,6 @@ Bundle-SymbolicName: org.osate.contract.ide; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.osate.contract,
  org.eclipse.xtext.ide,
- org.eclipse.xtext.xbase.ide,
- org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
  org.osate.xtext.aadl2.properties.ui;bundle-version="4.1.4"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.osate.contract.ide.contentassist.antlr.internal,
