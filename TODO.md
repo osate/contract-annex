@@ -8,6 +8,7 @@
   - ~In string interpolation, refer to imported query without qualified name~\
     works out of the box for some reason
   - re-think optional everything
+  - Get fully qualified name for InstanceObjects.
 
 - Contracts
   - add error reporting
