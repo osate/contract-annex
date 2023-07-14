@@ -51,7 +51,7 @@
       xsi:type="git:GitCloneTask"
       id="git.clone.contract-annex"
       filter=""
-      remoteURI="etmac/contract-annex"
+      remoteURI="osate/contract-annex"
       pushURI="">
     <annotation
         source="http://www.eclipse.org/oomph/setup/InducedChoices">
@@ -119,5 +119,5 @@
   <logicalProjectContainer
       xsi:type="setup:ProjectCatalog"
       href="index:/org.eclipse.setup#//@projectCatalogs[name='com.github']"/>
-  <description>ETMAC project: Contract annex</description>
+  <description>Contract Annex</description>
 </setup:Project>
