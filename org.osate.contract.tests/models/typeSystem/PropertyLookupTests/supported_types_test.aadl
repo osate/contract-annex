@@ -30,6 +30,7 @@ public
 				val v1 = self#Required_Connection;
 				val v2 = root#Required_Connection;
 				val v3 = self.endToEndFlows.map { flow -> flow#Latency };
+				val v4 = self#Reference_Time.flatMap { reference_time -> reference_time#Required_Connection };
 		}
 	**};
 end supported_types_test;

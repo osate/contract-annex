@@ -30,6 +30,7 @@
   </setupTask>
   <setupTask
       xsi:type="setup:VariableTask"
+      disabled="true"
       name="code.sei.remoteURIs"
       label="Bitbucket repository">
     <choice
@@ -50,17 +51,17 @@
       xsi:type="git:GitCloneTask"
       id="git.clone.contract-annex"
       filter=""
-      remoteURI="etmac/contract-annex"
+      remoteURI="osate/contract-annex"
       pushURI="">
     <annotation
         source="http://www.eclipse.org/oomph/setup/InducedChoices">
       <detail
           key="inherit">
-        <value>code.sei.remoteURIs</value>
+        <value>github.remoteURIs</value>
       </detail>
       <detail
           key="label">
-        <value>OSATE2 Github repository</value>
+        <value>Contract annex Github repository</value>
       </detail>
       <detail
           key="target">
@@ -105,12 +106,12 @@
     </workingSet>
     <description>The dynamic working sets for ${scope.project.label}</description>
   </setupTask>
-  <stream name="master"
-      label="Master">
+  <stream name="main"
+      label="Main">
     <setupTask
         xsi:type="setup:EclipseIniTask"
         option="-Doomph.redirection.contract-annex"
-        value="=https://code.sei.cmu.edu/bitbucket/projects/ETMAC/repos/contract-annex/raw/contract-annex.setup?at=refs/heads/master->${git.clone.contract-annex.location|uri}/contract-annex.setup"
+        value="=https://raw.githubusercontent.com/osate/contract-annex/main/contract-annex.setup->${git.clone.contract-annex.location|uri}/contract-annex.setup"
         vm="true">
       <description></description>
     </setupTask>
@@ -118,5 +119,5 @@
   <logicalProjectContainer
       xsi:type="setup:ProjectCatalog"
       href="index:/org.eclipse.setup#//@projectCatalogs[name='com.github']"/>
-  <description>ETMAC project: Contract annex</description>
+  <description>Contract Annex</description>
 </setup:Project>

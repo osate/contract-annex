@@ -25,7 +25,7 @@
  *******************************************************************************/
 package org.osate.contract.typing;
 
-public final class InstanceObjectType implements Type {
+public final class InstanceObjectType implements PropertyLookupSupportedType {
 	public static final InstanceObjectType INSTANCE = new InstanceObjectType();
 
 	private InstanceObjectType() {
