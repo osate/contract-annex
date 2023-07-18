@@ -41,7 +41,8 @@ public class ContractAnnexUnparser implements AnnexUnparser {
 
 	public ContractAnnexUnparser() {
 		Injector injector = IResourceServiceProvider.Registry.INSTANCE
-				.getResourceServiceProvider(URI.createFileURI("dummy.contract")).get(Injector.class);
+				.getResourceServiceProvider(URI.createFileURI("dummy.contract"))
+				.get(Injector.class);
 		injector.injectMembers(this);
 	}
 

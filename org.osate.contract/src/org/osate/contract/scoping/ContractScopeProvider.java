@@ -228,7 +228,6 @@ public class ContractScopeProvider extends AbstractContractScopeProvider {
 				}
 			};
 
-
 			@Override
 			public Iterable<IEObjectDescription> getAllElements() {
 				return Iterables.transform(delegate.getAllElements(), filter);

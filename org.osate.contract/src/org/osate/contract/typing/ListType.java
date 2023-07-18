@@ -87,7 +87,7 @@ public final class ListType implements Type {
 	}
 
 	private static List<?> filter(List<?> receiver, Function<Object, Object> evaluateLambda) {
-		var result = new ArrayList<Object>();
+		var result = new ArrayList<>();
 		for (var element : receiver) {
 			var lambdaResult = (Boolean) evaluateLambda.apply(element);
 			if (lambdaResult) {
@@ -98,7 +98,7 @@ public final class ListType implements Type {
 	}
 
 	private static List<?> map(List<?> receiver, Function<Object, Object> evaluateLambda) {
-		var result = new ArrayList<Object>();
+		var result = new ArrayList<>();
 		for (var element : receiver) {
 			var lambdaResult = evaluateLambda.apply(element);
 			result.add(lambdaResult);
