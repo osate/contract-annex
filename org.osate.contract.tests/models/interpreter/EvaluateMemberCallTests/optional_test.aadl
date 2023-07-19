@@ -34,6 +34,8 @@ public
 					.map { (first, second) -> second };
 				val v4 = self#Transmission_Time.flatMap { property -> property.get(Fixed) };
 				val v5 = self#Transmission_Time.flatMap { property -> property.get(PerByte) };
+				val v6 = self#Data_Rate.isEmpty
+				val v7 = self#Latency.isEmpty
 		}
 	**};
 	
