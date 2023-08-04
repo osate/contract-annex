@@ -58,6 +58,10 @@ public class PythonHelper {
 		return INSTANCE;
 	}
 
+	public InstanceObjectIDMapper getInstanceObjectMapper() {
+		return ioid;
+	}
+
 	private PythonHelper() {
 	}
 

@@ -47,10 +47,22 @@ public class ScriptRunner {
 			}
 			ScriptResult sresult = engine.execute(pyCode);
 			engine.schedule();
-			String o = sresult.toString();
-			var res = o.trim().equalsIgnoreCase("true");
+			String o = sresult.toString().trim();
+			String boolRes = o;
+			String msg = o;
+			var res = boolRes.toLowerCase().startsWith("true");
+
+			if (!res) {
+				System.out.println("Error Explanations: " + msg);
+				ExperimentalErrorParser errorParser = ExperimentalErrorParser.getParser();
+				errorParser.markErrors(msg);
+			} else {
+				ExperimentalErrorParser errorParser = ExperimentalErrorParser.getParser();
+				errorParser.markInfo(msg);
+			}
 
 			System.out.println("Result is " + res);
+			System.out.println("msg: " + msg);
 			return res;
 		}
 		return null;
