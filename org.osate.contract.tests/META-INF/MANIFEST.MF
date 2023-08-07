@@ -12,6 +12,7 @@ Require-Bundle: org.osate.contract,
  org.osate.testsupport;bundle-version="3.1.0",
  org.osate.pluginsupport;bundle-version="7.2.1",
  org.osate.aadl2.instantiation,
- org.eclipse.xsemantics.runtime
+ org.eclipse.xsemantics.runtime,
+ org.osate.aadl2.errormodel.instance
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.osate.contract.tests;x-internal=true

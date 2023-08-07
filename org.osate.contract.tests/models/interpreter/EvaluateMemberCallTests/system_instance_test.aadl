@@ -61,6 +61,7 @@ public
 				val v31 = root.isThreadGroup;
 				val v32 = root.isVirtualBus;
 				val v33 = root.isVirtualProcessor;
+				val v34 = root.states;
 		}
 	**};
 	
@@ -73,6 +74,9 @@ public
 			outer_m1: initial mode;
 			outer_m2: mode;
 			outer_transition1: outer_m1 -[ep1]-> outer_m2;
+		annex EMV2 {**
+			use behavior system_instance_test::machine1;
+		**};
 	end s;
 	
 	system implementation s.i
@@ -166,4 +170,12 @@ public
 	
 	system s3
 	end s3;
+	
+	annex EMV2 {**
+		error behavior machine1
+			states
+				state1: initial state;
+				state2: state;
+		end behavior;
+	**};
 end system_instance_test;

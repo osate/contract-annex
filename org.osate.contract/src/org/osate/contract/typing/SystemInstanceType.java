@@ -26,11 +26,14 @@
 package org.osate.contract.typing;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.osate.aadl2.ComponentCategory;
+import org.osate.aadl2.errormodel.instance.EMV2AnnexInstance;
+import org.osate.aadl2.errormodel.instance.StateInstance;
 import org.osate.aadl2.instance.ComponentInstance;
 import org.osate.aadl2.instance.ConnectionInstance;
 import org.osate.aadl2.instance.EndToEndFlowInstance;
@@ -106,6 +109,8 @@ public final class SystemInstanceType implements PropertyLookupSupportedType {
 				new SimpleMember(BooleanType.INSTANCE, receiver -> isVirtualBus((SystemInstance) receiver)));
 		MEMBERS.put("isVirtualProcessor",
 				new SimpleMember(BooleanType.INSTANCE, receiver -> isVirtualProcessor((SystemInstance) receiver)));
+		MEMBERS.put("states", new SimpleMember(new ListType(StateInstanceType.INSTANCE),
+				receiver -> states((SystemInstance) receiver)));
 	}
 
 	private SystemInstanceType() {
@@ -285,5 +290,14 @@ public final class SystemInstanceType implements PropertyLookupSupportedType {
 
 	private static Boolean isVirtualProcessor(SystemInstance receiver) {
 		return receiver.getCategory() == ComponentCategory.VIRTUAL_PROCESSOR;
+	}
+
+	private static List<StateInstance> states(SystemInstance receiver) {
+		for (var annexInstance : receiver.getAnnexInstances()) {
+			if (annexInstance instanceof EMV2AnnexInstance emv2AnnexInstance) {
+				return emv2AnnexInstance.getStates();
+			}
+		}
+		return Collections.emptyList();
 	}
 }

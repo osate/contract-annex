@@ -60,6 +60,7 @@ public
 				val v31 = self.isVirtualBus;
 				val v32 = self.isVirtualProcessor;
 				val v33 = self.processorBindingSources;
+				val v34 = self.states;
 		}
 	**};
 end component_instance_test;
