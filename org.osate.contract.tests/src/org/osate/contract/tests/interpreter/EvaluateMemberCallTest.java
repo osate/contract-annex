@@ -39,6 +39,7 @@ import org.eclipse.xsemantics.runtime.RuleEnvironment;
 import org.eclipse.xsemantics.runtime.RuleEnvironmentEntry;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
+import org.eclipse.xtext.testing.validation.ValidationTestHelper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.osate.aadl2.AadlPackage;
@@ -83,10 +84,14 @@ public class EvaluateMemberCallTest {
 	@Inject
 	private ContractInterpreter interpreter;
 
+	@Inject
+	private ValidationTestHelper validationHelper;
+
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testComponentInstance() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "component_instance_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
@@ -295,6 +300,7 @@ public class EvaluateMemberCallTest {
 	@Test
 	public void testComponentInstanceInModesAndParentTest() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "component_instance_in_modes_and_parent_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var subcomponent = systemInstance.getComponentInstances().get(0);
@@ -320,6 +326,7 @@ public class EvaluateMemberCallTest {
 	@Test
 	public void testComponentInstanceBindingTest() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "component_instance_binding_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
@@ -342,6 +349,7 @@ public class EvaluateMemberCallTest {
 	@Test
 	public void testSystemInstance() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "system_instance_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var subcomponent = systemInstance.getComponentInstances().get(0);
@@ -552,6 +560,7 @@ public class EvaluateMemberCallTest {
 	@Test
 	public void testList() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "list_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
@@ -632,6 +641,7 @@ public class EvaluateMemberCallTest {
 	@Test
 	public void testOptional() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "optional_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
@@ -680,6 +690,7 @@ public class EvaluateMemberCallTest {
 	@Test
 	public void testLongWithUnits() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "long_with_units_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
@@ -698,6 +709,7 @@ public class EvaluateMemberCallTest {
 	@Test
 	public void testLongRange() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "long_range_test.aadl", PATH + "ps.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
@@ -731,6 +743,7 @@ public class EvaluateMemberCallTest {
 	@Test
 	public void testLongRangeWithUnits() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "long_range_with_units_test.aadl", PATH + "ps.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
@@ -765,6 +778,7 @@ public class EvaluateMemberCallTest {
 	@Test
 	public void testDoubleRange() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "double_range_test.aadl", PATH + "ps.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
@@ -798,6 +812,7 @@ public class EvaluateMemberCallTest {
 	@Test
 	public void testDoubleRangeWithUnits() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "double_range_with_units_test.aadl", PATH + "ps.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
@@ -831,6 +846,7 @@ public class EvaluateMemberCallTest {
 	@Test
 	public void testRecord() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "record_test.aadl", PATH + "ps.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
@@ -934,6 +950,7 @@ public class EvaluateMemberCallTest {
 	@Test
 	public void testEndToEndFlowInstance() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "end_to_end_flow_instance_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));

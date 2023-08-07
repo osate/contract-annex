@@ -30,6 +30,7 @@ import static org.osate.pluginsupport.ScopeFunctions.with;
 
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
+import org.eclipse.xtext.testing.validation.ValidationTestHelper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.osate.aadl2.AadlPackage;
@@ -53,9 +54,13 @@ public class PropertyLookupTest {
 	@Inject
 	private ContractTypeSystem typeSystem;
 
+	@Inject
+	private ValidationTestHelper validationHelper;
+
 	@Test
 	public void testSupportedTypes() {
 		var pkg = testHelper.parseFile(PATH + "supported_types_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
@@ -81,6 +86,7 @@ public class PropertyLookupTest {
 	@Test
 	public void testPropertyTypes() {
 		var pkg = testHelper.parseFile(PATH + "property_types_test.aadl", PATH + "ps.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);

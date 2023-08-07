@@ -30,6 +30,7 @@ import static org.osate.pluginsupport.ScopeFunctions.with;
 
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
+import org.eclipse.xtext.testing.validation.ValidationTestHelper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.osate.aadl2.AadlPackage;
@@ -54,9 +55,13 @@ public class MemberCallTest {
 	@Inject
 	private ContractTypeSystem typeSystem;
 
+	@Inject
+	private ValidationTestHelper validationHelper;
+
 	@Test
 	public void testComponentInstanceMembers() {
 		var pkg = testHelper.parseFile(PATH + "component_instance_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
@@ -202,6 +207,7 @@ public class MemberCallTest {
 	@Test
 	public void testSystemInstanceMembers() {
 		var pkg = testHelper.parseFile(PATH + "system_instance_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
@@ -339,6 +345,7 @@ public class MemberCallTest {
 	@Test
 	public void testListMembers() {
 		var pkg = testHelper.parseFile(PATH + "list_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
@@ -384,6 +391,7 @@ public class MemberCallTest {
 	@Test
 	public void testOptionalMembers() {
 		var pkg = testHelper.parseFile(PATH + "optional_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
@@ -405,6 +413,7 @@ public class MemberCallTest {
 	@Test
 	public void testLongWithUnitsMembers() {
 		var pkg = testHelper.parseFile(PATH + "long_with_units_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
@@ -419,6 +428,7 @@ public class MemberCallTest {
 	@Test
 	public void testLongRangeMembers() {
 		var pkg = testHelper.parseFile(PATH + "long_range_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
@@ -443,6 +453,7 @@ public class MemberCallTest {
 	@Test
 	public void testLongRangeWithUnitsMembers() {
 		var pkg = testHelper.parseFile(PATH + "long_range_with_units_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
@@ -467,6 +478,7 @@ public class MemberCallTest {
 	@Test
 	public void testDoubleRangeMembers() {
 		var pkg = testHelper.parseFile(PATH + "double_range_test.aadl", PATH + "ps.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
@@ -491,6 +503,7 @@ public class MemberCallTest {
 	@Test
 	public void testDoubleRangeWithUnitsMembers() {
 		var pkg = testHelper.parseFile(PATH + "double_range_with_units_test.aadl", PATH + "ps.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
@@ -515,6 +528,7 @@ public class MemberCallTest {
 	@Test
 	public void testRecordMembers() {
 		var pkg = testHelper.parseFile(PATH + "record_test.aadl", PATH + "ps.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
@@ -599,6 +613,7 @@ public class MemberCallTest {
 	@Test
 	public void testEndToEndFlowInstanceMembers() {
 		var pkg = testHelper.parseFile(PATH + "end_to_end_flow_instance_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);

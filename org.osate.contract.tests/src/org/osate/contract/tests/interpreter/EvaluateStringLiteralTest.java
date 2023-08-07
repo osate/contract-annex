@@ -6,6 +6,7 @@ import org.eclipse.xsemantics.runtime.RuleEnvironment;
 import org.eclipse.xsemantics.runtime.RuleEnvironmentEntry;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
+import org.eclipse.xtext.testing.validation.ValidationTestHelper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.osate.aadl2.AadlPackage;
@@ -31,9 +32,13 @@ public class EvaluateStringLiteralTest {
 	@Inject
 	private ContractInterpreter interpreter;
 
+	@Inject
+	private ValidationTestHelper validationHelper;
+
 	@Test
 	public void testStringLiteral() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "string_literal_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
