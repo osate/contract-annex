@@ -1,0 +1,9 @@
+package state_instance_test
+public
+	annex contract {**
+		contract StateInstanceTest {
+			queries
+				val v1 = self.states.map { state -> state.name };
+		}
+	**};
+end state_instance_test;
