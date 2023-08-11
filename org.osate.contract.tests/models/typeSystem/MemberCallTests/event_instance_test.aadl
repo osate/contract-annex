@@ -1,0 +1,9 @@
+package event_instance_test
+public
+	annex contract {**
+		contract EventInstanceTest {
+			queries
+				val v1 = self.events.map { event -> event.name };
+		}
+	**};
+end event_instance_test;
