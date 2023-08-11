@@ -64,7 +64,7 @@ public class PropertyLookupTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(4, contract.getQueries().size());
+		assertEquals(5, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
 			assertEquals("Boolean?", type.toString());
@@ -80,6 +80,10 @@ public class PropertyLookupTest {
 		with(contract.getQueries().get(3), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
 			assertEquals("Boolean?", type.toString());
+		});
+		with(contract.getQueries().get(4), query -> {
+			var type = typeSystem.expressionType(query.getValue()).getValue();
+			assertEquals("List<Enumeration<EMV2::StateKindEnum>?>", type.toString());
 		});
 	}
 

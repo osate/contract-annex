@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.osate.aadl2.errormodel.instance.StateInstance;
 
-public final class StateInstanceType implements Type {
+public final class StateInstanceType implements PropertyLookupSupportedType {
 	public static final StateInstanceType INSTANCE = new StateInstanceType();
 	private static final Map<String, Member> MEMBERS;
 
