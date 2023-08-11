@@ -59,6 +59,7 @@ public
 				val v30 = root.isVirtualBus;
 				val v31 = root.isVirtualProcessor;
 				val v32 = root.states;
+				val v33 = root.events;
 		}
 	**};
 end system_instance_test;

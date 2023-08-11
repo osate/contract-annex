@@ -52,6 +52,7 @@ import org.osate.aadl2.RealLiteral;
 import org.osate.aadl2.StringLiteral;
 import org.osate.aadl2.SystemImplementation;
 import org.osate.aadl2.SystemType;
+import org.osate.aadl2.errormodel.instance.EventInstance;
 import org.osate.aadl2.errormodel.instance.StateInstance;
 import org.osate.aadl2.instance.ComponentInstance;
 import org.osate.aadl2.instance.ConnectionInstance;
@@ -98,7 +99,7 @@ public class EvaluateMemberCallTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(34, contract.getQueries().size());
+		assertEquals(35, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
@@ -294,6 +295,12 @@ public class EvaluateMemberCallTest {
 			assertIterableEquals(List.of("state1", "state2"),
 					((List<StateInstance>) result.get("v34")).stream().map(NamedElement::getName).toList());
 		});
+		with(contract.getQueries().get(34), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertIterableEquals(List.of("event1", "event2"),
+					((List<EventInstance>) result.get("v35")).stream().map(NamedElement::getName).toList());
+		});
 	}
 
 	@SuppressWarnings("unchecked")
@@ -357,7 +364,7 @@ public class EvaluateMemberCallTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(34, contract.getQueries().size());
+		assertEquals(35, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
@@ -553,6 +560,12 @@ public class EvaluateMemberCallTest {
 			assertEquals(1, result.size());
 			assertIterableEquals(List.of("state1", "state2"),
 					((List<StateInstance>) result.get("v34")).stream().map(NamedElement::getName).toList());
+		});
+		with(contract.getQueries().get(34), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertIterableEquals(List.of("event1", "event2"),
+					((List<EventInstance>) result.get("v35")).stream().map(NamedElement::getName).toList());
 		});
 	}
 

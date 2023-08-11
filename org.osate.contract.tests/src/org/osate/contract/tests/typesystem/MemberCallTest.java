@@ -65,7 +65,7 @@ public class MemberCallTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(34, contract.getQueries().size());
+		assertEquals(35, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
 			assertEquals("String", type.toString());
@@ -202,6 +202,10 @@ public class MemberCallTest {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
 			assertEquals("List<StateInstance>", type.toString());
 		});
+		with(contract.getQueries().get(34), query -> {
+			var type = typeSystem.expressionType(query.getValue()).getValue();
+			assertEquals("List<EventInstance>", type.toString());
+		});
 	}
 
 	@Test
@@ -211,7 +215,7 @@ public class MemberCallTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(32, contract.getQueries().size());
+		assertEquals(33, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
 			assertEquals("String", type.toString());
@@ -339,6 +343,10 @@ public class MemberCallTest {
 		with(contract.getQueries().get(31), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
 			assertEquals("List<StateInstance>", type.toString());
+		});
+		with(contract.getQueries().get(32), query -> {
+			var type = typeSystem.expressionType(query.getValue()).getValue();
+			assertEquals("List<EventInstance>", type.toString());
 		});
 	}
 

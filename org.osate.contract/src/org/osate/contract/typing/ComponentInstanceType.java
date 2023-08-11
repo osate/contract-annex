@@ -35,6 +35,7 @@ import java.util.Optional;
 import org.osate.aadl2.ComponentCategory;
 import org.osate.aadl2.contrib.deployment.DeploymentProperties;
 import org.osate.aadl2.errormodel.instance.EMV2AnnexInstance;
+import org.osate.aadl2.errormodel.instance.EventInstance;
 import org.osate.aadl2.errormodel.instance.StateInstance;
 import org.osate.aadl2.instance.ComponentInstance;
 import org.osate.aadl2.instance.ConnectionInstance;
@@ -115,6 +116,8 @@ public final class ComponentInstanceType implements PropertyLookupSupportedType 
 				receiver -> processorBindingSources((ComponentInstance) receiver)));
 		MEMBERS.put("states", new SimpleMember(new ListType(StateInstanceType.INSTANCE),
 				receiver -> states((ComponentInstance) receiver)));
+		MEMBERS.put("events", new SimpleMember(new ListType(EventInstanceType.INSTANCE),
+				receiver -> events((ComponentInstance) receiver)));
 	}
 
 	private ComponentInstanceType() {
@@ -324,6 +327,15 @@ public final class ComponentInstanceType implements PropertyLookupSupportedType 
 		for (var annexInstance : receiver.getAnnexInstances()) {
 			if (annexInstance instanceof EMV2AnnexInstance emv2AnnexInstance) {
 				return emv2AnnexInstance.getStates();
+			}
+		}
+		return Collections.emptyList();
+	}
+
+	private static List<EventInstance> events(ComponentInstance receiver) {
+		for (var annexInstance : receiver.getAnnexInstances()) {
+			if (annexInstance instanceof EMV2AnnexInstance emv2AnnexInstance) {
+				return emv2AnnexInstance.getEvents();
 			}
 		}
 		return Collections.emptyList();

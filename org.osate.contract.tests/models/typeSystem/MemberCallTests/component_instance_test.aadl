@@ -61,6 +61,7 @@ public
 				val v32 = self.isVirtualProcessor;
 				val v33 = self.processorBindingSources;
 				val v34 = self.states;
+				val v35 = self.events;
 		}
 	**};
 end component_instance_test;

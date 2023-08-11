@@ -61,6 +61,7 @@ public
 				val v32 = self.isVirtualBus;
 				val v33 = self.isVirtualProcessor;
 				val v34 = self.states;
+				val v35 = self.events;
 		}
 	**};
 	
@@ -75,6 +76,12 @@ public
 			outer_transition1: outer_m1 -[ep1]-> outer_m2;
 		annex EMV2 {**
 			use behavior component_instance_test::machine1;
+			
+			component error behavior
+				events
+					event1: error event;
+					event2: error event;
+			end component;
 		**};
 	end s;
 	
