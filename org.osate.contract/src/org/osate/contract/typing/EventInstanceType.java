@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.osate.aadl2.errormodel.instance.EventInstance;
 
-public final class EventInstanceType implements Type {
+public final class EventInstanceType implements PropertyLookupSupportedType {
 	public static final EventInstanceType INSTANCE = new EventInstanceType();
 	private static final Map<String, Member> MEMBERS;
 

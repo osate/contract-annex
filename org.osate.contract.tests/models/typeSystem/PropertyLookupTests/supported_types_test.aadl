@@ -32,6 +32,7 @@ public
 				val v3 = self.endToEndFlows.map { flow -> flow#Latency };
 				val v4 = self#Reference_Time.flatMap { reference_time -> reference_time#Required_Connection };
 				val v5 = self.states.map { state -> state#EMV2::StateKind };
+				val v6 = self.events.map { event -> event#EMV2::ExposurePeriod };
 		}
 	**};
 end supported_types_test;
