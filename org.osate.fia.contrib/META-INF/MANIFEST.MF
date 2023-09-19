@@ -3,9 +3,9 @@ Bundle-ManifestVersion: 2
 Bundle-Name: FIA and Property Set Contributions
 Bundle-SymbolicName: org.osate.fia.contrib;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Require-Bundle: org.osate.aadl2;bundle-version="5.0.0",
- org.osate.aadl2.errormodel.instance;bundle-version="2.0.0",
- org.osate.slicer;bundle-version="0.1.0",
+Require-Bundle: org.osate.aadl2,
+ org.osate.aadl2.errormodel.instance,
+ org.osate.slicer;bundle-version="0.1.0";resolution:=optional,
  org.osate.ui,
  org.osate.aadl2.modelsupport,
  org.osate.pluginsupport
