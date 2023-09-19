@@ -39,6 +39,7 @@ import org.eclipse.xsemantics.runtime.RuleEnvironment;
 import org.eclipse.xsemantics.runtime.RuleEnvironmentEntry;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
+import org.eclipse.xtext.testing.validation.ValidationTestHelper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.osate.aadl2.AadlPackage;
@@ -51,6 +52,8 @@ import org.osate.aadl2.RealLiteral;
 import org.osate.aadl2.StringLiteral;
 import org.osate.aadl2.SystemImplementation;
 import org.osate.aadl2.SystemType;
+import org.osate.aadl2.errormodel.instance.EventInstance;
+import org.osate.aadl2.errormodel.instance.StateInstance;
 import org.osate.aadl2.instance.ComponentInstance;
 import org.osate.aadl2.instance.ConnectionInstance;
 import org.osate.aadl2.instance.EndToEndFlowInstance;
@@ -82,17 +85,21 @@ public class EvaluateMemberCallTest {
 	@Inject
 	private ContractInterpreter interpreter;
 
+	@Inject
+	private ValidationTestHelper validationHelper;
+
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testComponentInstance() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "component_instance_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(33, contract.getQueries().size());
+		assertEquals(35, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
@@ -282,12 +289,25 @@ public class EvaluateMemberCallTest {
 			assertEquals(1, result.size());
 			assertFalse((Boolean) result.get("v33"));
 		});
+		with(contract.getQueries().get(33), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertIterableEquals(List.of("state1", "state2"),
+					((List<StateInstance>) result.get("v34")).stream().map(NamedElement::getName).toList());
+		});
+		with(contract.getQueries().get(34), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertIterableEquals(List.of("event1", "event2"),
+					((List<EventInstance>) result.get("v35")).stream().map(NamedElement::getName).toList());
+		});
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testComponentInstanceInModesAndParentTest() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "component_instance_in_modes_and_parent_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var subcomponent = systemInstance.getComponentInstances().get(0);
@@ -313,6 +333,7 @@ public class EvaluateMemberCallTest {
 	@Test
 	public void testComponentInstanceBindingTest() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "component_instance_binding_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
@@ -335,6 +356,7 @@ public class EvaluateMemberCallTest {
 	@Test
 	public void testSystemInstance() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "system_instance_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var subcomponent = systemInstance.getComponentInstances().get(0);
@@ -342,7 +364,7 @@ public class EvaluateMemberCallTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(33, contract.getQueries().size());
+		assertEquals(35, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
@@ -533,12 +555,25 @@ public class EvaluateMemberCallTest {
 			assertEquals(1, result.size());
 			assertFalse((Boolean) result.get("v33"));
 		});
+		with(contract.getQueries().get(33), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertIterableEquals(List.of("state1", "state2"),
+					((List<StateInstance>) result.get("v34")).stream().map(NamedElement::getName).toList());
+		});
+		with(contract.getQueries().get(34), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertIterableEquals(List.of("event1", "event2"),
+					((List<EventInstance>) result.get("v35")).stream().map(NamedElement::getName).toList());
+		});
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testList() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "list_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
@@ -619,13 +654,14 @@ public class EvaluateMemberCallTest {
 	@Test
 	public void testOptional() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "optional_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(5, contract.getQueries().size());
+		assertEquals(7, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
@@ -651,12 +687,23 @@ public class EvaluateMemberCallTest {
 			assertEquals(1, result.size());
 			assertEquals(Optional.empty(), result.get("v5"));
 		});
+		with(contract.getQueries().get(5), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertEquals(false, result.get("v6"));
+		});
+		with(contract.getQueries().get(6), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertEquals(true, result.get("v7"));
+		});
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testLongWithUnits() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "long_with_units_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
@@ -675,6 +722,7 @@ public class EvaluateMemberCallTest {
 	@Test
 	public void testLongRange() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "long_range_test.aadl", PATH + "ps.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
@@ -708,6 +756,7 @@ public class EvaluateMemberCallTest {
 	@Test
 	public void testLongRangeWithUnits() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "long_range_with_units_test.aadl", PATH + "ps.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
@@ -742,6 +791,7 @@ public class EvaluateMemberCallTest {
 	@Test
 	public void testDoubleRange() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "double_range_test.aadl", PATH + "ps.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
@@ -775,6 +825,7 @@ public class EvaluateMemberCallTest {
 	@Test
 	public void testDoubleRangeWithUnits() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "double_range_with_units_test.aadl", PATH + "ps.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
@@ -808,6 +859,7 @@ public class EvaluateMemberCallTest {
 	@Test
 	public void testRecord() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "record_test.aadl", PATH + "ps.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
@@ -911,6 +963,7 @@ public class EvaluateMemberCallTest {
 	@Test
 	public void testEndToEndFlowInstance() throws Exception {
 		var pkg = testHelper.parseFile(PATH + "end_to_end_flow_instance_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
@@ -954,6 +1007,44 @@ public class EvaluateMemberCallTest {
 			assertIterableEquals(List.of("d", "middle"), value.get(2).stream().map(NamedElement::getName).toList());
 			assertIterableEquals(List.of("d", "middle", "right"),
 					value.get(3).stream().map(NamedElement::getName).toList());
+		});
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testStateInstance() throws Exception {
+		var pkg = testHelper.parseFile(PATH + "state_instance_test.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
+		var systemInstance = InstantiateModel.instantiate(system);
+		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var contract = (Contract) contractLibrary.getContractElements().get(0);
+		assertEquals(1, contract.getQueries().size());
+		with(contract.getQueries().get(0), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertIterableEquals(List.of("state1", "state2"), (List<String>) result.get("v1"));
+		});
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testEventInstance() throws Exception {
+		var pkg = testHelper.parseFile(PATH + "event_instance_test.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
+		var systemInstance = InstantiateModel.instantiate(system);
+		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var contract = (Contract) contractLibrary.getContractElements().get(0);
+		assertEquals(1, contract.getQueries().size());
+		with(contract.getQueries().get(0), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertIterableEquals(List.of("event1", "event2"), (List<String>) result.get("v1"));
 		});
 	}
 }

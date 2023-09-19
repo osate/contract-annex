@@ -5,6 +5,7 @@ import static org.osate.pluginsupport.ScopeFunctions.with;
 
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
+import org.eclipse.xtext.testing.validation.ValidationTestHelper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.osate.aadl2.AadlPackage;
@@ -28,9 +29,13 @@ public class StringLiteralTest {
 	@Inject
 	private ContractTypeSystem typeSystem;
 
+	@Inject
+	private ValidationTestHelper validationHelper;
+
 	@Test
 	public void testStringLiteral() {
 		var pkg = testHelper.parseFile(PATH + "string_literal_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);

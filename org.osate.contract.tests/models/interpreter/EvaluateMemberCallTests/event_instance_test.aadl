@@ -1,0 +1,22 @@
+package event_instance_test
+public
+	annex contract {**
+		contract eventInstanceTest {
+			queries
+				val v1 = self.events.map { event -> event.name };
+		}
+	**};
+	
+	system s
+		annex EMV2 {**
+			component error behavior
+				events
+					event1: error event;
+					event2: error event;
+			end component;
+		**};
+	end s;
+	
+	system implementation s.i
+	end s.i;
+end event_instance_test;

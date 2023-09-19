@@ -60,6 +60,8 @@ public
 				val v31 = self.isThreadGroup;
 				val v32 = self.isVirtualBus;
 				val v33 = self.isVirtualProcessor;
+				val v34 = self.states;
+				val v35 = self.events;
 		}
 	**};
 	
@@ -72,6 +74,15 @@ public
 			outer_m1: initial mode;
 			outer_m2: mode;
 			outer_transition1: outer_m1 -[ep1]-> outer_m2;
+		annex EMV2 {**
+			use behavior component_instance_test::machine1;
+			
+			component error behavior
+				events
+					event1: error event;
+					event2: error event;
+			end component;
+		**};
 	end s;
 	
 	system implementation s.i
@@ -151,4 +162,12 @@ public
 	
 	data d
 	end d;
+	
+	annex EMV2 {**
+		error behavior machine1
+			states
+				state1: initial state;
+				state2: state;
+		end behavior;
+	**};
 end component_instance_test;

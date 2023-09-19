@@ -1,0 +1,26 @@
+package state_instance_test
+public
+	annex contract {**
+		contract stateInstanceTest {
+			queries
+				val v1 = self.states.map { state -> state.name };
+		}
+	**};
+	
+	system s
+		annex EMV2 {**
+			use behavior state_instance_test::machine1;
+		**};
+	end s;
+	
+	system implementation s.i
+	end s.i;
+	
+	annex EMV2 {**
+		error behavior machine1
+			states
+				state1: initial state;
+				state2: state;
+		end behavior;
+	**};
+end state_instance_test;

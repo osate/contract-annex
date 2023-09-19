@@ -38,6 +38,7 @@ public final class OptionalType implements Type {
 		this.elementType = elementType;
 
 		members = new LinkedHashMap<>();
+		members.put("isEmpty", new SimpleMember(BooleanType.INSTANCE, receiver -> isEmpty((Optional<?>) receiver)));
 		members.put("map",
 				new MemberWithLambda(elementType, lambdaReturnType -> Optional.empty(),
 						lambdaType -> lambdaType != null ? new OptionalType(lambdaType) : null,
@@ -64,6 +65,10 @@ public final class OptionalType implements Type {
 		return elementType + "?";
 	}
 
+	private static Boolean isEmpty(Optional<?> receiver) {
+		return receiver.isEmpty();
+	}
+
 	private static Optional<?> map(Optional<?> receiver, Function<Object, Object> evaluateLambda) {
 		return receiver.map(evaluateLambda);
 	}
@@ -71,4 +76,5 @@ public final class OptionalType implements Type {
 	private static Optional<?> flatMap(Optional<?> receiver, Function<Object, Object> evaluateLambda) {
 		return receiver.flatMap(value -> (Optional<?>) evaluateLambda.apply(value));
 	}
+
 }

@@ -166,7 +166,9 @@ checkrule CheckOrExpression for
 from {
 	empty |- expression.left : var Type leftType
 	empty |- expression.right : var Type rightType
-	if (!(leftType instanceof BooleanType) || !(rightType instanceof BooleanType)) {
+	if (leftType !== null && rightType !== null &&
+		(!(leftType instanceof BooleanType) || !(rightType instanceof BooleanType))
+	) {
 		fail
 			error "The operator || is undefined for the argument types " + leftType + ", " + rightType
 			source expression
@@ -178,7 +180,9 @@ checkrule CheckAndExpression for
 from {
 	empty |- expression.left : var Type leftType
 	empty |- expression.right : var Type rightType
-	if (!(leftType instanceof BooleanType) || !(rightType instanceof BooleanType)) {
+	if (leftType !== null && rightType !== null &&
+		(!(leftType instanceof BooleanType) || !(rightType instanceof BooleanType))
+	) {
 		fail
 			error "The operator && is undefined for the argument types " + leftType + ", " + rightType
 			source expression
@@ -189,7 +193,7 @@ checkrule CheckNotExpression for
 	NotExpression expression
 from {
 	empty |- expression.operand : var Type operandType
-	if (!(operandType instanceof BooleanType)) {
+	if (operandType !== null && !(operandType instanceof BooleanType)) {
 		fail
 			error "The operator ! is undefined for the argument type " + operandType
 			source expression

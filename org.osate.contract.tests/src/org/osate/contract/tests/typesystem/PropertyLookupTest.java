@@ -30,6 +30,7 @@ import static org.osate.pluginsupport.ScopeFunctions.with;
 
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
+import org.eclipse.xtext.testing.validation.ValidationTestHelper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.osate.aadl2.AadlPackage;
@@ -53,13 +54,17 @@ public class PropertyLookupTest {
 	@Inject
 	private ContractTypeSystem typeSystem;
 
+	@Inject
+	private ValidationTestHelper validationHelper;
+
 	@Test
 	public void testSupportedTypes() {
 		var pkg = testHelper.parseFile(PATH + "supported_types_test.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(4, contract.getQueries().size());
+		assertEquals(6, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
 			assertEquals("Boolean?", type.toString());
@@ -76,11 +81,20 @@ public class PropertyLookupTest {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
 			assertEquals("Boolean?", type.toString());
 		});
+		with(contract.getQueries().get(4), query -> {
+			var type = typeSystem.expressionType(query.getValue()).getValue();
+			assertEquals("List<Enumeration<EMV2::StateKindEnum>?>", type.toString());
+		});
+		with(contract.getQueries().get(5), query -> {
+			var type = typeSystem.expressionType(query.getValue()).getValue();
+			assertEquals("List<Double?>", type.toString());
+		});
 	}
 
 	@Test
 	public void testPropertyTypes() {
 		var pkg = testHelper.parseFile(PATH + "property_types_test.aadl", PATH + "ps.aadl");
+		validationHelper.assertNoIssues(pkg);
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
