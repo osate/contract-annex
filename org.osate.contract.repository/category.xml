@@ -24,14 +24,14 @@
     contributors and others.
     DM23-0575
  -->
-
 <site>
-	<feature id="org.osate.contract.feature" version="0.0.0">
-		<category name="main"/>
-	</feature>
-	<feature id="org.osate.contract.feature.source" version="0.0.0">
-		<category name="main.source"/>
-	</feature>
-	<category-def name="main" label="Contract"/>
-	<category-def name="main.source" label="Contract (Sources)"/>
+   <feature id="org.osate.contract.feature" version="0.0.0">
+      <category name="main"/>
+   </feature>
+   <feature id="org.osate.contract.feature.source" version="0.0.0">
+      <category name="main.source"/>
+   </feature>
+   <bundle id="org.osate.slicer"/>
+   <category-def name="main" label="Contract"/>
+   <category-def name="main.source" label="Contract (Sources)"/>
 </site>
