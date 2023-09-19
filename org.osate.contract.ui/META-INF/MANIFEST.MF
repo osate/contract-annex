@@ -16,7 +16,7 @@ Require-Bundle: org.osate.contract,
  org.eclipse.ui,
  org.eclipse.compare,
  org.eclipse.xtext.builder,
- org.eclipse.xsemantics.runtime;bundle-version="1.22.0",
+ org.eclipse.xsemantics.runtime,
  org.osate.aadl2;bundle-version="5.0.0",
  org.osate.xtext.aadl2.properties.ui
 Import-Package: org.apache.log4j
