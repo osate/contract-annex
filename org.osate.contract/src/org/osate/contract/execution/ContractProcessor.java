@@ -158,12 +158,14 @@ public class ContractProcessor {
 		pyBuilder.outdent();
 		pyBuilder.addCode("""
 				    if s.check() == sat:
-				        return True
-				    print(s.unsat_core())
-				    return False
+				        return \"True,\"+info0[0]
+				    #print(s.unsat_core())
+				    #return False
+				    return \"False,\"+str(s.unsat_core())
 
 				""");
 		pyBuilder.addCode("""
+				info0 = [\"\"]
 				execute%s()
 				""".formatted(plan.getName()));
 	}
