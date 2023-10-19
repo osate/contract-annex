@@ -306,7 +306,7 @@ The second lambda in the above example has the parameter `thread` which has the 
 returns a `String`, which is the name of the thread. The function `map` uses this lambda to convert a list of threads to
 a list of thread names.
 
-Lambdas must end with an expression representing the return value of the lambda. However, it is possible for lambda's to
+Lambdas must end with an expression representing the return value of the lambda. However, it is possible for lambdas to
 include other val statements which can be used to create the return value. This is an example of a lambda that contains
 val statements:
 
@@ -370,51 +370,238 @@ In this case, hovering over the function `map` will show the text "`List<Compone
 
 #### Boolean
 
+The `Boolean` type is backed by the Java type `java.lang.Boolean` and has no members.
+
 #### Classifier
+
+The `Classifier` type is backed by the Java type `org.osate.aadl2.Classifier` and has no members.
 
 #### ComponentCategory
 
+The `ComponentCategory` type is backed by the Java type `org.osate.aadl2.ComponentCategory` and has no members.
+
 #### ComponentInstance
+
+The `ComponentInstance` type is backed by the Java type `org.osate.aadl2.instance.ComponentInstance` and has the
+following members:
+* `name`: Returns the name of the component as a `String`.
+* `category`: Returns the category of the component as a `ComponentCategory`.
+* `subcomponents`: Returns a `List<ComponentInstance>` with the immediate subcomponents of the component.
+* `allSubcomponents`: Returns a `List<ComponentInstance>` with all of the subcomponents that are directly or indirectly
+  contained by the component.
+* `features`: Returns a `List<FeatureInstance>` with the immediate features of the component.
+* `allFeatures`: Returns a `List<FeatureInstance>` with all of the features that are directly or indirectly contained by
+  the component.
+* `localModes`: Returns a `List<ModeInstance>` with the immediate modes of the component.
+* `allModes`: Returns `List<ModeInstance>` with all of the modes that are directly or indirectly contained by the
+  component.
+* `modeTransitions`: Returns a `List<ModeTransitionInstance>` with the immediate mode transitions of the component.
+* `allModeTransitions`: Returns a `List<ModeTransitionInstance>` with all of the mode transitions that are directly or
+  indirectly contained by the component.
+* `flowSpecifications`: Returns a `List<FlowSpecificationInstance>` with the immediate flow specifications of the
+  component.
+* `allFlowSpecifications`: Returns a `List<FlowSpecificationInstance>` with all of the flow specifications that are
+  directly or indirectly contained by the component.
+* `endToEndFlows`: Returns a `List<EndToEndFlowInstance>` with the immediate end to end flows of the component.
+* `allEndToEndFlows`: Returns a `List<EndToEndFlowInstance>` with all of the end to end flows that are directly or
+  indirectly contained by the component.
+* `connections`: Returns a `List<ConnectionInstance>` with the immediate connections of the component.
+* `allConnections`: Returns a `List<ConnectionInstance>` with all of the connections that are directly or indirectly
+  contained by the component.
+* `inModes`: Returns a `List<ModeInstance>` with the modes that the component is active in.
+* `parent`: Returns the container of the component as a `ComponentInstance?`. If the component is the root component and
+  does not have a parent, then an empty optional is returned.
+* `isAbstract`: Returns a `Boolean` indicating if the component is an abstract.
+* `isBus`: Returns a `Boolean` indicating if the component is a bus.
+* `isData`: Returns a `Boolean` indicating if the component is a data.
+* `isDevice`: Returns a `Boolean` indicating if the component is a device.
+* `isMemory`: Returns a `Boolean` indicating if the component is a memory.
+* `isProcess`: Returns a `Boolean` indicating if the component is a process.
+* `isProcessor`: Returns a `Boolean` indicating if the component is a processor.
+* `isSubprogram`: Returns a `Boolean` indicating if the component is a subprogram.
+* `isSubprogramGroup`: Returns a `Boolean` indicating if the component is a subprogram group.
+* `isSystem`: Returns a `Boolean` indicating if the component is a system.
+* `isThread`: Returns a `Boolean` indicating if the component is a thread.
+* `isThreadGroup`: Returns a `Boolean` indicating if the component is a thread group.
+* `isVirtualBus`: Returns a `Boolean` indicating if the component is a virtual bus.
+* `isVirtualProcessor`: Returns a `Boolean` indicating if the component is a virtual processor.
+* `processorBindingSources`: Returns a `List<ComponentInstance>` with all of the components that refer to this component
+  via the `Deployment_Properties::Actual_Processor_Binding` property. This will typically be a list of threads that are
+  bound to this component, assuming that this component is a processor.
+* `states`: Returns a `List<StateInstance>` with all of the error behavior states of the component.
+* `events`: Returns a `List<EventInstance>` with all of the error behavior events of the component.
 
 #### ConnectionInstance
 
+The `ConnectionInstance` type is backed by the Java type `org.osate.aadl2.instance.ConnectionInstance` and has the
+following members:
+* `name`: Returns the name of the connection as a `String`.
+
 #### DoubleRange
+
+The `DoubleRange` type is backed by the Java type `org.osate.contract.typing.RangeValueHolder` and has the following
+members:
+* `minimum`: Returns the minimum value of the range as a `Double`.
+* `maximum`: Returns the maximum value of the range as a `Double`.
+* `getDelta`: Returns the delta value of the range as a `Double`.
 
 #### DoubleRangeWithUnits
 
+TODO
+
 #### Double
+
+The `Double` type is backed by the Java type `java.lang.Double` and has no members.
 
 #### DoubleWithUnits
 
+TODO
+
 #### EndToEndFlowInstance
+
+The `EndToEndFlowInstance` type is backed by the Java type `org.osate.aadl2.instance.EndToEndFlowInstance` and has the
+following members:
+* `name`: Returns the name of the end to end flow as a `String`.
+* `flowSpecifications`: Returns a `List<FlowSpecificationInstance>` with all of the flow specifications that make up the
+  end to end flow. This includes the flow specifcations that are listed in the end to end flow's declaration as well as
+  the flow specifications that make up any other end to end flows that are listed in the current end to end flow's
+  declaration.
+* `connections`: Returns a `List<ConnectionInstance>` with all of the connections that make up the end to end flow. This
+  includes the connections that are listed in the end to end flow's declaration as well as the connections that make up
+  any other end to end flows that are listed in the current end to end flow's declaration.
+* `components`: Returns a `List<ComponentInstance>` with all of the components that make up the end to end flow. This
+  includes the components that are listed in the end to end flow's declaration, the components that contain the flow
+  specifications that are listed in the end to end flow's declaration, as well as the components that make up any other
+  end to end flows that are listed in the current end to end flow's declaration.
+
+#### Enumeration
+
+TODO
+
+#### EventInstance
+
+The `EventInstance` type is backed by the Java type `org.osate.aadl2.errormodel.instance.EventInstance` and has the
+following members:
+* `name`: Returns the name of the event as a `String`.
+
+#### FeatureInstance
+
+The `FeatureInstance` type is backed by the Java type `org.osate.aadl2.instance.FeatureInstance` and has no members.
+
+#### FlowSpecificationInstance
+
+The `FlowSpecificationInstance` type is backed by the Java type `org.osate.aadl2.instance.FlowSpecificationInstance` and
+has no members.
 
 #### InstanceObject
 
+The `InstanceObject` type is backed by the Java type `org.osate.aadl2.instance.InstanceObject` and has no members.
+
 #### List
+
+TODO
 
 #### LongRange
 
+The `LongRange` type is backed by the Java type `org.osate.contract.typing.RangeValueHolder` and has the following
+members:
+* `minimum`: Returns the minimum value of the range as a `Long`.
+* `maximum`: Returns the maximum value of the range as a `Long`.
+* `getDelta`: Returns the detla value of the range as a `Long`.
+
 #### LongRangeWithUnits
+
+TODO
 
 #### Long
 
+The `Long` type is backed by the Java type `java.lang.Long` and has no members.
+
 #### LongWithUnits
+
+TODO
 
 #### ModeInstance
 
+The `ModeInstance` type is backed by the Java type `org.osate.aadl2.instance.ModeInstance` and has no members.
+
 #### ModeTransitionInstance
+
+The `ModeTransitionInstance` type is backed by the Java type `org.osate.aadl2.instance.ModeTransitionInstance` and has
+no members.
 
 #### Optional
 
+TODO
+
 #### Record
+
+TODO
+
+#### StateInstance
+
+The `StateInstance` type is backed by the Java type `org.osate.aadl2.errormodel.instance.StateInstance` and has the
+following members:
+* `name`: Returns the name of the state as a `String`.
 
 #### String
 
+The `String` type is backed by the Java type `java.lang.String` and has no members.
+
 #### SystemInstance
+
+The `SystemInstance` type is backed by the Java type `org.osate.aadl2.instance.SystemInstance` and has the following
+members:
+* `name`: Returns the name of the component as a `String`.
+* `category`: Returns the category of the component as a `ComponentCategory`.
+* `subcomponents`: Returns a `List<ComponentInstance>` with the immediate subcomponents of the component.
+* `allSubcomponents`: Returns a `List<ComponentInstance>` with all of the subcomponents that are directly or indirectly
+  contained by the component.
+* `features`: Returns a `List<FeatureInstance>` with the immediate features of the component.
+* `allFeatures`: Returns a `List<FeatureInstance>` with all of the features that are directly or indirectly contained by
+  the component.
+* `localModes`: Returns a `List<ModeInstance>` with the immediate modes of the component.
+* `allModes`: Returns `List<ModeInstance>` with all of the modes that are directly or indirectly contained by the
+  component.
+* `modeTransitions`: Returns a `List<ModeTransitionInstance>` with the immediate mode transitions of the component.
+* `allModeTransitions`: Returns a `List<ModeTransitionInstance>` with all of the mode transitions that are directly or
+  indirectly contained by the component.
+* `flowSpecifications`: Returns a `List<FlowSpecificationInstance>` with the immediate flow specifications of the
+  component.
+* `allFlowSpecifications`: Returns a `List<FlowSpecificationInstance>` with all of the flow specifications that are
+  directly or indirectly contained by the component.
+* `endToEndFlows`: Returns a `List<EndToEndFlowInstance>` with the immediate end to end flows of the component.
+* `allEndToEndFlows`: Returns a `List<EndToEndFlowInstance>` with all of the end to end flows that are directly or
+  indirectly contained by the component.
+* `connections`: Returns a `List<ConnectionInstance>` with the immediate connections of the component.
+* `allConnections`: Returns a `List<ConnectionInstance>` with all of the connections that are directly or indirectly
+  contained by the component.
+* `systemOperationModes`: Returns a `List<SystemOperationMode>` with all of the system operation modes of the component.
+* `isAbstract`: Returns a `Boolean` indicating if the component is an abstract.
+* `isBus`: Returns a `Boolean` indicating if the component is a bus.
+* `isData`: Returns a `Boolean` indicating if the component is a data.
+* `isDevice`: Returns a `Boolean` indicating if the component is a device.
+* `isMemory`: Returns a `Boolean` indicating if the component is a memory.
+* `isProcess`: Returns a `Boolean` indicating if the component is a process.
+* `isProcessor`: Returns a `Boolean` indicating if the component is a processor.
+* `isSubprogram`: Returns a `Boolean` indicating if the component is a subprogram.
+* `isSubprogramGroup`: Returns a `Boolean` indicating if the component is a subprogram group.
+* `isSystem`: Returns a `Boolean` indicating if the component is a system.
+* `isThread`: Returns a `Boolean` indicating if the component is a thread.
+* `isThreadGroup`: Returns a `Boolean` indicating if the component is a thread group.
+* `isVirtualBus`: Returns a `Boolean` indicating if the component is a virtual bus.
+* `isVirtualProcessor`: Returns a `Boolean` indicating if the component is a virtual processor.
+* `states`: Returns a `List<StateInstance>` with all of the error behavior states of the component.
+* `events`: Returns a `List<EventInstance>` with all of the error behavior events of the component.
 
 #### SystemOperationMode
 
+The `SystemOperationMode` type is backed by the Java type `org.osate.aadl2.instance.SystemOperationMode` and has no
+members.
+
 #### Tuple
+
+TODO
 
 ---
 
