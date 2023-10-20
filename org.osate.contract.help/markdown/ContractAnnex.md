@@ -499,7 +499,25 @@ The `InstanceObject` type is backed by the Java type `org.osate.aadl2.instance.I
 
 #### List
 
-TODO
+The `List` type is backed by the Java type `java.util.List`. `List` has a generic type which represents the type of the
+elements of the list. A query or parameter with the type `List` will have its generic type specified such as
+`List<ComponentInstance>` or `List<String>`. `List` has the following members:
+
+* `size`: Returns the size of the list as a `Long`.
+* `empty`: Returns a `Boolean` indicating if the list is empty.
+* `first`: If the list has elements, returns the first element as an optional with a value. If the list is empty, then
+  an empty optional is returned. The return type is dependent on the element type of the list. For example, if the list
+  has the type `List<ComponentInstance>`, then calling `first` will result in a `ComponentInstance?`.
+* `filter`: Filters the elements of the list based upon a predicate which is passed as a lambda to `filter`. Each
+  element of the list is passed to the lambda and the lambda must return a `Boolean` indicating if the element should be
+  included in the resulting list. `filter` returns a list with the same type as the original list. For example, if the
+  type of the original list is `List<ComponentInstance>`, then the result will be a `List<ComponentInstance>`.
+* `map`: Returns a new list with all of the elements of the original list transformed by the lambda passed to `map`. The
+  element type of the resulting list is based on the return type of the lambda. For example, if the type of the original
+  list is `List<ComponentInstance>` and the lambda gets the name of each component, then the resulting list will have
+  the type `List<String>`.
+* `contains`: Returns a `Boolean` indicating if the list contains a specified element. The element is passed as a
+  parameter to `contains`.
 
 #### LongRange
 
