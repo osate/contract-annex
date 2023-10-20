@@ -550,7 +550,20 @@ no members.
 
 #### Optional
 
-TODO
+The optional type is backed by the Java type `java.util.Optional` and represents a value that might or might not be
+present. Optional types appear with a question mark appended to the end of another type such as `ComponentInstance?` or
+`String?`. It is possible to nest optionals and lists. For example, the type `List<ComponentInstance?>?` is an optional
+list of optional components. The optional type has the following members:
+
+* `isEmpty`: Returns a `Boolean` indicating if a value is not present.
+* `map`: If the optional has a value, then `map` returns new optional with a value that was transformed by the lambda
+  passed to `map`. If the optional does not have a value, then `map` returns an empty optional. The specific type of the
+  resulting optional is based on the return type of the lambda. For example, if the type of the original optional is
+  `ComponentInstance?` and the lambda gets the name of the component, then the resulting optional will have the type
+  `String?`.
+* `flatMap`: `flatMap` works like `map` except that the lambda must return an optional itself. `flatMap` is useful to
+  avoid deep nesting of optional values. For example, the expression `optionalComponent.map { c -> c#Queue_Size }`
+  returns a `Long??` while the expression `optionalComponent.flatMap { c -> c#Queue_Size }` returns a `Long?`.
 
 #### Record
 
