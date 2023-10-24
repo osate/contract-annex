@@ -48,6 +48,7 @@ public final class ListType implements Type {
 						lambdaReturnType -> lambdaReturnType == BooleanType.INSTANCE ? Optional.empty()
 								: Optional.of(BooleanType.INSTANCE.toString()),
 						lambdaType -> this, (receiver, evaluateLambda) -> filter((List<?>) receiver, evaluateLambda)));
+		members.put("filterType", new MemberWithTypeParameter(null, null));
 		members.put("map",
 				new MemberWithLambda(elementType, lambdaReturnType -> Optional.empty(),
 						lambdaType -> lambdaType != null ? new ListType(lambdaType) : null,
