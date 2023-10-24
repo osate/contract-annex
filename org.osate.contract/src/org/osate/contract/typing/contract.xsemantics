@@ -212,6 +212,18 @@ from {
 				source expression
 				feature ContractPackage.eINSTANCE.memberCall_Right
 		} else {
+			val expectGenerics = member instanceof MemberWithTypeParameter
+			if (expectGenerics && expression.typeArgument === null) {
+				fail
+					error "Type argument expected for call to '" + expression.right + "'"
+					source expression
+					feature ContractPackage.eINSTANCE.memberCall_Right
+			} else if (!expectGenerics && expression.typeArgument !== null) {
+				fail
+					error "Unexpected type argument for call to '" + expression.right + "'"
+					source expression
+					feature ContractPackage.eINSTANCE.memberCall_TypeArgument
+			}
 			val expectArgument = member instanceof MemberWithArgument
 			if (expectArgument && expression.argument === null) {
 				fail

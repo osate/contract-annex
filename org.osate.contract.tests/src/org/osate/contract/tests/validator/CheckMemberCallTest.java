@@ -226,4 +226,34 @@ public class CheckMemberCallTest {
 			assertEquals(EcoreUtil.getURI(contract.getQueries().get(1).getValue()), issue.getUriToProblem());
 		});
 	}
+
+	@Test
+	public void testMissingGenerics() {
+		var pkg = testHelper.parseFile(PATH + "missing_generics.aadl");
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var contract = (Contract) contractLibrary.getContractElements().get(0);
+		var issues = validationHelper.validate(pkg);
+		assertEquals(1, issues.size());
+		with(issues.get(0), issue -> {
+			assertEquals(Severity.ERROR, issue.getSeverity());
+			assertEquals("Type argument expected for call to 'filterType'", issue.getMessage());
+			assertEquals(EcoreUtil.getURI(contract.getQueries().get(1).getValue()), issue.getUriToProblem());
+		});
+	}
+
+	@Test
+	public void testExtraGenerics() {
+		var pkg = testHelper.parseFile(PATH + "extra_generics.aadl");
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var contract = (Contract) contractLibrary.getContractElements().get(0);
+		var issues = validationHelper.validate(pkg);
+		assertEquals(1, issues.size());
+		with(issues.get(0), issue -> {
+			assertEquals(Severity.ERROR, issue.getSeverity());
+			assertEquals("Unexpected type argument for call to 'name'", issue.getMessage());
+			assertEquals(EcoreUtil.getURI(contract.getQueries().get(1).getValue()), issue.getUriToProblem());
+		});
+	}
 }
