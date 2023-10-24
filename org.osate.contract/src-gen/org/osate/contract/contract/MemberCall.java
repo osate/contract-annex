@@ -37,6 +37,7 @@ package org.osate.contract.contract;
  * <ul>
  *   <li>{@link org.osate.contract.contract.MemberCall#getLeft <em>Left</em>}</li>
  *   <li>{@link org.osate.contract.contract.MemberCall#getRight <em>Right</em>}</li>
+ *   <li>{@link org.osate.contract.contract.MemberCall#getTypeArgument <em>Type Argument</em>}</li>
  *   <li>{@link org.osate.contract.contract.MemberCall#getArgument <em>Argument</em>}</li>
  *   <li>{@link org.osate.contract.contract.MemberCall#getLambda <em>Lambda</em>}</li>
  * </ul>
@@ -90,6 +91,28 @@ public interface MemberCall extends Expression
    * @generated
    */
   void setRight(String value);
+
+  /**
+   * Returns the value of the '<em><b>Type Argument</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Type Argument</em>' attribute.
+   * @see #setTypeArgument(String)
+   * @see org.osate.contract.contract.ContractPackage#getMemberCall_TypeArgument()
+   * @model
+   * @generated
+   */
+  String getTypeArgument();
+
+  /**
+   * Sets the value of the '{@link org.osate.contract.contract.MemberCall#getTypeArgument <em>Type Argument</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Type Argument</em>' attribute.
+   * @see #getTypeArgument()
+   * @generated
+   */
+  void setTypeArgument(String value);
 
   /**
    * Returns the value of the '<em><b>Argument</b></em>' containment reference.

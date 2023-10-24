@@ -1754,13 +1754,22 @@ public interface ContractPackage extends EPackage
   int MEMBER_CALL__RIGHT = EXPRESSION_FEATURE_COUNT + 1;
 
   /**
+   * The feature id for the '<em><b>Type Argument</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MEMBER_CALL__TYPE_ARGUMENT = EXPRESSION_FEATURE_COUNT + 2;
+
+  /**
    * The feature id for the '<em><b>Argument</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MEMBER_CALL__ARGUMENT = EXPRESSION_FEATURE_COUNT + 2;
+  int MEMBER_CALL__ARGUMENT = EXPRESSION_FEATURE_COUNT + 3;
 
   /**
    * The feature id for the '<em><b>Lambda</b></em>' containment reference.
@@ -1769,7 +1778,7 @@ public interface ContractPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MEMBER_CALL__LAMBDA = EXPRESSION_FEATURE_COUNT + 3;
+  int MEMBER_CALL__LAMBDA = EXPRESSION_FEATURE_COUNT + 4;
 
   /**
    * The number of structural features of the '<em>Member Call</em>' class.
@@ -1778,7 +1787,7 @@ public interface ContractPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MEMBER_CALL_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 4;
+  int MEMBER_CALL_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 5;
 
   /**
    * The meta object id for the '{@link org.osate.contract.contract.impl.PropertyLookupImpl <em>Property Lookup</em>}' class.
@@ -2888,6 +2897,17 @@ public interface ContractPackage extends EPackage
   EAttribute getMemberCall_Right();
 
   /**
+   * Returns the meta object for the attribute '{@link org.osate.contract.contract.MemberCall#getTypeArgument <em>Type Argument</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Type Argument</em>'.
+   * @see org.osate.contract.contract.MemberCall#getTypeArgument()
+   * @see #getMemberCall()
+   * @generated
+   */
+  EAttribute getMemberCall_TypeArgument();
+
+  /**
    * Returns the meta object for the containment reference '{@link org.osate.contract.contract.MemberCall#getArgument <em>Argument</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -3815,6 +3835,14 @@ public interface ContractPackage extends EPackage
      * @generated
      */
     EAttribute MEMBER_CALL__RIGHT = eINSTANCE.getMemberCall_Right();
+
+    /**
+     * The meta object literal for the '<em><b>Type Argument</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute MEMBER_CALL__TYPE_ARGUMENT = eINSTANCE.getMemberCall_TypeArgument();
 
     /**
      * The meta object literal for the '<em><b>Argument</b></em>' containment reference feature.

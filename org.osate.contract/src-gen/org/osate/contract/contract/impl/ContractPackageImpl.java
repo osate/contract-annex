@@ -1371,9 +1371,20 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   @Override
+  public EAttribute getMemberCall_TypeArgument()
+  {
+    return (EAttribute)memberCallEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EReference getMemberCall_Argument()
   {
-    return (EReference)memberCallEClass.getEStructuralFeatures().get(2);
+    return (EReference)memberCallEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -1384,7 +1395,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
   @Override
   public EReference getMemberCall_Lambda()
   {
-    return (EReference)memberCallEClass.getEStructuralFeatures().get(3);
+    return (EReference)memberCallEClass.getEStructuralFeatures().get(4);
   }
 
   /**
@@ -1688,6 +1699,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     memberCallEClass = createEClass(MEMBER_CALL);
     createEReference(memberCallEClass, MEMBER_CALL__LEFT);
     createEAttribute(memberCallEClass, MEMBER_CALL__RIGHT);
+    createEAttribute(memberCallEClass, MEMBER_CALL__TYPE_ARGUMENT);
     createEReference(memberCallEClass, MEMBER_CALL__ARGUMENT);
     createEReference(memberCallEClass, MEMBER_CALL__LAMBDA);
 
@@ -1899,6 +1911,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     initEClass(memberCallEClass, MemberCall.class, "MemberCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getMemberCall_Left(), this.getExpression(), null, "left", null, 0, 1, MemberCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getMemberCall_Right(), theEcorePackage.getEString(), "right", null, 0, 1, MemberCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getMemberCall_TypeArgument(), theEcorePackage.getEString(), "typeArgument", null, 0, 1, MemberCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMemberCall_Argument(), this.getExpression(), null, "argument", null, 0, 1, MemberCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMemberCall_Lambda(), this.getLambda(), null, "lambda", null, 0, 1, MemberCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

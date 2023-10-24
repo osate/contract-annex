@@ -48,6 +48,7 @@ import org.osate.contract.contract.MemberCall;
  * <ul>
  *   <li>{@link org.osate.contract.contract.impl.MemberCallImpl#getLeft <em>Left</em>}</li>
  *   <li>{@link org.osate.contract.contract.impl.MemberCallImpl#getRight <em>Right</em>}</li>
+ *   <li>{@link org.osate.contract.contract.impl.MemberCallImpl#getTypeArgument <em>Type Argument</em>}</li>
  *   <li>{@link org.osate.contract.contract.impl.MemberCallImpl#getArgument <em>Argument</em>}</li>
  *   <li>{@link org.osate.contract.contract.impl.MemberCallImpl#getLambda <em>Lambda</em>}</li>
  * </ul>
@@ -85,6 +86,26 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
    * @ordered
    */
   protected String right = RIGHT_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getTypeArgument() <em>Type Argument</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getTypeArgument()
+   * @generated
+   * @ordered
+   */
+  protected static final String TYPE_ARGUMENT_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getTypeArgument() <em>Type Argument</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getTypeArgument()
+   * @generated
+   * @ordered
+   */
+  protected String typeArgument = TYPE_ARGUMENT_EDEFAULT;
 
   /**
    * The cached value of the '{@link #getArgument() <em>Argument</em>}' containment reference.
@@ -200,6 +221,31 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
     right = newRight;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.MEMBER_CALL__RIGHT, oldRight, right));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String getTypeArgument()
+  {
+    return typeArgument;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setTypeArgument(String newTypeArgument)
+  {
+    String oldTypeArgument = typeArgument;
+    typeArgument = newTypeArgument;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.MEMBER_CALL__TYPE_ARGUMENT, oldTypeArgument, typeArgument));
   }
 
   /**
@@ -336,6 +382,8 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
         return getLeft();
       case ContractPackage.MEMBER_CALL__RIGHT:
         return getRight();
+      case ContractPackage.MEMBER_CALL__TYPE_ARGUMENT:
+        return getTypeArgument();
       case ContractPackage.MEMBER_CALL__ARGUMENT:
         return getArgument();
       case ContractPackage.MEMBER_CALL__LAMBDA:
@@ -359,6 +407,9 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
         return;
       case ContractPackage.MEMBER_CALL__RIGHT:
         setRight((String)newValue);
+        return;
+      case ContractPackage.MEMBER_CALL__TYPE_ARGUMENT:
+        setTypeArgument((String)newValue);
         return;
       case ContractPackage.MEMBER_CALL__ARGUMENT:
         setArgument((Expression)newValue);
@@ -386,6 +437,9 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
       case ContractPackage.MEMBER_CALL__RIGHT:
         setRight(RIGHT_EDEFAULT);
         return;
+      case ContractPackage.MEMBER_CALL__TYPE_ARGUMENT:
+        setTypeArgument(TYPE_ARGUMENT_EDEFAULT);
+        return;
       case ContractPackage.MEMBER_CALL__ARGUMENT:
         setArgument((Expression)null);
         return;
@@ -410,6 +464,8 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
         return left != null;
       case ContractPackage.MEMBER_CALL__RIGHT:
         return RIGHT_EDEFAULT == null ? right != null : !RIGHT_EDEFAULT.equals(right);
+      case ContractPackage.MEMBER_CALL__TYPE_ARGUMENT:
+        return TYPE_ARGUMENT_EDEFAULT == null ? typeArgument != null : !TYPE_ARGUMENT_EDEFAULT.equals(typeArgument);
       case ContractPackage.MEMBER_CALL__ARGUMENT:
         return argument != null;
       case ContractPackage.MEMBER_CALL__LAMBDA:
@@ -431,6 +487,8 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
     StringBuilder result = new StringBuilder(super.toString());
     result.append(" (right: ");
     result.append(right);
+    result.append(", typeArgument: ");
+    result.append(typeArgument);
     result.append(')');
     return result.toString();
   }

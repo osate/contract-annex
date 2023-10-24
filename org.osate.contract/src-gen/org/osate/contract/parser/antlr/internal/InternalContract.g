@@ -1936,16 +1936,44 @@ ruleCallExpression returns [EObject current=null]
 					)
 				)
 				(
-					otherlv_4='('
+					otherlv_4='<'
 					{
-						newLeafNode(otherlv_4, grammarAccess.getCallExpressionAccess().getLeftParenthesisKeyword_1_0_3_0());
+						newLeafNode(otherlv_4, grammarAccess.getCallExpressionAccess().getLessThanSignKeyword_1_0_3_0());
+					}
+					(
+						(
+							lv_typeArgument_5_0=RULE_ID
+							{
+								newLeafNode(lv_typeArgument_5_0, grammarAccess.getCallExpressionAccess().getTypeArgumentIDTerminalRuleCall_1_0_3_1_0());
+							}
+							{
+								if ($current==null) {
+									$current = createModelElement(grammarAccess.getCallExpressionRule());
+								}
+								setWithLastConsumed(
+									$current,
+									"typeArgument",
+									lv_typeArgument_5_0,
+									"org.osate.xtext.aadl2.properties.Properties.ID");
+							}
+						)
+					)
+					otherlv_6='>'
+					{
+						newLeafNode(otherlv_6, grammarAccess.getCallExpressionAccess().getGreaterThanSignKeyword_1_0_3_2());
+					}
+				)?
+				(
+					otherlv_7='('
+					{
+						newLeafNode(otherlv_7, grammarAccess.getCallExpressionAccess().getLeftParenthesisKeyword_1_0_4_0());
 					}
 					(
 						(
 							{
-								newCompositeNode(grammarAccess.getCallExpressionAccess().getArgumentExpressionParserRuleCall_1_0_3_1_0());
+								newCompositeNode(grammarAccess.getCallExpressionAccess().getArgumentExpressionParserRuleCall_1_0_4_1_0());
 							}
-							lv_argument_5_0=ruleExpression
+							lv_argument_8_0=ruleExpression
 							{
 								if ($current==null) {
 									$current = createModelElementForParent(grammarAccess.getCallExpressionRule());
@@ -1953,23 +1981,23 @@ ruleCallExpression returns [EObject current=null]
 								set(
 									$current,
 									"argument",
-									lv_argument_5_0,
+									lv_argument_8_0,
 									"org.osate.contract.Contract.Expression");
 								afterParserOrEnumRuleCall();
 							}
 						)
 					)
-					otherlv_6=')'
+					otherlv_9=')'
 					{
-						newLeafNode(otherlv_6, grammarAccess.getCallExpressionAccess().getRightParenthesisKeyword_1_0_3_2());
+						newLeafNode(otherlv_9, grammarAccess.getCallExpressionAccess().getRightParenthesisKeyword_1_0_4_2());
 					}
 				)?
 				(
 					(
 						{
-							newCompositeNode(grammarAccess.getCallExpressionAccess().getLambdaLambdaParserRuleCall_1_0_4_0());
+							newCompositeNode(grammarAccess.getCallExpressionAccess().getLambdaLambdaParserRuleCall_1_0_5_0());
 						}
-						lv_lambda_7_0=ruleLambda
+						lv_lambda_10_0=ruleLambda
 						{
 							if ($current==null) {
 								$current = createModelElementForParent(grammarAccess.getCallExpressionRule());
@@ -1977,7 +2005,7 @@ ruleCallExpression returns [EObject current=null]
 							set(
 								$current,
 								"lambda",
-								lv_lambda_7_0,
+								lv_lambda_10_0,
 								"org.osate.contract.Contract.Lambda");
 							afterParserOrEnumRuleCall();
 						}
@@ -1993,9 +2021,9 @@ ruleCallExpression returns [EObject current=null]
 							$current);
 					}
 				)
-				otherlv_9='#'
+				otherlv_12='#'
 				{
-					newLeafNode(otherlv_9, grammarAccess.getCallExpressionAccess().getNumberSignKeyword_1_1_1());
+					newLeafNode(otherlv_12, grammarAccess.getCallExpressionAccess().getNumberSignKeyword_1_1_1());
 				}
 				(
 					(
