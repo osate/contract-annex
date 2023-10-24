@@ -251,6 +251,39 @@ from {
 	}
 }
 
+checkrule CheckTypeArgument for
+	MemberCall expression
+from {
+	val validTypes = #[
+		"Boolean",
+		"Classifier",
+		"ComponentCategory",
+		"ComponentInstance",
+		"ConnectionInstance",
+		"DoubleRange",
+		"Double",
+		"EndToEndFlowInstance",
+		"EventInstance",
+		"FeatureInstance",
+		"FlowSpecificationInstance",
+		"InstanceObject",
+		"LongRange",
+		"Long",
+		"ModeInstance",
+		"ModeTransitionInstance",
+		"StateInstance",
+		"String",
+		"SystemInstance",
+		"SystemOperationMode"
+	]
+	if (expression.typeArgument !== null && !validTypes.contains(expression.typeArgument)) {
+		fail
+			error "Invalid type argument '" + expression.typeArgument + "'"
+			source expression
+			feature ContractPackage.eINSTANCE.memberCall_TypeArgument
+	}
+}
+
 checkrule CheckArgumentType for
 	MemberCall expression
 from {

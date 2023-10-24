@@ -1,0 +1,10 @@
+package invalid_type_argument
+public
+	annex contract {**
+		contract InvalidTypeArgument {
+			queries
+				val valid = self.allSubcomponents.filterType<ComponentInstance>;
+				val invalid = self.allSubcomponents.filterType<Foo>;
+		}
+	**};
+end invalid_type_argument;
