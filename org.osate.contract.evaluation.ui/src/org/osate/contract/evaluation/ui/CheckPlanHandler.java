@@ -47,7 +47,7 @@ import org.osate.aadl2.modelsupport.EObjectURIWrapper;
 import org.osate.aadl2.modelsupport.resources.OsateResourceUtil;
 import org.osate.contract.execution.ContractProcessor;
 
-public class PythonHandler extends AbstractHandler {
+public class CheckPlanHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -66,7 +66,7 @@ public class PythonHandler extends AbstractHandler {
 				scriptService.getEngineByID("org.eclipse.ease.lang.python.py4j.engine"));
 //		processor.processContract(component);
 		linkConsole(event);
-		processor.processVerificationPlan(component);
+		processor.processVerificationPlan(component, true);
 		unlinkConsole();
 		return null;
 	}

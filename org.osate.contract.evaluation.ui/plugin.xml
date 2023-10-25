@@ -31,7 +31,7 @@
          point="org.eclipse.ui.commands">
       <command
             id="org.osate.contract.evaluation.ui.evaluateQueries"
-            name="Evaluate Queries">
+            name="Debug: Evaluate Queries">
       </command>
    </extension>
    <extension
@@ -47,32 +47,30 @@
       </handler>
    </extension>
    <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            allPopups="false"
-            locationURI="popup:org.osate.ui.analysesNavigatorPopup?after=third_party">
-         <command
-               commandId="org.osate.contract.evaluation.ui.evaluateQueries"
-               style="push">
-            <visibleWhen
-                  checkEnabled="true">
-            </visibleWhen>
-         </command>
-      </menuContribution>
-   </extension>
-
-   <extension
          point="org.eclipse.ui.commands">
       <command
-            id="org.osate.contract.evaluation.ui.runPython"
-            name="Generate and run Python">
+            id="org.osate.contract.executePlan"
+            name="Execute Verificaton Plans">
+      </command>
+      <command
+            id="org.osate.contract.checkPlan"
+            name="Check Verification Plan Completeness">
       </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="org.osate.contract.evaluation.ui.PythonHandler"
-            commandId="org.osate.contract.evaluation.ui.runPython">
+            class="org.osate.contract.evaluation.ui.ExecutePlanHandler"
+            commandId="org.osate.contract.executePlan">
+         <enabledWhen>
+            <reference
+                  definitionId="org.osate.ui.definition.isInstanceFileOrComponentInstanceSelected">
+            </reference>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="org.osate.contract.evaluation.ui.CheckPlanHandler"
+            commandId="org.osate.contract.checkPlan">
          <enabledWhen>
             <reference
                   definitionId="org.osate.ui.definition.isInstanceFileOrComponentInstanceSelected">
@@ -84,14 +82,49 @@
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
+            locationURI="menu:org.osate.ui.analysesMenu?after=third_party">
+         <menu
+               id="org.osate.contract.menu"
+               label="Analysis Contracts">
+            <command
+                  commandId="org.osate.contract.executePlan"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.osate.contract.checkPlan"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
             locationURI="popup:org.osate.ui.analysesNavigatorPopup?after=third_party">
-         <command
-               commandId="org.osate.contract.evaluation.ui.runPython"
-               style="push">
-            <visibleWhen
-                  checkEnabled="true">
-            </visibleWhen>
-         </command>
+         <menu
+               id="org.osate.contract.menu"
+               label="Analysis Contracts">
+            <command
+                  commandId="org.osate.contract.executePlan"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="true">
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="org.osate.contract.checkPlan"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="true">
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="org.osate.contract.evaluation.ui.evaluateQueries"
+                  style="push">
+               <visibleWhen
+                    checkEnabled="true">
+               </visibleWhen>
+            </command>
+            
+         </menu>
       </menuContribution>
    </extension>
 </plugin>

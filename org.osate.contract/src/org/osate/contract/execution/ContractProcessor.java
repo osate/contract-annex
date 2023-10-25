@@ -103,7 +103,7 @@ public class ContractProcessor {
 		return DONE;
 	};
 
-	public void smtVerificationPlan(VerificationPlan plan) {
+	public void smtVerificationPlan(VerificationPlan plan, boolean checkCompleteness) {
 		ContractLibrary library = EcoreUtil2.getContainerOfType(plan, ContractLibrary.class);
 		pyBuilder.addZ3Import().addImplementations(library);
 		for (var domain : plan.getDomains()) {
@@ -146,24 +146,53 @@ public class ContractProcessor {
 			var expr = smtContract(c);
 			addCode(expr);
 		}
-		for (var claim : plan.getClaims()) {
+		if (!plan.getClaims().isEmpty()) {
 			pyBuilder.addCode("""
 					s.add(
 					""");
-			pyBuilder.indent().addCode(claim);
+			if (checkCompleteness) {
+				pyBuilder.indent().addCode("""
+						Not(
+						""");
+			}
+			pyBuilder.indent().addCode("""
+					And(
+					""");
+			for (var claim : plan.getClaims()) {
+				pyBuilder.indent().addCode(claim, ",");
+			}
+			pyBuilder.outdent().addCode("""
+					)
+					""");
+			if (checkCompleteness) {
+				pyBuilder.outdent().addCode("""
+						)
+						""");
+			}
 			pyBuilder.outdent().addCode("""
 					)
 					""");
 		}
 		pyBuilder.outdent();
-		pyBuilder.addCode("""
-				    if s.check() == sat:
-				        return \"True,\"+info0[0]
-				    #print(s.unsat_core())
-				    #return False
-				    return \"False,\"+str(s.unsat_core())
+		if (checkCompleteness) {
+			pyBuilder.addCode("""
+					    if s.check() == sat:
+					        return \"False,\" + info0[0]
+					    #print(s.unsat_core())
+					    #return True
+					    return \"True,\" + str(s.unsat_core())
 
-				""");
+					""");
+		} else {
+			pyBuilder.addCode("""
+					    if s.check() == sat:
+					        return \"True,\" + info0[0]
+					    #print(s.unsat_core())
+					    #return False
+					    return \"False,\" + str(s.unsat_core())
+
+					""");
+		}
 		pyBuilder.addCode("""
 				info0 = [\"\"]
 				execute%s()
@@ -400,7 +429,7 @@ public class ContractProcessor {
 	}
 
 	@Deprecated(forRemoval = true)
-	public void processVerificationPlan(ComponentInstance component) {
+	public void processVerificationPlan(ComponentInstance component, boolean checkCompleteness) {
 		var classifier = component.getComponentClassifier();
 
 		if (classifier != null) {
@@ -409,7 +438,7 @@ public class ContractProcessor {
 						&& defaultSubclause.getParsedAnnexSubclause() instanceof ContractSubclause contractSubclause) {
 					for (var plan : contractSubclause.getVerifyPlans()) {
 						if (useZ3) {
-							smtVerificationPlan(plan);
+							smtVerificationPlan(plan, checkCompleteness);
 						} else {
 							pyVerificationPlan(plan);
 						}
