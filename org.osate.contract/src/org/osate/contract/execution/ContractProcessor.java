@@ -173,27 +173,26 @@ public class ContractProcessor {
 					)
 					""");
 		}
-		pyBuilder.outdent();
 		if (checkCompleteness) {
 			pyBuilder.addCode("""
-					    if s.check() == sat:
-					        return \"False,\" + info0[0]
-					    #print(s.unsat_core())
-					    #return True
-					    return \"True,\" + str(s.unsat_core())
+					if s.check() == sat:
+					    return \"False,\" + info0[0]
+					#print(s.unsat_core())
+					#return True
+					return \"True,\" + str(s.unsat_core())
 
 					""");
 		} else {
 			pyBuilder.addCode("""
-					    if s.check() == sat:
-					        return \"True,\" + info0[0]
-					    #print(s.unsat_core())
-					    #return False
-					    return \"False,\" + str(s.unsat_core())
+					if s.check() == sat:
+					    return \"True,\" + info0[0]
+					#print(s.unsat_core())
+					#return False
+					return \"False,\" + str(s.unsat_core())
 
 					""");
 		}
-		pyBuilder.addCode("""
+		pyBuilder.outdent().addCode("""
 				info0 = [\"\"]
 				execute%s()
 				""".formatted(plan.getName()));
