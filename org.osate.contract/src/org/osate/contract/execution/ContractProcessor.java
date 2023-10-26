@@ -157,9 +157,9 @@ public class ContractProcessor {
 			}
 			pyBuilder.indent().addCode("""
 					And(
-					""");
+					""").indent();
 			for (var claim : plan.getClaims()) {
-				pyBuilder.indent().addCode(claim, ",");
+				pyBuilder.addCode(claim, ",");
 			}
 			pyBuilder.outdent().addCode("""
 					)
