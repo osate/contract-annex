@@ -44,6 +44,13 @@ public
 					.map { subcomponent -> subcomponent.category };
 				
 				val v9 = self.subcomponents.contains(self);
+				
+				val v10 = self#ps::reference_property.map { instanceObjects ->
+					instanceObjects.filterType<FeatureInstance>
+				};
+				val v11 = self#ps::reference_property.map { instanceObjects ->
+					instanceObjects.filterType<ComponentInstance>
+				};
 		}
 	**};
 end list_test;
