@@ -32,6 +32,7 @@ public
 				val v2 = self.parent
 					.map { parent -> parent.category };
 				val v3 = self#Transmission_Time.flatMap { property -> property.get(Fixed) };
+				val v4 = self#ps::reference_property.filterType<ComponentInstance>;
 		}
 	**};
 end optional_test;

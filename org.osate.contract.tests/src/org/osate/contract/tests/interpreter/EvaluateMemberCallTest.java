@@ -671,7 +671,7 @@ public class EvaluateMemberCallTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testOptional() throws Exception {
-		var pkg = testHelper.parseFile(PATH + "optional_test.aadl");
+		var pkg = testHelper.parseFile(PATH + "optional_test.aadl", PATH + "ps.aadl");
 		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
@@ -679,7 +679,7 @@ public class EvaluateMemberCallTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(7, contract.getQueries().size());
+		assertEquals(9, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
@@ -714,6 +714,16 @@ public class EvaluateMemberCallTest {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
 			assertEquals(true, result.get("v7"));
+		});
+		with(contract.getQueries().get(7), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertEquals("sub1", ((Optional<ComponentInstance>) result.get("v8")).get().getName());
+		});
+		with(contract.getQueries().get(8), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertEquals(Optional.empty(), result.get("v9"));
 		});
 	}
 

@@ -581,7 +581,13 @@ present. Optional types appear with a question mark appended to the end of anoth
 list of optional components. The optional type has the following members:
 
 * `isEmpty`: Returns a `Boolean` indicating if a value is not present.
-* `map`: If the optional has a value, then `map` returns new optional with a value that was transformed by the lambda
+* `filterType`: If the optional has a value and the value is an instance of the specified type argument, then
+  `filterType` returns a new optional with the same value. If the optional is empty or if the optional has a value, but
+  the value is not an instance of the specified type argument, then `filterType` returns an empty optional. The type of
+  the resulting optional is based on the type argument. For example, if the type of the original optional is
+  `InstanceObject?` and the type argument is `ComponentInstance`, then the resulting optional will have the type
+  `ComponentInstance?`.
+* `map`: If the optional has a value, then `map` returns a new optional with a value that was transformed by the lambda
   passed to `map`. If the optional does not have a value, then `map` returns an empty optional. The specific type of the
   resulting optional is based on the return type of the lambda. For example, if the type of the original optional is
   `ComponentInstance?` and the lambda gets the name of the component, then the resulting optional will have the type
