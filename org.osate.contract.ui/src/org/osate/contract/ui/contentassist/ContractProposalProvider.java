@@ -59,4 +59,46 @@ public class ContractProposalProvider extends AbstractContractProposalProvider {
 			}
 		}
 	}
+
+	@Override
+	public void completeCallExpression_TypeArgument(EObject model, Assignment assignment, ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor) {
+		acceptor.accept(createCompletionProposal("Foo", null, getImage(model), 700, context.getPrefix(), context));
+		acceptor.accept(createCompletionProposal("Boolean", null, getImage(model), 700, context.getPrefix(), context));
+		acceptor.accept(
+				createCompletionProposal("Classifier", null, getImage(model), 700, context.getPrefix(), context));
+		acceptor.accept(createCompletionProposal("ComponentCategory", null, getImage(model), 700, context.getPrefix(),
+				context));
+		acceptor.accept(createCompletionProposal("ComponentInstance", null, getImage(model), 700, context.getPrefix(),
+				context));
+		acceptor.accept(createCompletionProposal("ConnectionInstance", null, getImage(model), 700, context.getPrefix(),
+				context));
+		acceptor.accept(
+				createCompletionProposal("DoubleRange", null, getImage(model), 700, context.getPrefix(), context));
+		acceptor.accept(createCompletionProposal("Double", null, getImage(model), 700, context.getPrefix(), context));
+		acceptor.accept(createCompletionProposal("EndToEndFlowInstance", null, getImage(model), 700,
+				context.getPrefix(), context));
+		acceptor.accept(
+				createCompletionProposal("EventInstance", null, getImage(model), 700, context.getPrefix(), context));
+		acceptor.accept(
+				createCompletionProposal("FeatureInstance", null, getImage(model), 700, context.getPrefix(), context));
+		acceptor.accept(createCompletionProposal("FlowSpecificationInstance", null, getImage(model), 700,
+				context.getPrefix(), context));
+		acceptor.accept(
+				createCompletionProposal("InstanceObject", null, getImage(model), 700, context.getPrefix(), context));
+		acceptor.accept(
+				createCompletionProposal("LongRange", null, getImage(model), 700, context.getPrefix(), context));
+		acceptor.accept(createCompletionProposal("Long", null, getImage(model), 700, context.getPrefix(), context));
+		acceptor.accept(
+				createCompletionProposal("ModeInstance", null, getImage(model), 700, context.getPrefix(), context));
+		acceptor.accept(createCompletionProposal("ModeTransitionInstance", null, getImage(model), 700,
+				context.getPrefix(), context));
+		acceptor.accept(
+				createCompletionProposal("StateInstance", null, getImage(model), 700, context.getPrefix(), context));
+		acceptor.accept(createCompletionProposal("String", null, getImage(model), 700, context.getPrefix(), context));
+		acceptor.accept(
+				createCompletionProposal("SystemInstance", null, getImage(model), 700, context.getPrefix(), context));
+		acceptor.accept(createCompletionProposal("SystemOperationMode", null, getImage(model), 700, context.getPrefix(),
+				context));
+	}
 }
