@@ -4,7 +4,8 @@ public
 		contract InvalidTypeArgument {
 			queries
 				val valid = self.allSubcomponents.filterType<ComponentInstance>;
-				val invalid = self.allSubcomponents.filterType<Foo>;
+				val unknownType = self.allSubcomponents.filterType<Foo>;
+				val unsupportedType = self.allSubcomponents.filterType<List>;
 		}
 	**};
 end invalid_type_argument;

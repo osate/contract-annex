@@ -37,11 +37,16 @@ public class CheckTypeArgumentTest {
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		var issues = validationHelper.validate(pkg);
-		assertEquals(1, issues.size());
+		assertEquals(2, issues.size());
 		with(issues.get(0), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("Invalid type argument 'Foo'", issue.getMessage());
 			assertEquals(EcoreUtil.getURI(contract.getQueries().get(1).getValue()), issue.getUriToProblem());
+		});
+		with(issues.get(1), issue -> {
+			assertEquals(Severity.ERROR, issue.getSeverity());
+			assertEquals("Invalid type argument 'List'", issue.getMessage());
+			assertEquals(EcoreUtil.getURI(contract.getQueries().get(2).getValue()), issue.getUriToProblem());
 		});
 	}
 }
