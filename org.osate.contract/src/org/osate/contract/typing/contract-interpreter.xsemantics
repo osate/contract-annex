@@ -120,6 +120,34 @@ from {
 	G |- expression.left ~> var Object leftValue
 	result = switch member : leftType.members.get(expression.right) {
 		SimpleMember: member.evaluate(leftValue)
+		MemberWithTypeParameter: {
+			val typeAsString = expression.typeArgument
+			val typeAsType = switch typeAsString {
+				case "Boolean": BooleanType.INSTANCE
+				case "Classifier": ClassifierType.INSTANCE
+				case "ComponentCategory": ComponentCategoryType.INSTANCE
+				case "ComponentInstance": ComponentInstanceType.INSTANCE
+				case "ConnectionInstance": ConnectionInstanceType.INSTANCE
+				case "DoubleRange": DoubleRangeType.INSTANCE
+				case "Double": DoubleType.INSTANCE
+				case "EndToEndFlowInstance": EndToEndFlowInstanceType.INSTANCE
+				case "EventInstance": EventInstanceType.INSTANCE
+				case "FeatureInstance": FeatureInstanceType.INSTANCE
+				case "FlowSpecificationInstance": FlowSpecificationInstanceType.INSTANCE
+				case "InstanceObject": InstanceObjectType.INSTANCE
+				case "LongRange": LongRangeType.INSTANCE
+				case "Long": LongType.INSTANCE
+				case "ModeInstance": ModeInstanceType.INSTANCE
+				case "ModeTransitionInstance": ModeTransitionInstanceType.INSTANCE
+				case "StateInstance": StateInstanceType.INSTANCE
+				case "String": StringType.INSTANCE
+				case "SystemInstance": SystemInstanceType.INSTANCE
+				case "SystemOperationMode": SystemOperationModeType.INSTANCE
+			}
+			if (typeAsType !== null) {
+				member.evaluate(leftValue, typeAsType)
+			}
+		}
 		MemberWithArgument: {
 			G |- expression.argument ~> var Object argumentValue
 			member.evaluate(leftValue, argumentValue)

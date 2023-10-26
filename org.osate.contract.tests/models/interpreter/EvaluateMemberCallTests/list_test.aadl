@@ -24,6 +24,8 @@
 
 package list_test
 public
+	with ps;
+	
 	annex contract {**
 		contract listTest {
 			queries
@@ -54,6 +56,11 @@ public
 				val v12 = self.subcomponents
 					.map { subcomponent -> subcomponent.name }
 					.contains("fake subcomponent");
+				
+				val v13 = self#ps::reference_property
+					.map { value -> value.filterType<FeatureInstance> };
+				val v14 = self#ps::reference_property
+					.map { value -> value.filterType<ComponentInstance> };
 		}
 	**};
 	
@@ -66,6 +73,14 @@ public
 			process_2: process ps_without_features;
 			process_3: process ps_without_features;
 			ps_with_features: process ps_with_features;
+		properties
+			ps::reference_property => (
+				reference (process_1),
+				reference (process_2),
+				reference (process_3),
+				reference (ps_with_features.f1),
+				reference (ps_with_features.f2)
+			);
 	end s.i;
 	
 	process ps_without_features
