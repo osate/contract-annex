@@ -122,8 +122,6 @@ public final class ListType implements Type {
 			javaClass = ComponentInstance.class;
 		} else if (genericType instanceof ConnectionInstanceType) {
 			javaClass = ConnectionInstance.class;
-		} else if (genericType instanceof DoubleRangeType) {
-			javaClass = RangeValueHolder.class;
 		} else if (genericType instanceof DoubleType) {
 			javaClass = Double.class;
 		} else if (genericType instanceof EndToEndFlowInstanceType) {
@@ -136,8 +134,6 @@ public final class ListType implements Type {
 			javaClass = FlowSpecificationInstance.class;
 		} else if (genericType instanceof InstanceObjectType) {
 			javaClass = InstanceObject.class;
-		} else if (genericType instanceof LongRangeType) {
-			javaClass = RangeValueHolder.class;
 		} else if (genericType instanceof LongType) {
 			javaClass = Long.class;
 		} else if (genericType instanceof ModeInstanceType) {

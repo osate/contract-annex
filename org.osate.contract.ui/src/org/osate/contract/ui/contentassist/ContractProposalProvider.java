@@ -73,8 +73,6 @@ public class ContractProposalProvider extends AbstractContractProposalProvider {
 				context));
 		acceptor.accept(createCompletionProposal("ConnectionInstance", null, getImage(model), 700, context.getPrefix(),
 				context));
-		acceptor.accept(
-				createCompletionProposal("DoubleRange", null, getImage(model), 700, context.getPrefix(), context));
 		acceptor.accept(createCompletionProposal("Double", null, getImage(model), 700, context.getPrefix(), context));
 		acceptor.accept(createCompletionProposal("EndToEndFlowInstance", null, getImage(model), 700,
 				context.getPrefix(), context));
@@ -86,8 +84,6 @@ public class ContractProposalProvider extends AbstractContractProposalProvider {
 				context.getPrefix(), context));
 		acceptor.accept(
 				createCompletionProposal("InstanceObject", null, getImage(model), 700, context.getPrefix(), context));
-		acceptor.accept(
-				createCompletionProposal("LongRange", null, getImage(model), 700, context.getPrefix(), context));
 		acceptor.accept(createCompletionProposal("Long", null, getImage(model), 700, context.getPrefix(), context));
 		acceptor.accept(
 				createCompletionProposal("ModeInstance", null, getImage(model), 700, context.getPrefix(), context));

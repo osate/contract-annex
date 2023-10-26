@@ -78,14 +78,12 @@ from {
 				case "ComponentCategory": ComponentCategoryType.INSTANCE
 				case "ComponentInstance": ComponentInstanceType.INSTANCE
 				case "ConnectionInstance": ConnectionInstanceType.INSTANCE
-				case "DoubleRange": DoubleRangeType.INSTANCE
 				case "Double": DoubleType.INSTANCE
 				case "EndToEndFlowInstance": EndToEndFlowInstanceType.INSTANCE
 				case "EventInstance": EventInstanceType.INSTANCE
 				case "FeatureInstance": FeatureInstanceType.INSTANCE
 				case "FlowSpecificationInstance": FlowSpecificationInstanceType.INSTANCE
 				case "InstanceObject": InstanceObjectType.INSTANCE
-				case "LongRange": LongRangeType.INSTANCE
 				case "Long": LongType.INSTANCE
 				case "ModeInstance": ModeInstanceType.INSTANCE
 				case "ModeTransitionInstance": ModeTransitionInstanceType.INSTANCE
@@ -288,14 +286,12 @@ from {
 		"ComponentCategory",
 		"ComponentInstance",
 		"ConnectionInstance",
-		"DoubleRange",
 		"Double",
 		"EndToEndFlowInstance",
 		"EventInstance",
 		"FeatureInstance",
 		"FlowSpecificationInstance",
 		"InstanceObject",
-		"LongRange",
 		"Long",
 		"ModeInstance",
 		"ModeTransitionInstance",
