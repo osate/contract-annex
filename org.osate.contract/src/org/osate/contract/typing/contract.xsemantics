@@ -71,29 +71,9 @@ from {
 	type = switch member : leftType?.members?.get(expression.right) {
 		SimpleMember: member.returnType
 		MemberWithTypeParameter: {
-			val typeAsString = expression.typeArgument
-			val typeAsType = switch typeAsString {
-				case "Boolean": BooleanType.INSTANCE
-				case "Classifier": ClassifierType.INSTANCE
-				case "ComponentCategory": ComponentCategoryType.INSTANCE
-				case "ComponentInstance": ComponentInstanceType.INSTANCE
-				case "ConnectionInstance": ConnectionInstanceType.INSTANCE
-				case "Double": DoubleType.INSTANCE
-				case "EndToEndFlowInstance": EndToEndFlowInstanceType.INSTANCE
-				case "EventInstance": EventInstanceType.INSTANCE
-				case "FeatureInstance": FeatureInstanceType.INSTANCE
-				case "FlowSpecificationInstance": FlowSpecificationInstanceType.INSTANCE
-				case "InstanceObject": InstanceObjectType.INSTANCE
-				case "Long": LongType.INSTANCE
-				case "ModeInstance": ModeInstanceType.INSTANCE
-				case "ModeTransitionInstance": ModeTransitionInstanceType.INSTANCE
-				case "StateInstance": StateInstanceType.INSTANCE
-				case "String": StringType.INSTANCE
-				case "SystemInstance": SystemInstanceType.INSTANCE
-				case "SystemOperationMode": SystemOperationModeType.INSTANCE
-			}
-			if (typeAsType !== null) {
-				member.getReturnType(typeAsType)
+			val queryType = GenericTypeArgumentRegistry.getQueryType(expression.typeArgument)
+			if (queryType !== null) {
+				member.getReturnType(queryType)
 			}
 		}
 		MemberWithArgument: member.getReturnType(expression.argument)
@@ -280,27 +260,7 @@ from {
 checkrule CheckTypeArgument for
 	MemberCall expression
 from {
-	val validTypes = #[
-		"Boolean",
-		"Classifier",
-		"ComponentCategory",
-		"ComponentInstance",
-		"ConnectionInstance",
-		"Double",
-		"EndToEndFlowInstance",
-		"EventInstance",
-		"FeatureInstance",
-		"FlowSpecificationInstance",
-		"InstanceObject",
-		"Long",
-		"ModeInstance",
-		"ModeTransitionInstance",
-		"StateInstance",
-		"String",
-		"SystemInstance",
-		"SystemOperationMode"
-	]
-	if (expression.typeArgument !== null && !validTypes.contains(expression.typeArgument)) {
+	if (expression.typeArgument !== null && !GenericTypeArgumentRegistry.typeNames.contains(expression.typeArgument)) {
 		fail
 			error "Invalid type argument '" + expression.typeArgument + "'"
 			source expression

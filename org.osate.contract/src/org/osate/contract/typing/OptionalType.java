@@ -30,19 +30,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
-import org.osate.aadl2.Classifier;
-import org.osate.aadl2.errormodel.instance.EventInstance;
-import org.osate.aadl2.errormodel.instance.StateInstance;
-import org.osate.aadl2.instance.ComponentInstance;
-import org.osate.aadl2.instance.ConnectionInstance;
-import org.osate.aadl2.instance.EndToEndFlowInstance;
-import org.osate.aadl2.instance.FeatureInstance;
-import org.osate.aadl2.instance.FlowSpecificationInstance;
-import org.osate.aadl2.instance.InstanceObject;
-import org.osate.aadl2.instance.ModeInstance;
-import org.osate.aadl2.instance.SystemInstance;
-import org.osate.aadl2.instance.SystemOperationMode;
-
 public final class OptionalType implements Type {
 	private final Type elementType;
 	private final Map<String, Member> members;
@@ -84,45 +71,8 @@ public final class OptionalType implements Type {
 		return receiver.isEmpty();
 	}
 
-	private static Optional<?> filterType(Optional<?> receiver, Type genericType) {
-		Class<?> javaClass;
-		if (genericType instanceof BooleanType) {
-			javaClass = Boolean.class;
-		} else if (genericType instanceof ClassifierType) {
-			javaClass = Classifier.class;
-		} else if (genericType instanceof ComponentInstanceType) {
-			javaClass = ComponentInstance.class;
-		} else if (genericType instanceof ConnectionInstanceType) {
-			javaClass = ConnectionInstance.class;
-		} else if (genericType instanceof DoubleType) {
-			javaClass = Double.class;
-		} else if (genericType instanceof EndToEndFlowInstanceType) {
-			javaClass = EndToEndFlowInstance.class;
-		} else if (genericType instanceof EventInstanceType) {
-			javaClass = EventInstance.class;
-		} else if (genericType instanceof FeatureInstanceType) {
-			javaClass = FeatureInstance.class;
-		} else if (genericType instanceof FlowSpecificationInstanceType) {
-			javaClass = FlowSpecificationInstance.class;
-		} else if (genericType instanceof InstanceObjectType) {
-			javaClass = InstanceObject.class;
-		} else if (genericType instanceof LongType) {
-			javaClass = Long.class;
-		} else if (genericType instanceof ModeInstanceType) {
-			javaClass = ModeInstance.class;
-		} else if (genericType instanceof StateInstanceType) {
-			javaClass = StateInstance.class;
-		} else if (genericType instanceof StringType) {
-			javaClass = String.class;
-		} else if (genericType instanceof SystemInstanceType) {
-			javaClass = SystemInstance.class;
-		} else if (genericType instanceof SystemOperationModeType) {
-			javaClass = SystemOperationMode.class;
-		} else {
-			return null;
-		}
-
-		return receiver.filter(javaClass::isInstance);
+	private static Optional<?> filterType(Optional<?> receiver, Class<?> genericType) {
+		return receiver.filter(genericType::isInstance);
 	}
 
 	private static Optional<?> map(Optional<?> receiver, Function<Object, Object> evaluateLambda) {
