@@ -264,6 +264,27 @@ val subcomponents = self.allSubcomponents;
 val numberOfFeatures = self.allFeatures.size;
 ```
 
+Some member calls take a type argument. Calls with type arguments take the following form:
+
+```
+<expression>.<function_name><<type>>
+```
+
+Here is an example of a call with a type argument:
+
+```
+val features = self#ps::reference_property
+  .map { value -> value.filterType<FeatureInstance> };
+```
+
+In this example, `filterType` is called on a `List<InstanceObject>` with the type argument `FeatureInstance` and the
+call returns a `List<FeatureInstance>`.
+
+Only some of the types in the query language are supported as a type argument. These types include `Boolean`,
+`Classifier`, `ComponentCategory`, `ComponentInstance`, `ConnectionInstance`, `Double`, `EndToEndFlowInstance`,
+`EventInstance`, `FeatureInstance`, `FlowSpecificationInstance`, `InstanceObject`, `Long`, `ModeInstance`,
+`ModeTransitionInstance`, `StateInstance`, `String`, `SystemInstance`, and `SystemOperationMode`.
+
 Some member calls also take arguments. Calls with arguments take the following form:
 
 ```
@@ -512,6 +533,10 @@ elements of the list. A query or parameter with the type `List` will have its ge
   element of the list is passed to the lambda and the lambda must return a `Boolean` indicating if the element should be
   included in the resulting list. `filter` returns a list with the same type as the original list. For example, if the
   type of the original list is `List<ComponentInstance>`, then the result will be a `List<ComponentInstance>`.
+* `filterType`: Filters the elements of the list that are instances of the specified type argument. Returns a list with
+  an element type based on the type argument. For example, if the type of the original list is `List<InstanceObject>`
+  and the specified type argument is `ComponentInstance`, then the resulting list will have the type
+  `List<ComponentInstance>`.
 * `map`: Returns a new list with all of the elements of the original list transformed by the lambda passed to `map`. The
   element type of the resulting list is based on the return type of the lambda. For example, if the type of the original
   list is `List<ComponentInstance>` and the lambda gets the name of each component, then the resulting list will have
