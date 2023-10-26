@@ -45,10 +45,10 @@ public
 				
 				val v9 = self.subcomponents.contains(self);
 				
-				val v10 = self#ps::reference_property.map { instanceObjects ->
+				val v10 = self#ps::reference_list_property.map { instanceObjects ->
 					instanceObjects.filterType<FeatureInstance>
 				};
-				val v11 = self#ps::reference_property.map { instanceObjects ->
+				val v11 = self#ps::reference_list_property.map { instanceObjects ->
 					instanceObjects.filterType<ComponentInstance>
 				};
 		}

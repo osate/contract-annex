@@ -57,9 +57,9 @@ public
 					.map { subcomponent -> subcomponent.name }
 					.contains("fake subcomponent");
 				
-				val v13 = self#ps::reference_property
+				val v13 = self#ps::reference_list_property
 					.map { value -> value.filterType<FeatureInstance> };
-				val v14 = self#ps::reference_property
+				val v14 = self#ps::reference_list_property
 					.map { value -> value.filterType<ComponentInstance> };
 		}
 	**};
@@ -74,7 +74,7 @@ public
 			process_3: process ps_without_features;
 			ps_with_features: process ps_with_features;
 		properties
-			ps::reference_property => (
+			ps::reference_list_property => (
 				reference (process_1),
 				reference (process_2),
 				reference (process_3),
