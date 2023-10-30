@@ -34,6 +34,7 @@ import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
 import org.osate.contract.contract.MemberCall;
 import org.osate.contract.typing.ContractTypeSystem;
+import org.osate.contract.typing.GenericTypeArgumentRegistry;
 
 import com.google.inject.Inject;
 
@@ -57,6 +58,15 @@ public class ContractProposalProvider extends AbstractContractProposalProvider {
 							context.getPrefix(), context));
 				}
 			}
+		}
+	}
+
+	@Override
+	public void completeCallExpression_TypeArgument(EObject model, Assignment assignment, ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor) {
+		for (var typeName : GenericTypeArgumentRegistry.getTypeNames()) {
+			acceptor.accept(
+					createCompletionProposal(typeName, null, getImage(model), 700, context.getPrefix(), context));
 		}
 	}
 }

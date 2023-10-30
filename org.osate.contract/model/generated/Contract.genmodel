@@ -119,6 +119,7 @@
     <genClasses ecoreClass="Contract.ecore#//MemberCall">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//MemberCall/left"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//MemberCall/right"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//MemberCall/typeArgument"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//MemberCall/argument"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//MemberCall/lambda"/>
     </genClasses>

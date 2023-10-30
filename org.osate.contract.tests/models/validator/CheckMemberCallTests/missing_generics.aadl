@@ -1,0 +1,10 @@
+package missing_generics
+public
+	annex contract {**
+		contract MissingGenerics {
+			queries
+				val valid = self.allSubcomponents.filterType<ComponentInstance>;
+				val invalid = self.allSubcomponents.filterType;
+		}
+	**};
+end missing_generics;

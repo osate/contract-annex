@@ -1435,12 +1435,17 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final Assignment cRightAssignment_1_0_2 = (Assignment)cGroup_1_0.eContents().get(2);
 		private final RuleCall cRightIDTerminalRuleCall_1_0_2_0 = (RuleCall)cRightAssignment_1_0_2.eContents().get(0);
 		private final Group cGroup_1_0_3 = (Group)cGroup_1_0.eContents().get(3);
-		private final Keyword cLeftParenthesisKeyword_1_0_3_0 = (Keyword)cGroup_1_0_3.eContents().get(0);
-		private final Assignment cArgumentAssignment_1_0_3_1 = (Assignment)cGroup_1_0_3.eContents().get(1);
-		private final RuleCall cArgumentExpressionParserRuleCall_1_0_3_1_0 = (RuleCall)cArgumentAssignment_1_0_3_1.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_1_0_3_2 = (Keyword)cGroup_1_0_3.eContents().get(2);
-		private final Assignment cLambdaAssignment_1_0_4 = (Assignment)cGroup_1_0.eContents().get(4);
-		private final RuleCall cLambdaLambdaParserRuleCall_1_0_4_0 = (RuleCall)cLambdaAssignment_1_0_4.eContents().get(0);
+		private final Keyword cLessThanSignKeyword_1_0_3_0 = (Keyword)cGroup_1_0_3.eContents().get(0);
+		private final Assignment cTypeArgumentAssignment_1_0_3_1 = (Assignment)cGroup_1_0_3.eContents().get(1);
+		private final RuleCall cTypeArgumentIDTerminalRuleCall_1_0_3_1_0 = (RuleCall)cTypeArgumentAssignment_1_0_3_1.eContents().get(0);
+		private final Keyword cGreaterThanSignKeyword_1_0_3_2 = (Keyword)cGroup_1_0_3.eContents().get(2);
+		private final Group cGroup_1_0_4 = (Group)cGroup_1_0.eContents().get(4);
+		private final Keyword cLeftParenthesisKeyword_1_0_4_0 = (Keyword)cGroup_1_0_4.eContents().get(0);
+		private final Assignment cArgumentAssignment_1_0_4_1 = (Assignment)cGroup_1_0_4.eContents().get(1);
+		private final RuleCall cArgumentExpressionParserRuleCall_1_0_4_1_0 = (RuleCall)cArgumentAssignment_1_0_4_1.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_1_0_4_2 = (Keyword)cGroup_1_0_4.eContents().get(2);
+		private final Assignment cLambdaAssignment_1_0_5 = (Assignment)cGroup_1_0.eContents().get(5);
+		private final RuleCall cLambdaLambdaParserRuleCall_1_0_5_0 = (RuleCall)cLambdaAssignment_1_0_5.eContents().get(0);
 		private final Group cGroup_1_1 = (Group)cAlternatives_1.eContents().get(1);
 		private final Action cPropertyLookupLeftAction_1_1_0 = (Action)cGroup_1_1.eContents().get(0);
 		private final Keyword cNumberSignKeyword_1_1_1 = (Keyword)cGroup_1_1.eContents().get(1);
@@ -1450,14 +1455,14 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		
 		//CallExpression returns Expression:
 		//    TerminalExpression (
-		//        {MemberCall.left=current} '.' right=ID ('(' argument=Expression ')')? lambda=Lambda? |
+		//        {MemberCall.left=current} '.' right=ID ('<' typeArgument=ID '>')? ('(' argument=Expression ')')? lambda=Lambda? |
 		//        {PropertyLookup.left=current} '#' right=[aadl2::Property|QPREF]
 		//    )*
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//TerminalExpression (
-		//    {MemberCall.left=current} '.' right=ID ('(' argument=Expression ')')? lambda=Lambda? |
+		//    {MemberCall.left=current} '.' right=ID ('<' typeArgument=ID '>')? ('(' argument=Expression ')')? lambda=Lambda? |
 		//    {PropertyLookup.left=current} '#' right=[aadl2::Property|QPREF]
 		//)*
 		public Group getGroup() { return cGroup; }
@@ -1466,12 +1471,12 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		public RuleCall getTerminalExpressionParserRuleCall_0() { return cTerminalExpressionParserRuleCall_0; }
 		
 		//(
-		//       {MemberCall.left=current} '.' right=ID ('(' argument=Expression ')')? lambda=Lambda? |
+		//       {MemberCall.left=current} '.' right=ID ('<' typeArgument=ID '>')? ('(' argument=Expression ')')? lambda=Lambda? |
 		//       {PropertyLookup.left=current} '#' right=[aadl2::Property|QPREF]
 		//   )*
 		public Alternatives getAlternatives_1() { return cAlternatives_1; }
 		
-		//{MemberCall.left=current} '.' right=ID ('(' argument=Expression ')')? lambda=Lambda?
+		//{MemberCall.left=current} '.' right=ID ('<' typeArgument=ID '>')? ('(' argument=Expression ')')? lambda=Lambda?
 		public Group getGroup_1_0() { return cGroup_1_0; }
 		
 		//{MemberCall.left=current}
@@ -1486,26 +1491,41 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//ID
 		public RuleCall getRightIDTerminalRuleCall_1_0_2_0() { return cRightIDTerminalRuleCall_1_0_2_0; }
 		
-		//('(' argument=Expression ')')?
+		//('<' typeArgument=ID '>')?
 		public Group getGroup_1_0_3() { return cGroup_1_0_3; }
 		
+		//'<'
+		public Keyword getLessThanSignKeyword_1_0_3_0() { return cLessThanSignKeyword_1_0_3_0; }
+		
+		//typeArgument=ID
+		public Assignment getTypeArgumentAssignment_1_0_3_1() { return cTypeArgumentAssignment_1_0_3_1; }
+		
+		//ID
+		public RuleCall getTypeArgumentIDTerminalRuleCall_1_0_3_1_0() { return cTypeArgumentIDTerminalRuleCall_1_0_3_1_0; }
+		
+		//'>'
+		public Keyword getGreaterThanSignKeyword_1_0_3_2() { return cGreaterThanSignKeyword_1_0_3_2; }
+		
+		//('(' argument=Expression ')')?
+		public Group getGroup_1_0_4() { return cGroup_1_0_4; }
+		
 		//'('
-		public Keyword getLeftParenthesisKeyword_1_0_3_0() { return cLeftParenthesisKeyword_1_0_3_0; }
+		public Keyword getLeftParenthesisKeyword_1_0_4_0() { return cLeftParenthesisKeyword_1_0_4_0; }
 		
 		//argument=Expression
-		public Assignment getArgumentAssignment_1_0_3_1() { return cArgumentAssignment_1_0_3_1; }
+		public Assignment getArgumentAssignment_1_0_4_1() { return cArgumentAssignment_1_0_4_1; }
 		
 		//Expression
-		public RuleCall getArgumentExpressionParserRuleCall_1_0_3_1_0() { return cArgumentExpressionParserRuleCall_1_0_3_1_0; }
+		public RuleCall getArgumentExpressionParserRuleCall_1_0_4_1_0() { return cArgumentExpressionParserRuleCall_1_0_4_1_0; }
 		
 		//')'
-		public Keyword getRightParenthesisKeyword_1_0_3_2() { return cRightParenthesisKeyword_1_0_3_2; }
+		public Keyword getRightParenthesisKeyword_1_0_4_2() { return cRightParenthesisKeyword_1_0_4_2; }
 		
 		//lambda=Lambda?
-		public Assignment getLambdaAssignment_1_0_4() { return cLambdaAssignment_1_0_4; }
+		public Assignment getLambdaAssignment_1_0_5() { return cLambdaAssignment_1_0_5; }
 		
 		//Lambda
-		public RuleCall getLambdaLambdaParserRuleCall_1_0_4_0() { return cLambdaLambdaParserRuleCall_1_0_4_0; }
+		public RuleCall getLambdaLambdaParserRuleCall_1_0_5_0() { return cLambdaLambdaParserRuleCall_1_0_5_0; }
 		
 		//{PropertyLookup.left=current} '#' right=[aadl2::Property|QPREF]
 		public Group getGroup_1_1() { return cGroup_1_1; }
@@ -2669,7 +2689,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	
 	//CallExpression returns Expression:
 	//    TerminalExpression (
-	//        {MemberCall.left=current} '.' right=ID ('(' argument=Expression ')')? lambda=Lambda? |
+	//        {MemberCall.left=current} '.' right=ID ('<' typeArgument=ID '>')? ('(' argument=Expression ')')? lambda=Lambda? |
 	//        {PropertyLookup.left=current} '#' right=[aadl2::Property|QPREF]
 	//    )*
 	//;

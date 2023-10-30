@@ -48,6 +48,8 @@ public final class ListType implements Type {
 						lambdaReturnType -> lambdaReturnType == BooleanType.INSTANCE ? Optional.empty()
 								: Optional.of(BooleanType.INSTANCE.toString()),
 						lambdaType -> this, (receiver, evaluateLambda) -> filter((List<?>) receiver, evaluateLambda)));
+		members.put("filterType", new MemberWithTypeParameter(genericType -> new ListType(genericType),
+				(receiver, genericType) -> filterType((List<?>) receiver, genericType)));
 		members.put("map",
 				new MemberWithLambda(elementType, lambdaReturnType -> Optional.empty(),
 						lambdaType -> lambdaType != null ? new ListType(lambdaType) : null,
@@ -91,6 +93,16 @@ public final class ListType implements Type {
 		for (var element : receiver) {
 			var lambdaResult = (Boolean) evaluateLambda.apply(element);
 			if (lambdaResult) {
+				result.add(element);
+			}
+		}
+		return result;
+	}
+
+	private static List<?> filterType(List<?> receiver, Class<?> genericType) {
+		var result = new ArrayList<>();
+		for (var element : receiver) {
+			if (genericType.isInstance(element)) {
 				result.add(element);
 			}
 		}

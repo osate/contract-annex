@@ -124,6 +124,7 @@ public class ContractParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getCallExpressionAccess().getGroup(), "rule__CallExpression__Group__0");
 			builder.put(grammarAccess.getCallExpressionAccess().getGroup_1_0(), "rule__CallExpression__Group_1_0__0");
 			builder.put(grammarAccess.getCallExpressionAccess().getGroup_1_0_3(), "rule__CallExpression__Group_1_0_3__0");
+			builder.put(grammarAccess.getCallExpressionAccess().getGroup_1_0_4(), "rule__CallExpression__Group_1_0_4__0");
 			builder.put(grammarAccess.getCallExpressionAccess().getGroup_1_1(), "rule__CallExpression__Group_1_1__0");
 			builder.put(grammarAccess.getLambdaAccess().getGroup(), "rule__Lambda__Group__0");
 			builder.put(grammarAccess.getParameterAccess().getGroup_1(), "rule__Parameter__Group_1__0");
@@ -234,8 +235,9 @@ public class ContractParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getAndExpressionAccess().getRightAssignment_1_2(), "rule__AndExpression__RightAssignment_1_2");
 			builder.put(grammarAccess.getNotExpressionAccess().getOperandAssignment_1_2(), "rule__NotExpression__OperandAssignment_1_2");
 			builder.put(grammarAccess.getCallExpressionAccess().getRightAssignment_1_0_2(), "rule__CallExpression__RightAssignment_1_0_2");
-			builder.put(grammarAccess.getCallExpressionAccess().getArgumentAssignment_1_0_3_1(), "rule__CallExpression__ArgumentAssignment_1_0_3_1");
-			builder.put(grammarAccess.getCallExpressionAccess().getLambdaAssignment_1_0_4(), "rule__CallExpression__LambdaAssignment_1_0_4");
+			builder.put(grammarAccess.getCallExpressionAccess().getTypeArgumentAssignment_1_0_3_1(), "rule__CallExpression__TypeArgumentAssignment_1_0_3_1");
+			builder.put(grammarAccess.getCallExpressionAccess().getArgumentAssignment_1_0_4_1(), "rule__CallExpression__ArgumentAssignment_1_0_4_1");
+			builder.put(grammarAccess.getCallExpressionAccess().getLambdaAssignment_1_0_5(), "rule__CallExpression__LambdaAssignment_1_0_5");
 			builder.put(grammarAccess.getCallExpressionAccess().getRightAssignment_1_1_2(), "rule__CallExpression__RightAssignment_1_1_2");
 			builder.put(grammarAccess.getLambdaAccess().getParameterAssignment_1(), "rule__Lambda__ParameterAssignment_1");
 			builder.put(grammarAccess.getLambdaAccess().getReturnValueAssignment_4(), "rule__Lambda__ReturnValueAssignment_4");

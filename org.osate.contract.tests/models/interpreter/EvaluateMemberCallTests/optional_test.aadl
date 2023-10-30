@@ -24,6 +24,8 @@
 
 package optional_test
 public
+	with ps;
+	
 	annex contract {**
 		contract optionalTest {
 			queries
@@ -36,6 +38,8 @@ public
 				val v5 = self#Transmission_Time.flatMap { property -> property.get(PerByte) };
 				val v6 = self#Data_Rate.isEmpty;
 				val v7 = self#Latency.isEmpty;
+				val v8 = self#ps::reference_property.filterType<ComponentInstance>;
+				val v9 = self#ps::reference_property.filterType<FeatureInstance>;
 		}
 	**};
 	
@@ -43,8 +47,11 @@ public
 	end s;
 	
 	system implementation s.i
+		subcomponents
+			sub1: system;
 		properties
 			Data_Rate => 85 GBytesps;
 			Transmission_Time => [Fixed => 10 ms .. 100 ms;];
+			ps::reference_property => reference (sub1);
 	end s.i;
 end optional_test;

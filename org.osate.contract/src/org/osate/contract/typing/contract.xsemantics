@@ -70,6 +70,12 @@ from {
 	G |- expression.left : var Type leftType
 	type = switch member : leftType?.members?.get(expression.right) {
 		SimpleMember: member.returnType
+		MemberWithTypeParameter: {
+			val queryType = GenericTypeArgumentRegistry.getQueryType(expression.typeArgument)
+			if (queryType !== null) {
+				member.getReturnType(queryType)
+			}
+		}
 		MemberWithArgument: member.getReturnType(expression.argument)
 		MemberWithLambda case expression.lambda !== null: {
 			G |- expression.lambda.returnValue : var Type lambdaType
@@ -212,6 +218,18 @@ from {
 				source expression
 				feature ContractPackage.eINSTANCE.memberCall_Right
 		} else {
+			val expectGenerics = member instanceof MemberWithTypeParameter
+			if (expectGenerics && expression.typeArgument === null) {
+				fail
+					error "Type argument expected for call to '" + expression.right + "'"
+					source expression
+					feature ContractPackage.eINSTANCE.memberCall_Right
+			} else if (!expectGenerics && expression.typeArgument !== null) {
+				fail
+					error "Unexpected type argument for call to '" + expression.right + "'"
+					source expression
+					feature ContractPackage.eINSTANCE.memberCall_TypeArgument
+			}
 			val expectArgument = member instanceof MemberWithArgument
 			if (expectArgument && expression.argument === null) {
 				fail
@@ -236,6 +254,17 @@ from {
 					source expression.lambda
 			}
 		}
+	}
+}
+
+checkrule CheckTypeArgument for
+	MemberCall expression
+from {
+	if (expression.typeArgument !== null && !GenericTypeArgumentRegistry.typeNames.contains(expression.typeArgument)) {
+		fail
+			error "Invalid type argument '" + expression.typeArgument + "'"
+			source expression
+			feature ContractPackage.eINSTANCE.memberCall_TypeArgument
 	}
 }
 

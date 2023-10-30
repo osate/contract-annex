@@ -352,12 +352,12 @@ public class MemberCallTest {
 
 	@Test
 	public void testListMembers() {
-		var pkg = testHelper.parseFile(PATH + "list_test.aadl");
+		var pkg = testHelper.parseFile(PATH + "list_test.aadl", PATH + "ps.aadl");
 		validationHelper.assertNoIssues(pkg);
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(9, contract.getQueries().size());
+		assertEquals(11, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
 			assertEquals("Long", type.toString());
@@ -394,16 +394,26 @@ public class MemberCallTest {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
+		with(contract.getQueries().get(9), query -> {
+			var mapCall = (MemberCall) query.getValue();
+			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
+			assertEquals("List<FeatureInstance>", type.toString());
+		});
+		with(contract.getQueries().get(10), query -> {
+			var mapCall = (MemberCall) query.getValue();
+			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
+			assertEquals("List<ComponentInstance>", type.toString());
+		});
 	}
 
 	@Test
 	public void testOptionalMembers() {
-		var pkg = testHelper.parseFile(PATH + "optional_test.aadl");
+		var pkg = testHelper.parseFile(PATH + "optional_test.aadl", PATH + "ps.aadl");
 		validationHelper.assertNoIssues(pkg);
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(3, contract.getQueries().size());
+		assertEquals(4, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
 			assertEquals("String?", type.toString());
@@ -415,6 +425,10 @@ public class MemberCallTest {
 		with(contract.getQueries().get(2), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
 			assertEquals("LongRangeWithUnits<AADL_Project::Time_Units>?", type.toString());
+		});
+		with(contract.getQueries().get(3), query -> {
+			var type = typeSystem.expressionType(query.getValue()).getValue();
+			assertEquals("ComponentInstance?", type.toString());
 		});
 	}
 

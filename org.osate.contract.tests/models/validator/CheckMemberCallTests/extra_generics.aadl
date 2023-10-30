@@ -1,0 +1,10 @@
+package extra_generics
+public
+	annex contract {**
+		contract ExtraGenerics {
+			queries
+				val valid = self.name;
+				val invalid = self.name<ComponentInstance>;
+		}
+	**};
+end extra_generics;

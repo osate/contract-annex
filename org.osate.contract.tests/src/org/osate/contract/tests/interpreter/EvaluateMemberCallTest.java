@@ -572,7 +572,7 @@ public class EvaluateMemberCallTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testList() throws Exception {
-		var pkg = testHelper.parseFile(PATH + "list_test.aadl");
+		var pkg = testHelper.parseFile(PATH + "list_test.aadl", PATH + "ps.aadl");
 		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
@@ -580,7 +580,7 @@ public class EvaluateMemberCallTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(12, contract.getQueries().size());
+		assertEquals(14, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
@@ -648,12 +648,30 @@ public class EvaluateMemberCallTest {
 			assertEquals(1, result.size());
 			assertFalse((Boolean) result.get("v12"));
 		});
+		with(contract.getQueries().get(12), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertIterableEquals(List.of("f1", "f2"),
+					((Optional<List<FeatureInstance>>) result.get("v13")).get()
+							.stream()
+							.map(NamedElement::getName)
+							.toList());
+		});
+		with(contract.getQueries().get(13), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertIterableEquals(List.of("process_1", "process_2", "process_3"),
+					((Optional<List<ComponentInstance>>) result.get("v14")).get()
+							.stream()
+							.map(NamedElement::getName)
+							.toList());
+		});
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testOptional() throws Exception {
-		var pkg = testHelper.parseFile(PATH + "optional_test.aadl");
+		var pkg = testHelper.parseFile(PATH + "optional_test.aadl", PATH + "ps.aadl");
 		validationHelper.assertNoIssues(pkg);
 		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
 		var systemInstance = InstantiateModel.instantiate(system);
@@ -661,7 +679,7 @@ public class EvaluateMemberCallTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(7, contract.getQueries().size());
+		assertEquals(9, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
@@ -696,6 +714,16 @@ public class EvaluateMemberCallTest {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
 			assertEquals(true, result.get("v7"));
+		});
+		with(contract.getQueries().get(7), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertEquals("sub1", ((Optional<ComponentInstance>) result.get("v8")).get().getName());
+		});
+		with(contract.getQueries().get(8), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertEquals(Optional.empty(), result.get("v9"));
 		});
 	}
 
