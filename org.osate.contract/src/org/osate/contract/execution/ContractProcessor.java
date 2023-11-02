@@ -296,6 +296,7 @@ public class ContractProcessor {
 		for (var a : deferredAssumptions) {
 			pyExpr.addCode(smtAssumption(a));
 		}
+		pyBuilder.getVariables().putAll(pyExpr.getVariables());
 		return pyExpr.getScript();
 	};
 

@@ -42,8 +42,14 @@ public class ScriptRunner {
 		if (engineDescription != null) {
 			var engine = engineDescription.createEngine();
 
+			if (variables.isEmpty()) {
+				System.out.println("No global variables");
+			} else {
+				System.out.println("Global variables:");
+			}
 			for (var entry : variables.entrySet()) {
 				engine.setVariable(entry.getKey(), entry.getValue());
+				System.out.println("  " + entry.getKey());
 			}
 			ScriptResult sresult = engine.execute(pyCode);
 			engine.schedule();
