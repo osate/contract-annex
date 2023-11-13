@@ -410,6 +410,9 @@ following members:
 * `subcomponents`: Returns a `List<ComponentInstance>` with the immediate subcomponents of the component.
 * `allSubcomponents`: Returns a `List<ComponentInstance>` with all of the subcomponents that are directly or indirectly
   contained by the component.
+* `allComponents`: Returns a `List<ComponentInstance>` with all of the components that are part of the containment
+  hierarchy starting with the component that `allComponents` is called on. This is similar to `allSubcomponents` except
+  that the resulting list also has the component that `allComponents` is called on as well.
 * `features`: Returns a `List<FeatureInstance>` with the immediate features of the component.
 * `allFeatures`: Returns a `List<FeatureInstance>` with all of the features that are directly or indirectly contained by
   the component.

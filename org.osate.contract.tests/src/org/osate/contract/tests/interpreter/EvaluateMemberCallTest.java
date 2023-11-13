@@ -99,7 +99,7 @@ public class EvaluateMemberCallTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(35, contract.getQueries().size());
+		assertEquals(36, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
@@ -132,97 +132,101 @@ public class EvaluateMemberCallTest {
 		with(contract.getQueries().get(5), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(List.of("ep1"),
-					((List<FeatureInstance>) result.get("v6")).stream().map(NamedElement::getName).toList());
+			assertIterableEquals(
+					List.of("s_i_Instance", "left_process", "left_thread", "right_process", "right_thread",
+							"nested_sub",
+							"left_process", "left_thread", "right_process", "right_thread"),
+					((List<ComponentInstance>) result.get("v6")).stream().map(NamedElement::getName).toList());
 		});
 		with(contract.getQueries().get(6), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertIterableEquals(List.of("ep1"),
+					((List<FeatureInstance>) result.get("v7")).stream().map(NamedElement::getName).toList());
+		});
+		with(contract.getQueries().get(7), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
 			assertIterableEquals(
 					List.of("ep1", "left_process_port", "left_thread_port", "ep2", "right_process_port",
 							"right_thread_port", "left_process_port", "left_thread_port", "ep2", "right_process_port",
 							"right_thread_port"),
-					((List<FeatureInstance>) result.get("v7")).stream().map(NamedElement::getName).toList());
-		});
-		with(contract.getQueries().get(7), query -> {
-			var result = interpreter.evaluateQuery(environment, query).getValue();
-			assertEquals(1, result.size());
-			assertIterableEquals(List.of("outer_m1", "outer_m2"),
-					((List<ModeInstance>) result.get("v8")).stream().map(NamedElement::getName).toList());
+					((List<FeatureInstance>) result.get("v8")).stream().map(NamedElement::getName).toList());
 		});
 		with(contract.getQueries().get(8), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(List.of("inner_m1", "inner_m2", "inner_m1", "inner_m2", "outer_m1", "outer_m2"),
+			assertIterableEquals(List.of("outer_m1", "outer_m2"),
 					((List<ModeInstance>) result.get("v9")).stream().map(NamedElement::getName).toList());
 		});
 		with(contract.getQueries().get(9), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(List.of("outer_m1_ep1_outer_m2"),
-					((List<ModeTransitionInstance>) result.get("v10")).stream().map(NamedElement::getName).toList());
+			assertIterableEquals(List.of("inner_m1", "inner_m2", "inner_m1", "inner_m2", "outer_m1", "outer_m2"),
+					((List<ModeInstance>) result.get("v10")).stream().map(NamedElement::getName).toList());
 		});
 		with(contract.getQueries().get(10), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(List.of("inner_m1_ep2_inner_m2", "inner_m1_ep2_inner_m2", "outer_m1_ep1_outer_m2"),
+			assertIterableEquals(List.of("outer_m1_ep1_outer_m2"),
 					((List<ModeTransitionInstance>) result.get("v11")).stream().map(NamedElement::getName).toList());
 		});
 		with(contract.getQueries().get(11), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(List.of("outer_flow_spec"),
-					((List<FlowSpecificationInstance>) result.get("v12")).stream().map(NamedElement::getName).toList());
+			assertIterableEquals(List.of("inner_m1_ep2_inner_m2", "inner_m1_ep2_inner_m2", "outer_m1_ep1_outer_m2"),
+					((List<ModeTransitionInstance>) result.get("v12")).stream().map(NamedElement::getName).toList());
 		});
 		with(contract.getQueries().get(12), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(
-					List.of("left_thread_source", "left_source", "right_thread_sink", "right_sink",
-							"left_thread_source", "left_source", "right_thread_sink", "right_sink", "outer_flow_spec"),
+			assertIterableEquals(List.of("outer_flow_spec"),
 					((List<FlowSpecificationInstance>) result.get("v13")).stream().map(NamedElement::getName).toList());
 		});
 		with(contract.getQueries().get(13), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(List.of("etef1"),
-					((List<EndToEndFlowInstance>) result.get("v14")).stream().map(NamedElement::getName).toList());
+			assertIterableEquals(
+					List.of("left_thread_source", "left_source", "right_thread_sink", "right_sink",
+							"left_thread_source", "left_source", "right_thread_sink", "right_sink", "outer_flow_spec"),
+					((List<FlowSpecificationInstance>) result.get("v14")).stream().map(NamedElement::getName).toList());
 		});
 		with(contract.getQueries().get(14), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(List.of("etef2", "etef1"),
+			assertIterableEquals(List.of("etef1"),
 					((List<EndToEndFlowInstance>) result.get("v15")).stream().map(NamedElement::getName).toList());
 		});
 		with(contract.getQueries().get(15), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(List
-					.of("left_process.left_thread.left_thread_port -> right_process.right_thread.right_thread_port"),
-					((List<ConnectionInstance>) result.get("v16")).stream().map(NamedElement::getName).toList());
+			assertIterableEquals(List.of("etef2", "etef1"),
+					((List<EndToEndFlowInstance>) result.get("v16")).stream().map(NamedElement::getName).toList());
 		});
 		with(contract.getQueries().get(16), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(List.of(
-					"left_process.left_thread.left_thread_port -> right_process.right_thread.right_thread_port",
-					"left_process.left_thread.left_thread_port -> right_process.right_thread.right_thread_port"),
+			assertIterableEquals(List
+					.of("left_process.left_thread.left_thread_port -> right_process.right_thread.right_thread_port"),
 					((List<ConnectionInstance>) result.get("v17")).stream().map(NamedElement::getName).toList());
 		});
 		with(contract.getQueries().get(17), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertEquals(Collections.emptyList(), result.get("v18"));
+			assertIterableEquals(List.of(
+					"left_process.left_thread.left_thread_port -> right_process.right_thread.right_thread_port",
+					"left_process.left_thread.left_thread_port -> right_process.right_thread.right_thread_port"),
+					((List<ConnectionInstance>) result.get("v18")).stream().map(NamedElement::getName).toList());
 		});
 		with(contract.getQueries().get(18), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertEquals(Optional.empty(), result.get("v19"));
+			assertEquals(Collections.emptyList(), result.get("v19"));
 		});
 		with(contract.getQueries().get(19), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertFalse((Boolean) result.get("v20"));
+			assertEquals(Optional.empty(), result.get("v20"));
 		});
 		with(contract.getQueries().get(20), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
@@ -267,12 +271,12 @@ public class EvaluateMemberCallTest {
 		with(contract.getQueries().get(28), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertTrue((Boolean) result.get("v29"));
+			assertFalse((Boolean) result.get("v29"));
 		});
 		with(contract.getQueries().get(29), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertFalse((Boolean) result.get("v30"));
+			assertTrue((Boolean) result.get("v30"));
 		});
 		with(contract.getQueries().get(30), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
@@ -292,14 +296,19 @@ public class EvaluateMemberCallTest {
 		with(contract.getQueries().get(33), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(List.of("state1", "state2"),
-					((List<StateInstance>) result.get("v34")).stream().map(NamedElement::getName).toList());
+			assertFalse((Boolean) result.get("v34"));
 		});
 		with(contract.getQueries().get(34), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
+			assertIterableEquals(List.of("state1", "state2"),
+					((List<StateInstance>) result.get("v35")).stream().map(NamedElement::getName).toList());
+		});
+		with(contract.getQueries().get(35), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
 			assertIterableEquals(List.of("event1", "event2"),
-					((List<EventInstance>) result.get("v35")).stream().map(NamedElement::getName).toList());
+					((List<EventInstance>) result.get("v36")).stream().map(NamedElement::getName).toList());
 		});
 	}
 
