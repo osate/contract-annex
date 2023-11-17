@@ -65,7 +65,7 @@ public class MemberCallTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(35, contract.getQueries().size());
+		assertEquals(36, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
 			assertEquals("String", type.toString());
@@ -84,7 +84,7 @@ public class MemberCallTest {
 		});
 		with(contract.getQueries().get(4), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("List<FeatureInstance>", type.toString());
+			assertEquals("List<ComponentInstance>", type.toString());
 		});
 		with(contract.getQueries().get(5), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
@@ -92,7 +92,7 @@ public class MemberCallTest {
 		});
 		with(contract.getQueries().get(6), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("List<ModeInstance>", type.toString());
+			assertEquals("List<FeatureInstance>", type.toString());
 		});
 		with(contract.getQueries().get(7), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
@@ -100,7 +100,7 @@ public class MemberCallTest {
 		});
 		with(contract.getQueries().get(8), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("List<ModeTransitionInstance>", type.toString());
+			assertEquals("List<ModeInstance>", type.toString());
 		});
 		with(contract.getQueries().get(9), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
@@ -108,7 +108,7 @@ public class MemberCallTest {
 		});
 		with(contract.getQueries().get(10), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("List<FlowSpecificationInstance>", type.toString());
+			assertEquals("List<ModeTransitionInstance>", type.toString());
 		});
 		with(contract.getQueries().get(11), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
@@ -116,7 +116,7 @@ public class MemberCallTest {
 		});
 		with(contract.getQueries().get(12), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("List<EndToEndFlowInstance>", type.toString());
+			assertEquals("List<FlowSpecificationInstance>", type.toString());
 		});
 		with(contract.getQueries().get(13), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
@@ -124,7 +124,7 @@ public class MemberCallTest {
 		});
 		with(contract.getQueries().get(14), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("List<ConnectionInstance>", type.toString());
+			assertEquals("List<EndToEndFlowInstance>", type.toString());
 		});
 		with(contract.getQueries().get(15), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
@@ -132,15 +132,15 @@ public class MemberCallTest {
 		});
 		with(contract.getQueries().get(16), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("List<ModeInstance>", type.toString());
+			assertEquals("List<ConnectionInstance>", type.toString());
 		});
 		with(contract.getQueries().get(17), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("ComponentInstance?", type.toString());
+			assertEquals("List<ModeInstance>", type.toString());
 		});
 		with(contract.getQueries().get(18), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("Boolean", type.toString());
+			assertEquals("ComponentInstance?", type.toString());
 		});
 		with(contract.getQueries().get(19), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
@@ -196,13 +196,17 @@ public class MemberCallTest {
 		});
 		with(contract.getQueries().get(32), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("List<ComponentInstance>", type.toString());
+			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(33), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("List<StateInstance>", type.toString());
+			assertEquals("List<ComponentInstance>", type.toString());
 		});
 		with(contract.getQueries().get(34), query -> {
+			var type = typeSystem.expressionType(query.getValue()).getValue();
+			assertEquals("List<StateInstance>", type.toString());
+		});
+		with(contract.getQueries().get(35), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
 			assertEquals("List<EventInstance>", type.toString());
 		});
@@ -215,7 +219,7 @@ public class MemberCallTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(33, contract.getQueries().size());
+		assertEquals(34, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
 			assertEquals("String", type.toString());
@@ -234,7 +238,7 @@ public class MemberCallTest {
 		});
 		with(contract.getQueries().get(4), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("List<FeatureInstance>", type.toString());
+			assertEquals("List<ComponentInstance>", type.toString());
 		});
 		with(contract.getQueries().get(5), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
@@ -242,7 +246,7 @@ public class MemberCallTest {
 		});
 		with(contract.getQueries().get(6), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("List<ModeInstance>", type.toString());
+			assertEquals("List<FeatureInstance>", type.toString());
 		});
 		with(contract.getQueries().get(7), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
@@ -250,7 +254,7 @@ public class MemberCallTest {
 		});
 		with(contract.getQueries().get(8), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("List<ModeTransitionInstance>", type.toString());
+			assertEquals("List<ModeInstance>", type.toString());
 		});
 		with(contract.getQueries().get(9), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
@@ -258,7 +262,7 @@ public class MemberCallTest {
 		});
 		with(contract.getQueries().get(10), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("List<FlowSpecificationInstance>", type.toString());
+			assertEquals("List<ModeTransitionInstance>", type.toString());
 		});
 		with(contract.getQueries().get(11), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
@@ -266,7 +270,7 @@ public class MemberCallTest {
 		});
 		with(contract.getQueries().get(12), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("List<EndToEndFlowInstance>", type.toString());
+			assertEquals("List<FlowSpecificationInstance>", type.toString());
 		});
 		with(contract.getQueries().get(13), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
@@ -274,7 +278,7 @@ public class MemberCallTest {
 		});
 		with(contract.getQueries().get(14), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("List<ConnectionInstance>", type.toString());
+			assertEquals("List<EndToEndFlowInstance>", type.toString());
 		});
 		with(contract.getQueries().get(15), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
@@ -282,11 +286,11 @@ public class MemberCallTest {
 		});
 		with(contract.getQueries().get(16), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("List<SystemOperationMode>", type.toString());
+			assertEquals("List<ConnectionInstance>", type.toString());
 		});
 		with(contract.getQueries().get(17), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("Boolean", type.toString());
+			assertEquals("List<SystemOperationMode>", type.toString());
 		});
 		with(contract.getQueries().get(18), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
@@ -342,9 +346,13 @@ public class MemberCallTest {
 		});
 		with(contract.getQueries().get(31), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("List<StateInstance>", type.toString());
+			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(32), query -> {
+			var type = typeSystem.expressionType(query.getValue()).getValue();
+			assertEquals("List<StateInstance>", type.toString());
+		});
+		with(contract.getQueries().get(33), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
 			assertEquals("List<EventInstance>", type.toString());
 		});

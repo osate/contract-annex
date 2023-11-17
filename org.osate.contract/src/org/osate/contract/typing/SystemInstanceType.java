@@ -31,6 +31,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.xtext.EcoreUtil2;
 import org.osate.aadl2.ComponentCategory;
 import org.osate.aadl2.errormodel.instance.EMV2AnnexInstance;
 import org.osate.aadl2.errormodel.instance.EventInstance;
@@ -58,6 +59,8 @@ public final class SystemInstanceType implements PropertyLookupSupportedType {
 				receiver -> subcomponents((SystemInstance) receiver)));
 		MEMBERS.put("allSubcomponents", new SimpleMember(new ListType(ComponentInstanceType.INSTANCE),
 				receiver -> allSubcomponents((SystemInstance) receiver)));
+		MEMBERS.put("allComponents", new SimpleMember(new ListType(ComponentInstanceType.INSTANCE),
+				receiver -> allComponents((SystemInstance) receiver)));
 		MEMBERS.put("features", new SimpleMember(new ListType(FeatureInstanceType.INSTANCE),
 				receiver -> features((SystemInstance) receiver)));
 		MEMBERS.put("allFeatures", new SimpleMember(new ListType(FeatureInstanceType.INSTANCE),
@@ -149,6 +152,10 @@ public final class SystemInstanceType implements PropertyLookupSupportedType {
 			}
 		});
 		return result;
+	}
+
+	private static List<ComponentInstance> allComponents(SystemInstance receiver) {
+		return EcoreUtil2.eAllOfType(receiver, ComponentInstance.class);
 	}
 
 	private static List<FeatureInstance> features(SystemInstance receiver) {

@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.eclipse.xtext.EcoreUtil2;
 import org.osate.aadl2.ComponentCategory;
 import org.osate.aadl2.contrib.deployment.DeploymentProperties;
 import org.osate.aadl2.errormodel.instance.EMV2AnnexInstance;
@@ -58,6 +59,8 @@ public final class ComponentInstanceType implements PropertyLookupSupportedType 
 				receiver -> subcomponents((ComponentInstance) receiver)));
 		MEMBERS.put("allSubcomponents", new SimpleMember(new ListType(ComponentInstanceType.INSTANCE),
 				receiver -> allSubcomponents((ComponentInstance) receiver)));
+		MEMBERS.put("allComponents", new SimpleMember(new ListType(ComponentInstanceType.INSTANCE),
+				receiver -> allComponents((ComponentInstance) receiver)));
 		MEMBERS.put("features", new SimpleMember(new ListType(FeatureInstanceType.INSTANCE),
 				receiver -> features((ComponentInstance) receiver)));
 		MEMBERS.put("allFeatures", new SimpleMember(new ListType(FeatureInstanceType.INSTANCE),
@@ -153,6 +156,10 @@ public final class ComponentInstanceType implements PropertyLookupSupportedType 
 			}
 		});
 		return result;
+	}
+
+	private static List<ComponentInstance> allComponents(ComponentInstance receiver) {
+		return EcoreUtil2.eAllOfType(receiver, ComponentInstance.class);
 	}
 
 	private static List<FeatureInstance> features(ComponentInstance receiver) {
