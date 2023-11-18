@@ -51,6 +51,8 @@ public
 				val v11 = self#ps::reference_list_property.map { instanceObjects ->
 					instanceObjects.filterType<ComponentInstance>
 				};
+				val v12 = self.allSubcomponents
+					.mapPresent { subcomponent -> subcomponent#Period };
 		}
 	**};
 end list_test;

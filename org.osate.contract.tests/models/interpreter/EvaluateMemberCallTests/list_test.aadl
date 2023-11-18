@@ -61,6 +61,9 @@ public
 					.map { value -> value.filterType<FeatureInstance> };
 				val v14 = self#ps::reference_list_property
 					.map { value -> value.filterType<ComponentInstance> };
+				
+				val v15 = self.subcomponents
+					.mapPresent { subcomponent -> subcomponent#Priority };
 		}
 	**};
 	
@@ -69,9 +72,9 @@ public
 	
 	system implementation s.i
 		subcomponents
-			process_1: process ps_without_features;
+			process_1: process ps_without_features { Priority => 1; };
 			process_2: process ps_without_features;
-			process_3: process ps_without_features;
+			process_3: process ps_without_features { Priority => 3; };
 			ps_with_features: process ps_with_features;
 		properties
 			ps::reference_list_property => (

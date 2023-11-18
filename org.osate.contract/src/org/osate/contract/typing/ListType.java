@@ -54,6 +54,14 @@ public final class ListType implements Type {
 				new MemberWithLambda(elementType, lambdaReturnType -> Optional.empty(),
 						lambdaType -> lambdaType != null ? new ListType(lambdaType) : null,
 						(receiver, evaluateLambda) -> map((List<?>) receiver, evaluateLambda)));
+		members.put("mapPresent",
+				new MemberWithLambda(elementType,
+						lambdaReturnType -> lambdaReturnType instanceof OptionalType ? Optional.empty()
+								: Optional.of("Optional"),
+						lambdaType -> lambdaType instanceof OptionalType nestedLambdaType
+								? new ListType(nestedLambdaType.getElementType())
+								: null,
+						(receiver, evaluateLambda) -> mapPresent((List<?>) receiver, evaluateLambda)));
 		members.put("contains", new MemberWithArgument(argument -> BooleanType.INSTANCE,
 				(receiver, argument) -> contains((List<?>) receiver, argument)));
 	}
@@ -114,6 +122,15 @@ public final class ListType implements Type {
 		for (var element : receiver) {
 			var lambdaResult = evaluateLambda.apply(element);
 			result.add(lambdaResult);
+		}
+		return result;
+	}
+
+	private static List<?> mapPresent(List<?> receiver, Function<Object, Object> evaluateLambda) {
+		var result = new ArrayList<>();
+		for (var element : receiver) {
+			var lambdaResult = (Optional<?>) evaluateLambda.apply(element);
+			lambdaResult.ifPresent(result::add);
 		}
 		return result;
 	}
