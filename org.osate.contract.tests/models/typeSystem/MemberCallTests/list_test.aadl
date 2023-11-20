@@ -56,6 +56,9 @@ public
 				val v13 = self.allSubcomponents
 					.map { subcomponent -> subcomponent#Period }
 					.filterPresent;
+				val v14 = self.allSubcomponents
+					.map { subcomponent -> (subcomponent.name, subcomponent#Priority) }
+					.filterTupleElementsPresent;
 		}
 	**};
 end list_test;

@@ -67,6 +67,10 @@ public
 				val v16 = self.subcomponents
 					.map { subcomponent -> subcomponent#Priority }
 					.filterPresent;
+				
+				val v17 = self.subcomponents
+					.map { subcomponent -> (subcomponent.name, subcomponent#Priority) }
+					.filterTupleElementsPresent;
 		}
 	**};
 	

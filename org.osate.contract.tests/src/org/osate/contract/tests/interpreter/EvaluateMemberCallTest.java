@@ -597,7 +597,7 @@ public class EvaluateMemberCallTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(16, contract.getQueries().size());
+		assertEquals(17, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
@@ -692,6 +692,14 @@ public class EvaluateMemberCallTest {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
 			assertIterableEquals(List.of(1L, 3L), (List<Long>) result.get("v16"));
+		});
+		with(contract.getQueries().get(16), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			var list = (List<Tuple>) result.get("v17");
+			assertEquals(2, list.size());
+			assertIterableEquals(List.of("process_1", 1L), list.get(0).getElements());
+			assertIterableEquals(List.of("process_3", 3L), list.get(1).getElements());
 		});
 	}
 

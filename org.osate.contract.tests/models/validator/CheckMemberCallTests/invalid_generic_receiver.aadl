@@ -8,6 +8,15 @@ public
 					.filterPresent;
 				val invalidFilterPresent = self.subcomponents
 					.filterPresent;
+				
+				val validFilterTupleElementsPresent = self.subcomponents
+					.map { subcomponent -> (subcomponent.name, subcomponent#Priority) }
+					.filterTupleElementsPresent;
+				val invalidFilterTupleElementsPresentNotATuple = self.subcomponents
+					.filterTupleElementsPresent;
+				val invalidFilterTupleElementsPresentNoOptionals = self.subcomponents
+					.map { subcomponent -> (subcomponent.name, subcomponent.category) }
+					.filterTupleElementsPresent;
 		}
 	**};
 end invalid_generic_receiver;

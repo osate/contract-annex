@@ -32,6 +32,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
+import org.osate.contract.tuples.Tuple;
+
 public final class ListType implements Type {
 	private final Map<String, Member> members;
 	private final String label;
@@ -67,6 +69,19 @@ public final class ListType implements Type {
 		if (elementType instanceof OptionalType optionalElementType) {
 			members.put("filterPresent", new SimpleMember(new ListType(optionalElementType.getElementType()),
 					receiver -> filterPresent((List<Optional<?>>) receiver)));
+		} else if (elementType instanceof TupleType tupleType
+				&& tupleType.getElementTypes().stream().anyMatch(OptionalType.class::isInstance)) {
+			var unwrappedTypes = new ArrayList<Type>();
+			for (var tupleElementType : tupleType.getElementTypes()) {
+				if (tupleElementType instanceof OptionalType optionalType) {
+					unwrappedTypes.add(optionalType.getElementType());
+				} else {
+					unwrappedTypes.add(tupleElementType);
+				}
+			}
+			members.put("filterTupleElementsPresent",
+					new SimpleMember(new ListType(new TupleType(unwrappedTypes)),
+							receiver -> filterTupleElementsPresent((List<Tuple>) receiver)));
 		}
 
 		label = "List<" + elementType + '>';
@@ -145,6 +160,27 @@ public final class ListType implements Type {
 		var result = new ArrayList<>();
 		for (var element : receiver) {
 			element.ifPresent(result::add);
+		}
+		return result;
+	}
+
+	private static List<Tuple> filterTupleElementsPresent(List<Tuple> receiver) {
+		var result = new ArrayList<Tuple>();
+		listLoop:
+		for (var listElement : receiver) {
+			var unwrappedTupleElements = new ArrayList<>();
+			for (var tupleElement : listElement.getElements()) {
+				if (tupleElement instanceof Optional<?> optional) {
+					if (optional.isPresent()) {
+						unwrappedTupleElements.add(optional.get());
+					} else {
+						continue listLoop;
+					}
+				} else {
+					unwrappedTupleElements.add(tupleElement);
+				}
+			}
+			result.add(new Tuple(unwrappedTupleElements));
 		}
 		return result;
 	}

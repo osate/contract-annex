@@ -558,6 +558,14 @@ The following members only apply to lists that have an optional element type suc
   a list with a non-optional element type. For example, if the type of the original list is `List<ComponentInstance?>`,
   then the resulting list will have the type `List<ComponentInstance>`.
 
+The following members only apply to lists that have tuples with at least on optional in the tuple such as
+`List<(String, Long?)>`:
+
+* `filterTupleElementsPresent`: Filters the elements of the list in which all fields of the tuple have values. If at
+least one tuple field does not have a value, then that tuple is filtered out and it is not included in the resulting
+list. The return type is the same as the original list except with all of the optional types unwrapped. For example, if
+the original list is `List<(String, Long?)>`, then the resulting list will have the type `List<(String, Long)>`.
+
 #### LongRange
 
 The `LongRange` type is backed by the Java type `org.osate.contract.typing.RangeValueHolder` and has the following
