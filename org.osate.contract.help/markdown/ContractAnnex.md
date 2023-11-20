@@ -551,6 +551,13 @@ elements of the list. A query or parameter with the type `List` will have its ge
 * `contains`: Returns a `Boolean` indicating if the list contains a specified element. The element is passed as a
   parameter to `contains`.
 
+The following members only apply to lists that have an optional element type such as `List<ComponentInstance?>` or
+`List<String?>`:
+
+* `filterPresent`: Filters the optional elements of the list that have a value. Empty elements are filtered out. Returns
+  a list with a non-optional element type. For example, if the type of the original list is `List<ComponentInstance?>`,
+  then the resulting list will have the type `List<ComponentInstance>`.
+
 #### LongRange
 
 The `LongRange` type is backed by the Java type `org.osate.contract.typing.RangeValueHolder` and has the following

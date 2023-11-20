@@ -36,6 +36,7 @@ public final class ListType implements Type {
 	private final Type elementType;
 	private final Map<String, Member> members;
 
+	@SuppressWarnings("unchecked")
 	public ListType(Type elementType) {
 		this.elementType = elementType;
 
@@ -64,6 +65,11 @@ public final class ListType implements Type {
 						(receiver, evaluateLambda) -> mapPresent((List<?>) receiver, evaluateLambda)));
 		members.put("contains", new MemberWithArgument(argument -> BooleanType.INSTANCE,
 				(receiver, argument) -> contains((List<?>) receiver, argument)));
+
+		if (elementType instanceof OptionalType optionalElementType) {
+			members.put("filterPresent", new SimpleMember(new ListType(optionalElementType.getElementType()),
+					receiver -> filterPresent((List<Optional<?>>) receiver)));
+		}
 	}
 
 	public Type getElementType() {
@@ -137,5 +143,13 @@ public final class ListType implements Type {
 
 	private static Boolean contains(List<?> receiver, Object element) {
 		return receiver.contains(element);
+	}
+
+	private static List<?> filterPresent(List<Optional<?>> receiver) {
+		var result = new ArrayList<>();
+		for (var element : receiver) {
+			element.ifPresent(result::add);
+		}
+		return result;
 	}
 }

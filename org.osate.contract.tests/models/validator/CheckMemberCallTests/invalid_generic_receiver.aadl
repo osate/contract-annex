@@ -1,0 +1,13 @@
+package invalid_generic_receiver
+public
+	annex contract {**
+		contract InvalidGenericReceiver {
+			queries
+				val validFilterPresent = self.subcomponents
+					.map { subcomponent -> subcomponent#Period }
+					.filterPresent;
+				val invalidFilterPresent = self.subcomponents
+					.filterPresent;
+		}
+	**};
+end invalid_generic_receiver;

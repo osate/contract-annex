@@ -365,7 +365,7 @@ public class MemberCallTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(12, contract.getQueries().size());
+		assertEquals(13, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
 			assertEquals("Long", type.toString());
@@ -413,6 +413,10 @@ public class MemberCallTest {
 			assertEquals("List<ComponentInstance>", type.toString());
 		});
 		with(contract.getQueries().get(11), query -> {
+			var type = typeSystem.expressionType(query.getValue()).getValue();
+			assertEquals("List<LongWithUnits<AADL_Project::Time_Units>>", type.toString());
+		});
+		with(contract.getQueries().get(12), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
 			assertEquals("List<LongWithUnits<AADL_Project::Time_Units>>", type.toString());
 		});

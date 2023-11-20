@@ -64,6 +64,9 @@ public
 				
 				val v15 = self.subcomponents
 					.mapPresent { subcomponent -> subcomponent#Priority };
+				val v16 = self.subcomponents
+					.map { subcomponent -> subcomponent#Priority }
+					.filterPresent;
 		}
 	**};
 	

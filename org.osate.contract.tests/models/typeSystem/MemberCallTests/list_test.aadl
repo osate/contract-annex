@@ -53,6 +53,9 @@ public
 				};
 				val v12 = self.allSubcomponents
 					.mapPresent { subcomponent -> subcomponent#Period };
+				val v13 = self.allSubcomponents
+					.map { subcomponent -> subcomponent#Period }
+					.filterPresent;
 		}
 	**};
 end list_test;
