@@ -33,13 +33,11 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public final class ListType implements Type {
-	private final Type elementType;
 	private final Map<String, Member> members;
+	private final String label;
 
 	@SuppressWarnings("unchecked")
 	public ListType(Type elementType) {
-		this.elementType = elementType;
-
 		members = new LinkedHashMap<>();
 		members.put("size", new SimpleMember(LongType.INSTANCE, receiver -> size((List<?>) receiver)));
 		members.put("empty", new SimpleMember(BooleanType.INSTANCE, receiver -> empty((List<?>) receiver)));
@@ -70,10 +68,8 @@ public final class ListType implements Type {
 			members.put("filterPresent", new SimpleMember(new ListType(optionalElementType.getElementType()),
 					receiver -> filterPresent((List<Optional<?>>) receiver)));
 		}
-	}
 
-	public Type getElementType() {
-		return elementType;
+		label = "List<" + elementType + '>';
 	}
 
 	@Override
@@ -83,7 +79,7 @@ public final class ListType implements Type {
 
 	@Override
 	public String toString() {
-		return "List<" + elementType + '>';
+		return label;
 	}
 
 	private static Long size(List<?> receiver) {
