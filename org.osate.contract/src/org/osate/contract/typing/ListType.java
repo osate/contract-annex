@@ -66,8 +66,8 @@ public final class ListType implements Type {
 		members.put("contains", new MemberWithArgument(argument -> BooleanType.INSTANCE,
 				(receiver, argument) -> contains((List<?>) receiver, argument)));
 
-		if (elementType instanceof OptionalType optionalElementType) {
-			members.put("filterPresent", new SimpleMember(new ListType(optionalElementType.getElementType()),
+		if (elementType instanceof OptionalType optionalType) {
+			members.put("filterPresent", new SimpleMember(new ListType(optionalType.getElementType()),
 					receiver -> filterPresent((List<Optional<?>>) receiver)));
 		} else if (elementType instanceof TupleType tupleType
 				&& tupleType.getElementTypes().stream().anyMatch(OptionalType.class::isInstance)) {
