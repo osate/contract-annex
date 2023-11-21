@@ -1,0 +1,12 @@
+package mapPresent_not_returning_optional
+public
+	annex contract {**
+		contract MapPresentNotReturningOptional {
+			queries
+				val valid = self.subcomponents
+					.mapPresent { subcomponent -> subcomponent#Period };
+				val invalid = self.subcomponents
+					.mapPresent { subcomponent -> subcomponent.name };
+		}
+	**};
+end mapPresent_not_returning_optional;

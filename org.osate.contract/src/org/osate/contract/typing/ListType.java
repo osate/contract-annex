@@ -32,13 +32,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
+import org.osate.contract.tuples.Tuple;
+
 public final class ListType implements Type {
-	private final Type elementType;
 	private final Map<String, Member> members;
+	private final String label;
 
+	@SuppressWarnings("unchecked")
 	public ListType(Type elementType) {
-		this.elementType = elementType;
-
 		members = new LinkedHashMap<>();
 		members.put("size", new SimpleMember(LongType.INSTANCE, receiver -> size((List<?>) receiver)));
 		members.put("empty", new SimpleMember(BooleanType.INSTANCE, receiver -> empty((List<?>) receiver)));
@@ -54,12 +55,36 @@ public final class ListType implements Type {
 				new MemberWithLambda(elementType, lambdaReturnType -> Optional.empty(),
 						lambdaType -> lambdaType != null ? new ListType(lambdaType) : null,
 						(receiver, evaluateLambda) -> map((List<?>) receiver, evaluateLambda)));
+		members.put("mapPresent",
+				new MemberWithLambda(elementType,
+						lambdaReturnType -> lambdaReturnType instanceof OptionalType ? Optional.empty()
+								: Optional.of("Optional"),
+						lambdaType -> lambdaType instanceof OptionalType nestedLambdaType
+								? new ListType(nestedLambdaType.getElementType())
+								: null,
+						(receiver, evaluateLambda) -> mapPresent((List<?>) receiver, evaluateLambda)));
 		members.put("contains", new MemberWithArgument(argument -> BooleanType.INSTANCE,
 				(receiver, argument) -> contains((List<?>) receiver, argument)));
-	}
 
-	public Type getElementType() {
-		return elementType;
+		if (elementType instanceof OptionalType optionalType) {
+			members.put("filterPresent", new SimpleMember(new ListType(optionalType.getElementType()),
+					receiver -> filterPresent((List<Optional<?>>) receiver)));
+		} else if (elementType instanceof TupleType tupleType
+				&& tupleType.getElementTypes().stream().anyMatch(OptionalType.class::isInstance)) {
+			var unwrappedTypes = new ArrayList<Type>();
+			for (var tupleElementType : tupleType.getElementTypes()) {
+				if (tupleElementType instanceof OptionalType optionalType) {
+					unwrappedTypes.add(optionalType.getElementType());
+				} else {
+					unwrappedTypes.add(tupleElementType);
+				}
+			}
+			members.put("filterTupleElementsPresent",
+					new SimpleMember(new ListType(new TupleType(unwrappedTypes)),
+							receiver -> filterTupleElementsPresent((List<Tuple>) receiver)));
+		}
+
+		label = "List<" + elementType + '>';
 	}
 
 	@Override
@@ -69,7 +94,7 @@ public final class ListType implements Type {
 
 	@Override
 	public String toString() {
-		return "List<" + elementType + '>';
+		return label;
 	}
 
 	private static Long size(List<?> receiver) {
@@ -118,7 +143,45 @@ public final class ListType implements Type {
 		return result;
 	}
 
+	private static List<?> mapPresent(List<?> receiver, Function<Object, Object> evaluateLambda) {
+		var result = new ArrayList<>();
+		for (var element : receiver) {
+			var lambdaResult = (Optional<?>) evaluateLambda.apply(element);
+			lambdaResult.ifPresent(result::add);
+		}
+		return result;
+	}
+
 	private static Boolean contains(List<?> receiver, Object element) {
 		return receiver.contains(element);
+	}
+
+	private static List<?> filterPresent(List<Optional<?>> receiver) {
+		var result = new ArrayList<>();
+		for (var element : receiver) {
+			element.ifPresent(result::add);
+		}
+		return result;
+	}
+
+	private static List<Tuple> filterTupleElementsPresent(List<Tuple> receiver) {
+		var result = new ArrayList<Tuple>();
+		listLoop:
+		for (var listElement : receiver) {
+			var unwrappedTupleElements = new ArrayList<>();
+			for (var tupleElement : listElement.getElements()) {
+				if (tupleElement instanceof Optional<?> optional) {
+					if (optional.isPresent()) {
+						unwrappedTupleElements.add(optional.get());
+					} else {
+						continue listLoop;
+					}
+				} else {
+					unwrappedTupleElements.add(tupleElement);
+				}
+			}
+			result.add(new Tuple(unwrappedTupleElements));
+		}
+		return result;
 	}
 }

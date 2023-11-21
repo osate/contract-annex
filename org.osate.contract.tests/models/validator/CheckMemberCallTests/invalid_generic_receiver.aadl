@@ -1,0 +1,22 @@
+package invalid_generic_receiver
+public
+	annex contract {**
+		contract InvalidGenericReceiver {
+			queries
+				val validFilterPresent = self.subcomponents
+					.map { subcomponent -> subcomponent#Period }
+					.filterPresent;
+				val invalidFilterPresent = self.subcomponents
+					.filterPresent;
+				
+				val validFilterTupleElementsPresent = self.subcomponents
+					.map { subcomponent -> (subcomponent.name, subcomponent#Priority) }
+					.filterTupleElementsPresent;
+				val invalidFilterTupleElementsPresentNotATuple = self.subcomponents
+					.filterTupleElementsPresent;
+				val invalidFilterTupleElementsPresentNoOptionals = self.subcomponents
+					.map { subcomponent -> (subcomponent.name, subcomponent.category) }
+					.filterTupleElementsPresent;
+		}
+	**};
+end invalid_generic_receiver;
