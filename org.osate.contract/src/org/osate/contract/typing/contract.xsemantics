@@ -77,7 +77,7 @@ from {
 			}
 		}
 		MemberWithArgument: member.getReturnType(expression.argument)
-		MemberWithLambda case expression.lambda !== null: {
+		MemberWithLambda<?, ?, ?> case expression.lambda !== null: {
 			G |- expression.lambda.returnValue : var Type lambdaType
 			member.getReturnType(lambdaType)
 		}

@@ -130,7 +130,7 @@ from {
 			G |- expression.argument ~> var Object argumentValue
 			member.evaluate(leftValue, argumentValue)
 		}
-		MemberWithLambda: {
+		MemberWithLambda<Object, Object, Object>: {
 			val lambda = expression.lambda
 			val parameter = lambda.parameter
 			member.evaluate(leftValue) [element |

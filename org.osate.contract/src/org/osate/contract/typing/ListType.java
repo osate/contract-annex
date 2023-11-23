@@ -35,34 +35,23 @@ import java.util.function.Function;
 import org.osate.contract.tuples.Tuple;
 
 public final class ListType implements Type {
+	private final Type elementType;
 	private final Map<String, Member> members;
 	private final String label;
 
 	@SuppressWarnings("unchecked")
 	public ListType(Type elementType) {
+		this.elementType = elementType;
+
 		members = new LinkedHashMap<>();
 		members.put("size", new SimpleMember(LongType.INSTANCE, receiver -> size((List<?>) receiver)));
 		members.put("empty", new SimpleMember(BooleanType.INSTANCE, receiver -> empty((List<?>) receiver)));
 		members.put("first", new SimpleMember(new OptionalType(elementType), receiver -> first((List<?>) receiver)));
-		members.put("filter",
-				new MemberWithLambda(elementType,
-						lambdaReturnType -> lambdaReturnType == BooleanType.INSTANCE ? Optional.empty()
-								: Optional.of(BooleanType.INSTANCE.toString()),
-						lambdaType -> this, (receiver, evaluateLambda) -> filter((List<?>) receiver, evaluateLambda)));
+		members.put("filter", new FilterMember());
 		members.put("filterType", new MemberWithTypeParameter(genericType -> new ListType(genericType),
 				(receiver, genericType) -> filterType((List<?>) receiver, genericType)));
-		members.put("map",
-				new MemberWithLambda(elementType, lambdaReturnType -> Optional.empty(),
-						lambdaType -> lambdaType != null ? new ListType(lambdaType) : null,
-						(receiver, evaluateLambda) -> map((List<?>) receiver, evaluateLambda)));
-		members.put("mapPresent",
-				new MemberWithLambda(elementType,
-						lambdaReturnType -> lambdaReturnType instanceof OptionalType ? Optional.empty()
-								: Optional.of("Optional"),
-						lambdaType -> lambdaType instanceof OptionalType nestedLambdaType
-								? new ListType(nestedLambdaType.getElementType())
-								: null,
-						(receiver, evaluateLambda) -> mapPresent((List<?>) receiver, evaluateLambda)));
+		members.put("map", new MapMember());
+		members.put("mapPresent", new MapPresentMember());
 		members.put("contains", new MemberWithArgument(argument -> BooleanType.INSTANCE,
 				(receiver, argument) -> contains((List<?>) receiver, argument)));
 
@@ -113,15 +102,36 @@ public final class ListType implements Type {
 		}
 	}
 
-	private static List<?> filter(List<?> receiver, Function<Object, Object> evaluateLambda) {
-		var result = new ArrayList<>();
-		for (var element : receiver) {
-			var lambdaResult = (Boolean) evaluateLambda.apply(element);
-			if (lambdaResult) {
-				result.add(element);
+	private class FilterMember implements MemberWithLambda<List<?>, List<?>, Boolean> {
+		@Override
+		public Type getLambdaParameterType() {
+			return elementType;
+		}
+
+		@Override
+		public Optional<String> validateLambdaReturnType(Type lambdaReturnType) {
+			if (lambdaReturnType == BooleanType.INSTANCE) {
+				return Optional.empty();
+			} else {
+				return Optional.of(BooleanType.INSTANCE.toString());
 			}
 		}
-		return result;
+
+		@Override
+		public Type getReturnType(Type lambdaType) {
+			return ListType.this;
+		}
+
+		@Override
+		public List<?> evaluate(List<?> receiver, Function<Object, Boolean> evaluateLambda) {
+			var result = new ArrayList<>();
+			for (var element : receiver) {
+				if (evaluateLambda.apply(element)) {
+					result.add(element);
+				}
+			}
+			return result;
+		}
 	}
 
 	private static List<?> filterType(List<?> receiver, Class<?> genericType) {
@@ -134,22 +144,68 @@ public final class ListType implements Type {
 		return result;
 	}
 
-	private static List<?> map(List<?> receiver, Function<Object, Object> evaluateLambda) {
-		var result = new ArrayList<>();
-		for (var element : receiver) {
-			var lambdaResult = evaluateLambda.apply(element);
-			result.add(lambdaResult);
+	private class MapMember implements MemberWithLambda<List<?>, List<?>, Object> {
+		@Override
+		public Type getLambdaParameterType() {
+			return elementType;
 		}
-		return result;
+
+		@Override
+		public Optional<String> validateLambdaReturnType(Type lambdaReturnType) {
+			return Optional.empty();
+		}
+
+		@Override
+		public Type getReturnType(Type lambdaType) {
+			if (lambdaType != null) {
+				return new ListType(lambdaType);
+			} else {
+				return null;
+			}
+		}
+
+		@Override
+		public List<?> evaluate(List<?> receiver, Function<Object, Object> evaluateLambda) {
+			var result = new ArrayList<>();
+			for (var element : receiver) {
+				result.add(evaluateLambda.apply(element));
+			}
+			return result;
+		}
 	}
 
-	private static List<?> mapPresent(List<?> receiver, Function<Object, Object> evaluateLambda) {
-		var result = new ArrayList<>();
-		for (var element : receiver) {
-			var lambdaResult = (Optional<?>) evaluateLambda.apply(element);
-			lambdaResult.ifPresent(result::add);
+	private class MapPresentMember implements MemberWithLambda<List<?>, List<?>, Optional<?>> {
+		@Override
+		public Type getLambdaParameterType() {
+			return elementType;
 		}
-		return result;
+
+		@Override
+		public Optional<String> validateLambdaReturnType(Type lambdaReturnType) {
+			if (lambdaReturnType instanceof OptionalType) {
+				return Optional.empty();
+			} else {
+				return Optional.of("Optional");
+			}
+		}
+
+		@Override
+		public Type getReturnType(Type lambdaType) {
+			if (lambdaType instanceof OptionalType nestedLambdaType) {
+				return new ListType(nestedLambdaType.getElementType());
+			} else {
+				return null;
+			}
+		}
+
+		@Override
+		public List<?> evaluate(List<?> receiver, Function<Object, Optional<?>> evaluateLambda) {
+			var result = new ArrayList<>();
+			for (var element : receiver) {
+				evaluateLambda.apply(element).ifPresent(result::add);
+			}
+			return result;
+		}
 	}
 
 	private static Boolean contains(List<?> receiver, Object element) {

@@ -26,37 +26,19 @@
 package org.osate.contract.typing;
 
 import java.util.Optional;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public final class MemberWithLambda implements Member {
-	private final Type lambdaParameterType;
-	private final Function<Type, Optional<String>> validateLambdaReturnTypeFunction;
-	private final Function<Type, Type> returnTypeFunction;
-	private BiFunction<Object, Function<Object, Object>, Object> evaluateFunction;
+/**
+ * @param <T> Receiver type
+ * @param <R> Return type
+ * @param <L> Lambda return type
+ */
+public non-sealed interface MemberWithLambda<T, R, L> extends Member {
+	Type getLambdaParameterType();
 
-	public MemberWithLambda(Type lambdaParameterType, Function<Type, Optional<String>> validateLambdaReturnTypeFunction,
-			Function<Type, Type> returnTypeFunction,
-			BiFunction<Object, Function<Object, Object>, Object> evaluateFunction) {
-		this.lambdaParameterType = lambdaParameterType;
-		this.validateLambdaReturnTypeFunction = validateLambdaReturnTypeFunction;
-		this.returnTypeFunction = returnTypeFunction;
-		this.evaluateFunction = evaluateFunction;
-	}
+	Optional<String> validateLambdaReturnType(Type lambdaReturnType);
 
-	public Type getLambdaParameterType() {
-		return lambdaParameterType;
-	}
+	Type getReturnType(Type lambdaType);
 
-	public Optional<String> validateLambdaReturnType(Type lambdaReturnType) {
-		return validateLambdaReturnTypeFunction.apply(lambdaReturnType);
-	}
-
-	public Type getReturnType(Type lambdaType) {
-		return returnTypeFunction.apply(lambdaType);
-	}
-
-	public Object evaluate(Object receiver, Function<Object, Object> evaluateLambda) {
-		return evaluateFunction.apply(receiver, evaluateLambda);
-	}
+	R evaluate(T receiver, Function<Object, L> evaluateLambda);
 }
