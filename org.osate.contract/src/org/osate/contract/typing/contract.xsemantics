@@ -300,10 +300,9 @@ from {
 	if (member instanceof MemberWithLambda) {
 		empty |- lambda.returnValue : var Type returnType
 		if (returnType !== null) {
-			val finalReturnType = returnType
-			member.validateLambdaReturnType(returnType).ifPresent[requiredReturnTypeName |
+			member.validateLambdaReturnType(returnType) [errorMessage |
 				fail
-					error "Expected " + requiredReturnTypeName + "; found " + finalReturnType
+					error errorMessage
 					source lambda.returnValue
 			]
 		}

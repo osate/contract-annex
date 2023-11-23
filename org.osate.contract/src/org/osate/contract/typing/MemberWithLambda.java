@@ -25,7 +25,7 @@
  *******************************************************************************/
 package org.osate.contract.typing;
 
-import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -36,7 +36,8 @@ import java.util.function.Function;
 public non-sealed interface MemberWithLambda<T, R, L> extends Member {
 	Type getLambdaParameterType();
 
-	Optional<String> validateLambdaReturnType(Type lambdaReturnType);
+	default void validateLambdaReturnType(Type lambdaReturnType, Consumer<String> errorReporter) {
+	}
 
 	Type getReturnType(Type lambdaType);
 

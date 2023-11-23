@@ -30,6 +30,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.osate.contract.tuples.Tuple;
@@ -109,11 +110,9 @@ public final class ListType implements Type {
 		}
 
 		@Override
-		public Optional<String> validateLambdaReturnType(Type lambdaReturnType) {
-			if (lambdaReturnType == BooleanType.INSTANCE) {
-				return Optional.empty();
-			} else {
-				return Optional.of(BooleanType.INSTANCE.toString());
+		public void validateLambdaReturnType(Type lambdaReturnType, Consumer<String> errorReporter) {
+			if (lambdaReturnType != BooleanType.INSTANCE) {
+				errorReporter.accept("Expected " + BooleanType.INSTANCE + "; found " + lambdaReturnType);
 			}
 		}
 
@@ -151,11 +150,6 @@ public final class ListType implements Type {
 		}
 
 		@Override
-		public Optional<String> validateLambdaReturnType(Type lambdaReturnType) {
-			return Optional.empty();
-		}
-
-		@Override
 		public Type getReturnType(Type lambdaType) {
 			if (lambdaType != null) {
 				return new ListType(lambdaType);
@@ -181,11 +175,9 @@ public final class ListType implements Type {
 		}
 
 		@Override
-		public Optional<String> validateLambdaReturnType(Type lambdaReturnType) {
-			if (lambdaReturnType instanceof OptionalType) {
-				return Optional.empty();
-			} else {
-				return Optional.of("Optional");
+		public void validateLambdaReturnType(Type lambdaReturnType, Consumer<String> errorReporter) {
+			if (!(lambdaReturnType instanceof OptionalType)) {
+				errorReporter.accept("Expected Optional; found " + lambdaReturnType);
 			}
 		}
 

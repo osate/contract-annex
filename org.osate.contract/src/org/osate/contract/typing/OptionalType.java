@@ -28,6 +28,7 @@ package org.osate.contract.typing;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public final class OptionalType implements Type {
@@ -74,11 +75,6 @@ public final class OptionalType implements Type {
 		}
 
 		@Override
-		public Optional<String> validateLambdaReturnType(Type lambdaReturnType) {
-			return Optional.empty();
-		}
-
-		@Override
 		public Type getReturnType(Type lambdaType) {
 			if (lambdaType != null) {
 				return new OptionalType(lambdaType);
@@ -100,11 +96,9 @@ public final class OptionalType implements Type {
 		}
 
 		@Override
-		public Optional<String> validateLambdaReturnType(Type lambdaReturnType) {
-			if (lambdaReturnType instanceof OptionalType) {
-				return Optional.empty();
-			} else {
-				return Optional.of("Optional");
+		public void validateLambdaReturnType(Type lambdaReturnType, Consumer<String> errorReporter) {
+			if (!(lambdaReturnType instanceof OptionalType)) {
+				errorReporter.accept("Expected Optional; found " + lambdaReturnType);
 			}
 		}
 
