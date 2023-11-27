@@ -25,13 +25,18 @@
  *******************************************************************************/
 package org.osate.contract.typing;
 
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * @param <T> Receiver type
- * @param <R> Return type
- * @param <L> Lambda return type
+ * Generic parameters are expected to be the backing Java types such as {@link List}, {@link Long}, {@link String}, etc.
+ * For example, when implementing {@code List.map}, the receiver type {@code T} should be {@code List<?>}. The generic
+ * parameters should not be any type that extends from {@link Type}.
+ *
+ * @param <T> Receiver Java type
+ * @param <R> Return Java type
+ * @param <L> Lambda return Java type
  */
 public non-sealed interface MemberWithLambda<T, R, L> extends Member {
 	Type getLambdaParameterType();
