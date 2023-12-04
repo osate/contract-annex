@@ -40,8 +40,7 @@ public final class OptionalType implements Type {
 
 		members = new LinkedHashMap<>();
 		members.put("isEmpty", new SimpleMember(BooleanType.INSTANCE, receiver -> isEmpty((Optional<?>) receiver)));
-		members.put("filterType", new MemberWithTypeParameter(genericType -> new OptionalType(genericType),
-				(receiver, genericType) -> filterType((Optional<?>) receiver, genericType)));
+		members.put("filterType", new FilterTypeMember());
 		members.put("map", new MapMember());
 		members.put("flatMap", new FlatMapMember());
 	}
@@ -64,8 +63,16 @@ public final class OptionalType implements Type {
 		return receiver.isEmpty();
 	}
 
-	private static Optional<?> filterType(Optional<?> receiver, Class<?> genericType) {
-		return receiver.filter(genericType::isInstance);
+	private static class FilterTypeMember implements MemberWithTypeParameter<Optional<?>, Optional<?>> {
+		@Override
+		public Type getReturnType(Type genericType) {
+			return new OptionalType(genericType);
+		}
+
+		@Override
+		public Optional<?> evaluate(Optional<?> receiver, Class<?> genericType) {
+			return receiver.filter(genericType::isInstance);
+		}
 	}
 
 	private class MapMember implements MemberWithLambda<Optional<?>, Optional<?>, Object> {

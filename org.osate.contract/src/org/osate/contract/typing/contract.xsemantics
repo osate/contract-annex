@@ -70,7 +70,7 @@ from {
 	G |- expression.left : var Type leftType
 	type = switch member : leftType?.members?.get(expression.right) {
 		SimpleMember: member.returnType
-		MemberWithTypeParameter: {
+		MemberWithTypeParameter<?, ?>: {
 			val queryType = GenericTypeArgumentRegistry.getQueryType(expression.typeArgument)
 			if (queryType !== null) {
 				member.getReturnType(queryType)

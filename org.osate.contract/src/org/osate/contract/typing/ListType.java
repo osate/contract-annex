@@ -50,8 +50,7 @@ public final class ListType implements Type {
 		members.put("empty", new SimpleMember(BooleanType.INSTANCE, receiver -> empty((List<?>) receiver)));
 		members.put("first", new SimpleMember(new OptionalType(elementType), receiver -> first((List<?>) receiver)));
 		members.put("filter", new FilterMember());
-		members.put("filterType", new MemberWithTypeParameter(genericType -> new ListType(genericType),
-				(receiver, genericType) -> filterType((List<?>) receiver, genericType)));
+		members.put("filterType", new FilterTypeMember());
 		members.put("map", new MapMember());
 		members.put("mapPresent", new MapPresentMember());
 		members.put("contains", new ContainsMember());
@@ -133,14 +132,22 @@ public final class ListType implements Type {
 		}
 	}
 
-	private static List<?> filterType(List<?> receiver, Class<?> genericType) {
-		var result = new ArrayList<>();
-		for (var element : receiver) {
-			if (genericType.isInstance(element)) {
-				result.add(element);
-			}
+	private static class FilterTypeMember implements MemberWithTypeParameter<List<?>, List<?>> {
+		@Override
+		public Type getReturnType(Type genericType) {
+			return new ListType(genericType);
 		}
-		return result;
+
+		@Override
+		public List<?> evaluate(List<?> receiver, Class<?> genericType) {
+			var result = new ArrayList<>();
+			for (var element : receiver) {
+				if (genericType.isInstance(element)) {
+					result.add(element);
+				}
+			}
+			return result;
+		}
 	}
 
 	private class MapMember implements MemberWithLambda<List<?>, List<?>, Object> {

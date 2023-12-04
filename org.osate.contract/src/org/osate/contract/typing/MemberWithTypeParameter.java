@@ -1,23 +1,17 @@
 package org.osate.contract.typing;
 
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.List;
 
-public final class MemberWithTypeParameter implements Member {
-	private final Function<Type, Type> returnTypeFunction;
-	private final BiFunction<Object, Class<?>, Object> evaluateFunction;
+/**
+ * Generic parameters are expected to be the backing Java types such as {@link List}, {@link Long}, {@link String}, etc.
+ * For example, when implementing {@code List.filterType}, the receiver type {@code T} should be {@code List<?>}. The
+ * generic parameters should not be any type that extends from {@link Type}.
+ *
+ * @param <T> Receiver Java type
+ * @param <R> Return Java type
+ */
+public non-sealed interface MemberWithTypeParameter<T, R> extends Member {
+	Type getReturnType(Type genericType);
 
-	public MemberWithTypeParameter(Function<Type, Type> returnTypeFunction,
-			BiFunction<Object, Class<?>, Object> evaluateFunction) {
-		this.returnTypeFunction = returnTypeFunction;
-		this.evaluateFunction = evaluateFunction;
-	}
-
-	public Type getReturnType(Type genericType) {
-		return returnTypeFunction.apply(genericType);
-	}
-
-	public Object evaluate(Object receiver, Class<?> genericType) {
-		return evaluateFunction.apply(receiver, genericType);
-	}
+	R evaluate(T receiver, Class<?> genericType);
 }
