@@ -33,6 +33,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import org.osate.contract.contract.Expression;
 import org.osate.contract.tuples.Tuple;
 
 public final class ListType implements Type {
@@ -53,8 +54,7 @@ public final class ListType implements Type {
 				(receiver, genericType) -> filterType((List<?>) receiver, genericType)));
 		members.put("map", new MapMember());
 		members.put("mapPresent", new MapPresentMember());
-		members.put("contains", new MemberWithArgument(argument -> BooleanType.INSTANCE,
-				(receiver, argument) -> contains((List<?>) receiver, argument)));
+		members.put("contains", new ContainsMember());
 
 		if (elementType instanceof OptionalType optionalType) {
 			members.put("filterPresent", new SimpleMember(new ListType(optionalType.getElementType()),
@@ -200,8 +200,16 @@ public final class ListType implements Type {
 		}
 	}
 
-	private static Boolean contains(List<?> receiver, Object element) {
-		return receiver.contains(element);
+	private static class ContainsMember implements MemberWithArgument<List<?>, Boolean, Object> {
+		@Override
+		public Type getReturnType(Expression argument) {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(List<?> receiver, Object argument) {
+			return receiver.contains(argument);
+		}
 	}
 
 	private static List<?> filterPresent(List<Optional<?>> receiver) {

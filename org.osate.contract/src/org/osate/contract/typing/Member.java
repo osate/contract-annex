@@ -26,5 +26,5 @@
 package org.osate.contract.typing;
 
 public sealed interface Member
-		permits SimpleMember, MemberWithTypeParameter, MemberWithArgument, MemberWithLambda<?, ?, ?> {
+		permits SimpleMember, MemberWithTypeParameter, MemberWithArgument<?, ?, ?>, MemberWithLambda<?, ?, ?> {
 }

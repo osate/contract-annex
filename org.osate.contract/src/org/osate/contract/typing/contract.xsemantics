@@ -76,7 +76,7 @@ from {
 				member.getReturnType(queryType)
 			}
 		}
-		MemberWithArgument: member.getReturnType(expression.argument)
+		MemberWithArgument<?, ?, ?>: member.getReturnType(expression.argument)
 		MemberWithLambda<?, ?, ?> case expression.lambda !== null: {
 			G |- expression.lambda.returnValue : var Type lambdaType
 			member.getReturnType(lambdaType)
