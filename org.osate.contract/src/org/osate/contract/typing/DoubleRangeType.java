@@ -37,10 +37,9 @@ public final class DoubleRangeType implements Type {
 
 	static {
 		MEMBERS = new LinkedHashMap<>();
-		MEMBERS.put("minimum", new SimpleMember(DoubleType.INSTANCE, receiver -> minimum((RangeValueHolder) receiver)));
-		MEMBERS.put("maximum", new SimpleMember(DoubleType.INSTANCE, receiver -> maximum((RangeValueHolder) receiver)));
-		MEMBERS.put("getDelta", new SimpleMember(new OptionalType(DoubleType.INSTANCE),
-				receiver -> getDelta((RangeValueHolder) receiver)));
+		MEMBERS.put("minimum", new MinimumMember());
+		MEMBERS.put("maximum", new MaximumMember());
+		MEMBERS.put("getDelta", new GetDeltaMember());
 	}
 
 	private DoubleRangeType() {
@@ -56,15 +55,39 @@ public final class DoubleRangeType implements Type {
 		return "DoubleRange";
 	}
 
-	private static Double minimum(RangeValueHolder receiver) {
-		return ((RealLiteral) receiver.getMinimum()).getValue();
+	private static class MinimumMember implements SimpleMember<RangeValueHolder, Double> {
+		@Override
+		public Type getReturnType() {
+			return DoubleType.INSTANCE;
+		}
+
+		@Override
+		public Double evaluate(RangeValueHolder receiver) {
+			return ((RealLiteral) receiver.getMinimum()).getValue();
+		}
 	}
 
-	private static Double maximum(RangeValueHolder receiver) {
-		return ((RealLiteral) receiver.getMaximum()).getValue();
+	private static class MaximumMember implements SimpleMember<RangeValueHolder, Double> {
+		@Override
+		public Type getReturnType() {
+			return DoubleType.INSTANCE;
+		}
+
+		@Override
+		public Double evaluate(RangeValueHolder receiver) {
+			return ((RealLiteral) receiver.getMaximum()).getValue();
+		}
 	}
 
-	private static Optional<Double> getDelta(RangeValueHolder receiver) {
-		return Optional.ofNullable(receiver.getDelta()).map(delta -> ((RealLiteral) delta).getValue());
+	private static class GetDeltaMember implements SimpleMember<RangeValueHolder, Optional<Double>> {
+		@Override
+		public Type getReturnType() {
+			return new OptionalType(DoubleType.INSTANCE);
+		}
+
+		@Override
+		public Optional<Double> evaluate(RangeValueHolder receiver) {
+			return Optional.ofNullable(receiver.getDelta()).map(delta -> ((RealLiteral) delta).getValue());
+		}
 	}
 }

@@ -25,22 +25,20 @@
  *******************************************************************************/
 package org.osate.contract.typing;
 
-import java.util.function.Function;
+import java.util.List;
 
-public final class SimpleMember implements Member {
-	private final Type returnType;
-	private final Function<Object, Object> evaluateFunction;
+import org.osate.aadl2.instance.ComponentInstance;
 
-	public SimpleMember(Type returnType, Function<Object, Object> evaluateFunction) {
-		this.returnType = returnType;
-		this.evaluateFunction = evaluateFunction;
-	}
+/**
+ * Generic parameters are expected to be the backing Java types such as {@link List}, {@link Long}, {@link String}, etc.
+ * For example, when implementing {@code ComponentInstance.name}, the receiver type {@code T} should be
+ * {@link ComponentInstance}. The generic parameters should not be any type that extends from {@link Type}.
+ *
+ * @param <T> Receiver Java type
+ * @param <R> Return Java type
+ */
+public non-sealed interface SimpleMember<T, R> extends Member {
+	Type getReturnType();
 
-	public Type getReturnType() {
-		return returnType;
-	}
-
-	public Object evaluate(Object receiver) {
-		return evaluateFunction.apply(receiver);
-	}
+	R evaluate(T receiver);
 }

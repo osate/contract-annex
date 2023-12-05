@@ -41,14 +41,13 @@ public final class ListType implements Type {
 	private final Map<String, Member> members;
 	private final String label;
 
-	@SuppressWarnings("unchecked")
 	public ListType(Type elementType) {
 		this.elementType = elementType;
 
 		members = new LinkedHashMap<>();
-		members.put("size", new SimpleMember(LongType.INSTANCE, receiver -> size((List<?>) receiver)));
-		members.put("empty", new SimpleMember(BooleanType.INSTANCE, receiver -> empty((List<?>) receiver)));
-		members.put("first", new SimpleMember(new OptionalType(elementType), receiver -> first((List<?>) receiver)));
+		members.put("size", new SizeMember());
+		members.put("empty", new EmptyMember());
+		members.put("first", new FirstMember());
 		members.put("filter", new FilterMember());
 		members.put("filterType", new FilterTypeMember());
 		members.put("map", new MapMember());
@@ -56,8 +55,7 @@ public final class ListType implements Type {
 		members.put("contains", new ContainsMember());
 
 		if (elementType instanceof OptionalType optionalType) {
-			members.put("filterPresent", new SimpleMember(new ListType(optionalType.getElementType()),
-					receiver -> filterPresent((List<Optional<?>>) receiver)));
+			members.put("filterPresent", new FilterPresentMember(optionalType));
 		} else if (elementType instanceof TupleType tupleType
 				&& tupleType.getElementTypes().stream().anyMatch(OptionalType.class::isInstance)) {
 			var unwrappedTypes = new ArrayList<Type>();
@@ -68,9 +66,7 @@ public final class ListType implements Type {
 					unwrappedTypes.add(tupleElementType);
 				}
 			}
-			members.put("filterTupleElementsPresent",
-					new SimpleMember(new ListType(new TupleType(unwrappedTypes)),
-							receiver -> filterTupleElementsPresent((List<Tuple>) receiver)));
+			members.put("filterTupleElementsPresent", new FilterTupleElementsPresentMember(unwrappedTypes));
 		}
 
 		label = "List<" + elementType + '>';
@@ -86,19 +82,43 @@ public final class ListType implements Type {
 		return label;
 	}
 
-	private static Long size(List<?> receiver) {
-		return Long.valueOf(receiver.size());
+	private static class SizeMember implements SimpleMember<List<?>, Long> {
+		@Override
+		public Type getReturnType() {
+			return LongType.INSTANCE;
+		}
+
+		@Override
+		public Long evaluate(List<?> receiver) {
+			return Long.valueOf(receiver.size());
+		}
 	}
 
-	private static Boolean empty(List<?> receiver) {
-		return receiver.isEmpty();
+	private static class EmptyMember implements SimpleMember<List<?>, Boolean> {
+		@Override
+		public Type getReturnType() {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(List<?> receiver) {
+			return receiver.isEmpty();
+		}
 	}
 
-	private static Optional<?> first(List<?> receiver) {
-		if (receiver.isEmpty()) {
-			return Optional.empty();
-		} else {
-			return Optional.of(receiver.get(0));
+	private class FirstMember implements SimpleMember<List<?>, Optional<?>> {
+		@Override
+		public Type getReturnType() {
+			return new OptionalType(elementType);
+		}
+
+		@Override
+		public Optional<?> evaluate(List<?> receiver) {
+			if (receiver.isEmpty()) {
+				return Optional.empty();
+			} else {
+				return Optional.of(receiver.get(0));
+			}
 		}
 	}
 
@@ -219,32 +239,59 @@ public final class ListType implements Type {
 		}
 	}
 
-	private static List<?> filterPresent(List<Optional<?>> receiver) {
-		var result = new ArrayList<>();
-		for (var element : receiver) {
-			element.ifPresent(result::add);
+	private static class FilterPresentMember implements SimpleMember<List<Optional<?>>, List<?>> {
+		private final OptionalType optionalType;
+
+		public FilterPresentMember(OptionalType optionalType) {
+			this.optionalType = optionalType;
 		}
-		return result;
+
+		@Override
+		public Type getReturnType() {
+			return new ListType(optionalType.getElementType());
+		}
+
+		@Override
+		public List<?> evaluate(List<Optional<?>> receiver) {
+			var result = new ArrayList<>();
+			for (var element : receiver) {
+				element.ifPresent(result::add);
+			}
+			return result;
+		}
 	}
 
-	private static List<Tuple> filterTupleElementsPresent(List<Tuple> receiver) {
-		var result = new ArrayList<Tuple>();
-		listLoop:
-		for (var listElement : receiver) {
-			var unwrappedTupleElements = new ArrayList<>();
-			for (var tupleElement : listElement.getElements()) {
-				if (tupleElement instanceof Optional<?> optional) {
-					if (optional.isPresent()) {
-						unwrappedTupleElements.add(optional.get());
-					} else {
-						continue listLoop;
-					}
-				} else {
-					unwrappedTupleElements.add(tupleElement);
-				}
-			}
-			result.add(new Tuple(unwrappedTupleElements));
+	private static class FilterTupleElementsPresentMember implements SimpleMember<List<Tuple>, List<Tuple>> {
+		private final List<Type> unwrappedTypes;
+
+		public FilterTupleElementsPresentMember(List<Type> unwrappedTypes) {
+			this.unwrappedTypes = unwrappedTypes;
 		}
-		return result;
+
+		@Override
+		public Type getReturnType() {
+			return new ListType(new TupleType(unwrappedTypes));
+		}
+
+		@Override
+		public List<Tuple> evaluate(List<Tuple> receiver) {
+			var result = new ArrayList<Tuple>();
+			listLoop: for (var listElement : receiver) {
+				var unwrappedTupleElements = new ArrayList<>();
+				for (var tupleElement : listElement.getElements()) {
+					if (tupleElement instanceof Optional<?> optional) {
+						if (optional.isPresent()) {
+							unwrappedTupleElements.add(optional.get());
+						} else {
+							continue listLoop;
+						}
+					} else {
+						unwrappedTupleElements.add(tupleElement);
+					}
+				}
+				result.add(new Tuple(unwrappedTupleElements));
+			}
+			return result;
+		}
 	}
 }

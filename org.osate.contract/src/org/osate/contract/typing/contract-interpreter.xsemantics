@@ -119,7 +119,7 @@ from {
 	val leftType = typeSystem.expressionType(expression.left).value
 	G |- expression.left ~> var Object leftValue
 	result = switch member : leftType.members.get(expression.right) {
-		SimpleMember: member.evaluate(leftValue)
+		SimpleMember<Object, Object>: member.evaluate(leftValue)
 		MemberWithTypeParameter<Object, Object>: {
 			val javaType = GenericTypeArgumentRegistry.getJavaType(expression.typeArgument)
 			if (javaType !== null) {

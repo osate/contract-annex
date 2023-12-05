@@ -37,10 +37,9 @@ public final class LongRangeType implements Type {
 
 	static {
 		MEMBERS = new LinkedHashMap<>();
-		MEMBERS.put("minimum", new SimpleMember(LongType.INSTANCE, receiver -> minimum((RangeValueHolder) receiver)));
-		MEMBERS.put("maximum", new SimpleMember(LongType.INSTANCE, receiver -> maximum((RangeValueHolder) receiver)));
-		MEMBERS.put("getDelta", new SimpleMember(new OptionalType(LongType.INSTANCE),
-				receiver -> getDelta((RangeValueHolder) receiver)));
+		MEMBERS.put("minimum", new MinimumMember());
+		MEMBERS.put("maximum", new MaximumMember());
+		MEMBERS.put("getDelta", new GetDeltaMember());
 	}
 
 	private LongRangeType() {
@@ -56,15 +55,39 @@ public final class LongRangeType implements Type {
 		return "LongRange";
 	}
 
-	private static Long minimum(RangeValueHolder receiver) {
-		return ((IntegerLiteral) receiver.getMinimum()).getValue();
+	private static class MinimumMember implements SimpleMember<RangeValueHolder, Long> {
+		@Override
+		public Type getReturnType() {
+			return LongType.INSTANCE;
+		}
+
+		@Override
+		public Long evaluate(RangeValueHolder receiver) {
+			return ((IntegerLiteral) receiver.getMinimum()).getValue();
+		}
 	}
 
-	private static Long maximum(RangeValueHolder receiver) {
-		return ((IntegerLiteral) receiver.getMaximum()).getValue();
+	private static class MaximumMember implements SimpleMember<RangeValueHolder, Long> {
+		@Override
+		public Type getReturnType() {
+			return LongType.INSTANCE;
+		}
+
+		@Override
+		public Long evaluate(RangeValueHolder receiver) {
+			return ((IntegerLiteral) receiver.getMaximum()).getValue();
+		}
 	}
 
-	private static Optional<Long> getDelta(RangeValueHolder receiver) {
-		return Optional.ofNullable(receiver.getDelta()).map(delta -> ((IntegerLiteral) delta).getValue());
+	private static class GetDeltaMember implements SimpleMember<RangeValueHolder, Optional<Long>> {
+		@Override
+		public Type getReturnType() {
+			return new OptionalType(LongType.INSTANCE);
+		}
+
+		@Override
+		public Optional<Long> evaluate(RangeValueHolder receiver) {
+			return Optional.ofNullable(receiver.getDelta()).map(delta -> ((IntegerLiteral) delta).getValue());
+		}
 	}
 }

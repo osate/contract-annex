@@ -39,7 +39,7 @@ public final class OptionalType implements Type {
 		this.elementType = elementType;
 
 		members = new LinkedHashMap<>();
-		members.put("isEmpty", new SimpleMember(BooleanType.INSTANCE, receiver -> isEmpty((Optional<?>) receiver)));
+		members.put("isEmpty", new IsEmptyMember());
 		members.put("filterType", new FilterTypeMember());
 		members.put("map", new MapMember());
 		members.put("flatMap", new FlatMapMember());
@@ -59,8 +59,16 @@ public final class OptionalType implements Type {
 		return elementType + "?";
 	}
 
-	private static Boolean isEmpty(Optional<?> receiver) {
-		return receiver.isEmpty();
+	private static class IsEmptyMember implements SimpleMember<Optional<?>, Boolean> {
+		@Override
+		public Type getReturnType() {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(Optional<?> receiver) {
+			return receiver.isEmpty();
+		}
 	}
 
 	private static class FilterTypeMember implements MemberWithTypeParameter<Optional<?>, Optional<?>> {
