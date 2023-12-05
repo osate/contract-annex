@@ -52,71 +52,40 @@ public final class SystemInstanceType implements PropertyLookupSupportedType {
 
 	static {
 		MEMBERS = new LinkedHashMap<>();
-		MEMBERS.put("name", new SimpleMember(StringType.INSTANCE, receiver -> name((SystemInstance) receiver)));
-		MEMBERS.put("category",
-				new SimpleMember(ComponentCategoryType.INSTANCE, receiver -> category((SystemInstance) receiver)));
-		MEMBERS.put("subcomponents", new SimpleMember(new ListType(ComponentInstanceType.INSTANCE),
-				receiver -> subcomponents((SystemInstance) receiver)));
-		MEMBERS.put("allSubcomponents", new SimpleMember(new ListType(ComponentInstanceType.INSTANCE),
-				receiver -> allSubcomponents((SystemInstance) receiver)));
-		MEMBERS.put("allComponents", new SimpleMember(new ListType(ComponentInstanceType.INSTANCE),
-				receiver -> allComponents((SystemInstance) receiver)));
-		MEMBERS.put("features", new SimpleMember(new ListType(FeatureInstanceType.INSTANCE),
-				receiver -> features((SystemInstance) receiver)));
-		MEMBERS.put("allFeatures", new SimpleMember(new ListType(FeatureInstanceType.INSTANCE),
-				receiver -> allFeatures((SystemInstance) receiver)));
-		MEMBERS.put("localModes", new SimpleMember(new ListType(ModeInstanceType.INSTANCE),
-				receiver -> localModes((SystemInstance) receiver)));
-		MEMBERS.put("allModes", new SimpleMember(new ListType(ModeInstanceType.INSTANCE),
-				receiver -> allModes((SystemInstance) receiver)));
-		MEMBERS.put("modeTransitions", new SimpleMember(new ListType(ModeTransitionInstanceType.INSTANCE),
-				receiver -> modeTransitions((SystemInstance) receiver)));
-		MEMBERS.put("allModeTransitions", new SimpleMember(new ListType(ModeTransitionInstanceType.INSTANCE),
-				receiver -> allModeTransitions((SystemInstance) receiver)));
-		MEMBERS.put("flowSpecifications", new SimpleMember(new ListType(FlowSpecificationInstanceType.INSTANCE),
-				receiver -> flowSpecifications((SystemInstance) receiver)));
-		MEMBERS.put("allFlowSpecifications", new SimpleMember(new ListType(FlowSpecificationInstanceType.INSTANCE),
-				receiver -> allFlowSpecifications((SystemInstance) receiver)));
-		MEMBERS.put("endToEndFlows", new SimpleMember(new ListType(EndToEndFlowInstanceType.INSTANCE),
-				receiver -> endToEndFlows((SystemInstance) receiver)));
-		MEMBERS.put("allEndToEndFlows", new SimpleMember(new ListType(EndToEndFlowInstanceType.INSTANCE),
-				receiver -> allEndToEndFlows((SystemInstance) receiver)));
-		MEMBERS.put("connections", new SimpleMember(new ListType(ConnectionInstanceType.INSTANCE),
-				receiver -> connections((SystemInstance) receiver)));
-		MEMBERS.put("allConnections", new SimpleMember(new ListType(ConnectionInstanceType.INSTANCE),
-				receiver -> allConnections((SystemInstance) receiver)));
-		MEMBERS.put("systemOperationModes", new SimpleMember(new ListType(SystemOperationModeType.INSTANCE),
-				receiver -> systemOperationModes((SystemInstance) receiver)));
-		MEMBERS.put("isAbstract",
-				new SimpleMember(BooleanType.INSTANCE, receiver -> isAbstract((SystemInstance) receiver)));
-		MEMBERS.put("isBus", new SimpleMember(BooleanType.INSTANCE, receiver -> isBus((SystemInstance) receiver)));
-		MEMBERS.put("isData", new SimpleMember(BooleanType.INSTANCE, receiver -> isData((SystemInstance) receiver)));
-		MEMBERS.put("isDevice",
-				new SimpleMember(BooleanType.INSTANCE, receiver -> isDevice((SystemInstance) receiver)));
-		MEMBERS.put("isMemory",
-				new SimpleMember(BooleanType.INSTANCE, receiver -> isMemory((SystemInstance) receiver)));
-		MEMBERS.put("isProcess",
-				new SimpleMember(BooleanType.INSTANCE, receiver -> isProcess((SystemInstance) receiver)));
-		MEMBERS.put("isProcessor",
-				new SimpleMember(BooleanType.INSTANCE, receiver -> isProcessor((SystemInstance) receiver)));
-		MEMBERS.put("isSubprogram",
-				new SimpleMember(BooleanType.INSTANCE, receiver -> isSubprogram((SystemInstance) receiver)));
-		MEMBERS.put("isSubprogramGroup",
-				new SimpleMember(BooleanType.INSTANCE, receiver -> isSubprogramGroup((SystemInstance) receiver)));
-		MEMBERS.put("isSystem",
-				new SimpleMember(BooleanType.INSTANCE, receiver -> isSystem((SystemInstance) receiver)));
-		MEMBERS.put("isThread",
-				new SimpleMember(BooleanType.INSTANCE, receiver -> isThread((SystemInstance) receiver)));
-		MEMBERS.put("isThreadGroup",
-				new SimpleMember(BooleanType.INSTANCE, receiver -> isThreadGroup((SystemInstance) receiver)));
-		MEMBERS.put("isVirtualBus",
-				new SimpleMember(BooleanType.INSTANCE, receiver -> isVirtualBus((SystemInstance) receiver)));
-		MEMBERS.put("isVirtualProcessor",
-				new SimpleMember(BooleanType.INSTANCE, receiver -> isVirtualProcessor((SystemInstance) receiver)));
-		MEMBERS.put("states", new SimpleMember(new ListType(StateInstanceType.INSTANCE),
-				receiver -> states((SystemInstance) receiver)));
-		MEMBERS.put("events", new SimpleMember(new ListType(EventInstanceType.INSTANCE),
-				receiver -> events((SystemInstance) receiver)));
+		MEMBERS.put("name", new NameMember());
+		MEMBERS.put("category", new CategoryMember());
+		MEMBERS.put("subcomponents", new SubcomponentsMember());
+		MEMBERS.put("allSubcomponents", new AllSubcomponentsMember());
+		MEMBERS.put("allComponents", new AllComponentsMember());
+		MEMBERS.put("features", new FeaturesMember());
+		MEMBERS.put("allFeatures", new AllFeaturesMember());
+		MEMBERS.put("localModes", new LocalModesMember());
+		MEMBERS.put("allModes", new AllModesMember());
+		MEMBERS.put("modeTransitions", new ModeTransitionsMember());
+		MEMBERS.put("allModeTransitions", new AllModeTransitionsMember());
+		MEMBERS.put("flowSpecifications", new FlowSpecificationsMember());
+		MEMBERS.put("allFlowSpecifications", new AllFlowSpecificationsMember());
+		MEMBERS.put("endToEndFlows", new EndToEndFlowsMember());
+		MEMBERS.put("allEndToEndFlows", new AllEndToEndFlowsMember());
+		MEMBERS.put("connections", new ConnectionsMember());
+		MEMBERS.put("allConnections", new AllConnectionsMember());
+		MEMBERS.put("systemOperationModes", new SystemOperationModesMember());
+		MEMBERS.put("isAbstract", new IsAbstractMember());
+		MEMBERS.put("isBus", new IsBusMember());
+		MEMBERS.put("isData", new IsDataMember());
+		MEMBERS.put("isDevice", new IsDeviceMember());
+		MEMBERS.put("isMemory", new IsMemoryMember());
+		MEMBERS.put("isProcess", new IsProcessMember());
+		MEMBERS.put("isProcessor", new IsProcessorMember());
+		MEMBERS.put("isSubprogram", new IsSubprogramMember());
+		MEMBERS.put("isSubprogramGroup", new IsSubprogramGroupMember());
+		MEMBERS.put("isSystem", new IsSystemMember());
+		MEMBERS.put("isThread", new IsThreadMember());
+		MEMBERS.put("isThreadGroup", new IsThreadGroupMember());
+		MEMBERS.put("isVirtualBus", new IsVirtualBusMember());
+		MEMBERS.put("isVirtualProcessor", new IsVirtualProcessorMember());
+		MEMBERS.put("states", new StatesMember());
+		MEMBERS.put("events", new EventsMember());
 	}
 
 	private SystemInstanceType() {
@@ -132,191 +101,466 @@ public final class SystemInstanceType implements PropertyLookupSupportedType {
 		return "SystemInstance";
 	}
 
-	private static String name(SystemInstance receiver) {
-		return receiver.getName();
-	}
-
-	private static ComponentCategory category(SystemInstance receiver) {
-		return receiver.getCategory();
-	}
-
-	private static List<ComponentInstance> subcomponents(SystemInstance receiver) {
-		return receiver.getComponentInstances();
-	}
-
-	private static List<ComponentInstance> allSubcomponents(SystemInstance receiver) {
-		var result = new ArrayList<ComponentInstance>();
-		receiver.eAllContents().forEachRemaining(element -> {
-			if (element instanceof ComponentInstance subcomponent) {
-				result.add(subcomponent);
-			}
-		});
-		return result;
-	}
-
-	private static List<ComponentInstance> allComponents(SystemInstance receiver) {
-		return EcoreUtil2.eAllOfType(receiver, ComponentInstance.class);
-	}
-
-	private static List<FeatureInstance> features(SystemInstance receiver) {
-		return receiver.getFeatureInstances();
-	}
-
-	private static List<FeatureInstance> allFeatures(SystemInstance receiver) {
-		var result = new ArrayList<FeatureInstance>();
-		receiver.eAllContents().forEachRemaining(element -> {
-			if (element instanceof FeatureInstance feature) {
-				result.add(feature);
-			}
-		});
-		return result;
-	}
-
-	private static List<ModeInstance> localModes(SystemInstance receiver) {
-		return receiver.getModeInstances();
-	}
-
-	private static List<ModeInstance> allModes(SystemInstance receiver) {
-		var result = new ArrayList<ModeInstance>();
-		receiver.eAllContents().forEachRemaining(element -> {
-			if (element instanceof ModeInstance mode) {
-				result.add(mode);
-			}
-		});
-		return result;
-	}
-
-	private static List<ModeTransitionInstance> modeTransitions(SystemInstance receiver) {
-		return receiver.getModeTransitionInstances();
-	}
-
-	private static List<ModeTransitionInstance> allModeTransitions(SystemInstance receiver) {
-		var result = new ArrayList<ModeTransitionInstance>();
-		receiver.eAllContents().forEachRemaining(element -> {
-			if (element instanceof ModeTransitionInstance transition) {
-				result.add(transition);
-			}
-		});
-		return result;
-	}
-
-	private static List<FlowSpecificationInstance> flowSpecifications(SystemInstance receiver) {
-		return receiver.getFlowSpecifications();
-	}
-
-	private static List<FlowSpecificationInstance> allFlowSpecifications(SystemInstance receiver) {
-		var result = new ArrayList<FlowSpecificationInstance>();
-		receiver.eAllContents().forEachRemaining(element -> {
-			if (element instanceof FlowSpecificationInstance flow) {
-				result.add(flow);
-			}
-		});
-		return result;
-	}
-
-	private static List<EndToEndFlowInstance> endToEndFlows(SystemInstance receiver) {
-		return receiver.getEndToEndFlows();
-	}
-
-	private static List<EndToEndFlowInstance> allEndToEndFlows(SystemInstance receiver) {
-		var result = new ArrayList<EndToEndFlowInstance>();
-		receiver.eAllContents().forEachRemaining(element -> {
-			if (element instanceof EndToEndFlowInstance flow) {
-				result.add(flow);
-			}
-		});
-		return result;
-	}
-
-	private static List<ConnectionInstance> connections(SystemInstance receiver) {
-		return receiver.getConnectionInstances();
-	}
-
-	private static List<ConnectionInstance> allConnections(SystemInstance receiver) {
-		var result = new ArrayList<ConnectionInstance>();
-		receiver.eAllContents().forEachRemaining(element -> {
-			if (element instanceof ConnectionInstance connection) {
-				result.add(connection);
-			}
-		});
-		return result;
-	}
-
-	private static List<SystemOperationMode> systemOperationModes(SystemInstance receiver) {
-		return receiver.getSystemOperationModes();
-	}
-
-	private static Boolean isAbstract(SystemInstance receiver) {
-		return receiver.getCategory() == ComponentCategory.ABSTRACT;
-	}
-
-	private static Boolean isBus(SystemInstance receiver) {
-		return receiver.getCategory() == ComponentCategory.BUS;
-	}
-
-	private static Boolean isData(SystemInstance receiver) {
-		return receiver.getCategory() == ComponentCategory.DATA;
-	}
-
-	private static Boolean isDevice(SystemInstance receiver) {
-		return receiver.getCategory() == ComponentCategory.DEVICE;
-	}
-
-	private static Boolean isMemory(SystemInstance receiver) {
-		return receiver.getCategory() == ComponentCategory.MEMORY;
-	}
-
-	private static Boolean isProcess(SystemInstance receiver) {
-		return receiver.getCategory() == ComponentCategory.PROCESS;
-	}
-
-	private static Boolean isProcessor(SystemInstance receiver) {
-		return receiver.getCategory() == ComponentCategory.PROCESSOR;
-	}
-
-	private static Boolean isSubprogram(SystemInstance receiver) {
-		return receiver.getCategory() == ComponentCategory.SUBPROGRAM;
-	}
-
-	private static Boolean isSubprogramGroup(SystemInstance receiver) {
-		return receiver.getCategory() == ComponentCategory.SUBPROGRAM_GROUP;
-	}
-
-	private static Boolean isSystem(SystemInstance receiver) {
-		return receiver.getCategory() == ComponentCategory.SYSTEM;
-	}
-
-	private static Boolean isThread(SystemInstance receiver) {
-		return receiver.getCategory() == ComponentCategory.THREAD;
-	}
-
-	private static Boolean isThreadGroup(SystemInstance receiver) {
-		return receiver.getCategory() == ComponentCategory.THREAD_GROUP;
-	}
-
-	private static Boolean isVirtualBus(SystemInstance receiver) {
-		return receiver.getCategory() == ComponentCategory.VIRTUAL_BUS;
-	}
-
-	private static Boolean isVirtualProcessor(SystemInstance receiver) {
-		return receiver.getCategory() == ComponentCategory.VIRTUAL_PROCESSOR;
-	}
-
-	private static List<StateInstance> states(SystemInstance receiver) {
-		for (var annexInstance : receiver.getAnnexInstances()) {
-			if (annexInstance instanceof EMV2AnnexInstance emv2AnnexInstance) {
-				return emv2AnnexInstance.getStates();
-			}
+	private static class NameMember implements SimpleMember<SystemInstance, String> {
+		@Override
+		public Type getReturnType() {
+			return StringType.INSTANCE;
 		}
-		return Collections.emptyList();
+
+		@Override
+		public String evaluate(SystemInstance receiver) {
+			return receiver.getName();
+		}
 	}
 
-	private static List<EventInstance> events(SystemInstance receiver) {
-		for (var annexInstance : receiver.getAnnexInstances()) {
-			if (annexInstance instanceof EMV2AnnexInstance emv2AnnexInstance) {
-				return emv2AnnexInstance.getEvents();
-			}
+	private static class CategoryMember implements SimpleMember<SystemInstance, ComponentCategory> {
+		@Override
+		public Type getReturnType() {
+			return ComponentCategoryType.INSTANCE;
 		}
-		return Collections.emptyList();
+
+		@Override
+		public ComponentCategory evaluate(SystemInstance receiver) {
+			return receiver.getCategory();
+		}
+	}
+
+	private static class SubcomponentsMember implements SimpleMember<SystemInstance, List<ComponentInstance>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(ComponentInstanceType.INSTANCE);
+		}
+
+		@Override
+		public List<ComponentInstance> evaluate(SystemInstance receiver) {
+			return receiver.getComponentInstances();
+		}
+	}
+
+	private static class AllSubcomponentsMember implements SimpleMember<SystemInstance, List<ComponentInstance>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(ComponentInstanceType.INSTANCE);
+		}
+
+		@Override
+		public List<ComponentInstance> evaluate(SystemInstance receiver) {
+			var result = new ArrayList<ComponentInstance>();
+			receiver.eAllContents().forEachRemaining(element -> {
+				if (element instanceof ComponentInstance subcomponent) {
+					result.add(subcomponent);
+				}
+			});
+			return result;
+		}
+	}
+
+	private static class AllComponentsMember implements SimpleMember<SystemInstance, List<ComponentInstance>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(ComponentInstanceType.INSTANCE);
+		}
+
+		@Override
+		public List<ComponentInstance> evaluate(SystemInstance receiver) {
+			return EcoreUtil2.eAllOfType(receiver, ComponentInstance.class);
+		}
+	}
+
+	private static class FeaturesMember implements SimpleMember<SystemInstance, List<FeatureInstance>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(FeatureInstanceType.INSTANCE);
+		}
+
+		@Override
+		public List<FeatureInstance> evaluate(SystemInstance receiver) {
+			return receiver.getFeatureInstances();
+		}
+	}
+
+	private static class AllFeaturesMember implements SimpleMember<SystemInstance, List<FeatureInstance>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(FeatureInstanceType.INSTANCE);
+		}
+
+		@Override
+		public List<FeatureInstance> evaluate(SystemInstance receiver) {
+			var result = new ArrayList<FeatureInstance>();
+			receiver.eAllContents().forEachRemaining(element -> {
+				if (element instanceof FeatureInstance feature) {
+					result.add(feature);
+				}
+			});
+			return result;
+		}
+	}
+
+	private static class LocalModesMember implements SimpleMember<SystemInstance, List<ModeInstance>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(ModeInstanceType.INSTANCE);
+		}
+
+		@Override
+		public List<ModeInstance> evaluate(SystemInstance receiver) {
+			return receiver.getModeInstances();
+		}
+	}
+
+	private static class AllModesMember implements SimpleMember<SystemInstance, List<ModeInstance>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(ModeInstanceType.INSTANCE);
+		}
+
+		@Override
+		public List<ModeInstance> evaluate(SystemInstance receiver) {
+			var result = new ArrayList<ModeInstance>();
+			receiver.eAllContents().forEachRemaining(element -> {
+				if (element instanceof ModeInstance mode) {
+					result.add(mode);
+				}
+			});
+			return result;
+		}
+	}
+
+	private static class ModeTransitionsMember implements SimpleMember<SystemInstance, List<ModeTransitionInstance>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(ModeTransitionInstanceType.INSTANCE);
+		}
+
+		@Override
+		public List<ModeTransitionInstance> evaluate(SystemInstance receiver) {
+			return receiver.getModeTransitionInstances();
+		}
+	}
+
+	private static class AllModeTransitionsMember
+			implements SimpleMember<SystemInstance, List<ModeTransitionInstance>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(ModeTransitionInstanceType.INSTANCE);
+		}
+
+		@Override
+		public List<ModeTransitionInstance> evaluate(SystemInstance receiver) {
+			var result = new ArrayList<ModeTransitionInstance>();
+			receiver.eAllContents().forEachRemaining(element -> {
+				if (element instanceof ModeTransitionInstance transition) {
+					result.add(transition);
+				}
+			});
+			return result;
+		}
+	}
+
+	private static class FlowSpecificationsMember
+			implements SimpleMember<SystemInstance, List<FlowSpecificationInstance>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(FlowSpecificationInstanceType.INSTANCE);
+		}
+
+		@Override
+		public List<FlowSpecificationInstance> evaluate(SystemInstance receiver) {
+			return receiver.getFlowSpecifications();
+		}
+	}
+
+	private static class AllFlowSpecificationsMember
+			implements SimpleMember<SystemInstance, List<FlowSpecificationInstance>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(FlowSpecificationInstanceType.INSTANCE);
+		}
+
+		@Override
+		public List<FlowSpecificationInstance> evaluate(SystemInstance receiver) {
+			var result = new ArrayList<FlowSpecificationInstance>();
+			receiver.eAllContents().forEachRemaining(element -> {
+				if (element instanceof FlowSpecificationInstance flow) {
+					result.add(flow);
+				}
+			});
+			return result;
+		}
+	}
+
+	private static class EndToEndFlowsMember implements SimpleMember<SystemInstance, List<EndToEndFlowInstance>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(EndToEndFlowInstanceType.INSTANCE);
+		}
+
+		@Override
+		public List<EndToEndFlowInstance> evaluate(SystemInstance receiver) {
+			return receiver.getEndToEndFlows();
+		}
+	}
+
+	private static class AllEndToEndFlowsMember implements SimpleMember<SystemInstance, List<EndToEndFlowInstance>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(EndToEndFlowInstanceType.INSTANCE);
+		}
+
+		@Override
+		public List<EndToEndFlowInstance> evaluate(SystemInstance receiver) {
+			var result = new ArrayList<EndToEndFlowInstance>();
+			receiver.eAllContents().forEachRemaining(element -> {
+				if (element instanceof EndToEndFlowInstance flow) {
+					result.add(flow);
+				}
+			});
+			return result;
+		}
+	}
+
+	private static class ConnectionsMember implements SimpleMember<SystemInstance, List<ConnectionInstance>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(ConnectionInstanceType.INSTANCE);
+		}
+
+		@Override
+		public List<ConnectionInstance> evaluate(SystemInstance receiver) {
+			return receiver.getConnectionInstances();
+		}
+	}
+
+	private static class AllConnectionsMember implements SimpleMember<SystemInstance, List<ConnectionInstance>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(ConnectionInstanceType.INSTANCE);
+		}
+
+		@Override
+		public List<ConnectionInstance> evaluate(SystemInstance receiver) {
+			var result = new ArrayList<ConnectionInstance>();
+			receiver.eAllContents().forEachRemaining(element -> {
+				if (element instanceof ConnectionInstance connection) {
+					result.add(connection);
+				}
+			});
+			return result;
+		}
+	}
+
+	private static class SystemOperationModesMember implements SimpleMember<SystemInstance, List<SystemOperationMode>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(SystemOperationModeType.INSTANCE);
+		}
+
+		@Override
+		public List<SystemOperationMode> evaluate(SystemInstance receiver) {
+			return receiver.getSystemOperationModes();
+		}
+	}
+
+	private static class IsAbstractMember implements SimpleMember<SystemInstance, Boolean> {
+		@Override
+		public Type getReturnType() {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(SystemInstance receiver) {
+			return receiver.getCategory() == ComponentCategory.ABSTRACT;
+		}
+	}
+
+	private static class IsBusMember implements SimpleMember<SystemInstance, Boolean> {
+		@Override
+		public Type getReturnType() {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(SystemInstance receiver) {
+			return receiver.getCategory() == ComponentCategory.BUS;
+		}
+	}
+
+	private static class IsDataMember implements SimpleMember<SystemInstance, Boolean> {
+		@Override
+		public Type getReturnType() {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(SystemInstance receiver) {
+			return receiver.getCategory() == ComponentCategory.DATA;
+		}
+	}
+
+	private static class IsDeviceMember implements SimpleMember<SystemInstance, Boolean> {
+		@Override
+		public Type getReturnType() {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(SystemInstance receiver) {
+			return receiver.getCategory() == ComponentCategory.DEVICE;
+		}
+	}
+
+	private static class IsMemoryMember implements SimpleMember<SystemInstance, Boolean> {
+		@Override
+		public Type getReturnType() {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(SystemInstance receiver) {
+			return receiver.getCategory() == ComponentCategory.MEMORY;
+		}
+	}
+
+	private static class IsProcessMember implements SimpleMember<SystemInstance, Boolean> {
+		@Override
+		public Type getReturnType() {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(SystemInstance receiver) {
+			return receiver.getCategory() == ComponentCategory.PROCESS;
+		}
+	}
+
+	private static class IsProcessorMember implements SimpleMember<SystemInstance, Boolean> {
+		@Override
+		public Type getReturnType() {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(SystemInstance receiver) {
+			return receiver.getCategory() == ComponentCategory.PROCESSOR;
+		}
+	}
+
+	private static class IsSubprogramMember implements SimpleMember<SystemInstance, Boolean> {
+		@Override
+		public Type getReturnType() {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(SystemInstance receiver) {
+			return receiver.getCategory() == ComponentCategory.SUBPROGRAM;
+		}
+	}
+
+	private static class IsSubprogramGroupMember implements SimpleMember<SystemInstance, Boolean> {
+		@Override
+		public Type getReturnType() {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(SystemInstance receiver) {
+			return receiver.getCategory() == ComponentCategory.SUBPROGRAM_GROUP;
+		}
+	}
+
+	private static class IsSystemMember implements SimpleMember<SystemInstance, Boolean> {
+		@Override
+		public Type getReturnType() {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(SystemInstance receiver) {
+			return receiver.getCategory() == ComponentCategory.SYSTEM;
+		}
+	}
+
+	private static class IsThreadMember implements SimpleMember<SystemInstance, Boolean> {
+		@Override
+		public Type getReturnType() {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(SystemInstance receiver) {
+			return receiver.getCategory() == ComponentCategory.THREAD;
+		}
+	}
+
+	private static class IsThreadGroupMember implements SimpleMember<SystemInstance, Boolean> {
+		@Override
+		public Type getReturnType() {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(SystemInstance receiver) {
+			return receiver.getCategory() == ComponentCategory.THREAD_GROUP;
+		}
+	}
+
+	private static class IsVirtualBusMember implements SimpleMember<SystemInstance, Boolean> {
+		@Override
+		public Type getReturnType() {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(SystemInstance receiver) {
+			return receiver.getCategory() == ComponentCategory.VIRTUAL_BUS;
+		}
+	}
+
+	private static class IsVirtualProcessorMember implements SimpleMember<SystemInstance, Boolean> {
+		@Override
+		public Type getReturnType() {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(SystemInstance receiver) {
+			return receiver.getCategory() == ComponentCategory.VIRTUAL_PROCESSOR;
+		}
+	}
+
+	private static class StatesMember implements SimpleMember<SystemInstance, List<StateInstance>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(StateInstanceType.INSTANCE);
+		}
+
+		@Override
+		public List<StateInstance> evaluate(SystemInstance receiver) {
+			for (var annexInstance : receiver.getAnnexInstances()) {
+				if (annexInstance instanceof EMV2AnnexInstance emv2AnnexInstance) {
+					return emv2AnnexInstance.getStates();
+				}
+			}
+			return Collections.emptyList();
+		}
+	}
+
+	private static class EventsMember implements SimpleMember<SystemInstance, List<EventInstance>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(EventInstanceType.INSTANCE);
+		}
+
+		@Override
+		public List<EventInstance> evaluate(SystemInstance receiver) {
+			for (var annexInstance : receiver.getAnnexInstances()) {
+				if (annexInstance instanceof EMV2AnnexInstance emv2AnnexInstance) {
+					return emv2AnnexInstance.getEvents();
+				}
+			}
+			return Collections.emptyList();
+		}
 	}
 }

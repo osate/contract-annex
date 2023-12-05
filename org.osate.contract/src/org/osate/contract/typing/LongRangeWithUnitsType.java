@@ -36,17 +36,17 @@ import org.osate.aadl2.RecordField;
 import org.osate.aadl2.UnitsType;
 
 public final class LongRangeWithUnitsType implements Type {
+	private final UnitsType unitsType;
 	private final Map<String, Member> members;
 	private final String label;
 
 	public LongRangeWithUnitsType(UnitsType unitsType) {
+		this.unitsType = unitsType;
+
 		members = new LinkedHashMap<>();
-		members.put("minimum",
-				new SimpleMember(new LongWithUnitsType(unitsType), receiver -> minimum((RangeValueHolder) receiver)));
-		members.put("maximum",
-				new SimpleMember(new LongWithUnitsType(unitsType), receiver -> maximum((RangeValueHolder) receiver)));
-		members.put("getDelta", new SimpleMember(new OptionalType(new LongWithUnitsType(unitsType)),
-				receiver -> getDelta((RangeValueHolder) receiver)));
+		members.put("minimum", new MinimumMember());
+		members.put("maximum", new MaximumMember());
+		members.put("getDelta", new GetDeltaMember());
 
 		if (unitsType.getName() != null) {
 			label = "LongRangeWithUnits<" + unitsType.getQualifiedName() + '>';
@@ -80,15 +80,39 @@ public final class LongRangeWithUnitsType implements Type {
 		return label;
 	}
 
-	private static IntegerLiteral minimum(RangeValueHolder receiver) {
-		return (IntegerLiteral) receiver.getMinimum();
+	private class MinimumMember implements SimpleMember<RangeValueHolder, IntegerLiteral> {
+		@Override
+		public Type getReturnType() {
+			return new LongWithUnitsType(unitsType);
+		}
+
+		@Override
+		public IntegerLiteral evaluate(RangeValueHolder receiver) {
+			return (IntegerLiteral) receiver.getMinimum();
+		}
 	}
 
-	private static IntegerLiteral maximum(RangeValueHolder receiver) {
-		return (IntegerLiteral) receiver.getMaximum();
+	private class MaximumMember implements SimpleMember<RangeValueHolder, IntegerLiteral> {
+		@Override
+		public Type getReturnType() {
+			return new LongWithUnitsType(unitsType);
+		}
+
+		@Override
+		public IntegerLiteral evaluate(RangeValueHolder receiver) {
+			return (IntegerLiteral) receiver.getMaximum();
+		}
 	}
 
-	private static Optional<IntegerLiteral> getDelta(RangeValueHolder receiver) {
-		return Optional.ofNullable(receiver.getDelta()).map(IntegerLiteral.class::cast);
+	private class GetDeltaMember implements SimpleMember<RangeValueHolder, Optional<IntegerLiteral>> {
+		@Override
+		public Type getReturnType() {
+			return new OptionalType(new LongWithUnitsType(unitsType));
+		}
+
+		@Override
+		public Optional<IntegerLiteral> evaluate(RangeValueHolder receiver) {
+			return Optional.ofNullable(receiver.getDelta()).map(IntegerLiteral.class::cast);
+		}
 	}
 }

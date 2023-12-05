@@ -25,38 +25,26 @@
  *******************************************************************************/
 package org.osate.contract.typing;
 
-import java.util.Optional;
-import java.util.function.BiFunction;
+import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
-public final class MemberWithLambda implements Member {
-	private final Type lambdaParameterType;
-	private final Function<Type, Optional<String>> validateLambdaReturnTypeFunction;
-	private final Function<Type, Type> returnTypeFunction;
-	private BiFunction<Object, Function<Object, Object>, Object> evaluateFunction;
+/**
+ * Generic parameters are expected to be the backing Java types such as {@link List}, {@link Long}, {@link String}, etc.
+ * For example, when implementing {@code List.map}, the receiver type {@code T} should be {@code List<?>}. The generic
+ * parameters should not be any type that extends from {@link Type}.
+ *
+ * @param <T> Receiver Java type
+ * @param <R> Return Java type
+ * @param <L> Lambda return Java type
+ */
+public non-sealed interface MemberWithLambda<T, R, L> extends Member {
+	Type getLambdaParameterType();
 
-	public MemberWithLambda(Type lambdaParameterType, Function<Type, Optional<String>> validateLambdaReturnTypeFunction,
-			Function<Type, Type> returnTypeFunction,
-			BiFunction<Object, Function<Object, Object>, Object> evaluateFunction) {
-		this.lambdaParameterType = lambdaParameterType;
-		this.validateLambdaReturnTypeFunction = validateLambdaReturnTypeFunction;
-		this.returnTypeFunction = returnTypeFunction;
-		this.evaluateFunction = evaluateFunction;
+	default void validateLambdaReturnType(Type lambdaReturnType, Consumer<String> errorReporter) {
 	}
 
-	public Type getLambdaParameterType() {
-		return lambdaParameterType;
-	}
+	Type getReturnType(Type lambdaType);
 
-	public Optional<String> validateLambdaReturnType(Type lambdaReturnType) {
-		return validateLambdaReturnTypeFunction.apply(lambdaReturnType);
-	}
-
-	public Type getReturnType(Type lambdaType) {
-		return returnTypeFunction.apply(lambdaType);
-	}
-
-	public Object evaluate(Object receiver, Function<Object, Object> evaluateLambda) {
-		return evaluateFunction.apply(receiver, evaluateLambda);
-	}
+	R evaluate(T receiver, Function<Object, L> evaluateLambda);
 }

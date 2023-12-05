@@ -11,7 +11,7 @@ public final class EventInstanceType implements PropertyLookupSupportedType {
 
 	static {
 		MEMBERS = new LinkedHashMap<>();
-		MEMBERS.put("name", new SimpleMember(StringType.INSTANCE, receiver -> name((EventInstance) receiver)));
+		MEMBERS.put("name", new NameMember());
 	}
 
 	private EventInstanceType() {
@@ -27,7 +27,15 @@ public final class EventInstanceType implements PropertyLookupSupportedType {
 		return "EventInstance";
 	}
 
-	private static String name(EventInstance receiver) {
-		return receiver.getName();
+	private static class NameMember implements SimpleMember<EventInstance, String> {
+		@Override
+		public Type getReturnType() {
+			return StringType.INSTANCE;
+		}
+
+		@Override
+		public String evaluate(EventInstance receiver) {
+			return receiver.getName();
+		}
 	}
 }

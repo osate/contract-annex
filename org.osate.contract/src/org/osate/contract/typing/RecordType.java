@@ -33,6 +33,7 @@ import org.osate.aadl2.BasicProperty;
 import org.osate.aadl2.Property;
 import org.osate.aadl2.PropertyType;
 import org.osate.aadl2.RecordField;
+import org.osate.contract.contract.Expression;
 import org.osate.contract.contract.NameReference;
 import org.osate.pluginsupport.properties.CodeGenUtil;
 
@@ -45,13 +46,7 @@ public final class RecordType implements Type {
 		this.recordType = recordType;
 
 		members = new LinkedHashMap<>();
-		members.put("get",
-				new MemberWithArgument(
-						argument -> argument instanceof NameReference reference
-								&& reference.getReference() instanceof BasicProperty field
-										? new OptionalType(TypeSystemUtils.convertPropertyType(field.getPropertyType()))
-										: null,
-						(receiver, argument) -> get((RecordValueHolder) receiver, (BasicProperty) argument)));
+		members.put("get", new GetMember());
 
 		if (recordType.getName() != null) {
 			label = "Record<" + recordType.getQualifiedName() + '>';
@@ -89,15 +84,28 @@ public final class RecordType implements Type {
 		return label;
 	}
 
-	private static Optional<?> get(RecordValueHolder receiver, BasicProperty field) {
-		for (var fieldValue : receiver.getValue().getOwnedFieldValues()) {
-			if (fieldValue.getProperty().equals(field)) {
-				var lookupContext = receiver.getLookupContext();
-				var resolved = CodeGenUtil.resolveNamedValue(fieldValue.getOwnedValue(), lookupContext,
-						Optional.empty());
-				return Optional.of(TypeSystemUtils.convertPropertyValue(resolved, lookupContext));
+	private static class GetMember implements MemberWithArgument<RecordValueHolder, Optional<?>, BasicProperty> {
+		@Override
+		public Type getReturnType(Expression argument) {
+			if (argument instanceof NameReference reference
+					&& reference.getReference() instanceof BasicProperty field) {
+				return new OptionalType(TypeSystemUtils.convertPropertyType(field.getPropertyType()));
+			} else {
+				return null;
 			}
 		}
-		return Optional.empty();
+
+		@Override
+		public Optional<?> evaluate(RecordValueHolder receiver, BasicProperty argument) {
+			for (var fieldValue : receiver.getValue().getOwnedFieldValues()) {
+				if (fieldValue.getProperty().equals(argument)) {
+					var lookupContext = receiver.getLookupContext();
+					var resolved = CodeGenUtil.resolveNamedValue(fieldValue.getOwnedValue(), lookupContext,
+							Optional.empty());
+					return Optional.of(TypeSystemUtils.convertPropertyValue(resolved, lookupContext));
+				}
+			}
+			return Optional.empty();
+		}
 	}
 }

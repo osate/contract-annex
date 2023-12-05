@@ -11,7 +11,7 @@ public final class StateInstanceType implements PropertyLookupSupportedType {
 
 	static {
 		MEMBERS = new LinkedHashMap<>();
-		MEMBERS.put("name", new SimpleMember(StringType.INSTANCE, receiver -> name((StateInstance) receiver)));
+		MEMBERS.put("name", new NameMember());
 	}
 
 	private StateInstanceType() {
@@ -27,7 +27,15 @@ public final class StateInstanceType implements PropertyLookupSupportedType {
 		return "StateInstance";
 	}
 
-	private static String name(StateInstance receiver) {
-		return receiver.getName();
+	private static class NameMember implements SimpleMember<StateInstance, String> {
+		@Override
+		public Type getReturnType() {
+			return StringType.INSTANCE;
+		}
+
+		@Override
+		public String evaluate(StateInstance receiver) {
+			return receiver.getName();
+		}
 	}
 }

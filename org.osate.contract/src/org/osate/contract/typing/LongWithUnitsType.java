@@ -34,6 +34,7 @@ import org.osate.aadl2.PropertyType;
 import org.osate.aadl2.RecordField;
 import org.osate.aadl2.UnitLiteral;
 import org.osate.aadl2.UnitsType;
+import org.osate.contract.contract.Expression;
 
 public final class LongWithUnitsType implements Type {
 	private final UnitsType unitsType;
@@ -44,8 +45,7 @@ public final class LongWithUnitsType implements Type {
 		this.unitsType = unitsType;
 
 		members = new LinkedHashMap<>();
-		members.put("scaledTo", new MemberWithArgument(argument -> DoubleType.INSTANCE,
-				(receiver, argument) -> scaledTo((IntegerLiteral) receiver, (UnitLiteral) argument)));
+		members.put("scaledTo", new ScaledToMember());
 
 		if (unitsType.getName() != null) {
 			label = "LongWithUnits<" + unitsType.getQualifiedName() + '>';
@@ -83,9 +83,17 @@ public final class LongWithUnitsType implements Type {
 		return label;
 	}
 
-	private static Double scaledTo(IntegerLiteral receiver, UnitLiteral targetUnit) {
-		var value = receiver.getValue();
-		var originalUnit = receiver.getUnit();
-		return value * originalUnit.getAbsoluteFactor() / targetUnit.getAbsoluteFactor();
+	private static class ScaledToMember implements MemberWithArgument<IntegerLiteral, Double, UnitLiteral> {
+		@Override
+		public Type getReturnType(Expression argument) {
+			return DoubleType.INSTANCE;
+		}
+
+		@Override
+		public Double evaluate(IntegerLiteral receiver, UnitLiteral argument) {
+			var value = receiver.getValue();
+			var originalUnit = receiver.getUnit();
+			return value * originalUnit.getAbsoluteFactor() / argument.getAbsoluteFactor();
+		}
 	}
 }

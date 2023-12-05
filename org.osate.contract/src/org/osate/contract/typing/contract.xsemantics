@@ -69,15 +69,15 @@ rule MemberCall
 from {
 	G |- expression.left : var Type leftType
 	type = switch member : leftType?.members?.get(expression.right) {
-		SimpleMember: member.returnType
-		MemberWithTypeParameter: {
+		SimpleMember<?, ?>: member.returnType
+		MemberWithTypeParameter<?, ?>: {
 			val queryType = GenericTypeArgumentRegistry.getQueryType(expression.typeArgument)
 			if (queryType !== null) {
 				member.getReturnType(queryType)
 			}
 		}
-		MemberWithArgument: member.getReturnType(expression.argument)
-		MemberWithLambda case expression.lambda !== null: {
+		MemberWithArgument<?, ?, ?>: member.getReturnType(expression.argument)
+		MemberWithLambda<?, ?, ?> case expression.lambda !== null: {
 			G |- expression.lambda.returnValue : var Type lambdaType
 			member.getReturnType(lambdaType)
 		}
@@ -300,10 +300,9 @@ from {
 	if (member instanceof MemberWithLambda) {
 		empty |- lambda.returnValue : var Type returnType
 		if (returnType !== null) {
-			val finalReturnType = returnType
-			member.validateLambdaReturnType(returnType).ifPresent[requiredReturnTypeName |
+			member.validateLambdaReturnType(returnType) [errorMessage |
 				fail
-					error "Expected " + requiredReturnTypeName + "; found " + finalReturnType
+					error errorMessage
 					source lambda.returnValue
 			]
 		}

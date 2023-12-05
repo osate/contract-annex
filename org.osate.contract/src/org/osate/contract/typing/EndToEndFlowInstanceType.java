@@ -41,13 +41,10 @@ public final class EndToEndFlowInstanceType implements PropertyLookupSupportedTy
 
 	static {
 		MEMBERS = new LinkedHashMap<>();
-		MEMBERS.put("name", new SimpleMember(StringType.INSTANCE, receiver -> name((EndToEndFlowInstance) receiver)));
-		MEMBERS.put("flowSpecifications", new SimpleMember(new ListType(FlowSpecificationInstanceType.INSTANCE),
-				receiver -> flowSpecifications((EndToEndFlowInstance) receiver)));
-		MEMBERS.put("connections", new SimpleMember(new ListType(ConnectionInstanceType.INSTANCE),
-				receiver -> connections((EndToEndFlowInstance) receiver)));
-		MEMBERS.put("components", new SimpleMember(new ListType(ComponentInstanceType.INSTANCE),
-				receiver -> components((EndToEndFlowInstance) receiver)));
+		MEMBERS.put("name", new NameMember());
+		MEMBERS.put("flowSpecifications", new FlowSpecificationsMember());
+		MEMBERS.put("connections", new ConnectionsMember());
+		MEMBERS.put("components", new ComponentsMember());
 	}
 
 	private EndToEndFlowInstanceType() {
@@ -63,8 +60,16 @@ public final class EndToEndFlowInstanceType implements PropertyLookupSupportedTy
 		return "EndToEndFlowInstance";
 	}
 
-	private static String name(EndToEndFlowInstance receiver) {
-		return receiver.getName();
+	private static class NameMember implements SimpleMember<EndToEndFlowInstance, String> {
+		@Override
+		public Type getReturnType() {
+			return StringType.INSTANCE;
+		}
+
+		@Override
+		public String evaluate(EndToEndFlowInstance receiver) {
+			return receiver.getName();
+		}
 	}
 
 	private static List<FlowSpecificationInstance> flowSpecifications(EndToEndFlowInstance receiver) {
@@ -79,6 +84,27 @@ public final class EndToEndFlowInstanceType implements PropertyLookupSupportedTy
 		return result;
 	}
 
+	private static class FlowSpecificationsMember
+			implements SimpleMember<EndToEndFlowInstance, List<FlowSpecificationInstance>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(FlowSpecificationInstanceType.INSTANCE);
+		}
+
+		@Override
+		public List<FlowSpecificationInstance> evaluate(EndToEndFlowInstance receiver) {
+			var result = new ArrayList<FlowSpecificationInstance>();
+			for (var element : receiver.getFlowElements()) {
+				if (element instanceof FlowSpecificationInstance flowSpecificationInstance) {
+					result.add(flowSpecificationInstance);
+				} else if (element instanceof EndToEndFlowInstance endToEndFlowInstance) {
+					result.addAll(flowSpecifications(endToEndFlowInstance));
+				}
+			}
+			return result;
+		}
+	}
+
 	private static List<ConnectionInstance> connections(EndToEndFlowInstance receiver) {
 		var result = new ArrayList<ConnectionInstance>();
 		for (var element : receiver.getFlowElements()) {
@@ -89,6 +115,26 @@ public final class EndToEndFlowInstanceType implements PropertyLookupSupportedTy
 			}
 		}
 		return result;
+	}
+
+	private static class ConnectionsMember implements SimpleMember<EndToEndFlowInstance, List<ConnectionInstance>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(ConnectionInstanceType.INSTANCE);
+		}
+
+		@Override
+		public List<ConnectionInstance> evaluate(EndToEndFlowInstance receiver) {
+			var result = new ArrayList<ConnectionInstance>();
+			for (var element : receiver.getFlowElements()) {
+				if (element instanceof ConnectionInstance connectionInstance) {
+					result.add(connectionInstance);
+				} else if (element instanceof EndToEndFlowInstance endToEndFlowInstance) {
+					result.addAll(connections(endToEndFlowInstance));
+				}
+			}
+			return result;
+		}
 	}
 
 	private static List<ComponentInstance> components(EndToEndFlowInstance receiver) {
@@ -103,5 +149,27 @@ public final class EndToEndFlowInstanceType implements PropertyLookupSupportedTy
 			}
 		}
 		return result;
+	}
+
+	private static class ComponentsMember implements SimpleMember<EndToEndFlowInstance, List<ComponentInstance>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(ComponentInstanceType.INSTANCE);
+		}
+
+		@Override
+		public List<ComponentInstance> evaluate(EndToEndFlowInstance receiver) {
+			var result = new ArrayList<ComponentInstance>();
+			for (var element : receiver.getFlowElements()) {
+				if (element instanceof ComponentInstance componentInstance) {
+					result.add(componentInstance);
+				} else if (element instanceof EndToEndFlowInstance endToEndFlowInstance) {
+					result.addAll(components(endToEndFlowInstance));
+				} else if (element instanceof FlowSpecificationInstance spec) {
+					result.add(spec.getContainingComponentInstance());
+				}
+			}
+			return result;
+		}
 	}
 }

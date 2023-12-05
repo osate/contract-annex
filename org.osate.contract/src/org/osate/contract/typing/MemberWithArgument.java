@@ -25,26 +25,19 @@
  *******************************************************************************/
 package org.osate.contract.typing;
 
-import java.util.function.BiFunction;
-import java.util.function.Function;
-
 import org.osate.contract.contract.Expression;
 
-public final class MemberWithArgument implements Member {
-	private final Function<Expression, Type> returnTypeFunction;
-	private final BiFunction<Object, Object, Object> evaluateFunction;
+/**
+ * Generic parameters are expected to be the backing Java types such as {@link List}, {@link Long}, {@link String}, etc.
+ * For example, when implementing {@code List.contains}, the receiver type {@code T} should be {@code List<?>}. The
+ * generic parameters should not be any type that extends from {@link Type}.
+ *
+ * @param <T> Receiver Java type
+ * @param <R> Return Java type
+ * @param <A> Argument Java type
+ */
+public non-sealed interface MemberWithArgument<T, R, A> extends Member {
+	Type getReturnType(Expression argument);
 
-	public MemberWithArgument(Function<Expression, Type> returnTypeFunction,
-			BiFunction<Object, Object, Object> evaluateFunction) {
-		this.returnTypeFunction = returnTypeFunction;
-		this.evaluateFunction = evaluateFunction;
-	}
-
-	public Type getReturnType(Expression argument) {
-		return returnTypeFunction.apply(argument);
-	}
-
-	public Object evaluate(Object receiver, Object argument) {
-		return evaluateFunction.apply(receiver, argument);
-	}
+	R evaluate(T receiver, A argument);
 }

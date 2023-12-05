@@ -28,6 +28,7 @@ package org.osate.contract.typing;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public final class OptionalType implements Type {
@@ -38,19 +39,10 @@ public final class OptionalType implements Type {
 		this.elementType = elementType;
 
 		members = new LinkedHashMap<>();
-		members.put("isEmpty", new SimpleMember(BooleanType.INSTANCE, receiver -> isEmpty((Optional<?>) receiver)));
-		members.put("filterType", new MemberWithTypeParameter(genericType -> new OptionalType(genericType),
-				(receiver, genericType) -> filterType((Optional<?>) receiver, genericType)));
-		members.put("map",
-				new MemberWithLambda(elementType, lambdaReturnType -> Optional.empty(),
-						lambdaType -> lambdaType != null ? new OptionalType(lambdaType) : null,
-						(receiver, evaluateLambda) -> map((Optional<?>) receiver, evaluateLambda)));
-		members.put("flatMap",
-				new MemberWithLambda(elementType,
-						lambdaReturnType -> lambdaReturnType instanceof OptionalType ? Optional.empty()
-								: Optional.of("Optional"),
-						lambdaType -> lambdaType instanceof OptionalType nestedLambdaType ? nestedLambdaType : null,
-						(receiver, evaluateLambda) -> flatMap((Optional<?>) receiver, evaluateLambda)));
+		members.put("isEmpty", new IsEmptyMember());
+		members.put("filterType", new FilterTypeMember());
+		members.put("map", new MapMember());
+		members.put("flatMap", new FlatMapMember());
 	}
 
 	public Type getElementType() {
@@ -67,20 +59,76 @@ public final class OptionalType implements Type {
 		return elementType + "?";
 	}
 
-	private static Boolean isEmpty(Optional<?> receiver) {
-		return receiver.isEmpty();
+	private static class IsEmptyMember implements SimpleMember<Optional<?>, Boolean> {
+		@Override
+		public Type getReturnType() {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(Optional<?> receiver) {
+			return receiver.isEmpty();
+		}
 	}
 
-	private static Optional<?> filterType(Optional<?> receiver, Class<?> genericType) {
-		return receiver.filter(genericType::isInstance);
+	private static class FilterTypeMember implements MemberWithTypeParameter<Optional<?>, Optional<?>> {
+		@Override
+		public Type getReturnType(Type genericType) {
+			return new OptionalType(genericType);
+		}
+
+		@Override
+		public Optional<?> evaluate(Optional<?> receiver, Class<?> genericType) {
+			return receiver.filter(genericType::isInstance);
+		}
 	}
 
-	private static Optional<?> map(Optional<?> receiver, Function<Object, Object> evaluateLambda) {
-		return receiver.map(evaluateLambda);
+	private class MapMember implements MemberWithLambda<Optional<?>, Optional<?>, Object> {
+		@Override
+		public Type getLambdaParameterType() {
+			return elementType;
+		}
+
+		@Override
+		public Type getReturnType(Type lambdaType) {
+			if (lambdaType != null) {
+				return new OptionalType(lambdaType);
+			} else {
+				return null;
+			}
+		}
+
+		@Override
+		public Optional<?> evaluate(Optional<?> receiver, Function<Object, Object> evaluateLambda) {
+			return receiver.map(evaluateLambda);
+		}
 	}
 
-	private static Optional<?> flatMap(Optional<?> receiver, Function<Object, Object> evaluateLambda) {
-		return receiver.flatMap(value -> (Optional<?>) evaluateLambda.apply(value));
-	}
+	private class FlatMapMember implements MemberWithLambda<Optional<?>, Optional<?>, Optional<?>> {
+		@Override
+		public Type getLambdaParameterType() {
+			return elementType;
+		}
 
+		@Override
+		public void validateLambdaReturnType(Type lambdaReturnType, Consumer<String> errorReporter) {
+			if (!(lambdaReturnType instanceof OptionalType)) {
+				errorReporter.accept("Expected Optional; found " + lambdaReturnType);
+			}
+		}
+
+		@Override
+		public Type getReturnType(Type lambdaType) {
+			if (lambdaType instanceof OptionalType nestedLambdaType) {
+				return nestedLambdaType;
+			} else {
+				return null;
+			}
+		}
+
+		@Override
+		public Optional<?> evaluate(Optional<?> receiver, Function<Object, Optional<?>> evaluateLambda) {
+			return receiver.flatMap(evaluateLambda);
+		}
+	}
 }
