@@ -445,11 +445,13 @@ public class ContractProcessor {
 						var pyCode = pyBuilder.getScript();
 
 						int i = 1;
-						var s = new Scanner(pyCode);
-						while (s.hasNextLine()) {
-							System.out.println(i + s.nextLine());
-							i += 1;
+						try (var s = new Scanner(pyCode)) {
+							while (s.hasNextLine()) {
+								System.out.println(i + s.nextLine());
+								i += 1;
+							}
 						}
+
 
 						/**
 						 * Dio: This is only for debugging in my own laptop with
