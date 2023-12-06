@@ -51,6 +51,7 @@ public final class ListType implements Type {
 		members.put("filter", new FilterMember());
 		members.put("filterType", new FilterTypeMember());
 		members.put("map", new MapMember());
+		members.put("flatMap", new FlatMapMember());
 		members.put("mapPresent", new MapPresentMember());
 		members.put("contains", new ContainsMember());
 
@@ -190,6 +191,38 @@ public final class ListType implements Type {
 			var result = new ArrayList<>();
 			for (var element : receiver) {
 				result.add(evaluateLambda.apply(element));
+			}
+			return result;
+		}
+	}
+
+	private class FlatMapMember implements MemberWithLambda<List<?>, List<?>, List<?>> {
+		@Override
+		public Type getLambdaParameterType() {
+			return elementType;
+		}
+
+		@Override
+		public void validateLambdaReturnType(Type lambdaReturnType, Consumer<String> errorReporter) {
+			if (!(lambdaReturnType instanceof ListType)) {
+				errorReporter.accept("Expected List; found " + lambdaReturnType);
+			}
+		}
+
+		@Override
+		public Type getReturnType(Type lambdaType) {
+			if (lambdaType instanceof ListType listType) {
+				return new ListType(listType.elementType);
+			} else {
+				return null;
+			}
+		}
+
+		@Override
+		public List<?> evaluate(List<?> receiver, Function<Object, List<?>> evaluateLambda) {
+			var result = new ArrayList<>();
+			for (var element : receiver) {
+				result.addAll(evaluateLambda.apply(element));
 			}
 			return result;
 		}

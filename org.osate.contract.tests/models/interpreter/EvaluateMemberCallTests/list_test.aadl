@@ -71,6 +71,9 @@ public
 				val v17 = self.subcomponents
 					.map { subcomponent -> (subcomponent.name, subcomponent#Priority) }
 					.filterTupleElementsPresent;
+				
+				val v18 = self.subcomponents
+					.flatMap { subcomponent -> subcomponent.features };
 		}
 	**};
 	
@@ -82,14 +85,15 @@ public
 			process_1: process ps_without_features { Priority => 1; };
 			process_2: process ps_without_features;
 			process_3: process ps_without_features { Priority => 3; };
-			ps_with_features: process ps_with_features;
+			ps_with_features_1: process ps_with_features;
+			ps_with_features_2: process ps_with_features;
 		properties
 			ps::reference_list_property => (
 				reference (process_1),
 				reference (process_2),
 				reference (process_3),
-				reference (ps_with_features.f1),
-				reference (ps_with_features.f2)
+				reference (ps_with_features_1.f1),
+				reference (ps_with_features_1.f2)
 			);
 	end s.i;
 	

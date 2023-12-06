@@ -544,6 +544,11 @@ elements of the list. A query or parameter with the type `List` will have its ge
   element type of the resulting list is based on the return type of the lambda. For example, if the type of the original
   list is `List<ComponentInstance>` and the lambda gets the name of each component, then the resulting list will have
   the type `List<String>`.
+* `flatMap`: `flatMap` is similar to `map` except that the lambda passed to `flatMap` must return a list. `flatMap`
+  transforms all of the elements of the original list with the lambda that was passed to it. Returns a single list of
+  all elements from the results of the transformations. The element type of the resulting list is based on the return
+  type of the lambda. For example, if the type of the original list is `List<ComponentInstance>` and the lambda gets the
+  features of each component, then the resulting list will have the type `List<FeatureInstance>`.
 * `mapPresent`: `mapPresent` works like `map` except that the lambda must return an optional. In addition to
   transforming values, `mapPresent` also filters those values by only including the ones that are present. The return
   type is a list in which the element type is a non-optional type based on the lambda's return type. For example, the

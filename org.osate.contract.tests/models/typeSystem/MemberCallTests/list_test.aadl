@@ -59,6 +59,8 @@ public
 				val v14 = self.allSubcomponents
 					.map { subcomponent -> (subcomponent.name, subcomponent#Priority) }
 					.filterTupleElementsPresent;
+				val v15 = self.subcomponents
+					.flatMap { subcomponent -> subcomponent.features };
 		}
 	**};
 end list_test;
