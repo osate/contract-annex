@@ -706,4 +706,19 @@ public class MemberCallTest {
 			assertEquals("String", type.toString());
 		});
 	}
+
+	@Test
+	public void testConnectionInstanceMembers() {
+		var pkg = testHelper.parseFile(PATH + "connection_instance_test.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var contract = (Contract) contractLibrary.getContractElements().get(0);
+		assertEquals(1, contract.getQueries().size());
+		with(contract.getQueries().get(0), query -> {
+			var mapCall = (MemberCall) query.getValue();
+			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
+			assertEquals("String", type.toString());
+		});
+	}
 }

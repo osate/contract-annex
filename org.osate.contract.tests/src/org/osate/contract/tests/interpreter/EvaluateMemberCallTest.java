@@ -1110,4 +1110,24 @@ public class EvaluateMemberCallTest {
 			assertIterableEquals(List.of("event1", "event2"), (List<String>) result.get("v1"));
 		});
 	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testConnectionInstance() throws Exception {
+		var pkg = testHelper.parseFile(PATH + "connection_instance_test.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
+		var systemInstance = InstantiateModel.instantiate(system);
+		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var contract = (Contract) contractLibrary.getContractElements().get(0);
+		assertEquals(1, contract.getQueries().size());
+		with(contract.getQueries().get(0), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertIterableEquals(List.of("left_device.temperature_out -> right_device.temperature_in"),
+					(List<String>) result.get("v1"));
+		});
+	}
 }

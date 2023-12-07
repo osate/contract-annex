@@ -1,0 +1,33 @@
+package connection_instance_test
+public
+	annex contract {**
+		contract ConnectionInstanceTest {
+			queries
+				val v1 = self.connections.map { connection -> connection.name };
+		}
+	**};
+	
+	system s
+	end s;
+	
+	system implementation s.i
+		subcomponents
+			left_device: device left_device;
+			right_device: device right_device;
+		connections
+			conn1: port left_device.temperature_out -> right_device.temperature_in;
+	end s.i;
+	
+	device left_device
+		features
+			temperature_out: out data port temperature;
+	end left_device;
+	
+	device right_device
+		features
+			temperature_in: in data port temperature;
+	end right_device;
+	
+	data temperature
+	end temperature;
+end connection_instance_test;
