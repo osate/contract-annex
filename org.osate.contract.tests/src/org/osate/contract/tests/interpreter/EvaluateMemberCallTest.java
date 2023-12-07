@@ -56,6 +56,7 @@ import org.osate.aadl2.errormodel.instance.EventInstance;
 import org.osate.aadl2.errormodel.instance.StateInstance;
 import org.osate.aadl2.instance.ComponentInstance;
 import org.osate.aadl2.instance.ConnectionInstance;
+import org.osate.aadl2.instance.ConnectionInstanceEnd;
 import org.osate.aadl2.instance.EndToEndFlowInstance;
 import org.osate.aadl2.instance.FeatureInstance;
 import org.osate.aadl2.instance.FlowSpecificationInstance;
@@ -1122,12 +1123,18 @@ public class EvaluateMemberCallTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(1, contract.getQueries().size());
+		assertEquals(2, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
 			assertIterableEquals(List.of("left_device.temperature_out -> right_device.temperature_in"),
 					(List<String>) result.get("v1"));
+		});
+		with(contract.getQueries().get(1), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertIterableEquals(List.of("temperature_out"),
+					((List<ConnectionInstanceEnd>) result.get("v2")).stream().map(NamedElement::getName).toList());
 		});
 	}
 }

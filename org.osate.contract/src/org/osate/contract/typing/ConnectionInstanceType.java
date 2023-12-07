@@ -29,6 +29,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.osate.aadl2.instance.ConnectionInstance;
+import org.osate.aadl2.instance.ConnectionInstanceEnd;
 
 public final class ConnectionInstanceType implements PropertyLookupSupportedType {
 	public static final ConnectionInstanceType INSTANCE = new ConnectionInstanceType();
@@ -37,6 +38,7 @@ public final class ConnectionInstanceType implements PropertyLookupSupportedType
 	static {
 		MEMBERS = new LinkedHashMap<>();
 		MEMBERS.put("name", new NameMember());
+		MEMBERS.put("source", new SourceMember());
 	}
 
 	private ConnectionInstanceType() {
@@ -61,6 +63,18 @@ public final class ConnectionInstanceType implements PropertyLookupSupportedType
 		@Override
 		public String evaluate(ConnectionInstance receiver) {
 			return receiver.getName();
+		}
+	}
+
+	private static class SourceMember implements SimpleMember<ConnectionInstance, ConnectionInstanceEnd> {
+		@Override
+		public Type getReturnType() {
+			return ConnectionInstanceEndType.INSTANCE;
+		}
+
+		@Override
+		public ConnectionInstanceEnd evaluate(ConnectionInstance receiver) {
+			return receiver.getSource();
 		}
 	}
 }
