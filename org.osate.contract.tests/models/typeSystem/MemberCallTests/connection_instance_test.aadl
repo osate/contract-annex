@@ -5,6 +5,7 @@ public
 			queries
 				val v1 = self.connections.map { connection -> connection.name };
 				val v2 = self.connections.map { connection -> connection.source };
+				val v3 = self.connections.map { connection -> connection.destination };
 		}
 	**};
 end connection_instance_test;

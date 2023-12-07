@@ -39,6 +39,7 @@ public final class ConnectionInstanceType implements PropertyLookupSupportedType
 		MEMBERS = new LinkedHashMap<>();
 		MEMBERS.put("name", new NameMember());
 		MEMBERS.put("source", new SourceMember());
+		MEMBERS.put("destination", new DestinationMember());
 	}
 
 	private ConnectionInstanceType() {
@@ -75,6 +76,18 @@ public final class ConnectionInstanceType implements PropertyLookupSupportedType
 		@Override
 		public ConnectionInstanceEnd evaluate(ConnectionInstance receiver) {
 			return receiver.getSource();
+		}
+	}
+
+	private static class DestinationMember implements SimpleMember<ConnectionInstance, ConnectionInstanceEnd> {
+		@Override
+		public Type getReturnType() {
+			return ConnectionInstanceEndType.INSTANCE;
+		}
+
+		@Override
+		public ConnectionInstanceEnd evaluate(ConnectionInstance receiver) {
+			return receiver.getDestination();
 		}
 	}
 }

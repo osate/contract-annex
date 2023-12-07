@@ -461,6 +461,7 @@ The `ConnectionInstance` type is backed by the Java type `org.osate.aadl2.instan
 following members:
 * `name`: Returns the name of the connection as a `String`.
 * `source`: Returns the source of the connection as a `ConnectionInstanceEnd`.
+* `destination`: Returns the destination of the connection as a `ConnectionInstanceEnd`.
 
 #### DoubleRange
 

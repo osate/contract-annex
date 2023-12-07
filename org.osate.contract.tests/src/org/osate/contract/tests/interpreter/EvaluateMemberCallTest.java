@@ -1123,7 +1123,7 @@ public class EvaluateMemberCallTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(2, contract.getQueries().size());
+		assertEquals(3, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
@@ -1135,6 +1135,12 @@ public class EvaluateMemberCallTest {
 			assertEquals(1, result.size());
 			assertIterableEquals(List.of("temperature_out"),
 					((List<ConnectionInstanceEnd>) result.get("v2")).stream().map(NamedElement::getName).toList());
+		});
+		with(contract.getQueries().get(2), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertIterableEquals(List.of("temperature_in"),
+					((List<ConnectionInstanceEnd>) result.get("v3")).stream().map(NamedElement::getName).toList());
 		});
 	}
 }
