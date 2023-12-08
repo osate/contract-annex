@@ -281,9 +281,9 @@ In this example, `filterType` is called on a `List<InstanceObject>` with the typ
 call returns a `List<FeatureInstance>`.
 
 Only some of the types in the query language are supported as a type argument. These types include `Boolean`,
-`Classifier`, `ComponentCategory`, `ComponentInstance`, `ConnectionInstance`, `Double`, `EndToEndFlowInstance`,
-`EventInstance`, `FeatureInstance`, `FlowSpecificationInstance`, `InstanceObject`, `Long`, `ModeInstance`,
-`ModeTransitionInstance`, `StateInstance`, `String`, `SystemInstance`, and `SystemOperationMode`.
+`Classifier`, `ComponentCategory`, `ComponentInstance`, `ConnectionInstance`, `ConnectionInstanceEnd`, `Double`,
+`EndToEndFlowInstance`, `EventInstance`, `FeatureInstance`, `FlowSpecificationInstance`, `InstanceObject`, `Long`,
+`ModeInstance`, `ModeTransitionInstance`, `StateInstance`, `String`, `SystemInstance`, and `SystemOperationMode`.
 
 Some member calls also take arguments. Calls with arguments take the following form:
 
