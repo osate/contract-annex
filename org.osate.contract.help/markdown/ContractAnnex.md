@@ -462,6 +462,9 @@ following members:
 * `name`: Returns the name of the connection as a `String`.
 * `source`: Returns the source of the connection as a `ConnectionInstanceEnd`.
 * `destination`: Returns the destination of the connection as a `ConnectionInstanceEnd`.
+* `allEndPoints`: Returns all of the end points that make up the entire semantic connection. This includes the ultimate
+  source and destination as well as all of the sources and destinations of the up and down connections that contribute
+  to the semantic connection. Returns a `List<ConnectionInstanceEnd>`.
 
 #### DoubleRange
 

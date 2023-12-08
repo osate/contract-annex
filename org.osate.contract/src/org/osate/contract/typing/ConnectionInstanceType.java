@@ -26,6 +26,8 @@
 package org.osate.contract.typing;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 
 import org.osate.aadl2.instance.ConnectionInstance;
@@ -40,6 +42,7 @@ public final class ConnectionInstanceType implements PropertyLookupSupportedType
 		MEMBERS.put("name", new NameMember());
 		MEMBERS.put("source", new SourceMember());
 		MEMBERS.put("destination", new DestinationMember());
+		MEMBERS.put("allEndPoints", new AllEndPointsMember());
 	}
 
 	private ConnectionInstanceType() {
@@ -88,6 +91,23 @@ public final class ConnectionInstanceType implements PropertyLookupSupportedType
 		@Override
 		public ConnectionInstanceEnd evaluate(ConnectionInstance receiver) {
 			return receiver.getDestination();
+		}
+	}
+
+	private static class AllEndPointsMember implements SimpleMember<ConnectionInstance, List<ConnectionInstanceEnd>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(ConnectionInstanceEndType.INSTANCE);
+		}
+
+		@Override
+		public List<ConnectionInstanceEnd> evaluate(ConnectionInstance receiver) {
+			var endPoints = new LinkedHashSet<ConnectionInstanceEnd>();
+			for (var connectionReference : receiver.getConnectionReferences()) {
+				endPoints.add(connectionReference.getSource());
+				endPoints.add(connectionReference.getDestination());
+			}
+			return List.copyOf(endPoints);
 		}
 	}
 }

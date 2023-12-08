@@ -714,7 +714,7 @@ public class MemberCallTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(3, contract.getQueries().size());
+		assertEquals(4, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var mapCall = (MemberCall) query.getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
@@ -729,6 +729,11 @@ public class MemberCallTest {
 			var mapCall = (MemberCall) query.getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("ConnectionInstanceEnd", type.toString());
+		});
+		with(contract.getQueries().get(3), query -> {
+			var mapCall = (MemberCall) query.getValue();
+			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
+			assertEquals("List<ConnectionInstanceEnd>", type.toString());
 		});
 	}
 }
