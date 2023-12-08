@@ -466,6 +466,12 @@ following members:
   source and destination as well as all of the sources and destinations of the up and down connections that contribute
   to the semantic connection. Returns a `List<ConnectionInstanceEnd>`.
 
+#### ConnectionInstanceEnd
+
+The `ConnectionInstanceEnd` type is backed by the Java type `org.osate.aadl2.instance.ConnectionInstanceEnd` and has the
+following members:
+* `name`: Returns the name of the feature or component as a `String`.
+
 #### DoubleRange
 
 The `DoubleRange` type is backed by the Java type `org.osate.contract.typing.RangeValueHolder` and has the following
