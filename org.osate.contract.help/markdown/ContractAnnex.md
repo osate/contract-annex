@@ -203,8 +203,8 @@ Property lookup takes the following form:
 ```
 
 The expression to the left of `#` must result in a type that supports property lookup. Currently, the types that support
-property lookup are `ComponentInstance`, `ConnectionInstance`, `EndToEndFlowInstance`, `EventInstance`,
-`InstanceObject`, `StateInstance`, and `SystemInstance`.
+property lookup are `ComponentInstance`, `ConnectionInstance`, `ConnectionInstanceEnd`, `EndToEndFlowInstance`,
+`EventInstance`, `InstanceObject`, `StateInstance`, and `SystemInstance`.
 
 The property name to the right of `#` can be a fully qualified property name such as `EMV2::StateKind` or an unqualified
 property name such as `Period` if the property is in one of the predeclared property sets.
