@@ -1,0 +1,10 @@
+package flatMap_not_returning_list
+public
+	annex contract {**
+		contract FlatMapNotReturningList {
+			queries
+				val valid = self.subcomponents.flatMap { subcomponent -> subcomponent.features };
+				val invalid = self.subcomponents.flatMap { subcomponent -> subcomponent.name };
+		}
+	**};
+end flatMap_not_returning_list;

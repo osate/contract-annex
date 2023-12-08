@@ -597,7 +597,7 @@ public class EvaluateMemberCallTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(17, contract.getQueries().size());
+		assertEquals(18, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
@@ -606,7 +606,7 @@ public class EvaluateMemberCallTest {
 		with(contract.getQueries().get(1), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertEquals(4, (Long) result.get("v2"));
+			assertEquals(5, (Long) result.get("v2"));
 		});
 		with(contract.getQueries().get(2), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
@@ -646,13 +646,15 @@ public class EvaluateMemberCallTest {
 		with(contract.getQueries().get(8), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(List.of("process_1", "process_2", "process_3", "ps_with_features"),
+			assertIterableEquals(
+					List.of("process_1", "process_2", "process_3", "ps_with_features_1", "ps_with_features_2"),
 					(List<String>) result.get("v9"));
 		});
 		with(contract.getQueries().get(9), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(List.of("process_1", "process_2", "process_3", "ps_with_features"),
+			assertIterableEquals(
+					List.of("process_1", "process_2", "process_3", "ps_with_features_1", "ps_with_features_2"),
 					(List<String>) result.get("v10"));
 		});
 		with(contract.getQueries().get(10), query -> {
@@ -700,6 +702,12 @@ public class EvaluateMemberCallTest {
 			assertEquals(2, list.size());
 			assertIterableEquals(List.of("process_1", 1L), list.get(0).getElements());
 			assertIterableEquals(List.of("process_3", 3L), list.get(1).getElements());
+		});
+		with(contract.getQueries().get(17), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertIterableEquals(List.of("f1", "f2", "f1", "f2"),
+					((List<FeatureInstance>) result.get("v18")).stream().map(NamedElement::getName).toList());
 		});
 	}
 
