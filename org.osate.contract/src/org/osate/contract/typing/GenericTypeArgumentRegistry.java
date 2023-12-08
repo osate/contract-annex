@@ -10,6 +10,7 @@ import org.osate.aadl2.errormodel.instance.EventInstance;
 import org.osate.aadl2.errormodel.instance.StateInstance;
 import org.osate.aadl2.instance.ComponentInstance;
 import org.osate.aadl2.instance.ConnectionInstance;
+import org.osate.aadl2.instance.ConnectionInstanceEnd;
 import org.osate.aadl2.instance.EndToEndFlowInstance;
 import org.osate.aadl2.instance.FeatureInstance;
 import org.osate.aadl2.instance.FlowSpecificationInstance;
@@ -28,6 +29,7 @@ public final class GenericTypeArgumentRegistry {
 		addEntry(ClassifierType.INSTANCE, Classifier.class);
 		addEntry(ComponentCategoryType.INSTANCE, ComponentCategory.class);
 		addEntry(ComponentInstanceType.INSTANCE, ComponentInstance.class);
+		addEntry(ConnectionInstanceEndType.INSTANCE, ConnectionInstanceEnd.class);
 		addEntry(ConnectionInstanceType.INSTANCE, ConnectionInstance.class);
 		addEntry(DoubleType.INSTANCE, Double.class);
 		addEntry(EndToEndFlowInstanceType.INSTANCE, EndToEndFlowInstance.class);
