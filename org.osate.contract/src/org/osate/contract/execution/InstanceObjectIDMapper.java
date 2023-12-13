@@ -32,11 +32,24 @@ import org.osate.aadl2.instance.SystemInstance;
 
 public class InstanceObjectIDMapper {
 
+	private SystemInstance root;
+
 	private HashMap<InstanceObject, Integer> io2id = new HashMap<>();
 
 	private HashMap<Integer, InstanceObject> id2io = new HashMap<>();
 
-	public InstanceObjectIDMapper(SystemInstance root) {
+	private static InstanceObjectIDMapper mapper = null;
+
+	public static InstanceObjectIDMapper getMapper(SystemInstance root) {
+		if (mapper != null && mapper.root == root) {
+			return mapper;
+		}
+		mapper = new InstanceObjectIDMapper(root);
+		return mapper;
+	}
+
+	private InstanceObjectIDMapper(SystemInstance root) {
+		this.root = root;
 		int id = 0;
 		// aadl resource may contain additional root objects for instantiated referenced classifiers
 		var iter = root.eResource().getAllContents();
