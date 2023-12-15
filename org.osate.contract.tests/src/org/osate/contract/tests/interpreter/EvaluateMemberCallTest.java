@@ -56,6 +56,7 @@ import org.osate.aadl2.errormodel.instance.EventInstance;
 import org.osate.aadl2.errormodel.instance.StateInstance;
 import org.osate.aadl2.instance.ComponentInstance;
 import org.osate.aadl2.instance.ConnectionInstance;
+import org.osate.aadl2.instance.ConnectionInstanceEnd;
 import org.osate.aadl2.instance.EndToEndFlowInstance;
 import org.osate.aadl2.instance.FeatureInstance;
 import org.osate.aadl2.instance.FlowSpecificationInstance;
@@ -1116,6 +1117,68 @@ public class EvaluateMemberCallTest {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
 			assertIterableEquals(List.of("event1", "event2"), (List<String>) result.get("v1"));
+		});
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testConnectionInstance() throws Exception {
+		var pkg = testHelper.parseFile(PATH + "connection_instance_test.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
+		var systemInstance = InstantiateModel.instantiate(system);
+		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var contract = (Contract) contractLibrary.getContractElements().get(0);
+		assertEquals(4, contract.getQueries().size());
+		with(contract.getQueries().get(0), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertIterableEquals(List.of("left_device.temperature_out -> right_device.temperature_in",
+					"left_process.left_tg.left_thread.thread_out -> right_process.right_tg.right_thread.thread_in"),
+					(List<String>) result.get("v1"));
+		});
+		with(contract.getQueries().get(1), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertIterableEquals(List.of("temperature_out", "thread_out"),
+					((List<ConnectionInstanceEnd>) result.get("v2")).stream().map(NamedElement::getName).toList());
+		});
+		with(contract.getQueries().get(2), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertIterableEquals(List.of("temperature_in", "thread_in"),
+					((List<ConnectionInstanceEnd>) result.get("v3")).stream().map(NamedElement::getName).toList());
+		});
+		with(contract.getQueries().get(3), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			var value = (List<List<ConnectionInstanceEnd>>) result.get("v4");
+			assertEquals(2, value.size());
+			assertIterableEquals(List.of("temperature_out", "temperature_in"),
+					value.get(0).stream().map(NamedElement::getName).toList());
+			assertIterableEquals(List.of("thread_out", "tg_out", "process_out", "process_in", "tg_in", "thread_in"),
+					value.get(1).stream().map(NamedElement::getName).toList());
+		});
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testConnectionInstanceEnd() throws Exception {
+		var pkg = testHelper.parseFile(PATH + "connection_instance_end_test.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var system = (SystemImplementation) pkg.getPublicSection().getOwnedClassifiers().get(1);
+		var systemInstance = InstantiateModel.instantiate(system);
+		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", systemInstance));
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var contract = (Contract) contractLibrary.getContractElements().get(0);
+		assertEquals(1, contract.getQueries().size());
+		with(contract.getQueries().get(0), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertIterableEquals(List.of("process_out"), (List<String>) result.get("v1"));
 		});
 	}
 }

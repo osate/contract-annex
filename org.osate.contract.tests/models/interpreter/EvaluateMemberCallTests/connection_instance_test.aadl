@@ -1,0 +1,97 @@
+package connection_instance_test
+public
+	annex contract {**
+		contract ConnectionInstanceTest {
+			queries
+				val v1 = self.connections.map { connection -> connection.name };
+				val v2 = self.connections.map { connection -> connection.source };
+				val v3 = self.connections.map { connection -> connection.destination };
+				val v4 = self.connections.map { connection -> connection.allEndPoints };
+		}
+	**};
+	
+	system s
+	end s;
+	
+	system implementation s.i
+		subcomponents
+			left_device: device left_device;
+			right_device: device right_device;
+			left_process: process left_process.i;
+			right_process: process right_process.i;
+		connections
+			conn1: port left_device.temperature_out -> right_device.temperature_in;
+			conn2: feature left_process.process_out -> right_process.process_in;
+	end s.i;
+	
+	device left_device
+		features
+			temperature_out: out data port temperature;
+	end left_device;
+	
+	device right_device
+		features
+			temperature_in: in data port temperature;
+	end right_device;
+	
+	data temperature
+	end temperature;
+	
+	process left_process
+		features
+			process_out: out feature;
+	end left_process;
+	
+	process implementation left_process.i
+		subcomponents
+			left_tg: thread group left_tg.i;
+		connections
+			process_up: feature left_tg.tg_out -> process_out;
+	end left_process.i;
+	
+	thread group left_tg
+		features
+			tg_out: out feature;
+	end left_tg;
+	
+	thread group implementation left_tg.i
+		subcomponents
+			left_thread: thread left_thread;
+		connections
+			thread_group_up: feature left_thread.thread_out -> tg_out;
+	end left_tg.i;
+	
+	thread left_thread
+		features
+			thread_out: out feature;
+	end left_thread;
+	
+	process right_process
+		features
+			process_in: in feature;
+	end right_process;
+	
+	process implementation right_process.i
+		subcomponents
+			right_tg: thread group right_tg.i;
+		connections
+			process_down: feature process_in -> right_tg.tg_in;
+	end right_process.i;
+	
+	thread group right_tg
+		features
+			tg_in: in feature;
+	end right_tg;
+	
+	thread group implementation right_tg.i
+		subcomponents
+			right_thread: thread right_thread;
+		connections
+			thread_group_down: feature tg_in -> right_thread.thread_in;
+	end right_tg.i;
+	
+	thread right_thread
+		features
+			thread_in: in feature;
+	end right_thread;
+end connection_instance_test;

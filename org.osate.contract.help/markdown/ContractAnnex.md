@@ -203,8 +203,8 @@ Property lookup takes the following form:
 ```
 
 The expression to the left of `#` must result in a type that supports property lookup. Currently, the types that support
-property lookup are `ComponentInstance`, `ConnectionInstance`, `EndToEndFlowInstance`, `EventInstance`,
-`InstanceObject`, `StateInstance`, and `SystemInstance`.
+property lookup are `ComponentInstance`, `ConnectionInstance`, `ConnectionInstanceEnd`, `EndToEndFlowInstance`,
+`EventInstance`, `InstanceObject`, `StateInstance`, and `SystemInstance`.
 
 The property name to the right of `#` can be a fully qualified property name such as `EMV2::StateKind` or an unqualified
 property name such as `Period` if the property is in one of the predeclared property sets.
@@ -281,9 +281,9 @@ In this example, `filterType` is called on a `List<InstanceObject>` with the typ
 call returns a `List<FeatureInstance>`.
 
 Only some of the types in the query language are supported as a type argument. These types include `Boolean`,
-`Classifier`, `ComponentCategory`, `ComponentInstance`, `ConnectionInstance`, `Double`, `EndToEndFlowInstance`,
-`EventInstance`, `FeatureInstance`, `FlowSpecificationInstance`, `InstanceObject`, `Long`, `ModeInstance`,
-`ModeTransitionInstance`, `StateInstance`, `String`, `SystemInstance`, and `SystemOperationMode`.
+`Classifier`, `ComponentCategory`, `ComponentInstance`, `ConnectionInstance`, `ConnectionInstanceEnd`, `Double`,
+`EndToEndFlowInstance`, `EventInstance`, `FeatureInstance`, `FlowSpecificationInstance`, `InstanceObject`, `Long`,
+`ModeInstance`, `ModeTransitionInstance`, `StateInstance`, `String`, `SystemInstance`, and `SystemOperationMode`.
 
 Some member calls also take arguments. Calls with arguments take the following form:
 
@@ -460,6 +460,17 @@ following members:
 The `ConnectionInstance` type is backed by the Java type `org.osate.aadl2.instance.ConnectionInstance` and has the
 following members:
 * `name`: Returns the name of the connection as a `String`.
+* `source`: Returns the source of the connection as a `ConnectionInstanceEnd`.
+* `destination`: Returns the destination of the connection as a `ConnectionInstanceEnd`.
+* `allEndPoints`: Returns all of the end points that make up the entire semantic connection. This includes the ultimate
+  source and destination as well as all of the sources and destinations of the up and down connections that contribute
+  to the semantic connection. Returns a `List<ConnectionInstanceEnd>`.
+
+#### ConnectionInstanceEnd
+
+The `ConnectionInstanceEnd` type is backed by the Java type `org.osate.aadl2.instance.ConnectionInstanceEnd` and has the
+following members:
+* `name`: Returns the name of the feature or component as a `String`.
 
 #### DoubleRange
 

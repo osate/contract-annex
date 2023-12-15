@@ -1,0 +1,30 @@
+package connection_instance_end_test
+public
+	annex contract {**
+		contract ConnectionInstanceEndTest {
+			queries
+				val v1 = self.connections.map { connection -> connection.source.name };
+		}
+	**};
+	
+	system s
+	end s;
+	
+	system implementation s.i
+		subcomponents
+			left_process: process left_process;
+			right_process: process right_process;
+		connections
+			conn1: feature left_process.process_out -> right_process.process_in;
+	end s.i;
+	
+	process left_process
+		features
+			process_out: out feature;
+	end left_process;
+	
+	process right_process
+		features
+			process_in: in feature;
+	end right_process;
+end connection_instance_end_test;

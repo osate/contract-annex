@@ -1,0 +1,9 @@
+package connection_instance_end_test
+public
+	annex contract {**
+		contract ConnectionInstanceEndTest {
+			queries
+				val v1 = self.connections.map { connection -> connection.source.name };
+		}
+	**};
+end connection_instance_end_test;
