@@ -69,10 +69,8 @@ public class PythonHelper {
 		var env = new RuleEnvironment(new RuleEnvironmentEntry("self", context));
 		var sb = new StringBuilder();
 
-		if (true) {// ioid == null) {
-			var root = context.eResource().getContents().get(0);
-			ioid = new InstanceObjectIDMapper((SystemInstance) root);
-		}
+		var root = (SystemInstance) context.eResource().getContents().get(0);
+		ioid = InstanceObjectIDMapper.getMapper(root);
 
 		for (var part : is.getParts()) {
 			if (part instanceof IStringLiteral literal) {

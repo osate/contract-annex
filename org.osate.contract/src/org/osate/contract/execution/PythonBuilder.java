@@ -67,6 +67,7 @@ public class PythonBuilder {
 		this.context = context;
 		python = PythonHelper.get();
 		java = JavaHelper.get();
+		variables.put("to_java", python.getInstanceObjectMapper());
 	}
 
 	PythonBuilder addZ3Import() {
