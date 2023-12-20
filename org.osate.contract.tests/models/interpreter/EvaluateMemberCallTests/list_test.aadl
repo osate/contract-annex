@@ -74,6 +74,9 @@ public
 				
 				val v18 = self.subcomponents
 					.flatMap { subcomponent -> subcomponent.features };
+				val v19 = self.subcomponents
+					.map { subcomponent -> subcomponent.features }
+					.flatten;
 		}
 	**};
 	

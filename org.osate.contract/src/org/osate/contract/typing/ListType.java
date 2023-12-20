@@ -68,6 +68,8 @@ public final class ListType implements Type {
 				}
 			}
 			members.put("filterTupleElementsPresent", new FilterTupleElementsPresentMember(unwrappedTypes));
+		} else if (elementType instanceof ListType listType) {
+			members.put("flatten", new FlattenMember(listType.elementType));
 		}
 
 		label = "List<" + elementType + '>';
@@ -323,6 +325,28 @@ public final class ListType implements Type {
 					}
 				}
 				result.add(new Tuple(unwrappedTupleElements));
+			}
+			return result;
+		}
+	}
+
+	private static class FlattenMember implements SimpleMember<List<List<?>>, List<?>> {
+		private final Type nestedType;
+
+		public FlattenMember(Type nestedType) {
+			this.nestedType = nestedType;
+		}
+
+		@Override
+		public Type getReturnType() {
+			return new ListType(nestedType);
+		}
+
+		@Override
+		public List<?> evaluate(List<List<?>> receiver) {
+			var result = new ArrayList<>();
+			for (var nestedList : receiver) {
+				result.addAll(nestedList);
 			}
 			return result;
 		}
