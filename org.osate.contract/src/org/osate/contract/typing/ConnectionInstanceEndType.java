@@ -3,6 +3,8 @@ package org.osate.contract.typing;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.eclipse.xtext.EcoreUtil2;
+import org.osate.aadl2.instance.ComponentInstance;
 import org.osate.aadl2.instance.ConnectionInstanceEnd;
 
 public final class ConnectionInstanceEndType implements PropertyLookupSupportedType {
@@ -12,6 +14,7 @@ public final class ConnectionInstanceEndType implements PropertyLookupSupportedT
 	static {
 		MEMBERS = new LinkedHashMap<>();
 		MEMBERS.put("name", new NameMember());
+		MEMBERS.put("parent", new ParentMember());
 	}
 
 	private ConnectionInstanceEndType() {
@@ -36,6 +39,18 @@ public final class ConnectionInstanceEndType implements PropertyLookupSupportedT
 		@Override
 		public String evaluate(ConnectionInstanceEnd receiver) {
 			return receiver.getName();
+		}
+	}
+
+	private static class ParentMember implements SimpleMember<ConnectionInstanceEnd, ComponentInstance> {
+		@Override
+		public Type getReturnType() {
+			return ComponentInstanceType.INSTANCE;
+		}
+
+		@Override
+		public ComponentInstance evaluate(ConnectionInstanceEnd receiver) {
+			return EcoreUtil2.getContainerOfType(receiver.eContainer(), ComponentInstance.class);
 		}
 	}
 }

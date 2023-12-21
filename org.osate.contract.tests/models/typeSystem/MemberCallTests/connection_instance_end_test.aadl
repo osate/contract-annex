@@ -4,6 +4,7 @@ public
 		contract ConnectionInstanceEndTest {
 			queries
 				val v1 = self.connections.map { connection -> connection.source.name };
+				val v2 = self.connections.map { connection -> connection.source.parent };
 		}
 	**};
 end connection_instance_end_test;
