@@ -471,6 +471,7 @@ following members:
 The `ConnectionInstanceEnd` type is backed by the Java type `org.osate.aadl2.instance.ConnectionInstanceEnd` and has the
 following members:
 * `name`: Returns the name of the feature or component as a `String`.
+* `parent`: Returns the container of the connection end as a `ComponentInstance`.
 
 #### DoubleRange
 
