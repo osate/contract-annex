@@ -264,7 +264,7 @@ public class CheckMemberCallTest {
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		var issues = validationHelper.validate(pkg);
-		assertEquals(3, issues.size());
+		assertEquals(4, issues.size());
 		with(issues.get(0), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("'filterPresent' is not a member of the type List<ComponentInstance>", issue.getMessage());
@@ -281,6 +281,11 @@ public class CheckMemberCallTest {
 			assertEquals("'filterTupleElementsPresent' is not a member of the type List<(String, ComponentCategory)>",
 					issue.getMessage());
 			assertEquals(EcoreUtil.getURI(contract.getQueries().get(4).getValue()), issue.getUriToProblem());
+		});
+		with(issues.get(3), issue -> {
+			assertEquals(Severity.ERROR, issue.getSeverity());
+			assertEquals("'flatten' is not a member of the type List<String>", issue.getMessage());
+			assertEquals(EcoreUtil.getURI(contract.getQueries().get(6).getValue()), issue.getUriToProblem());
 		});
 	}
 }

@@ -17,6 +17,13 @@ public
 				val invalidFilterTupleElementsPresentNoOptionals = self.subcomponents
 					.map { subcomponent -> (subcomponent.name, subcomponent.category) }
 					.filterTupleElementsPresent;
+				
+				val validFlatten = self.subcomponents
+					.map { subcomponent -> subcomponent.features }
+					.flatten;
+				val invalidFlatten = self.subcomponents
+					.map { subcomponent -> subcomponent.name }
+					.flatten;
 		}
 	**};
 end invalid_generic_receiver;

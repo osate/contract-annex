@@ -578,9 +578,15 @@ The following members only apply to lists that have tuples with at least on opti
 `List<(String, Long?)>`:
 
 * `filterTupleElementsPresent`: Filters the elements of the list in which all fields of the tuple have values. If at
-least one tuple field does not have a value, then that tuple is filtered out and it is not included in the resulting
-list. The return type is the same as the original list except with all of the optional types unwrapped. For example, if
-the original list is `List<(String, Long?)>`, then the resulting list will have the type `List<(String, Long)>`.
+  least one tuple field does not have a value, then that tuple is filtered out and it is not included in the resulting
+  list. The return type is the same as the original list except with all of the optional types unwrapped. For example,
+  if the original list is `List<(String, Long?)>`, then the resulting list will have the type `List<(String, Long)>`.
+
+The following members only apply to lists of lists such as `List<List<FeatureInstance>>`:
+
+* `flatten`: Returns a single list which contains all of the elements of all of the nested lists. The element type of
+  the resulting list is based on the nested element type of the original list. For example, if the type of the original
+  list is `List<List<FeatureInstance>>`, then the resulting list will have the type `List<FeatureInstance>`.
 
 #### LongRange
 
