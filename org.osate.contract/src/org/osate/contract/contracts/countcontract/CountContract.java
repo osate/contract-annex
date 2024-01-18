@@ -25,54 +25,14 @@
  *******************************************************************************/
 package org.osate.contract.contracts.countcontract;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.osate.aadl2.Classifier;
 import org.osate.aadl2.instance.ComponentInstance;
-import org.osate.aadl2.instance.SystemInstance;
 import org.osate.contract.tuples.Tuple;
 
 public final class CountContract {
-//	# compReqs is a JAVA list of Java tuple (ComponentInstance, Java list of Java (Classifier, Long))
-//	def flattenRequirements(compReqs):
-//		output = []
-//		for i in range(compReqs.size()):
-//			compListPair = compReqs.get(i)
-//			comp = compListPair.getElements().get(0)
-//
-//			print("****", comp.getName())
-//
-//			list = compListPair.getElements().get(1)
-//			for j in range(list.size()):
-//				tuple = list.get(j)
-//				classifier = tuple.getElements().get(0)
-//				count = tuple.getElements().get(1)
-//
-//				print("Classifier", classifier.getName())
-//				print("Count", count)
-//
-//				output.append( (comp, classifier, count) )
-//		print("Flattened ", output)
-//		return output
-//
-
-	// XXX: Temp function until "flatMap" function is added to the query language
-	private static List<Tuple> flatten(final List<Tuple> compReqs) {
-		final List<Tuple> output = new LinkedList<>();
-		for (final Tuple in : compReqs) {
-			final ComponentInstance ci = (ComponentInstance) in.getElements().get(0);
-			@SuppressWarnings("unchecked")
-			final List<Tuple> list = (List<Tuple>) in.getElements().get(1);
-			for (final Tuple nested : list) {
-				output.add(new Tuple(List.of(ci, nested.getElements().get(0), nested.getElements().get(1))));
-			}
-		}
-		return output;
-	}
-
-	public boolean checkCounts(final List<Tuple> flattenMe) {
-		final List<Tuple> requiredCounts = flatten(flattenMe);
+	public boolean checkCounts(final List<Tuple> requiredCounts) {
 		boolean allGood = true;
 		for (final Tuple tuple : requiredCounts) {
 			final ComponentInstance comp = (ComponentInstance) tuple.getElements().get(0);
@@ -85,7 +45,7 @@ public final class CountContract {
 				allGood = false;
 				System.out.println(" BAD: Only found " + numFound);
 			} else {
-				System.out.println(" Satisdied, found " + numFound);
+				System.out.println(" Satisfied, found " + numFound);
 			}
 
 		}
@@ -104,13 +64,4 @@ public final class CountContract {
 		}
 		return numFound;
 	}
-
-	public boolean getTrue(SystemInstance root) {
-		return true;
-	}
-
-	public boolean getFalse(SystemInstance root) {
-		return false;
-	}
-
 }
