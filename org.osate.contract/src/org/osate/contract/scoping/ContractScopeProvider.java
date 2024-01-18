@@ -56,6 +56,7 @@ import org.osate.contract.contract.SingleParameter;
 import org.osate.contract.contract.SingleValDeclaration;
 import org.osate.contract.contract.TupleDeclaration;
 import org.osate.contract.contract.TupleParameter;
+import org.osate.contract.contract.VerificationPlan;
 import org.osate.contract.naming.ContractQualifiedNameProvider;
 import org.osate.contract.typing.ContractTypeSystem;
 import org.osate.contract.typing.LongWithUnitsType;
@@ -172,6 +173,16 @@ public class ContractScopeProvider extends AbstractContractScopeProvider {
 					}
 				}
 				for (var domain : contract.getDomains()) {
+					for (var query : domain.getQueries()) {
+						if (query instanceof SingleValDeclaration singleValDeclaration) {
+							names.add(singleValDeclaration);
+						} else if (query instanceof TupleDeclaration tupleDeclaration) {
+							names.addAll(tupleDeclaration.getNames());
+						}
+					}
+				}
+			} else if (current instanceof VerificationPlan plan) {
+				for (var domain : plan.getDomains()) {
 					for (var query : domain.getQueries()) {
 						if (query instanceof SingleValDeclaration singleValDeclaration) {
 							names.add(singleValDeclaration);
