@@ -31,11 +31,36 @@ import java.util.List;
 
 import org.osate.aadl2.DirectionType;
 import org.osate.aadl2.instance.ComponentInstance;
+import org.osate.aadl2.instance.ConnectionInstance;
 import org.osate.aadl2.instance.FeatureInstance;
+import org.osate.aadl2.instance.InstanceObject;
 import org.osate.contract.contracts.verificationproperties.Verificationproperties;
 
 public final class BellLapadulaContract {
-	public boolean check(final List<ComponentInstance> systems) {
+	public boolean checkBellLaPadula(final List<ComponentInstance> systems,
+			final List<ConnectionInstance> connections) {
+		return checkFeatures(systems) && checkConnections(connections);
+	}
+
+	private static boolean checkConnections(final List<ConnectionInstance> connections) {
+		boolean good = true;
+		for (final ConnectionInstance c : connections) {
+			final InstanceObject src = c.getSource();
+			final InstanceObject dst = c.getDestination();
+			final Long srcLevel = Verificationproperties.getLevel(src).getAsLong();
+			final Long dstLevel = Verificationproperties.getLevel(dst).getAsLong();
+			if (srcLevel != dstLevel) {
+				System.out.println(
+						"** Security levels of src/dst of connection " + c.getFullName() + "  do not match **");
+				good = false;
+			} else {
+				System.out.println("** Connection " + c.getFullName() + " is okay");
+			}
+		}
+		return good;
+	}
+
+	private static boolean checkFeatures(final List<ComponentInstance> systems) {
 		boolean good = true;
 		for (final ComponentInstance sys : systems) {
 			System.out.println("** Checking system " + sys.getFullName() + " **");
