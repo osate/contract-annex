@@ -487,7 +487,21 @@ members:
 
 #### DoubleRangeWithUnits
 
-TODO
+The `DoubleRangeWithUnits` type is backed by the Java type `org.osate.contract.typing.RangeValueHolder`.
+`DoubleRangeWithUnits` has a generic type which represents the units type. A query or parameter with the type
+`DoubleRangeWithUnits` will have its generic type specified such as `DoubleRangeWithUnits<AADL_Project::Time_Units>`. If
+the units type is declared as a top-level units type declaration in a property set, then the name of the units type
+becomes the generic type. However, if the declaration of the units type is embedded within another declaration such as a
+property, a property type, or a record field, then the units type is considered to be unnamed. When the units type is
+unnamed, the display of the base type changes from `DoubleRangeWithUnits` to `DoubleRangeWithUnnamedUnits` and the
+generic type refers to the named element that contains the unnamed units type. For example, if an unnamed units type is
+declared within a property, then an example of the ultimate type would be
+`DoubleRangeWithUnnamedUnits<ps::property_with_real_range_with_units>`. `DoubleRangeWithUnits` has the following
+members:
+
+* `minimum`: Returns the minimum value of the range as a `DoubleWithUnits`.
+* `maximum`: Returns the maximum value of the range as a `DoubleWithUnits`.
+* `getDelta`: Returns the delta value of the range as a `DoubleWithUnits`.
 
 #### Double
 
