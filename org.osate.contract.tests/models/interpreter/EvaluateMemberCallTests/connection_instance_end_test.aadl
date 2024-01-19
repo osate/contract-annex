@@ -4,6 +4,7 @@ public
 		contract ConnectionInstanceEndTest {
 			queries
 				val v1 = self.connections.map { connection -> connection.source.name };
+				val v2 = self.connections.map { connection -> connection.source.parent };
 		}
 	**};
 	
@@ -12,11 +13,19 @@ public
 	
 	system implementation s.i
 		subcomponents
+			b: bus;
+			m: memory m;
 			left_process: process left_process;
 			right_process: process right_process;
 		connections
-			conn1: feature left_process.process_out -> right_process.process_in;
+			conn1: bus access b -> m.ba;
+			conn2: feature left_process.process_out -> right_process.process_in;
 	end s.i;
+	
+	memory m
+		features
+			ba: requires bus access;
+	end m;
 	
 	process left_process
 		features
