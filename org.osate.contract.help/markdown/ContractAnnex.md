@@ -491,7 +491,15 @@ The `Double` type is backed by the Java type `java.lang.Double` and has no membe
 
 #### DoubleWithUnits
 
-TODO
+The `DoubleWithUnits` type is backed by the Java type `org.osate.aadl2.NumberValue`. `DoubleWithUnits` has a generic
+type which represents the units type. A query or parameter with the type `DoubleWithUnits` will have its generic type
+specified such as `DoubleWithUnits<AADL_Project::Processor_Speed_Units>`. If the units type is declared as a top-level
+units type declaration in a property set, then the name of the units type becomes the generic type. However, if the
+declaration of the units type is embedded within another declaration such as a property, a property type, or a record
+field, then the units type is considered to be unnamed. When the units type is unnamed, the display of the base type
+changes from `DoubleWithUnits` to `DoubleWithUnnamedUnits` and the generic type refers to the named element that
+contains the unnamed units type. For example, if an unnamed units type is declared within a property, then an example of
+the ultimate type would be `DoubleWithUnnamedUnits<SEI::Data_Rate>`. `DoubleWithUnits` has no members.
 
 #### EndToEndFlowInstance
 
@@ -607,7 +615,17 @@ The `Long` type is backed by the Java type `java.lang.Long` and has no members.
 
 #### LongWithUnits
 
-TODO
+The `LongWithUnits` type is backed by the Java type `org.osate.aadl2.NumberValue`. `LongWithUnits` has a generic type
+which represents the units type. A query or parameter with the type `LongWithUnits` will have its generic type specified
+such as `LongWithUnits<AADL_Project::Data_Rate_Units>`. If the units type is declared as a top-level units type
+declaration in a property set, then the name of the units type becomes the generic type. However, if the declaration of
+the units type is embedded within another declaration such as a property, a property type, or a record field, then the
+units type is considered to be unnamed. When the units type is unnamed, the display of the base type changes from
+`LongWithUnits` to `LongWithUnnamedUnits` and the generic type refers to the named element that contains the unnamed
+units type. For example, if an unnamed units type is declared within a property, then an example of the ultime type
+would be `LongWithUnnamedUnits<ps::property_with_integer_with_units>`. `LongWithUnits` has the following members:
+* `scaledTo`: Returns a `Double` with the value of the `LongWithUnits` scaled to a specific unit literal. A unit literal
+  of the number type's unit type is passed as a parameter to `scaledTo`.
 
 #### ModeInstance
 
