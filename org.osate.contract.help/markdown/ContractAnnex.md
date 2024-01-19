@@ -405,6 +405,7 @@ The `ComponentCategory` type is backed by the Java type `org.osate.aadl2.Compone
 
 The `ComponentInstance` type is backed by the Java type `org.osate.aadl2.instance.ComponentInstance` and has the
 following members:
+
 * `name`: Returns the name of the component as a `String`.
 * `category`: Returns the category of the component as a `ComponentCategory`.
 * `subcomponents`: Returns a `List<ComponentInstance>` with the immediate subcomponents of the component.
@@ -459,6 +460,7 @@ following members:
 
 The `ConnectionInstance` type is backed by the Java type `org.osate.aadl2.instance.ConnectionInstance` and has the
 following members:
+
 * `name`: Returns the name of the connection as a `String`.
 * `source`: Returns the source of the connection as a `ConnectionInstanceEnd`.
 * `destination`: Returns the destination of the connection as a `ConnectionInstanceEnd`.
@@ -470,6 +472,7 @@ following members:
 
 The `ConnectionInstanceEnd` type is backed by the Java type `org.osate.aadl2.instance.ConnectionInstanceEnd` and has the
 following members:
+
 * `name`: Returns the name of the feature or component as a `String`.
 * `parent`: Returns the container of the connection end as a `ComponentInstance`.
 
@@ -477,6 +480,7 @@ following members:
 
 The `DoubleRange` type is backed by the Java type `org.osate.contract.typing.RangeValueHolder` and has the following
 members:
+
 * `minimum`: Returns the minimum value of the range as a `Double`.
 * `maximum`: Returns the maximum value of the range as a `Double`.
 * `getDelta`: Returns the delta value of the range as a `Double`.
@@ -505,6 +509,7 @@ the ultimate type would be `DoubleWithUnnamedUnits<SEI::Data_Rate>`. `DoubleWith
 
 The `EndToEndFlowInstance` type is backed by the Java type `org.osate.aadl2.instance.EndToEndFlowInstance` and has the
 following members:
+
 * `name`: Returns the name of the end to end flow as a `String`.
 * `flowSpecifications`: Returns a `List<FlowSpecificationInstance>` with all of the flow specifications that make up the
   end to end flow. This includes the flow specifcations that are listed in the end to end flow's declaration as well as
@@ -526,6 +531,7 @@ TODO
 
 The `EventInstance` type is backed by the Java type `org.osate.aadl2.errormodel.instance.EventInstance` and has the
 following members:
+
 * `name`: Returns the name of the event as a `String`.
 
 #### FeatureInstance
@@ -601,6 +607,7 @@ The following members only apply to lists of lists such as `List<List<FeatureIns
 
 The `LongRange` type is backed by the Java type `org.osate.contract.typing.RangeValueHolder` and has the following
 members:
+
 * `minimum`: Returns the minimum value of the range as a `Long`.
 * `maximum`: Returns the maximum value of the range as a `Long`.
 * `getDelta`: Returns the detla value of the range as a `Long`.
@@ -624,6 +631,7 @@ units type is considered to be unnamed. When the units type is unnamed, the disp
 `LongWithUnits` to `LongWithUnnamedUnits` and the generic type refers to the named element that contains the unnamed
 units type. For example, if an unnamed units type is declared within a property, then an example of the ultime type
 would be `LongWithUnnamedUnits<ps::property_with_integer_with_units>`. `LongWithUnits` has the following members:
+
 * `scaledTo`: Returns a `Double` with the value of the `LongWithUnits` scaled to a specific unit literal. A unit literal
   of the number type's unit type is passed as a parameter to `scaledTo`.
 
@@ -667,6 +675,7 @@ TODO
 
 The `StateInstance` type is backed by the Java type `org.osate.aadl2.errormodel.instance.StateInstance` and has the
 following members:
+
 * `name`: Returns the name of the state as a `String`.
 
 #### String
@@ -677,6 +686,7 @@ The `String` type is backed by the Java type `java.lang.String` and has no membe
 
 The `SystemInstance` type is backed by the Java type `org.osate.aadl2.instance.SystemInstance` and has the following
 members:
+
 * `name`: Returns the name of the component as a `String`.
 * `category`: Returns the category of the component as a `ComponentCategory`.
 * `subcomponents`: Returns a `List<ComponentInstance>` with the immediate subcomponents of the component.
