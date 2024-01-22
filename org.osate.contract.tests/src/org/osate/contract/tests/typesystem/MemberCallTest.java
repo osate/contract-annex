@@ -601,7 +601,7 @@ public class MemberCallTest {
 		with(contract.getQueries().get(3), query -> {
 			var mapCall = (MemberCall) query.getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
-			assertEquals("UnnamedEnumeration<ps::record_property>?", type.toString());
+			assertEquals("UnnamedEnumeration<ps::record_property.enum>?", type.toString());
 		});
 		with(contract.getQueries().get(4), query -> {
 			var mapCall = (MemberCall) query.getValue();
@@ -646,7 +646,7 @@ public class MemberCallTest {
 		with(contract.getQueries().get(12), query -> {
 			var mapCall = (MemberCall) query.getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
-			assertEquals("UnnamedRecord<ps::record_property>?", type.toString());
+			assertEquals("UnnamedRecord<ps::record_property.nested_record>?", type.toString());
 		});
 		with(contract.getQueries().get(13), query -> {
 			var mapCall = (MemberCall) query.getValue();

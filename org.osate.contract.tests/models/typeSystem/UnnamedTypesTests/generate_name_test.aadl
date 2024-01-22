@@ -1,0 +1,19 @@
+package generate_name_test
+public
+	annex contract {**
+		contract GenerateNameTest {
+			queries
+				val inProperty = self#ps::integer_with_units;
+				val inPropertyType = self#ps::real_with_units;
+				val inRecordField = self#ps::record_with_integer.map { record -> record.get(integer_field) };
+				
+				val deeplyNested = self#ps::deeply_nested_record.map { record ->
+					record.get(field1).map { field1 ->
+						field1.get(field2).map { field2 ->
+							field2.get(field3)
+						}
+					}
+				};
+		}
+	**};
+end generate_name_test;

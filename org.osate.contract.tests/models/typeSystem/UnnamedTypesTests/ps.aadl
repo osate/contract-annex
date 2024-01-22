@@ -1,0 +1,20 @@
+property set ps is
+	real_type_with_units: type aadlreal units (ml, cl => ml * 10);
+	
+	integer_with_units: aadlinteger units (mm, cm => mm * 10) applies to (all);
+	real_with_units: ps::real_type_with_units applies to (all);
+	record_with_integer: record (integer_field: aadlinteger units (ms, sec => ms * 1000);) applies to (all);
+	
+	integer_range_with_units: range of aadlinteger units (inch, foot => inch * 12) applies to (all);
+	real_range_with_units: range of aadlreal units (g, kg => g * 1000) applies to (all);
+	
+	enum_property: enumeration (a, b, c) applies to (all);
+	
+	deeply_nested_record: record (
+		field1: record (
+			field2: record (
+				field3: aadlinteger units (b, kb => b * 1024);
+			);
+		);
+	) applies to (all);
+end ps;

@@ -25,10 +25,6 @@
  *******************************************************************************/
 package org.osate.contract.typing;
 
-import org.osate.aadl2.Property;
-import org.osate.aadl2.PropertyType;
-import org.osate.aadl2.RecordField;
-
 public final class EnumerationType implements Type {
 	private final String label;
 
@@ -36,22 +32,7 @@ public final class EnumerationType implements Type {
 		if (type.getName() != null) {
 			label = "Enumeration<" + type.getQualifiedName() + '>';
 		} else {
-			var builder = new StringBuilder();
-			for (var current = type.eContainer(); current != null; current = current.eContainer()) {
-				if (current instanceof RecordField field) {
-					builder.insert(0, field.getName());
-					builder.insert(0, '.');
-				} else if (current instanceof Property property) {
-					builder.insert(0, property.getQualifiedName());
-					break;
-				} else if (current instanceof PropertyType propertyType && propertyType.getName() != null) {
-					builder.insert(0, propertyType.getQualifiedName());
-					break;
-				}
-			}
-			builder.insert(0, "UnnamedEnumeration<");
-			builder.append('>');
-			label = builder.toString();
+			label = "UnnamedEnumeration<" + TypeSystemUtils.generateName(type) + '>';
 		}
 	}
 

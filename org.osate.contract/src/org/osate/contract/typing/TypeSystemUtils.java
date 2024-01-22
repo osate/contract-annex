@@ -32,6 +32,7 @@ import org.osate.aadl2.AadlBoolean;
 import org.osate.aadl2.AadlInteger;
 import org.osate.aadl2.AadlReal;
 import org.osate.aadl2.AadlString;
+import org.osate.aadl2.BasicProperty;
 import org.osate.aadl2.BooleanLiteral;
 import org.osate.aadl2.ClassifierValue;
 import org.osate.aadl2.IntegerLiteral;
@@ -39,6 +40,7 @@ import org.osate.aadl2.ListValue;
 import org.osate.aadl2.NamedElement;
 import org.osate.aadl2.NamedValue;
 import org.osate.aadl2.NumberValue;
+import org.osate.aadl2.Property;
 import org.osate.aadl2.PropertyExpression;
 import org.osate.aadl2.PropertyType;
 import org.osate.aadl2.RangeType;
@@ -135,5 +137,26 @@ public final class TypeSystemUtils {
 		} else {
 			throw new RuntimeException("Unexpected property expression '" + value + "'.");
 		}
+	}
+
+	public static String generateName(PropertyType unnamedType) {
+		if (unnamedType.getName() != null) {
+			throw new IllegalArgumentException(
+					"generateName is meant to be used with a PropertyType that does not have a name.");
+		}
+		var builder = new StringBuilder();
+		for (var current = unnamedType.eContainer(); current != null; current = current.eContainer()) {
+			if (current instanceof Property property) {
+				builder.insert(0, property.getQualifiedName());
+				break;
+			} else if (current instanceof PropertyType propertyType && propertyType.getName() != null) {
+				builder.insert(0, propertyType.getQualifiedName());
+				break;
+			} else if (current instanceof BasicProperty field) {
+				builder.insert(0, field.getName());
+				builder.insert(0, '.');
+			}
+		}
+		return builder.toString();
 	}
 }

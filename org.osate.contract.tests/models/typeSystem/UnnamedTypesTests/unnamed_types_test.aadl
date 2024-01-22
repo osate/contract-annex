@@ -1,0 +1,14 @@
+package unnamed_types_test
+public
+	annex contract {**
+		contract UnnamedTypesTest {
+			queries
+				val v1 = self#ps::integer_with_units;
+				val v2 = self#ps::real_with_units;
+				val v3 = self#ps::integer_range_with_units;
+				val v4 = self#ps::real_range_with_units;
+				val v5 = self#ps::enum_property;
+				val v6 = self#ps::record_with_integer;
+		}
+	**};
+end unnamed_types_test;

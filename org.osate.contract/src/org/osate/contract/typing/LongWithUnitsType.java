@@ -29,9 +29,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.osate.aadl2.IntegerLiteral;
-import org.osate.aadl2.Property;
-import org.osate.aadl2.PropertyType;
-import org.osate.aadl2.RecordField;
 import org.osate.aadl2.UnitLiteral;
 import org.osate.aadl2.UnitsType;
 import org.osate.contract.contract.Expression;
@@ -50,22 +47,7 @@ public final class LongWithUnitsType implements Type {
 		if (unitsType.getName() != null) {
 			label = "LongWithUnits<" + unitsType.getQualifiedName() + '>';
 		} else {
-			var builder = new StringBuilder();
-			for (var current = unitsType.eContainer(); current != null; current = current.eContainer()) {
-				if (current instanceof RecordField field) {
-					builder.insert(0, field.getName());
-					builder.insert(0, '.');
-				} else if (current instanceof Property property) {
-					builder.insert(0, property.getQualifiedName());
-					break;
-				} else if (current instanceof PropertyType propertyType && propertyType.getName() != null) {
-					builder.insert(0, propertyType.getQualifiedName());
-					break;
-				}
-			}
-			builder.insert(0, "LongWithUnnamedUnits<");
-			builder.append('>');
-			label = builder.toString();
+			label = "LongWithUnnamedUnits<" + TypeSystemUtils.generateName(unitsType) + '>';
 		}
 	}
 
