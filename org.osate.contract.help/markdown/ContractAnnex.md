@@ -790,7 +790,10 @@ members.
 
 #### Tuple
 
-TODO
+The tuple type is backed by the Java type `org.osate.contract.tuples.Tuple` and represents an ordered collections of
+elements with possibly different types. Tuple types appear as a comma separated list of types surrounded by parentheses
+such as `(String, ComponentInstance, List<FeatureInstance>)` or `(ComponentInstance, ComponentInstance)`. The tuple type
+has no members.
 
 ---
 
