@@ -239,7 +239,7 @@ type conversion:
 * Lookup on the property type `range of aadlinteger units UnitsType` results in the query type
   `LongRangeWithUnits<UnitsType>?`.
 * Lookup on the property type `range of aadlreal` results in the query type `DoubleRange?`.
-* Lookup on the property type `range of aadlreal UnitsType` results in the query type
+* Lookup on the property type `range of aadlreal units UnitsType` results in the query type
   `DoubleRangeWithUnits<UnitsType>?`.
 * Lookup on the property type `record` results in the query type `Record<RecordType>?`.
 * Lookup on the property type `reference` results in the query type `InstanceObject?`.
@@ -539,7 +539,16 @@ following members:
 
 #### Enumeration
 
-TODO
+The `Enumeration` type is backed by the Java type `org.osate.aadl2.EnumerationLiteral`. `Enumeration` has a generic type
+which represents the enumeration type. A query or parameter with the type `Enumeration` with have its generic type
+specified such as `Enumeration<AADL_Project::Supported_Hardware_Source_Language>`. If the enumeration type is declared
+as a top-level enumeration type declaration in a property set, then the name of the enumeration type becomes the generic
+type. However, if the declaration of the enumeration type is embedded within another declaration such as a property or a
+record field, then the enumeration type is considered to be unnamed. When the enumeration type is unnamed, the display
+of the base type changes from `Enumeration` to `UnnamedEnumeration` and its generic type refers to the named element
+that contains the unnamed enumeration type. For example, if an unnamed enumeration type is declared within a property,
+then an example of the ultimate type would be
+`UnnamedEnumeration<Communication_Properties::Fan_Out_Policy>`. `Enumeration` has no members.
 
 #### EventInstance
 
@@ -656,7 +665,7 @@ declaration in a property set, then the name of the units type becomes the gener
 the units type is embedded within another declaration such as a property, a property type, or a record field, then the
 units type is considered to be unnamed. When the units type is unnamed, the display of the base type changes from
 `LongWithUnits` to `LongWithUnnamedUnits` and the generic type refers to the named element that contains the unnamed
-units type. For example, if an unnamed units type is declared within a property, then an example of the ultime type
+units type. For example, if an unnamed units type is declared within a property, then an example of the ultimate type
 would be `LongWithUnnamedUnits<ps::property_with_integer_with_units>`. `LongWithUnits` has the following members:
 
 * `scaledTo`: Returns a `Double` with the value of the `LongWithUnits` scaled to a specific unit literal. A unit literal
@@ -696,7 +705,22 @@ list of optional components. The optional type has the following members:
 
 #### Record
 
-TODO
+The `Record` type is backed by the Java type `org.osate.contract.typing.RecordValueHolder`. `Record` has a generic type
+which represents the record type. A query or parameter with the type `Record` will have its generic type specified such
+as `Record<Communication_Properties::Rate_Spec>`. If the record type is declared as a top-level record type declaration
+in a property set, then the name of the record type becomes the generic type. However, if the declaration of the record
+type is embedded within another declaration such as a property or a record field, then the record type is considered to
+be unnamed. When the record type is unnamed, the display of the base type changes from `Record` to `UnnamedRecord` and
+the generic type refers to the named element that contains the unnamed record type. For example, if an unnamed record
+type is declared within a property, then an example of the ultimate type would be
+`UnnamedRecord<Communication_Properties::Transmission_Time>`. `Record` has the following members:
+
+* `get`: Returns an optional with the value of the specified record field. The name of the field is passed as a
+  parameter to `get`. If the record field was defined in the record value, then the resulting optional value will have a
+  value present within it. If the record field was not defined in the record value, then the resulting optional value
+  will be empty. The resulting optional type will wrap another type that is dependent on the record field's property
+  type in AADL. The AADL property type is converted to a type used in the query language following the rules specified
+  in [Property Lookup](#property-lookup).
 
 #### StateInstance
 
