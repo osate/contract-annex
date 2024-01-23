@@ -29,11 +29,8 @@ public final class EnumerationType implements Type {
 	private final String label;
 
 	public EnumerationType(org.osate.aadl2.EnumerationType type) {
-		if (type.getName() != null) {
-			label = "Enumeration<" + type.getQualifiedName() + '>';
-		} else {
-			label = "UnnamedEnumeration<" + TypeSystemUtils.generateName(type) + '>';
-		}
+		var genericName = type.hasName() ? type.getQualifiedName() : TypeSystemUtils.generateName(type);
+		label = "Enumeration<" + genericName + '>';
 	}
 
 	@Override

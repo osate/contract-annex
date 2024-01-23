@@ -31,11 +31,8 @@ public final class DoubleWithUnitsType implements Type {
 	private final String label;
 
 	public DoubleWithUnitsType(UnitsType unitsType) {
-		if (unitsType.getName() != null) {
-			label = "DoubleWithUnits<" + unitsType.getQualifiedName() + '>';
-		} else {
-			label = "DoubleWithUnnamedUnits<" + TypeSystemUtils.generateName(unitsType) + '>';
-		}
+		var genericName = unitsType.hasName() ? unitsType.getQualifiedName() : TypeSystemUtils.generateName(unitsType);
+		label = "DoubleWithUnits<" + genericName + '>';
 	}
 
 	@Override

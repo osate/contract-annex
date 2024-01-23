@@ -42,19 +42,19 @@ public class UnnamedTypesTest {
 		assertEquals(4, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("LongWithUnnamedUnits<ps::integer_with_units>?", type.toString());
+			assertEquals("LongWithUnits<ps::integer_with_units>?", type.toString());
 		});
 		with(contract.getQueries().get(1), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("DoubleWithUnnamedUnits<ps::real_type_with_units>?", type.toString());
+			assertEquals("DoubleWithUnits<ps::real_type_with_units>?", type.toString());
 		});
 		with(contract.getQueries().get(2), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("LongWithUnnamedUnits<ps::record_with_integer.integer_field>??", type.toString());
+			assertEquals("LongWithUnits<ps::record_with_integer.integer_field>??", type.toString());
 		});
 		with(contract.getQueries().get(3), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("LongWithUnnamedUnits<ps::deeply_nested_record.field1.field2.field3>????", type.toString());
+			assertEquals("LongWithUnits<ps::deeply_nested_record.field1.field2.field3>????", type.toString());
 		});
 	}
 
@@ -68,27 +68,27 @@ public class UnnamedTypesTest {
 		assertEquals(6, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("LongWithUnnamedUnits<ps::integer_with_units>?", type.toString());
+			assertEquals("LongWithUnits<ps::integer_with_units>?", type.toString());
 		});
 		with(contract.getQueries().get(1), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("DoubleWithUnnamedUnits<ps::real_type_with_units>?", type.toString());
+			assertEquals("DoubleWithUnits<ps::real_type_with_units>?", type.toString());
 		});
 		with(contract.getQueries().get(2), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("LongRangeWithUnnamedUnits<ps::integer_range_with_units>?", type.toString());
+			assertEquals("LongRangeWithUnits<ps::integer_range_with_units>?", type.toString());
 		});
 		with(contract.getQueries().get(3), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("DoubleRangeWithUnnamedUnits<ps::real_range_with_units>?", type.toString());
+			assertEquals("DoubleRangeWithUnits<ps::real_range_with_units>?", type.toString());
 		});
 		with(contract.getQueries().get(4), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("UnnamedEnumeration<ps::enum_property>?", type.toString());
+			assertEquals("Enumeration<ps::enum_property>?", type.toString());
 		});
 		with(contract.getQueries().get(5), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
-			assertEquals("UnnamedRecord<ps::record_with_integer>?", type.toString());
+			assertEquals("Record<ps::record_with_integer>?", type.toString());
 		});
 	}
 }

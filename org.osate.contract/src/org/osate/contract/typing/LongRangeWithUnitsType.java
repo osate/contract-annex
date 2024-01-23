@@ -45,11 +45,8 @@ public final class LongRangeWithUnitsType implements Type {
 		members.put("maximum", new MaximumMember());
 		members.put("getDelta", new GetDeltaMember());
 
-		if (unitsType.getName() != null) {
-			label = "LongRangeWithUnits<" + unitsType.getQualifiedName() + '>';
-		} else {
-			label = "LongRangeWithUnnamedUnits<" + TypeSystemUtils.generateName(unitsType) + '>';
-		}
+		var genericName = unitsType.hasName() ? unitsType.getQualifiedName() : TypeSystemUtils.generateName(unitsType);
+		label = "LongRangeWithUnits<" + genericName + '>';
 	}
 
 	@Override

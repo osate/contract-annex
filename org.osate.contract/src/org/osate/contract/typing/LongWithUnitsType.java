@@ -44,11 +44,8 @@ public final class LongWithUnitsType implements Type {
 		members = new LinkedHashMap<>();
 		members.put("scaledTo", new ScaledToMember());
 
-		if (unitsType.getName() != null) {
-			label = "LongWithUnits<" + unitsType.getQualifiedName() + '>';
-		} else {
-			label = "LongWithUnnamedUnits<" + TypeSystemUtils.generateName(unitsType) + '>';
-		}
+		var genericName = unitsType.hasName() ? unitsType.getQualifiedName() : TypeSystemUtils.generateName(unitsType);
+		label = "LongWithUnits<" + genericName + '>';
 	}
 
 	public UnitsType getUnitsType() {

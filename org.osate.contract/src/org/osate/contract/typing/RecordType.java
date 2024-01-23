@@ -45,11 +45,9 @@ public final class RecordType implements Type {
 		members = new LinkedHashMap<>();
 		members.put("get", new GetMember());
 
-		if (recordType.getName() != null) {
-			label = "Record<" + recordType.getQualifiedName() + '>';
-		} else {
-			label = "UnnamedRecord<" + TypeSystemUtils.generateName(recordType) + '>';
-		}
+		var genericName = recordType.hasName() ? recordType.getQualifiedName()
+				: TypeSystemUtils.generateName(recordType);
+		label = "Record<" + genericName + '>';
 	}
 
 	public org.osate.aadl2.RecordType getRecordType() {

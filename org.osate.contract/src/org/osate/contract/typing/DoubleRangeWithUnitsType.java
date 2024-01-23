@@ -45,11 +45,8 @@ public final class DoubleRangeWithUnitsType implements Type {
 		members.put("maximum", new MaximumMember());
 		members.put("getDelta", new GetDeltaMember());
 
-		if (unitsType.getName() != null) {
-			label = "DoubleRangeWithUnits<" + unitsType.getQualifiedName() + '>';
-		} else {
-			label = "DoubleRangeWithUnnamedUnits<" + TypeSystemUtils.generateName(unitsType) + '>';
-		}
+		var genericName = unitsType.hasName() ? unitsType.getQualifiedName() : TypeSystemUtils.generateName(unitsType);
+		label = "DoubleRangeWithUnits<" + genericName + '>';
 	}
 
 	@Override
