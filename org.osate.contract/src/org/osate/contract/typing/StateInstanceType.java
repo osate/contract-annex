@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.osate.aadl2.errormodel.instance.StateInstance;
 
-public final class StateInstanceType implements PropertyLookupSupportedType {
+public final class StateInstanceType implements Type {
 	public static final StateInstanceType INSTANCE = new StateInstanceType();
 	private static final Map<String, Member> MEMBERS;
 
@@ -20,6 +20,11 @@ public final class StateInstanceType implements PropertyLookupSupportedType {
 	@Override
 	public Map<String, Member> getMembers() {
 		return MEMBERS;
+	}
+
+	@Override
+	public boolean supportsPropertyLookup() {
+		return true;
 	}
 
 	@Override

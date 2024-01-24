@@ -88,7 +88,7 @@ rule PropertyLookup
 	G |- PropertyLookup expression : Type type
 from {
 	G |- expression.left : var Type leftType
-	if (leftType instanceof PropertyLookupSupportedType) {
+	if (leftType.supportsPropertyLookup) {
 		type = new OptionalType(TypeSystemUtils.convertPropertyType(expression.right.propertyType))
 	}
 }
@@ -313,7 +313,7 @@ checkrule CheckPropertyLookup for
 	PropertyLookup expression
 from {
 	empty |- expression.left : var Type leftType
-	if (leftType !== null && !(leftType instanceof PropertyLookupSupportedType)) {
+	if (leftType !== null && !leftType.supportsPropertyLookup) {
 		fail
 			error "Cannot lookup property on a " + leftType
 			source expression

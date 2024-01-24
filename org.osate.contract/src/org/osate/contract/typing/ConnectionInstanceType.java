@@ -33,7 +33,7 @@ import java.util.Map;
 import org.osate.aadl2.instance.ConnectionInstance;
 import org.osate.aadl2.instance.ConnectionInstanceEnd;
 
-public final class ConnectionInstanceType implements PropertyLookupSupportedType {
+public final class ConnectionInstanceType implements Type {
 	public static final ConnectionInstanceType INSTANCE = new ConnectionInstanceType();
 	private static final Map<String, Member> MEMBERS;
 
@@ -51,6 +51,11 @@ public final class ConnectionInstanceType implements PropertyLookupSupportedType
 	@Override
 	public Map<String, Member> getMembers() {
 		return MEMBERS;
+	}
+
+	@Override
+	public boolean supportsPropertyLookup() {
+		return true;
 	}
 
 	@Override

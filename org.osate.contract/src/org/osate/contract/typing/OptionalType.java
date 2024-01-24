@@ -55,6 +55,11 @@ public final class OptionalType implements Type {
 	}
 
 	@Override
+	public boolean supportsPropertyLookup() {
+		return false;
+	}
+
+	@Override
 	public String toString() {
 		return elementType + "?";
 	}

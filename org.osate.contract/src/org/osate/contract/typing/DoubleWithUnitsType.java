@@ -36,6 +36,11 @@ public final class DoubleWithUnitsType implements Type {
 	}
 
 	@Override
+	public boolean supportsPropertyLookup() {
+		return false;
+	}
+
+	@Override
 	public String toString() {
 		return label;
 	}

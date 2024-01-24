@@ -46,7 +46,7 @@ import org.osate.aadl2.instance.ModeTransitionInstance;
 import org.osate.aadl2.instance.SystemInstance;
 import org.osate.aadl2.instance.SystemOperationMode;
 
-public final class SystemInstanceType implements PropertyLookupSupportedType {
+public final class SystemInstanceType implements Type {
 	public static final SystemInstanceType INSTANCE = new SystemInstanceType();
 	private static final Map<String, Member> MEMBERS;
 
@@ -94,6 +94,11 @@ public final class SystemInstanceType implements PropertyLookupSupportedType {
 	@Override
 	public Map<String, Member> getMembers() {
 		return MEMBERS;
+	}
+
+	@Override
+	public boolean supportsPropertyLookup() {
+		return true;
 	}
 
 	@Override

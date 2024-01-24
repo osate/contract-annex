@@ -7,7 +7,7 @@ import org.eclipse.xtext.EcoreUtil2;
 import org.osate.aadl2.instance.ComponentInstance;
 import org.osate.aadl2.instance.ConnectionInstanceEnd;
 
-public final class ConnectionInstanceEndType implements PropertyLookupSupportedType {
+public final class ConnectionInstanceEndType implements Type {
 	public static final ConnectionInstanceEndType INSTANCE = new ConnectionInstanceEndType();
 	private static final Map<String, Member> MEMBERS;
 
@@ -23,6 +23,11 @@ public final class ConnectionInstanceEndType implements PropertyLookupSupportedT
 	@Override
 	public Map<String, Member> getMembers() {
 		return MEMBERS;
+	}
+
+	@Override
+	public boolean supportsPropertyLookup() {
+		return true;
 	}
 
 	@Override

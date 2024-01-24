@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.osate.aadl2.errormodel.instance.EventInstance;
 
-public final class EventInstanceType implements PropertyLookupSupportedType {
+public final class EventInstanceType implements Type {
 	public static final EventInstanceType INSTANCE = new EventInstanceType();
 	private static final Map<String, Member> MEMBERS;
 
@@ -20,6 +20,11 @@ public final class EventInstanceType implements PropertyLookupSupportedType {
 	@Override
 	public Map<String, Member> getMembers() {
 		return MEMBERS;
+	}
+
+	@Override
+	public boolean supportsPropertyLookup() {
+		return true;
 	}
 
 	@Override

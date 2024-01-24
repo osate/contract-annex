@@ -32,6 +32,11 @@ public final class SystemOperationModeType implements Type {
 	}
 
 	@Override
+	public boolean supportsPropertyLookup() {
+		return false;
+	}
+
+	@Override
 	public String toString() {
 		return "SystemOperationMode";
 	}

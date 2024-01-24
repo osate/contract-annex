@@ -25,10 +25,15 @@
  *******************************************************************************/
 package org.osate.contract.typing;
 
-public final class InstanceObjectType implements PropertyLookupSupportedType {
+public final class InstanceObjectType implements Type {
 	public static final InstanceObjectType INSTANCE = new InstanceObjectType();
 
 	private InstanceObjectType() {
+	}
+
+	@Override
+	public boolean supportsPropertyLookup() {
+		return true;
 	}
 
 	@Override

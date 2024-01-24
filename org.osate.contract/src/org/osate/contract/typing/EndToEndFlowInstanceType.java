@@ -35,7 +35,7 @@ import org.osate.aadl2.instance.ConnectionInstance;
 import org.osate.aadl2.instance.EndToEndFlowInstance;
 import org.osate.aadl2.instance.FlowSpecificationInstance;
 
-public final class EndToEndFlowInstanceType implements PropertyLookupSupportedType {
+public final class EndToEndFlowInstanceType implements Type {
 	public static final EndToEndFlowInstanceType INSTANCE = new EndToEndFlowInstanceType();
 	private static final Map<String, Member> MEMBERS;
 
@@ -53,6 +53,11 @@ public final class EndToEndFlowInstanceType implements PropertyLookupSupportedTy
 	@Override
 	public Map<String, Member> getMembers() {
 		return MEMBERS;
+	}
+
+	@Override
+	public boolean supportsPropertyLookup() {
+		return true;
 	}
 
 	@Override

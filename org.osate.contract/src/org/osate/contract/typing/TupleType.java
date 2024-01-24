@@ -40,6 +40,11 @@ public final class TupleType implements Type {
 	}
 
 	@Override
+	public boolean supportsPropertyLookup() {
+		return false;
+	}
+
+	@Override
 	public String toString() {
 		return elementTypes.stream().map(Object::toString).collect(Collectors.joining(", ", "(", ")"));
 	}

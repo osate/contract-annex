@@ -32,4 +32,6 @@ public interface Type {
 	default Map<String, Member> getMembers() {
 		return Collections.emptyMap();
 	}
+
+	boolean supportsPropertyLookup();
 }

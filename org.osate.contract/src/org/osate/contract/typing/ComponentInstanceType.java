@@ -46,7 +46,7 @@ import org.osate.aadl2.instance.FlowSpecificationInstance;
 import org.osate.aadl2.instance.ModeInstance;
 import org.osate.aadl2.instance.ModeTransitionInstance;
 
-public final class ComponentInstanceType implements PropertyLookupSupportedType {
+public final class ComponentInstanceType implements Type {
 	public static final ComponentInstanceType INSTANCE = new ComponentInstanceType();
 	private static final Map<String, Member> MEMBERS;
 
@@ -96,6 +96,11 @@ public final class ComponentInstanceType implements PropertyLookupSupportedType 
 	@Override
 	public Map<String, Member> getMembers() {
 		return MEMBERS;
+	}
+
+	@Override
+	public boolean supportsPropertyLookup() {
+		return true;
 	}
 
 	@Override
