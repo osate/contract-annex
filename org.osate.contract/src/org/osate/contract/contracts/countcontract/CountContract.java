@@ -39,7 +39,7 @@ public final class CountContract {
 			final Classifier requiredClassifier = (Classifier) tuple.getElements().get(1);
 			final long requiredCount = (Long) tuple.getElements().get(2);
 			System.out.println(
-					"*** " + comp.getName() + " for " + requiredCount + " of " + requiredClassifier.getFullName());
+					"*** " + comp.getName() + " requires " + requiredCount + " of " + requiredClassifier.getFullName());
 			final int numFound = countClassiifer(comp, requiredClassifier);
 			if (numFound < requiredCount) {
 				allGood = false;

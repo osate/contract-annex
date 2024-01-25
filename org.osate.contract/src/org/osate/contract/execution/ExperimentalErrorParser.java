@@ -51,6 +51,14 @@ public class ExperimentalErrorParser {
 
 		ArrayList<ErrorPair> errors = new ArrayList<ErrorPair>();
 
+		// First need to ignore anything before, and including, a comma
+		final int comma = errString.indexOf(',');
+		if (comma == -1) {
+			return errors;
+		} else {
+			errString = errString.substring(comma + 1);
+		}
+
 		if (errString.length() == 0) {
 			return errors;
 		}
@@ -80,14 +88,14 @@ public class ExperimentalErrorParser {
 			}
 
 			InstanceObject instance = (InstanceObject) root;
-
+			String errMessage = token;
 			if (token.contains("{")) {
 				String ref = token.substring(token.indexOf("{") + 1, token.indexOf("}"));
-				String errMessage = token.substring(token.indexOf("}") + 1);
+				errMessage = token.substring(token.indexOf("}") + 1);
 				int index = Integer.parseInt(ref);
 				instance = getObjectInstanceFromId(index);
-				errors.add(new ErrorPair(instance, contractName + ":" + errMessage));
 			}
+			errors.add(new ErrorPair(instance, contractName + ":" + errMessage));
 		}
 
 		return errors;
