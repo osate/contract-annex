@@ -87,6 +87,11 @@ public class ExperimentalErrorParser {
 				continue;
 			}
 
+			// Skip any token with a leading comma
+			if (token.charAt(0) == ',') {
+				continue;
+			}
+
 			InstanceObject instance = (InstanceObject) root;
 			String errMessage = token;
 			if (token.contains("{")) {
