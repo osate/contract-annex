@@ -1,0 +1,67 @@
+package replicationFTA
+public	
+	with FailureProbabilities;
+	system ReplicatedPair
+	end ReplicatedPair;
+	
+	system implementation ReplicatedPair.i
+		subcomponents
+			proc1: processor UnreliableProcessor;
+			proc2: processor UnreliableProcessor;
+			com: process ControlProcess.i;
+			mon: process ControlProcess.i;
+		properties
+			Actual_Processor_Binding => (reference (proc1)) applies to com;
+			Actual_Processor_Binding => (reference (proc2)) applies to mon;
+			FailureProbabilities::Replicating => reference (com) applies to mon;
+			FailureProbabilities::Replicating => reference (mon) applies to com;
+			FailureProbabilities::ReliabilityTarget => 0.7;			
+	end ReplicatedPair.i;
+	
+	system MainSystem
+	end MainSystem;
+	
+	system implementation MainSystem.i
+		subcomponents
+			p: system ReplicatedPair.i;
+		annex contract {**
+			verify ReliabilityContract::verifyReliability;
+		**};			
+	end MainSystem.i;
+	
+	process ControlProcess
+	end ControlProcess;
+	
+	process implementation ControlProcess.i
+		subcomponents
+			controlThread: thread controlThread;
+	end ControlProcess.i;
+	
+	thread controlThread
+		annex EMV2 {**
+			use types ErrorLibrary;
+			
+			error propagations
+				processor: in propagation {ServiceOmission};
+			end propagations;
+		**};
+	end controlThread;
+	
+	processor UnreliableProcessor
+--		properties
+--			FailureProbabilities::FailureProbability => 0.5;
+		annex EMV2 {**
+				use types ErrorLibrary;
+				use behavior ErrorLibrary::FailStop;
+				
+				error propagations
+					bindings: out propagation {ServiceOmission};
+				end propagations;
+				
+				properties
+					EMV2::StateKind => Working applies to Operational;
+					EMV2::StateKind => NonWorking applies to FailStop;
+					EMV2::OccurrenceDistribution => [Probability => 0.5;] applies to Failure;
+    	**};
+	end UnreliableProcessor;
+end replicationFTA;

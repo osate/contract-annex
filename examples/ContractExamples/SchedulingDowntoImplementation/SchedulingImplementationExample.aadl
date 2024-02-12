@@ -1,0 +1,53 @@
+package SchedulingImplementationExample
+public
+	with SchedulingImplementationProperties;
+
+	process myprocess
+	end myprocess;
+
+	process implementation myprocess.i
+		subcomponents
+			t1: thread;
+			t2: thread;
+		properties
+			Compute_Entrypoint_Source_Text => "thread_main1" applies to t1;
+			Compute_Entrypoint_Source_Text => "thread_main2" applies to t2;
+			Source_Text => ("rt-threads-example-3.c");
+	end myprocess.i;
+
+	system final
+	end final;
+
+	system implementation final.i
+		subcomponents
+			prog: process myprocess.i;
+			proc: processor;
+		properties
+			Actual_Processor_Binding => (reference (proc)) applies to prog.t1;
+			Actual_Processor_Binding => (reference (proc)) applies to prog.t2;
+			Period => 100ms applies to prog.t1;
+			Period => 200ms applies to prog.t2;
+			Deadline => 100ms applies to prog.t1;
+			Deadline => 200ms applies to prog.t2;
+			Compute_Execution_Time => 10ms .. 10ms applies to prog.t1;
+			Compute_Execution_Time => 20ms .. 20ms applies to prog.t2;
+			Priority => 4 applies to prog.t1;
+			Priority => 3 applies to prog.t2;
+			POSIX_Scheduling_Policy => SCHED_FIFO applies to prog.t1;
+			POSIX_Scheduling_Policy => SCHED_FIFO applies to prog.t2;
+			SchedulingImplementationProperties::Implementation_Thread_Variable_Name =>"t1" applies to prog.t1;
+			SchedulingImplementationProperties::Implementation_Thread_Variable_Name =>"t2" applies to prog.t2;
+			SchedulingImplementationProperties::Implementation_Thread_Main_Function_Name =>"thread_main1" applies to prog.t1;
+			SchedulingImplementationProperties::Implementation_Thread_Main_Function_Name =>"thread_main2" applies to prog.t2;
+			Compute_Entrypoint_Source_Text => "thread_main1" applies to prog.t1;
+			Compute_Entrypoint_Source_Text => "thread_main2" applies to prog.t2;
+			Source_Text => ("rt-threads-example-3") applies to prog;			
+			SchedulingImplementationProperties::Implementation_Thread_Main_Loop_Line_Number =>7 applies to prog.t1;
+			SchedulingImplementationProperties::Implementation_Thread_Main_Loop_Line_Number =>7 applies to prog.t2;
+			SchedulingImplementationProperties::Implementation_Verification_Directory => "/home/dionisio/etmac-workspace/klee/" applies to prog;
+		annex contract {**
+				verify SchedulingImplementationContract::verifySchedulingImplementationConfiguration;
+		**};
+		
+	end final.i;
+end SchedulingImplementationExample;

@@ -1,0 +1,6 @@
+property set SchedulingImplementationProperties is
+	Implementation_Verification_Directory : aadlstring applies to (system, process);
+	Implementation_Thread_Variable_Name : aadlstring applies to (thread);
+	Implementation_Thread_Main_Function_Name : aadlstring applies to (thread);
+	Implementation_Thread_Main_Loop_Line_Number : aadlinteger applies to (thread);
+end SchedulingImplementationProperties;

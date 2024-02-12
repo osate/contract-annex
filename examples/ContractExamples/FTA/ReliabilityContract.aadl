@@ -1,0 +1,168 @@
+package ReliabilityContract
+public
+	
+annex contract {**
+	contract implementation ReliabilityContract {`
+
+def addError(error,msg):
+	error[0]+="|"+msg
+
+
+# fta in cnf = [[a,b,c],[d,e,f]] == (a or b or c) and (d or e or f)
+# each element in the inside is a real that represent a probability or occurrance of an event that together determine
+# if the failure that represents will occur
+# this function calculate the probability of the top failure occuring 
+# formula: 
+# OR Given prob of failure of leaf events a,b, if parent failure c occur if any of a or b occurs (c=(a or b))
+#    Then the failure prob: c = 1 - ((1-a) * (1-b))
+# AND Given prob of failure of leaf events d, e if parent failure f occur if both d and e occur (f= (d and e))
+#    Then the failure prob: f = (d)*(e)
+	
+def probabilityCNFFTA(fta):
+    prob = 1.0
+    for i in range(len(fta)):
+        conj = fta[i]
+        probconj = 1.0
+        for j in range(len(conj)):
+            probconj = probconj * (1.0 - conj[j])
+        prob = prob * (1.0 - probconj)
+    return prob
+    
+def isProbabilityOfFailureThresholdMet(redundantSystems,replicatedThreads, procFailureProbabilities, error0):
+	print("replicatedThread:",replicatedThreads)
+	metReliability = True
+	processedReplicas = []
+	for i in range(len(redundantSystems)):
+		if (redundantSystems[i][1] != None):
+			print("reliability target:", redundantSystems[i][1])
+			redundantSysComponents = redundantSystems[i][2];
+			independentFailureProb = []
+			processedProcessors = []
+			for j in range(len(redundantSysComponents)):
+				if redundantSysComponents[j][1] != None:
+					alreadyProcessed = False
+					if not (redundantSysComponents[j][0] in processedReplicas or redundantSysComponents[j][1] in processedReplicas):
+						print(redundantSysComponents[j])
+						processedReplicas.append(redundantSysComponents[j][0])
+						processedReplicas.append(redundantSysComponents[j][1])
+						for t in range(2):
+							for l in range(len(replicatedThreads)):
+								if replicatedThreads[l][0] == redundantSysComponents[j][t]:
+									if not replicatedThreads[l][1][0][1][0] in processedProcessors:
+										processedProcessors.append(replicatedThreads[l][1][0][1][0])
+										print("looking at proc:",replicatedThreads[l][1][0][1][0])
+										for m in range(len(procFailureProbabilities)):
+											if procFailureProbabilities[m][0] == replicatedThreads[l][1][0][1][0]:
+												independentFailureProb.append(procFailureProbabilities[m][1])			
+			print("IndependentFailureProb:",independentFailureProb)
+			cnf = []
+			for r in range(len(independentFailureProb)):
+				cnf.append([independentFailureProb[r]])
+			topProbabilityFailure = probabilityCNFFTA(cnf);
+			print("Top Probability of Failure: ",topProbabilityFailure)
+			metReliability = metReliability and (redundantSystems[i][1] <= (1-topProbabilityFailure))
+	print("threads: ",replicatedThreads)	
+	print("failProbs: ",procFailureProbabilities)		
+	return metReliability
+
+def readErrorAnnex(par1):
+	print(par1)
+	return True
+		
+`}
+
+	domain reliability {
+		queries
+			val redundantSystems = root.allSubcomponents.map{s -> 
+				val reliabilityTarget = s#FailureProbabilities::ReliabilityTarget;
+				val replicatedComponents = s.allSubcomponents.map{b -> 
+					val replicaprocesses = b#FailureProbabilities::Replicating;
+					(b,replicaprocesses)
+				};
+				(s, reliabilityTarget,replicatedComponents)
+			};
+			val redundantSystemsCount = redundantSystems.size;
+			val replicatedThreads = root.allSubcomponents.
+				filter{c->c.isProcess}.
+				map{p->
+					val threads = p.allSubcomponents.filter{c1->c1.isThread}.
+						map{t->
+							val procs = t#Actual_Processor_Binding.map{p1->p1};
+							val prob = procs.map{p2->
+								val prob1 = p2.map{p3->p3#FailureProbabilities::FailureProbability};
+								prob1
+							};
+							(t,procs,prob)
+						};
+					(p,threads)
+					};
+			val procFailureProbabilities = root.allSubcomponents.filter{c->c.isProcessor}.map{
+					pr->
+					val fprob = pr#FailureProbabilities::FailureProbability;
+					(pr,fprob)
+				};
+--			val errorAnnex = root.allSubcomponents.filter{c->c.isProcessor).map{
+--				pr->
+--				val fprob = pr.
+--			};
+			val e2es = root.allEndToEndFlows;
+			val e2eCount = e2es.size;
+			val connections = root.allConnections;
+			val connectionTiming = connections.map { c -> c#Timing };
+			val connectionNames = connections.map { c -> c.name };
+			val connCount = connections.size;
+			val flowComponents = e2es
+														.map { f -> 
+															val latency = f#Latency.map { l -> l.maximum }.map { l -> l.scaledTo(ms) };
+															val replicating = f#ReplicationProperties::Replicating;
+															val jitterTol = f#ReplicationProperties::ReplicaStartJitterTolerance.map{ r ->r.scaledTo(ms)};
+															val ts = f.components
+																				.filter { c -> c.isThread }
+																				.map { t -> 
+																					val period = t#Period.map { v -> v.scaledTo(ms)};
+																					val wcet = t#Compute_Execution_Time.map {cet -> cet.maximum.scaledTo(ms)};
+																					val deadline = t#Deadline.map { v -> v.scaledTo(ms)};
+																					val replicaid = t#ReplicationProperties::ReplicaThreadID;
+																					val replicaName = t#ReplicationProperties::ReplicaThreadName;
+																					val p = t#Actual_Processor_Binding;
+																					val proc = p.map{ x -> x.map{ y -> y}};
+																					(t, t.name, period, wcet, deadline,replicaid,replicaName,p)
+																				};
+															(f, f.name, latency, ts,replicating,jitterTol)
+													};
+		declarations 
+			'''
+			Reliability = RealVector('Reliability',${redundantSystemsCount$})
+			ReliabiiltyTarget = RealVector('ReliabilityTarget',${redundantSystemsCount$})
+			E2ESamplingJitter = IntVector('e2eresponse', ${e2eCount$})
+			E2ESamplingJitterTolerance = IntVector('e2elantency', ${e2eCount$})
+			E2EResponses = IntVector('e2eresponse', ${e2eCount$})
+			E2ELatencies = IntVector('e2elantency', ${e2eCount$})
+			DelayedConnections = BoolVector('delayconnection', ${connCount$})
+			'''
+	}
+
+	contract ReliableContract {
+		domains
+			reliability;
+		guarantee
+			<=> `And([Reliability[i]>=ReliabiiltyTarget[i] for i in range(len(Reliability))])`;
+		analysis
+			'''isProbabilityOfFailureThresholdMet(${redundantSystems$},${replicatedThreads$},${procFailureProbabilities$},error0)''';
+	}
+		
+	verification plan verifyReliability {
+		component
+			s: replicationFTA::ReplicatedPair.i;
+		domains
+			reliability;
+		claims
+			`And([Reliability[i]>=ReliabiiltyTarget[i] for i in range(len(Reliability))])`;
+		contracts
+			ReliableContract;
+	} 
+
+
+**};
+
+end ReliabilityContract;
