@@ -1,0 +1,212 @@
+-- Assurance Contract Annex Plugin for OSATE
+-- Copyright 2023 Carnegie Mellon University.
+-- NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
+-- MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
+-- WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
+-- NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
+-- RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
+-- ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+-- INFRINGEMENT.
+-- Released under a BSD (SEI)-style license, please see license.txt or contact 
+-- permission@sei.cmu.edu for full terms.
+-- [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
+-- unlimited distribution.  Please see Copyright notice for non-US Government use and 
+-- distribution.
+-- Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+-- Mellon University.
+-- This Software includes and/or makes use of the following Third-Party Software subject 
+-- to its own license:
+-- 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+-- Corporation.
+-- 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+-- contributors and others.
+-- DM23-0575
+
+-- ARPKI system of servers with an n=3 configuration.  Explicit Domains are removed
+-- from the model because they are now explicit as systems that interface with this model
+-- via the feature group Domain_FG.  Also the data types have been simplified from the
+-- original model because they are just clutter for now.  Also got rid of the protocol
+-- virtual buses for now.
+package ARPKI_n3_Simplified
+public
+	-- Feature group for outside Domains; Domains use this
+	-- and the ARPKI system uses the inverse. 	
+	feature group Domain_FG
+		features
+			-- For 1 and 9 --- to/from Certificate Authority
+			registration_request: out event data port RegReq;
+			registration_response: in data port DoublySignedAccept;
+	end Domain_FG;
+
+	-- === Data Types for Messages ==========
+
+	-- Registration Request from STEP 1
+	data RegReq
+	end RegReq;
+
+	-- Synchronization Request for STEP 3
+	data SynReq
+	end SynReq;
+
+    -- ILS Synchronization Acknowledgement from STEP 4
+	data SynResp
+	end SynResp;
+
+    -- ILS Synchronization Acknowledgement from STEP 5
+	data SynCommit
+	end SynCommit;
+
+    -- ILS Synchronization Acknowledgement from STEP 6.
+	data SynAck
+	end SynAck;
+
+	-- Signed Registration Response from STEP 7
+	data RegResp
+	end RegResp;
+
+    -- Signed Registration Confirmation from STEP 8
+	data RegConf
+	end RegConf;
+
+	-- Doubly signed ACCEPT message for STEP 9
+	-- NOTE: Overall response is triply signed because ACCEPT itself is signed.
+	data DoublySignedAccept
+	end DoublySignedAccept;
+
+	-- ----------------------------------------
+
+    -- TLS Connection request from STEP 10
+	data TLSRequest
+	end TLSRequest;
+
+    -- TLS response from STEP 11
+	data TLSResponse
+	end TLSResponse;
+
+	-- === Roles ==========
+	
+	system Certificate_Authority
+		features
+			-- For 1/9 --- from/to Domain 
+			registration_request: in event data port RegReq;
+			registration_response: out data port DoublySignedAccept;
+
+			-- For 2/7 --- to/from ILS
+			ils_registration_request: out data port RegReq;
+			ils_registration_response: in data port RegResp;
+			
+			-- For 8 -- to/from another CA
+			registration_confirmation_in: in data port RegConf;
+			registration_confirmation_out: out data port RegConf;
+	end Certificate_Authority;
+
+	-- ----------------------------------------
+
+	system Integrity_Log_Server
+		features
+			-- For 2 --- from CA
+			registration_request: in data port RegReq;
+			
+			-- For 3 --- to/from another ILS
+			synchronization_request_out: out data port SynReq;
+			synchronization_request_in: in data port SynReq;
+
+			-- For 4 --- to/from another ILS
+			-- Must be "event data" to queue fan-in connections
+			synchronization_response_in: in event data port SynResp;
+			synchronization_response_out: out data port SynResp;
+			
+			--For 5 --- to/from another ILS
+			synchronization_commit_out: out data port SynCommit;
+			synchronization_commit_in: in data port SynCommit;
+
+			--For 6 --- to/from another ILS
+			-- Must be "event data" to queue fan-in connections
+			synchronization_acknowledgement_in: in event data port SynAck;
+			synchronization_acknowledgement_out: out data port SynAck;
+			
+			-- For 7 --- to CA
+			registration_response: out data port RegResp;
+	end Integrity_Log_Server;
+
+	system implementation Integrity_Log_Server.i
+		subcomponents
+			p: process ils_process.i;
+	end Integrity_Log_Server.i;
+
+	process ils_process
+	end ils_process;
+	
+	process implementation ils_process.i
+		subcomponents 
+			thread1: thread {
+				Period => 4 sec;
+			};
+	end ils_process.i;
+
+	-- ----------------------------------------
+
+	system Client
+		features
+			-- For 10/11 --- to/from Domain 
+			connectionRequest: out data port TLSRequest;
+			connectionResponse: in data port TLSResponse;
+	end Client;
+
+	-- ----------------------------------------
+
+	system Domain
+		features
+			-- For 1 and 9 --- to/from Certificate Authority
+			registration_request: out data port RegReq;
+			registration_response: in data port DoublySignedAccept;
+
+			-- For 10 and 11 --- from/to Client
+			connectionRequest: in data port TLSRequest;
+			connectionResponse: out data port TLSResponse;
+	end Domain;
+
+	-- === Full System ==========
+	
+	system ARPKI
+		features
+			domainInterface: feature group inverse of Domain_FG;
+	end ARPKI;
+
+	system implementation ARPKI.Three
+		subcomponents
+			CA1: system Certificate_Authority;
+			CA2: system Certificate_Authority;
+
+			ILS1: system Integrity_Log_Server.i;
+
+			OtherILS: system Integrity_Log_Server.i[5];
+
+		connections
+			-- Domain-CA
+			c1: port domainInterface.registration_request -> CA1.registration_request;
+			c9: port CA1.registration_response -> domainInterface.registration_response;
+
+			-- ILS-ILS
+			c3: port ILS1.synchronization_request_out -> OtherILS.synchronization_request_in {
+				Connection_Pattern => (( One_To_All )); 
+			};
+			c4: port OtherILS.synchronization_response_out -> ILS1.synchronization_response_in {
+				Connection_Pattern => (( All_To_One )); 
+			};
+			
+			c5: port ILS1.synchronization_commit_out -> OtherILS.synchronization_commit_in {
+				Connection_Pattern => (( One_To_All )); 
+			};
+			c6: port OtherILS.synchronization_acknowledgement_out -> ILS1.synchronization_acknowledgement_in {
+				Connection_Pattern => (( All_To_One )); 
+			};
+
+			-- CA-ILS
+			c2: port CA1.ils_registration_request -> ILS1.registration_request;
+			c7: port ILS1.registration_response -> CA2.ils_registration_response;
+			
+			-- CA-CA
+			c8: port CA2.registration_confirmation_out -> CA1.registration_confirmation_in;
+	end ARPKI.Three;
+end ARPKI_n3_Simplified;

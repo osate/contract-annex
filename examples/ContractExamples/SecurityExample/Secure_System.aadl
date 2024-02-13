@@ -1,0 +1,94 @@
+-- Assurance Contract Annex Plugin for OSATE
+-- Copyright 2023 Carnegie Mellon University.
+-- NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
+-- MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
+-- WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
+-- NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
+-- RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
+-- ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+-- INFRINGEMENT.
+-- Released under a BSD (SEI)-style license, please see license.txt or contact 
+-- permission@sei.cmu.edu for full terms.
+-- [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
+-- unlimited distribution.  Please see Copyright notice for non-US Government use and 
+-- distribution.
+-- Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+-- Mellon University.
+-- This Software includes and/or makes use of the following Third-Party Software subject 
+-- to its own license:
+-- 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+-- Corporation.
+-- 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+-- contributors and others.
+-- DM23-0575
+
+package Secure_System
+public
+	with ARPKI_n3_Simplified, EncryptedChannels, BLP_Logical,
+		VerificationProperties;
+
+ 	-- ==================================================================
+		
+	-- Unclassified network
+	bus Internet
+		properties
+			VerificationProperties::Level => 0;
+	end Internet;
+
+ 	-- ==================================================================
+			
+	system TheSystem
+	end TheSystem;
+	
+	system implementation TheSystem.Impl
+		subcomponents
+			-- The actual communicating components
+			communicatingSystems: system BLP_Logical::CommunicatingSystems.i;
+			
+			virtualChannel: virtual bus {
+				-- unfortunately we cannot point to a subcomponent
+				Implemented_As => classifier(EncryptedChannels::ChannelRealization.i);
+			};
+			internet: bus Internet;
+			
+			other: bus;
+			
+			-- N=3 ARPKI implementation
+			ARPKI: system ARPKI_n3_Simplified::ARPKI.Three;
+
+			-- The secure channel used by the connection (Should be 1 for each connection?)
+			secureChannel: system EncryptedChannels::ChannelRealization.i;
+		
+		connections
+			domainConnection: feature group secureChannel.PKI_FG <-> ARPKI.domainInterface;
+			
+		properties
+			VerificationProperties::CheckBellLaPadula => True applies to communicatingSystems;
+			VerificationProperties::UsesSecureChannels => True applies to communicatingSystems;
+			
+			-- Bind the communication connection to a virtual bus, implemented as 
+			-- the secure channel.  The encrypted connection path in the channel is 
+			-- bound to the Internet.
+			Actual_Connection_Binding => (reference(virtualChannel)) applies to communicatingSystems.c_ab;
+			Actual_Connection_Binding => (reference(internet)) applies to secureChannel.actualEncryptedConnection;
+			
+			-- Thread period requirements for the ILS components: 5 sec sync rate
+			VerificationProperties::RequiredPeriod => 5 sec applies to ARPKI.ILS1;
+			VerificationProperties::RequiredPeriod => 5 sec applies to ARPKI.OtherILS;
+
+			-- Component count requirements for the ILS and CA servers
+			VerificationProperties::RequiredCount =>
+				([clazz => classifier(ARPKI_n3_Simplified::Integrity_Log_Server);
+					bound => 6;],
+				 [clazz => classifier(ARPKI_n3_Simplified::Certificate_Authority);
+					bound => 2;]);
+
+			-- Thread period requirements for the Crypt components: 10 sec sync rate
+			VerificationProperties::RequiredPeriod => 10 sec applies to secureChannel.cr1;
+			VerificationProperties::RequiredPeriod => 10 sec applies to secureChannel.cr2;
+			 
+		annex contract {**
+			verify SecureContract::verifySystemSecurity;
+		**};
+	end TheSystem.Impl;
+end Secure_System;

@@ -1,0 +1,114 @@
+-- Assurance Contract Annex Plugin for OSATE
+-- Copyright 2023 Carnegie Mellon University.
+-- NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
+-- MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
+-- WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
+-- NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
+-- RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
+-- ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+-- INFRINGEMENT.
+-- Released under a BSD (SEI)-style license, please see license.txt or contact 
+-- permission@sei.cmu.edu for full terms.
+-- [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
+-- unlimited distribution.  Please see Copyright notice for non-US Government use and 
+-- distribution.
+-- Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+-- Mellon University.
+-- This Software includes and/or makes use of the following Third-Party Software subject 
+-- to its own license:
+-- 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+-- Corporation.
+-- 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+-- contributors and others.
+-- DM23-0575
+
+package PeriodContract
+public
+    annex contract {**
+        contract implementation i {`
+        	## HERE WE KNOW THAT THE OPTIONALS HAVE VALUES BECAUSE OF FILTERING IN THE CONTRACT!
+        	## requirements is a Python list of (String (component name), Float (period))
+        	## subThreads is a Python list of list of (String (thread name), Float (period))
+			def findThreads(requirements, subThreads, error0):
+				print("===== Find Threads =====")
+				allGood = True
+				for ((cName, requiredPeriod, ci), threads) in zip(requirements, subThreads):
+					print("Component", cName, "requires a thread with period <=", requiredPeriod, "ms")
+					foundThread = findThread(ci, requiredPeriod, threads, error0)      				
+					allGood = allGood and foundThread
+				return allGood
+        	
+        	## requiredPeriod is Float
+        	## threads is a Python list of (String (thread name), Float (period))
+			def findThread(ci, requiredPeriod, threads, error0):
+				for (tName, tPeriod) in threads:
+					if tPeriod <= requiredPeriod:
+						print("  Thread", tName, "has period of", tPeriod, "ms")
+						return True
+					else:
+						print("  BAD Thread", tName, "has period of", tPeriod, "ms")
+				print("  **** No satisfying thread found ****")
+				error0[0] += "|{" + str(ci) + "}Component requires a thread with period " + str(requiredPeriod) + " ms, but does not have one"
+				return False
+        `}
+
+		domain Period {
+			queries
+				-- Get the components that have declared bounds
+				val constrainedComponents = root.allComponents.map {
+					c -> (c, c#VerificationProperties::RequiredPeriod.map { p -> p.scaledTo(ms) })
+				}.filterTupleElementsPresent;
+				
+				val rootCount = constrainedComponents.size;
+				val namesAndRequiredPeriods = constrainedComponents.map {
+					(c, optPeriod) -> (c.name, optPeriod, c)
+				};
+					
+				-- Get the threads contained in each constrained subtree, together with their declared period
+				val threads = constrainedComponents.map {
+					(c, o) -> c.allSubcomponents.filter {
+						t -> t.isThread
+					}.map {
+						t -> (t.name, t#Period.map { p -> p.scaledTo(ms) })
+					}.filterTupleElementsPresent
+				};
+				val threadCounts = threads.map {
+					sublist -> sublist.size
+				};
+								
+			declarations
+				-- * requiredPeriods: For each compent there is a Z3 int that represents the values of the specified required period
+				--   (A python array of Z3 Ints)
+				--  + rootCount is the number of components with requirements
+				-- * actualPeriods: For each component there is a Z3 array of Ints indexed by Ints that represents the actual
+				--   period of each of the contained threads.  (A python array of Z3 arrays)  
+				-- * satisfactory: For each component there is a Z3 int that represnts the index into the actualPeriods Z3 array
+				--   of the thread that has the satisfactory period	
+				'''
+				requiredPeriods = IntVector('required', ${rootCount$})
+				actualPeriods = [Array('actual%s' % i, IntSort(), IntSort()) for i in range(${rootCount$})]
+				satisfactory = [Int('satisfactory%s' % i) for i in range(${rootCount$})]
+				'''
+		}
+
+        contract RequiredPeriods {
+        	domains
+        		Period;
+            input assumptions
+            	-- Technically assuming the period values are present.  This needs to be made explicit.
+            assumptions
+            guarantee
+               -- If the analysis succeeds, then it is the case that for each component with a requried period, indexed by i,
+               -- there exists a thread, indexed by satisfactory[i], that is a descendent of that component whose period is
+               -- less than or equal to the required period.  Thus, the index `satisfactory[i]` must be in the range
+               -- [0, threads[i].size), and Select(actualPeriods[i], satisfactory[i]) <= requiredPeriods[i].
+               --  
+            	<=> '''And([And(satisfactory[i] >= 0,
+            		           satisfactory[i] < ${threadCounts$}[i],
+            		           Select(actualPeriods[i], satisfactory[i]) <= requiredPeriods[i]
+            	           ) for i in range(${rootCount$})])''';
+            analysis
+            	'''findThreads(${namesAndRequiredPeriods$}, ${threads$}, error0)''';
+        }
+    **};
+end PeriodContract;
