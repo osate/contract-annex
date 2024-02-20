@@ -210,7 +210,7 @@ checkrule CheckMemberCall for
 	MemberCall expression
 from {
 	empty |- expression.left : var Type leftType
-	if (leftType !== null) {
+	if (leftType !== null && expression.right !== null) {
 		val member = leftType.members.get(expression.right)
 		if (member === null) {
 			fail
