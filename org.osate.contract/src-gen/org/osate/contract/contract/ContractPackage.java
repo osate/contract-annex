@@ -1745,13 +1745,22 @@ public interface ContractPackage extends EPackage
   int MEMBER_CALL__LEFT = EXPRESSION_FEATURE_COUNT + 0;
 
   /**
+   * The feature id for the '<em><b>Operator</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MEMBER_CALL__OPERATOR = EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
    * The feature id for the '<em><b>Right</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MEMBER_CALL__RIGHT = EXPRESSION_FEATURE_COUNT + 1;
+  int MEMBER_CALL__RIGHT = EXPRESSION_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>Type Argument</b></em>' attribute.
@@ -1760,7 +1769,7 @@ public interface ContractPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MEMBER_CALL__TYPE_ARGUMENT = EXPRESSION_FEATURE_COUNT + 2;
+  int MEMBER_CALL__TYPE_ARGUMENT = EXPRESSION_FEATURE_COUNT + 3;
 
   /**
    * The feature id for the '<em><b>Argument</b></em>' containment reference.
@@ -1769,7 +1778,7 @@ public interface ContractPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MEMBER_CALL__ARGUMENT = EXPRESSION_FEATURE_COUNT + 3;
+  int MEMBER_CALL__ARGUMENT = EXPRESSION_FEATURE_COUNT + 4;
 
   /**
    * The feature id for the '<em><b>Lambda</b></em>' containment reference.
@@ -1778,7 +1787,7 @@ public interface ContractPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MEMBER_CALL__LAMBDA = EXPRESSION_FEATURE_COUNT + 4;
+  int MEMBER_CALL__LAMBDA = EXPRESSION_FEATURE_COUNT + 5;
 
   /**
    * The number of structural features of the '<em>Member Call</em>' class.
@@ -1787,7 +1796,7 @@ public interface ContractPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MEMBER_CALL_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 5;
+  int MEMBER_CALL_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 6;
 
   /**
    * The meta object id for the '{@link org.osate.contract.contract.impl.PropertyLookupImpl <em>Property Lookup</em>}' class.
@@ -2003,6 +2012,16 @@ public interface ContractPackage extends EPackage
    * @generated
    */
   int LANGUAGE = 40;
+
+  /**
+   * The meta object id for the '{@link org.osate.contract.contract.MemberCallOperator <em>Member Call Operator</em>}' enum.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.osate.contract.contract.MemberCallOperator
+   * @see org.osate.contract.contract.impl.ContractPackageImpl#getMemberCallOperator()
+   * @generated
+   */
+  int MEMBER_CALL_OPERATOR = 41;
 
 
   /**
@@ -2886,6 +2905,17 @@ public interface ContractPackage extends EPackage
   EReference getMemberCall_Left();
 
   /**
+   * Returns the meta object for the attribute '{@link org.osate.contract.contract.MemberCall#getOperator <em>Operator</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Operator</em>'.
+   * @see org.osate.contract.contract.MemberCall#getOperator()
+   * @see #getMemberCall()
+   * @generated
+   */
+  EAttribute getMemberCall_Operator();
+
+  /**
    * Returns the meta object for the attribute '{@link org.osate.contract.contract.MemberCall#getRight <em>Right</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -3074,6 +3104,16 @@ public interface ContractPackage extends EPackage
    * @generated
    */
   EEnum getLanguage();
+
+  /**
+   * Returns the meta object for enum '{@link org.osate.contract.contract.MemberCallOperator <em>Member Call Operator</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for enum '<em>Member Call Operator</em>'.
+   * @see org.osate.contract.contract.MemberCallOperator
+   * @generated
+   */
+  EEnum getMemberCallOperator();
 
   /**
    * Returns the factory that creates the instances of the model.
@@ -3829,6 +3869,14 @@ public interface ContractPackage extends EPackage
     EReference MEMBER_CALL__LEFT = eINSTANCE.getMemberCall_Left();
 
     /**
+     * The meta object literal for the '<em><b>Operator</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute MEMBER_CALL__OPERATOR = eINSTANCE.getMemberCall_Operator();
+
+    /**
      * The meta object literal for the '<em><b>Right</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3987,6 +4035,16 @@ public interface ContractPackage extends EPackage
      * @generated
      */
     EEnum LANGUAGE = eINSTANCE.getLanguage();
+
+    /**
+     * The meta object literal for the '{@link org.osate.contract.contract.MemberCallOperator <em>Member Call Operator</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.osate.contract.contract.MemberCallOperator
+     * @see org.osate.contract.contract.impl.ContractPackageImpl#getMemberCallOperator()
+     * @generated
+     */
+    EEnum MEMBER_CALL_OPERATOR = eINSTANCE.getMemberCallOperator();
 
   }
 

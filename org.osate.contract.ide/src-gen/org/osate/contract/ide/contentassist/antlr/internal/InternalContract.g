@@ -1815,6 +1815,22 @@ finally {
 	restoreStackSize(stackSize);
 }
 
+// Rule MemberCallOperator
+ruleMemberCallOperator
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getMemberCallOperatorAccess().getAlternatives()); }
+		(rule__MemberCallOperator__Alternatives)
+		{ after(grammarAccess.getMemberCallOperatorAccess().getAlternatives()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
 rule__ContractElement__Alternatives
 	@init {
 		int stackSize = keepStackSize();
@@ -2343,6 +2359,27 @@ rule__Language__Alternatives
 		{ before(grammarAccess.getLanguageAccess().getSMTEnumLiteralDeclaration_2()); }
 		('smt')
 		{ after(grammarAccess.getLanguageAccess().getSMTEnumLiteralDeclaration_2()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__MemberCallOperator__Alternatives
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getMemberCallOperatorAccess().getNORMALEnumLiteralDeclaration_0()); }
+		('.')
+		{ after(grammarAccess.getMemberCallOperatorAccess().getNORMALEnumLiteralDeclaration_0()); }
+	)
+	|
+	(
+		{ before(grammarAccess.getMemberCallOperatorAccess().getOPTIONALEnumLiteralDeclaration_1()); }
+		('?.')
+		{ after(grammarAccess.getMemberCallOperatorAccess().getOPTIONALEnumLiteralDeclaration_1()); }
 	)
 ;
 finally {
@@ -6289,9 +6326,9 @@ rule__CallExpression__Group_1_0__1__Impl
 	}
 :
 (
-	{ before(grammarAccess.getCallExpressionAccess().getFullStopKeyword_1_0_1()); }
-	'.'
-	{ after(grammarAccess.getCallExpressionAccess().getFullStopKeyword_1_0_1()); }
+	{ before(grammarAccess.getCallExpressionAccess().getOperatorAssignment_1_0_1()); }
+	(rule__CallExpression__OperatorAssignment_1_0_1)
+	{ after(grammarAccess.getCallExpressionAccess().getOperatorAssignment_1_0_1()); }
 )
 ;
 finally {
@@ -11415,6 +11452,21 @@ rule__NotExpression__OperandAssignment_1_2
 		{ before(grammarAccess.getNotExpressionAccess().getOperandCallExpressionParserRuleCall_1_2_0()); }
 		ruleCallExpression
 		{ after(grammarAccess.getNotExpressionAccess().getOperandCallExpressionParserRuleCall_1_2_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__CallExpression__OperatorAssignment_1_0_1
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getCallExpressionAccess().getOperatorMemberCallOperatorEnumRuleCall_1_0_1_0()); }
+		ruleMemberCallOperator
+		{ after(grammarAccess.getCallExpressionAccess().getOperatorMemberCallOperatorEnumRuleCall_1_0_1_0()); }
 	)
 ;
 finally {

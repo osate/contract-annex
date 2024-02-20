@@ -62,6 +62,7 @@ import org.osate.contract.contract.InputAssumption;
 import org.osate.contract.contract.Lambda;
 import org.osate.contract.contract.Language;
 import org.osate.contract.contract.MemberCall;
+import org.osate.contract.contract.MemberCallOperator;
 import org.osate.contract.contract.NameReference;
 import org.osate.contract.contract.NotExpression;
 import org.osate.contract.contract.OrExpression;
@@ -374,6 +375,13 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   private EEnum languageEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum memberCallOperatorEEnum = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -1360,7 +1368,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   @Override
-  public EAttribute getMemberCall_Right()
+  public EAttribute getMemberCall_Operator()
   {
     return (EAttribute)memberCallEClass.getEStructuralFeatures().get(1);
   }
@@ -1371,7 +1379,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   @Override
-  public EAttribute getMemberCall_TypeArgument()
+  public EAttribute getMemberCall_Right()
   {
     return (EAttribute)memberCallEClass.getEStructuralFeatures().get(2);
   }
@@ -1382,9 +1390,20 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   @Override
+  public EAttribute getMemberCall_TypeArgument()
+  {
+    return (EAttribute)memberCallEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EReference getMemberCall_Argument()
   {
-    return (EReference)memberCallEClass.getEStructuralFeatures().get(3);
+    return (EReference)memberCallEClass.getEStructuralFeatures().get(4);
   }
 
   /**
@@ -1395,7 +1414,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
   @Override
   public EReference getMemberCall_Lambda()
   {
-    return (EReference)memberCallEClass.getEStructuralFeatures().get(4);
+    return (EReference)memberCallEClass.getEStructuralFeatures().get(5);
   }
 
   /**
@@ -1558,6 +1577,17 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   @Override
+  public EEnum getMemberCallOperator()
+  {
+    return memberCallOperatorEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public ContractFactory getContractFactory()
   {
     return (ContractFactory)getEFactoryInstance();
@@ -1698,6 +1728,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
 
     memberCallEClass = createEClass(MEMBER_CALL);
     createEReference(memberCallEClass, MEMBER_CALL__LEFT);
+    createEAttribute(memberCallEClass, MEMBER_CALL__OPERATOR);
     createEAttribute(memberCallEClass, MEMBER_CALL__RIGHT);
     createEAttribute(memberCallEClass, MEMBER_CALL__TYPE_ARGUMENT);
     createEReference(memberCallEClass, MEMBER_CALL__ARGUMENT);
@@ -1725,6 +1756,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
 
     // Create enums
     languageEEnum = createEEnum(LANGUAGE);
+    memberCallOperatorEEnum = createEEnum(MEMBER_CALL_OPERATOR);
   }
 
   /**
@@ -1910,6 +1942,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
 
     initEClass(memberCallEClass, MemberCall.class, "MemberCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getMemberCall_Left(), this.getExpression(), null, "left", null, 0, 1, MemberCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getMemberCall_Operator(), this.getMemberCallOperator(), "operator", null, 0, 1, MemberCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getMemberCall_Right(), theEcorePackage.getEString(), "right", null, 0, 1, MemberCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getMemberCall_TypeArgument(), theEcorePackage.getEString(), "typeArgument", null, 0, 1, MemberCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMemberCall_Argument(), this.getExpression(), null, "argument", null, 0, 1, MemberCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1940,6 +1973,10 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     addEEnumLiteral(languageEEnum, Language.PYTHON);
     addEEnumLiteral(languageEEnum, Language.JAVA);
     addEEnumLiteral(languageEEnum, Language.SMT);
+
+    initEEnum(memberCallOperatorEEnum, MemberCallOperator.class, "MemberCallOperator");
+    addEEnumLiteral(memberCallOperatorEEnum, MemberCallOperator.NORMAL);
+    addEEnumLiteral(memberCallOperatorEEnum, MemberCallOperator.OPTIONAL);
 
     // Create resource
     createResource(eNS_URI);
