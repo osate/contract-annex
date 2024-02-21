@@ -68,7 +68,13 @@ rule MemberCall
 	G |- MemberCall expression : Type type
 from {
 	G |- expression.left : var Type leftType
-	type = switch member : leftType?.members?.get(expression.right) {
+	val receiverType = switch expression.operator {
+		case NORMAL: leftType
+		case OPTIONAL: if (leftType instanceof OptionalType) {
+			leftType.elementType
+		}
+	}
+	val resultType = switch member : receiverType?.members?.get(expression.right) {
 		SimpleMember<?, ?>: member.returnType
 		MemberWithTypeParameter<?, ?>: {
 			val queryType = GenericTypeArgumentRegistry.getQueryType(expression.typeArgument)
@@ -80,6 +86,14 @@ from {
 		MemberWithLambda<?, ?, ?> case expression.lambda !== null: {
 			G |- expression.lambda.returnValue : var Type lambdaType
 			member.getReturnType(lambdaType)
+		}
+	}
+	type = switch expression.operator {
+		case NORMAL: resultType
+		case OPTIONAL: if (resultType instanceof OptionalType) {
+			resultType
+		} else {
+			new OptionalType(resultType)
 		}
 	}
 }
@@ -211,7 +225,12 @@ checkrule CheckMemberCall for
 from {
 	empty |- expression.left : var Type leftType
 	if (leftType !== null && expression.right !== null) {
-		val member = leftType.members.get(expression.right)
+		val member = switch expression.operator {
+			case NORMAL: leftType.members.get(expression.right)
+			case OPTIONAL: if (leftType instanceof OptionalType) {
+				leftType.elementType.members.get(expression.right)
+			}
+		}
 		if (member === null) {
 			fail
 				error "'" + expression.right + "' is not a member of the type " + leftType

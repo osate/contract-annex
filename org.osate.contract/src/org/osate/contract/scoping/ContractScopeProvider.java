@@ -60,6 +60,7 @@ import org.osate.contract.contract.VerificationPlan;
 import org.osate.contract.naming.ContractQualifiedNameProvider;
 import org.osate.contract.typing.ContractTypeSystem;
 import org.osate.contract.typing.LongWithUnitsType;
+import org.osate.contract.typing.OptionalType;
 import org.osate.contract.typing.RecordType;
 
 import com.google.common.base.Function;
@@ -127,20 +128,30 @@ public class ContractScopeProvider extends AbstractContractScopeProvider {
 		if (context instanceof NameReference nameReference
 				&& nameReference.eContainer() instanceof MemberCall memberCall
 				&& memberCall.getArgument() == nameReference) {
-			if (memberCall.getRight().equals("scaledTo") && typeSystem.expressionType(memberCall.getLeft())
-					.getValue() instanceof LongWithUnitsType leftType) {
-				var descriptions = new ArrayList<IEObjectDescription>();
-				for (var literal : leftType.getUnitsType().getOwnedLiterals()) {
-					descriptions.add(EObjectDescription.create(literal.getName(), literal));
+			var receiverType = switch (memberCall.getOperator()) {
+			case NORMAL -> typeSystem.expressionType(memberCall.getLeft()).getValue();
+			case OPTIONAL ->
+				typeSystem.expressionType(memberCall.getLeft()).getValue() instanceof OptionalType optionalType
+						? optionalType.getElementType()
+						: null;
+			};
+			switch (memberCall.getRight()) {
+			case "scaledTo":
+				if (receiverType instanceof LongWithUnitsType longType) {
+					var descriptions = new ArrayList<IEObjectDescription>();
+					for (var literal : longType.getUnitsType().getOwnedLiterals()) {
+						descriptions.add(EObjectDescription.create(literal.getName(), literal));
+					}
+					return new SimpleScope(descriptions, true);
 				}
-				return new SimpleScope(descriptions, true);
-			} else if (memberCall.getRight().equals("get")
-					&& typeSystem.expressionType(memberCall.getLeft()).getValue() instanceof RecordType leftType) {
-				var descriptions = new ArrayList<IEObjectDescription>();
-				for (var field : leftType.getRecordType().getOwnedFields()) {
-					descriptions.add(EObjectDescription.create(field.getName(), field));
+			case "get":
+				if (receiverType instanceof RecordType recordType) {
+					var descriptions = new ArrayList<IEObjectDescription>();
+					for (var field : recordType.getRecordType().getOwnedFields()) {
+						descriptions.add(EObjectDescription.create(field.getName(), field));
+					}
+					return new SimpleScope(descriptions, true);
 				}
-				return new SimpleScope(descriptions, true);
 			}
 		}
 		var names = new ArrayList<NamedElement>();
