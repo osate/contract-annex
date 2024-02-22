@@ -31,6 +31,7 @@ import org.osate.contract.contract.ContractPackage
 import org.osate.contract.contract.Expression
 import org.osate.contract.contract.Lambda
 import org.osate.contract.contract.MemberCall
+import org.osate.contract.contract.MemberCallOperator
 import org.osate.contract.contract.NameReference
 import org.osate.contract.contract.NotExpression
 import org.osate.contract.contract.OrExpression
@@ -225,15 +226,20 @@ checkrule CheckMemberCall for
 from {
 	empty |- expression.left : var Type leftType
 	if (leftType !== null && expression.right !== null) {
-		val member = switch expression.operator {
-			case NORMAL: leftType.members.get(expression.right)
-			case OPTIONAL: if (leftType instanceof OptionalType) {
-				leftType.elementType.members.get(expression.right)
-			}
+		if (expression.operator == MemberCallOperator.OPTIONAL && !(leftType instanceof OptionalType)) {
+			fail
+				error "Cannot use optional member call on non-optional type " + leftType
+				source expression
+				feature ContractPackage.eINSTANCE.memberCall_Operator
 		}
+		val receiverType = switch expression.operator {
+			case NORMAL: leftType
+			case OPTIONAL: (leftType as OptionalType).elementType
+		}
+		val member = receiverType.members.get(expression.right)
 		if (member === null) {
 			fail
-				error "'" + expression.right + "' is not a member of the type " + leftType
+				error "'" + expression.right + "' is not a member of the type " + receiverType
 				source expression
 				feature ContractPackage.eINSTANCE.memberCall_Right
 		} else {

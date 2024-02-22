@@ -5,6 +5,9 @@ public
 			queries
 				val valid = self.allSubcomponents.filterType<ComponentInstance>;
 				val invalid = self.allSubcomponents.filterType;
+				
+				val validOptional = self.parent?.allSubcomponents?.filterType<ComponentInstance>;
+				val invalidOptional = self.parent?.allSubcomponents?.filterType;
 		}
 	**};
 end missing_generics;
