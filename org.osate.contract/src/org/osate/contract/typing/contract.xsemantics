@@ -158,7 +158,13 @@ from {
 	} else if (parent instanceof TupleParameter) {
 		val memberCall = EcoreUtil2.getContainerOfType(parent, MemberCall)
 		G |- memberCall.left : var Type leftType
-		val member = leftType.members.get(memberCall.right)
+		val receiverType = switch memberCall.operator {
+			case NORMAL: leftType
+			case OPTIONAL: if (leftType instanceof OptionalType) {
+				leftType.elementType
+			}
+		}
+		val member = receiverType?.members?.get(memberCall.right)
 		if (member instanceof MemberWithLambda) {
 			val leftElementType = member.lambdaParameterType
 			if (leftElementType instanceof TupleType) {
@@ -176,7 +182,13 @@ rule SingleParameter
 from {
 	val memberCall = EcoreUtil2.getContainerOfType(parameter, MemberCall)
 	G |- memberCall.left : var Type leftType
-	val member = leftType.members.get(memberCall.right)
+	val receiverType = switch memberCall.operator {
+		case NORMAL: leftType
+		case OPTIONAL: if (leftType instanceof OptionalType) {
+			leftType.elementType
+		}
+	}
+	val member = receiverType?.members?.get(memberCall.right)
 	if (member instanceof MemberWithLambda) {
 		type = member.lambdaParameterType
 	}
@@ -302,7 +314,13 @@ from {
 	 * is not nested in a deep expression. If it is a single NameReference, then the scope provider ensures that the
 	 * type is correct.
 	 */
-	val requiredArgumentType = switch leftType {
+	val receiverType = switch expression.operator {
+		case NORMAL: leftType
+		case OPTIONAL: if (leftType instanceof OptionalType) {
+			leftType.elementType
+		}
+	}
+	val requiredArgumentType = switch receiverType {
 		LongWithUnitsType case expression.right == "scaledTo": "UnitLiteral"
 		RecordType case expression.right == "get": "RecordField"
 	}
@@ -321,7 +339,13 @@ checkrule CheckLambdaReturnType for
 from {
 	val memberCall = EcoreUtil2.getContainerOfType(lambda, MemberCall)
 	empty |- memberCall.left : var Type leftType
-	val member = leftType.members.get(memberCall.right)
+	val receiverType = switch memberCall.operator {
+		case NORMAL: leftType
+		case OPTIONAL: if (leftType instanceof OptionalType) {
+			leftType.elementType
+		}
+	}
+	val member = receiverType?.members?.get(memberCall.right)
 	if (member instanceof MemberWithLambda) {
 		empty |- lambda.returnValue : var Type returnType
 		if (returnType !== null) {
@@ -372,7 +396,13 @@ checkrule CheckTupleParameterSize for
 from {
 	val memberCall = EcoreUtil2.getContainerOfType(tupleParameter, MemberCall)
 	empty |- memberCall.left : var Type leftType
-	val member = leftType.members.get(memberCall.right)
+	val receiverType = switch memberCall.operator {
+		case NORMAL: leftType
+		case OPTIONAL: if (leftType instanceof OptionalType) {
+			leftType.elementType
+		}
+	}
+	val member = receiverType?.members?.get(memberCall.right)
 	if (member instanceof MemberWithLambda) {
 		val leftElementType = member.lambdaParameterType
 		if (leftElementType instanceof TupleType) {
