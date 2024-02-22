@@ -93,7 +93,7 @@ from {
 		case NORMAL: resultType
 		case OPTIONAL: if (resultType instanceof OptionalType) {
 			resultType
-		} else {
+		} else if (resultType !== null) {
 			new OptionalType(resultType)
 		}
 	}
