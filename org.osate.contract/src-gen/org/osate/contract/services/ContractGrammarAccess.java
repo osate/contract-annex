@@ -2039,21 +2039,33 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cDirectAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final Keyword cDirectColonKeyword_0_0 = (Keyword)cDirectAssignment_0.eContents().get(0);
-		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
-		private final Assignment cDomainAssignment_1_0 = (Assignment)cGroup_1.eContents().get(0);
-		private final CrossReference cDomainDomainCrossReference_1_0_0 = (CrossReference)cDomainAssignment_1_0.eContents().get(0);
-		private final RuleCall cDomainDomainIDTerminalRuleCall_1_0_0_1 = (RuleCall)cDomainDomainCrossReference_1_0_0.eContents().get(1);
-		private final Keyword cColonColonKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
-		private final Assignment cQueryAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final CrossReference cQuerySingleValDeclarationCrossReference_2_0 = (CrossReference)cQueryAssignment_2.eContents().get(0);
-		private final RuleCall cQuerySingleValDeclarationIDTerminalRuleCall_2_0_1 = (RuleCall)cQuerySingleValDeclarationCrossReference_2_0.eContents().get(1);
+		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
+		private final Group cGroup_1_0 = (Group)cAlternatives_1.eContents().get(0);
+		private final Group cGroup_1_0_0 = (Group)cGroup_1_0.eContents().get(0);
+		private final Assignment cDomainAssignment_1_0_0_0 = (Assignment)cGroup_1_0_0.eContents().get(0);
+		private final CrossReference cDomainDomainCrossReference_1_0_0_0_0 = (CrossReference)cDomainAssignment_1_0_0_0.eContents().get(0);
+		private final RuleCall cDomainDomainIDTerminalRuleCall_1_0_0_0_0_1 = (RuleCall)cDomainDomainCrossReference_1_0_0_0_0.eContents().get(1);
+		private final Keyword cColonColonKeyword_1_0_0_1 = (Keyword)cGroup_1_0_0.eContents().get(1);
+		private final Assignment cQueryAssignment_1_0_1 = (Assignment)cGroup_1_0.eContents().get(1);
+		private final CrossReference cQuerySingleValDeclarationCrossReference_1_0_1_0 = (CrossReference)cQueryAssignment_1_0_1.eContents().get(0);
+		private final RuleCall cQuerySingleValDeclarationIDTerminalRuleCall_1_0_1_0_1 = (RuleCall)cQuerySingleValDeclarationCrossReference_1_0_1_0.eContents().get(1);
+		private final Assignment cPredefinedAssignment_1_1 = (Assignment)cAlternatives_1.eContents().get(1);
+		private final RuleCall cPredefinedPredefinedEnumRuleCall_1_1_0 = (RuleCall)cPredefinedAssignment_1_1.eContents().get(0);
 		
 		//IStringInter returns IStringVar:
-		//    direct?=":"? (domain=[Domain|ID] '::')? query=[SingleValDeclaration|ID]
+		//    direct?=":"?
+		//    (
+		//      ((domain=[Domain|ID] '::')? query=([SingleValDeclaration|ID]))
+		//    | predefined=Predefined
+		//    )
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//direct?=":"? (domain=[Domain|ID] '::')? query=[SingleValDeclaration|ID]
+		//direct?=":"?
+		//(
+		//  ((domain=[Domain|ID] '::')? query=([SingleValDeclaration|ID]))
+		//| predefined=Predefined
+		//)
 		public Group getGroup() { return cGroup; }
 		
 		//direct?=":"?
@@ -2062,29 +2074,44 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//":"
 		public Keyword getDirectColonKeyword_0_0() { return cDirectColonKeyword_0_0; }
 		
+		//(
+		//  ((domain=[Domain|ID] '::')? query=([SingleValDeclaration|ID]))
+		//| predefined=Predefined
+		//)
+		public Alternatives getAlternatives_1() { return cAlternatives_1; }
+		
+		//((domain=[Domain|ID] '::')? query=([SingleValDeclaration|ID]))
+		public Group getGroup_1_0() { return cGroup_1_0; }
+		
 		//(domain=[Domain|ID] '::')?
-		public Group getGroup_1() { return cGroup_1; }
+		public Group getGroup_1_0_0() { return cGroup_1_0_0; }
 		
 		//domain=[Domain|ID]
-		public Assignment getDomainAssignment_1_0() { return cDomainAssignment_1_0; }
+		public Assignment getDomainAssignment_1_0_0_0() { return cDomainAssignment_1_0_0_0; }
 		
 		//[Domain|ID]
-		public CrossReference getDomainDomainCrossReference_1_0_0() { return cDomainDomainCrossReference_1_0_0; }
+		public CrossReference getDomainDomainCrossReference_1_0_0_0_0() { return cDomainDomainCrossReference_1_0_0_0_0; }
 		
 		//ID
-		public RuleCall getDomainDomainIDTerminalRuleCall_1_0_0_1() { return cDomainDomainIDTerminalRuleCall_1_0_0_1; }
+		public RuleCall getDomainDomainIDTerminalRuleCall_1_0_0_0_0_1() { return cDomainDomainIDTerminalRuleCall_1_0_0_0_0_1; }
 		
 		//'::'
-		public Keyword getColonColonKeyword_1_1() { return cColonColonKeyword_1_1; }
+		public Keyword getColonColonKeyword_1_0_0_1() { return cColonColonKeyword_1_0_0_1; }
 		
-		//query=[SingleValDeclaration|ID]
-		public Assignment getQueryAssignment_2() { return cQueryAssignment_2; }
+		//query=([SingleValDeclaration|ID])
+		public Assignment getQueryAssignment_1_0_1() { return cQueryAssignment_1_0_1; }
 		
-		//[SingleValDeclaration|ID]
-		public CrossReference getQuerySingleValDeclarationCrossReference_2_0() { return cQuerySingleValDeclarationCrossReference_2_0; }
+		//([SingleValDeclaration|ID])
+		public CrossReference getQuerySingleValDeclarationCrossReference_1_0_1_0() { return cQuerySingleValDeclarationCrossReference_1_0_1_0; }
 		
 		//ID
-		public RuleCall getQuerySingleValDeclarationIDTerminalRuleCall_2_0_1() { return cQuerySingleValDeclarationIDTerminalRuleCall_2_0_1; }
+		public RuleCall getQuerySingleValDeclarationIDTerminalRuleCall_1_0_1_0_1() { return cQuerySingleValDeclarationIDTerminalRuleCall_1_0_1_0_1; }
+		
+		//predefined=Predefined
+		public Assignment getPredefinedAssignment_1_1() { return cPredefinedAssignment_1_1; }
+		
+		//Predefined
+		public RuleCall getPredefinedPredefinedEnumRuleCall_1_1_0() { return cPredefinedPredefinedEnumRuleCall_1_1_0; }
 	}
 	public class OptionalQualifiedNameElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.OptionalQualifiedName");
@@ -2151,6 +2178,34 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//'smt'
 		public Keyword getSMTSmtKeyword_2_0() { return cSMTSmtKeyword_2_0; }
 	}
+	public class PredefinedElements extends AbstractElementFinder.AbstractEnumRuleElementFinder {
+		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.Predefined");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final EnumLiteralDeclaration cERROREnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cERRORError0Keyword_0_0 = (Keyword)cERROREnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cINFOEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cINFOInfo0Keyword_1_0 = (Keyword)cINFOEnumLiteralDeclaration_1.eContents().get(0);
+		
+		//enum Predefined:
+		//    ERROR='error0' | INFO='info0'
+		//;
+		public EnumRule getRule() { return rule; }
+		
+		//ERROR='error0' | INFO='info0'
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//ERROR='error0'
+		public EnumLiteralDeclaration getERROREnumLiteralDeclaration_0() { return cERROREnumLiteralDeclaration_0; }
+		
+		//'error0'
+		public Keyword getERRORError0Keyword_0_0() { return cERRORError0Keyword_0_0; }
+		
+		//INFO='info0'
+		public EnumLiteralDeclaration getINFOEnumLiteralDeclaration_1() { return cINFOEnumLiteralDeclaration_1; }
+		
+		//'info0'
+		public Keyword getINFOInfo0Keyword_1_0() { return cINFOInfo0Keyword_1_0; }
+	}
 	
 	private final AnnexLibraryElements pAnnexLibrary;
 	private final AnnexSubclauseElements pAnnexSubclause;
@@ -2194,6 +2249,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	private final IStringLeftLiteralElements pIStringLeftLiteral;
 	private final IStringMiddleLiteralElements pIStringMiddleLiteral;
 	private final IStringRightLiteralElements pIStringRightLiteral;
+	private final PredefinedElements ePredefined;
 	private final IStringInterElements pIStringInter;
 	private final TerminalRule tISTRING_TEXT;
 	private final TerminalRule tISTRING_LEFT;
@@ -2255,6 +2311,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		this.pIStringLeftLiteral = new IStringLeftLiteralElements();
 		this.pIStringMiddleLiteral = new IStringMiddleLiteralElements();
 		this.pIStringRightLiteral = new IStringRightLiteralElements();
+		this.ePredefined = new PredefinedElements();
 		this.pIStringInter = new IStringInterElements();
 		this.tISTRING_TEXT = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.ISTRING_TEXT");
 		this.tISTRING_LEFT = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.ISTRING_LEFT");
@@ -2839,8 +2896,23 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		return getIStringRightLiteralAccess().getRule();
 	}
 	
+	//enum Predefined:
+	//    ERROR='error0' | INFO='info0'
+	//;
+	public PredefinedElements getPredefinedAccess() {
+		return ePredefined;
+	}
+	
+	public EnumRule getPredefinedRule() {
+		return getPredefinedAccess().getRule();
+	}
+	
 	//IStringInter returns IStringVar:
-	//    direct?=":"? (domain=[Domain|ID] '::')? query=[SingleValDeclaration|ID]
+	//    direct?=":"?
+	//    (
+	//      ((domain=[Domain|ID] '::')? query=([SingleValDeclaration|ID]))
+	//    | predefined=Predefined
+	//    )
 	//;
 	public IStringInterElements getIStringInterAccess() {
 		return pIStringInter;

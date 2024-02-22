@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.osate.contract.contract.ContractPackage;
 import org.osate.contract.contract.Domain;
 import org.osate.contract.contract.IStringVar;
+import org.osate.contract.contract.Predefined;
 import org.osate.contract.contract.SingleValDeclaration;
 
 /**
@@ -48,6 +49,7 @@ import org.osate.contract.contract.SingleValDeclaration;
  *   <li>{@link org.osate.contract.contract.impl.IStringVarImpl#isDirect <em>Direct</em>}</li>
  *   <li>{@link org.osate.contract.contract.impl.IStringVarImpl#getDomain <em>Domain</em>}</li>
  *   <li>{@link org.osate.contract.contract.impl.IStringVarImpl#getQuery <em>Query</em>}</li>
+ *   <li>{@link org.osate.contract.contract.impl.IStringVarImpl#getPredefined <em>Predefined</em>}</li>
  * </ul>
  *
  * @generated
@@ -93,6 +95,26 @@ public class IStringVarImpl extends IStringPartImpl implements IStringVar
    * @ordered
    */
   protected SingleValDeclaration query;
+
+  /**
+   * The default value of the '{@link #getPredefined() <em>Predefined</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getPredefined()
+   * @generated
+   * @ordered
+   */
+  protected static final Predefined PREDEFINED_EDEFAULT = Predefined.ERROR;
+
+  /**
+   * The cached value of the '{@link #getPredefined() <em>Predefined</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getPredefined()
+   * @generated
+   * @ordered
+   */
+  protected Predefined predefined = PREDEFINED_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -236,6 +258,31 @@ public class IStringVarImpl extends IStringPartImpl implements IStringVar
    * @generated
    */
   @Override
+  public Predefined getPredefined()
+  {
+    return predefined;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setPredefined(Predefined newPredefined)
+  {
+    Predefined oldPredefined = predefined;
+    predefined = newPredefined == null ? PREDEFINED_EDEFAULT : newPredefined;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.ISTRING_VAR__PREDEFINED, oldPredefined, predefined));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
     switch (featureID)
@@ -248,6 +295,8 @@ public class IStringVarImpl extends IStringPartImpl implements IStringVar
       case ContractPackage.ISTRING_VAR__QUERY:
         if (resolve) return getQuery();
         return basicGetQuery();
+      case ContractPackage.ISTRING_VAR__PREDEFINED:
+        return getPredefined();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -270,6 +319,9 @@ public class IStringVarImpl extends IStringPartImpl implements IStringVar
         return;
       case ContractPackage.ISTRING_VAR__QUERY:
         setQuery((SingleValDeclaration)newValue);
+        return;
+      case ContractPackage.ISTRING_VAR__PREDEFINED:
+        setPredefined((Predefined)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -294,6 +346,9 @@ public class IStringVarImpl extends IStringPartImpl implements IStringVar
       case ContractPackage.ISTRING_VAR__QUERY:
         setQuery((SingleValDeclaration)null);
         return;
+      case ContractPackage.ISTRING_VAR__PREDEFINED:
+        setPredefined(PREDEFINED_EDEFAULT);
+        return;
     }
     super.eUnset(featureID);
   }
@@ -314,6 +369,8 @@ public class IStringVarImpl extends IStringPartImpl implements IStringVar
         return domain != null;
       case ContractPackage.ISTRING_VAR__QUERY:
         return query != null;
+      case ContractPackage.ISTRING_VAR__PREDEFINED:
+        return predefined != PREDEFINED_EDEFAULT;
     }
     return super.eIsSet(featureID);
   }
@@ -331,6 +388,8 @@ public class IStringVarImpl extends IStringPartImpl implements IStringVar
     StringBuilder result = new StringBuilder(super.toString());
     result.append(" (direct: ");
     result.append(direct);
+    result.append(", predefined: ");
+    result.append(predefined);
     result.append(')');
     return result.toString();
   }

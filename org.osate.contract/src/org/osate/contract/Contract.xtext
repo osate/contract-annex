@@ -285,8 +285,17 @@ IStringRightLiteral returns IStringLiteral:
 	value=ISTRING_RIGHT
 ;
 
+enum Predefined:
+	ERROR='error0' | INFO='info0'
+;
+
+
 IStringInter returns IStringVar:
-	direct?=":"? (domain=[Domain|ID] '::')? query=[SingleValDeclaration|ID]
+	direct?=":"? 
+	(
+	  ((domain=[Domain|ID] '::')? query=([SingleValDeclaration|ID]))
+	| predefined=Predefined
+	)
 ;
 
 terminal ISTRING_TEXT:

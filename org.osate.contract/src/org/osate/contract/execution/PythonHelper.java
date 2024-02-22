@@ -62,7 +62,7 @@ public class PythonHelper {
 		return ioid;
 	}
 
-	private PythonHelper() {
+	public PythonHelper() {
 	}
 
 	public String interpolateIString(ComponentInstance context, IString is, Map<String, Object> variables) {
@@ -75,25 +75,29 @@ public class PythonHelper {
 		for (var part : is.getParts()) {
 			if (part instanceof IStringLiteral literal) {
 				sb.append(literal.getValue());
-			} else if (part instanceof IStringVar varRef) {
-				var q = varRef.getQuery();
-				var result = queryInterpreter.evaluateQuery(env, q);
-				if (result.failed()) {
-					System.out.println(result.getRuleFailedException());
+			} else if (part instanceof IStringVar svar) {
+				if (svar.getPredefined() != null) {
+					// ignore for python
 				} else {
-					Object o = result.getValue().get(q.getName());
-					if (varRef.isDirect()) {
-						if (variables.containsKey(q.getName())) {
-							if (variables.get(q.getName()) != o) {
-								throw new IllegalArgumentException("Inconsistent value for query " + q.getName());
-							}
-						} else {
-							variables.put(q.getName(), o);
-						}
-						sb.append(q.getName());
+					var q = svar.getQuery();
+					var result = queryInterpreter.evaluateQuery(env, q);
+					if (result.failed()) {
+						System.out.println(result.getRuleFailedException());
 					} else {
-						var value = toPythonString(o);
-						sb.append(value);
+						Object o = result.getValue().get(q.getName());
+						if (svar.isDirect()) {
+							if (variables.containsKey(q.getName())) {
+								if (variables.get(q.getName()) != o) {
+									throw new IllegalArgumentException("Inconsistent value for query " + q.getName());
+								}
+							} else {
+								variables.put(q.getName(), o);
+							}
+							sb.append(q.getName());
+						} else {
+							var value = toPythonString(o);
+							sb.append(value);
+						}
 					}
 				}
 			}

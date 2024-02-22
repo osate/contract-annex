@@ -66,6 +66,7 @@ import org.osate.contract.contract.NameReference;
 import org.osate.contract.contract.NotExpression;
 import org.osate.contract.contract.OrExpression;
 import org.osate.contract.contract.Parameter;
+import org.osate.contract.contract.Predefined;
 import org.osate.contract.contract.PropertyLookup;
 import org.osate.contract.contract.Query;
 import org.osate.contract.contract.RootExpression;
@@ -374,6 +375,13 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   private EEnum languageEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum predefinedEEnum = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -1140,6 +1148,17 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   @Override
+  public EAttribute getIStringVar_Predefined()
+  {
+    return (EAttribute)iStringVarEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getContractAssumption()
   {
     return contractAssumptionEClass;
@@ -1558,6 +1577,17 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   @Override
+  public EEnum getPredefined()
+  {
+    return predefinedEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public ContractFactory getContractFactory()
   {
     return (ContractFactory)getEFactoryInstance();
@@ -1670,6 +1700,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     createEAttribute(iStringVarEClass, ISTRING_VAR__DIRECT);
     createEReference(iStringVarEClass, ISTRING_VAR__DOMAIN);
     createEReference(iStringVarEClass, ISTRING_VAR__QUERY);
+    createEAttribute(iStringVarEClass, ISTRING_VAR__PREDEFINED);
 
     contractAssumptionEClass = createEClass(CONTRACT_ASSUMPTION);
     createEReference(contractAssumptionEClass, CONTRACT_ASSUMPTION__CONTRACT);
@@ -1725,6 +1756,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
 
     // Create enums
     languageEEnum = createEEnum(LANGUAGE);
+    predefinedEEnum = createEEnum(PREDEFINED);
   }
 
   /**
@@ -1882,6 +1914,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     initEAttribute(getIStringVar_Direct(), theEcorePackage.getEBoolean(), "direct", null, 0, 1, IStringVar.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getIStringVar_Domain(), this.getDomain(), null, "domain", null, 0, 1, IStringVar.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getIStringVar_Query(), this.getSingleValDeclaration(), null, "query", null, 0, 1, IStringVar.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getIStringVar_Predefined(), this.getPredefined(), "predefined", null, 0, 1, IStringVar.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(contractAssumptionEClass, ContractAssumption.class, "ContractAssumption", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getContractAssumption_Contract(), this.getContractElement(), null, "contract", null, 0, 1, ContractAssumption.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1940,6 +1973,10 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     addEEnumLiteral(languageEEnum, Language.PYTHON);
     addEEnumLiteral(languageEEnum, Language.JAVA);
     addEEnumLiteral(languageEEnum, Language.SMT);
+
+    initEEnum(predefinedEEnum, Predefined.class, "Predefined");
+    addEEnumLiteral(predefinedEEnum, Predefined.ERROR);
+    addEEnumLiteral(predefinedEEnum, Predefined.INFO);
 
     // Create resource
     createResource(eNS_URI);

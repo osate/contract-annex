@@ -111,10 +111,15 @@
   <eClassifiers xsi:type="ecore:EClass" name="IStringLiteral" eSuperTypes="#//IStringPart">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Predefined">
+    <eLiterals name="ERROR" literal="error0"/>
+    <eLiterals name="INFO" value="1" literal="info0"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IStringVar" eSuperTypes="#//IStringPart">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="direct" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="domain" eType="#//Domain"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="query" eType="#//SingleValDeclaration"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="predefined" eType="#//Predefined"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContractAssumption" eSuperTypes="#//AssumptionElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="contract" eType="#//ContractElement"/>
