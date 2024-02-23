@@ -1,0 +1,25 @@
+package member_with_argument_test
+public
+	with ps;
+	
+	annex contract {**
+		contract MemberWithArgumentTest {
+			queries
+				val presentMap = self#ps::integer_with_units_1?.scaledTo(ms);
+				val emptyMap = self#ps::integer_with_units_2?.scaledTo(ms);
+				
+				val presentFlatMap = self#ps::record_1?.get(field_1);
+				val outerEmptyFlatMap = self#ps::record_2?.get(field_1);
+				val innerEmptyFlatMap = self#ps::record_1?.get(field_2);
+		}
+	**};
+	
+	system s
+		properties
+			ps::integer_with_units_1 => 1 sec;
+			ps::record_1 => [field_1 => "field_1";];
+	end s;
+	
+	system implementation s.i
+	end s.i;
+end member_with_argument_test;
