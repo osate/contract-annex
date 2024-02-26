@@ -25,6 +25,7 @@
  *******************************************************************************/
 package org.osate.contract.execution;
 
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.ease.ScriptResult;
@@ -34,13 +35,21 @@ public class ScriptRunner {
 
 	private EngineDescription engineDescription;
 
-	public ScriptRunner(EngineDescription description) {
+	private List<String> error;
+	private List<String> info;
+
+	public ScriptRunner(EngineDescription description, List<String> error, List<String> info) {
 		engineDescription = description;
+		this.error = error;
+		this.info = info;
 	}
 
 	public Boolean run(String pyCode, Map<String, Object> variables) {
 		if (engineDescription != null) {
 			var engine = engineDescription.createEngine();
+
+			variables.put("error0", error);
+			variables.put("info0", info);
 
 			if (variables.isEmpty()) {
 				System.out.println("No global variables");
@@ -51,24 +60,23 @@ public class ScriptRunner {
 				engine.setVariable(entry.getKey(), entry.getValue());
 				System.out.println("  " + entry.getKey());
 			}
+
 			ScriptResult sresult = engine.execute(pyCode);
 			engine.schedule();
 			String o = sresult.toString().trim();
-			String boolRes = o;
-			String msg = o;
-			var res = boolRes.toLowerCase().startsWith("true");
+			var res = o.toLowerCase().startsWith("true");
 
 			if (!res) {
-				System.out.println("Error Explanations: " + msg);
+				System.out.println("Error Explanations: " + error);
 				ExperimentalErrorParser errorParser = ExperimentalErrorParser.getParser();
-				errorParser.markErrors(msg);
+				errorParser.markErrors(error.get(0));
 			} else {
 				ExperimentalErrorParser errorParser = ExperimentalErrorParser.getParser();
-				errorParser.markInfo(msg);
+				errorParser.markInfo(info.get(0));
 			}
 
 			System.out.println("Result is " + res);
-			System.out.println("msg: " + msg);
+			System.out.println("msg: " + error.get(0));
 			return res;
 		}
 		return null;

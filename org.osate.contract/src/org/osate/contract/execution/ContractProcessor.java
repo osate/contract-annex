@@ -58,8 +58,6 @@ public class ContractProcessor {
 
 	private int assertIndex = 0;
 
-	protected boolean useZ3 = true;
-
 	protected PythonBuilder pyBuilder;
 
 	protected ScriptRunner pyRunner;
@@ -74,34 +72,21 @@ public class ContractProcessor {
 
 	static final Object DONE = new Object();
 
+	private List<String> error = new ArrayList<>();
+
+	private List<String> info = new ArrayList<>();
+
 	public ContractProcessor(ComponentInstance context, EngineDescription description) {
 		this.context = context;
-		pyBuilder = new PythonBuilder(context);
-		pyRunner = new ScriptRunner(description);
+		error.add("");
+		info.add("");
+		pyBuilder = newPythonBuilder(context);
+		pyRunner = new ScriptRunner(description, error, info);
 	}
 
-	public Object pyVerificationPlan(VerificationPlan plan) {
-		ContractLibrary library = EcoreUtil2.getContainerOfType(plan, ContractLibrary.class);
-		pyBuilder.addImplementations(library);
-		for (var contract : plan.getContracts()) {
-			pyContract(contract);
-		}
-		return DONE;
-	};
-
-	public Object pyContract(Contract contract) {
-		ContractLibrary library = EcoreUtil2.getContainerOfType(contract, ContractLibrary.class);
-		pyBuilder.addImplementations(library);
-		for (var assumption : contract.getAssumptions()) {
-			if (assumption instanceof CodeAssumption ca) {
-				pyBuilder.addCode(ca.getCode());
-			}
-		}
-		for (var analysis : contract.getAnalyses()) {
-			pyBuilder.addCode(analysis.getCode());
-		}
-		return DONE;
-	};
+	private PythonBuilder newPythonBuilder(ComponentInstance context) {
+		return new PythonBuilder(context, error, info);
+	}
 
 	public void smtVerificationPlan(VerificationPlan plan, boolean checkCompleteness) {
 		ContractLibrary library = EcoreUtil2.getContainerOfType(plan, ContractLibrary.class);
@@ -117,7 +102,6 @@ public class ContractProcessor {
 
 					def execute%s():
 					    s = Solver()
-					    error0 = [\"\"]
 					""".formatted(plan.getName()));
 			pyBuilder.indent();
 
@@ -176,24 +160,19 @@ public class ContractProcessor {
 		if (checkCompleteness) {
 			pyBuilder.addCode("""
 					if s.check() == sat:
-					    return \"False,\" + info0[0]
-					#print(s.unsat_core())
-					#return True
-					return \"True,\" + str(s.unsat_core())
-
+					    return \"False\"
+					error0[0] += str(s.unsat_core())
+					return \"True\"
 					""");
 		} else {
 			pyBuilder.addCode("""
 					if s.check() == sat:
-					    return \"True,\" + info0[0]
-					#print(s.unsat_core())
-					#return False
-					return \"False,\" + str(s.unsat_core())
-
+					    return \"True\"
+					error0[0] += str(s.unsat_core())
+					return \"False\"
 					""");
 		}
 		pyBuilder.outdent().addCode("""
-				info0 = [\"\"]
 				execute%s()
 				""".formatted(plan.getName()));
 	}
@@ -232,7 +211,7 @@ public class ContractProcessor {
 		for (var domain : contract.getDomains()) {
 			pyBuilder.addDomain(domain);
 		}
-		var pyExpr = new PythonBuilder(context);
+		var pyExpr = newPythonBuilder(context);
 		if (contract.isExact()) {
 			pyExpr.addCode("""
 					If(
@@ -301,13 +280,13 @@ public class ContractProcessor {
 	};
 
 	private boolean checkInputAssumptions(Contract contract) {
-		var pb = new PythonBuilder(context);
+		var pb = newPythonBuilder(context);
 		ContractLibrary library = EcoreUtil2.getContainerOfType(contract, ContractLibrary.class);
 		pb.addImplementations(library);
 		// reuse initial part of the script
 		var common = pb.getScript();
 		for (var ia : contract.getInputs()) {
-			pb = new PythonBuilder(context);
+			pb = newPythonBuilder(context);
 			pb.addCode(common);
 			if (!checkInputAssumption(pb, ia)) {
 				return false;
@@ -327,7 +306,7 @@ public class ContractProcessor {
 	}
 
 	private String evalAssumption(CodeAssumption ca) {
-		var pb = new PythonBuilder(context);
+		var pb = newPythonBuilder(context);
 		ContractLibrary library = EcoreUtil2.getContainerOfType(ca, ContractLibrary.class);
 		pb.addImplementations(library);
 		pb.addCode(ca.getCode());
@@ -340,7 +319,7 @@ public class ContractProcessor {
 	};
 
 	public String smtAssumption(CodeAssumption ca) {
-		var pyExpr = new PythonBuilder(context);
+		var pyExpr = newPythonBuilder(context);
 		if (ca.isExact()) {
 			pyExpr.addCode("""
 					If(
@@ -376,7 +355,7 @@ public class ContractProcessor {
 	}
 
 	public String smtArgument(Argument argument) {
-		var pb = new PythonBuilder(context);
+		var pb = newPythonBuilder(context);
 		ContractLibrary library = EcoreUtil2.getContainerOfType(argument, ContractLibrary.class);
 
 		pyBuilder.addImplementations(library);
@@ -437,11 +416,8 @@ public class ContractProcessor {
 				if (subclause instanceof DefaultAnnexSubclause defaultSubclause
 						&& defaultSubclause.getParsedAnnexSubclause() instanceof ContractSubclause contractSubclause) {
 					for (var plan : contractSubclause.getVerifyPlans()) {
-						if (useZ3) {
-							smtVerificationPlan(plan, checkCompleteness);
-						} else {
-							pyVerificationPlan(plan);
-						}
+						smtVerificationPlan(plan, checkCompleteness);
+
 						var pyCode = pyBuilder.getScript();
 
 						int i = 1;

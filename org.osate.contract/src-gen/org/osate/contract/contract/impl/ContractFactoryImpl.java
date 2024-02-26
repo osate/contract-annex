@@ -147,6 +147,8 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
         return createLanguageFromString(eDataType, initialValue);
       case ContractPackage.MEMBER_CALL_OPERATOR:
         return createMemberCallOperatorFromString(eDataType, initialValue);
+      case ContractPackage.PREDEFINED:
+        return createPredefinedFromString(eDataType, initialValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -166,6 +168,8 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
         return convertLanguageToString(eDataType, instanceValue);
       case ContractPackage.MEMBER_CALL_OPERATOR:
         return convertMemberCallOperatorToString(eDataType, instanceValue);
+      case ContractPackage.PREDEFINED:
+        return convertPredefinedToString(eDataType, instanceValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -691,6 +695,28 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
    * @generated
    */
   public String convertMemberCallOperatorToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Predefined createPredefinedFromString(EDataType eDataType, String initialValue)
+  {
+    Predefined result = Predefined.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertPredefinedToString(EDataType eDataType, Object instanceValue)
   {
     return instanceValue == null ? null : instanceValue.toString();
   }

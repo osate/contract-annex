@@ -2800,33 +2800,57 @@ ruleIStringInter returns [EObject current=null]
 		(
 			(
 				(
+					(
+						(
+							{
+								if ($current==null) {
+									$current = createModelElement(grammarAccess.getIStringInterRule());
+								}
+							}
+							otherlv_1=RULE_ID
+							{
+								newLeafNode(otherlv_1, grammarAccess.getIStringInterAccess().getDomainDomainCrossReference_1_0_0_0_0());
+							}
+						)
+					)
+					otherlv_2='::'
 					{
-						if ($current==null) {
-							$current = createModelElement(grammarAccess.getIStringInterRule());
+						newLeafNode(otherlv_2, grammarAccess.getIStringInterAccess().getColonColonKeyword_1_0_0_1());
+					}
+				)?
+				(
+					(
+						{
+							if ($current==null) {
+								$current = createModelElement(grammarAccess.getIStringInterRule());
+							}
 						}
-					}
-					otherlv_1=RULE_ID
-					{
-						newLeafNode(otherlv_1, grammarAccess.getIStringInterAccess().getDomainDomainCrossReference_1_0_0());
-					}
+						otherlv_3=RULE_ID
+						{
+							newLeafNode(otherlv_3, grammarAccess.getIStringInterAccess().getQuerySingleValDeclarationCrossReference_1_0_1_0());
+						}
+					)
 				)
 			)
-			otherlv_2='::'
-			{
-				newLeafNode(otherlv_2, grammarAccess.getIStringInterAccess().getColonColonKeyword_1_1());
-			}
-		)?
-		(
+			    |
 			(
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getIStringInterRule());
+				(
+					{
+						newCompositeNode(grammarAccess.getIStringInterAccess().getPredefinedPredefinedEnumRuleCall_1_1_0());
 					}
-				}
-				otherlv_3=RULE_ID
-				{
-					newLeafNode(otherlv_3, grammarAccess.getIStringInterAccess().getQuerySingleValDeclarationCrossReference_2_0());
-				}
+					lv_predefined_4_0=rulePredefined
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getIStringInterRule());
+						}
+						set(
+							$current,
+							"predefined",
+							lv_predefined_4_0,
+							"org.osate.contract.Contract.Predefined");
+						afterParserOrEnumRuleCall();
+					}
+				)
 			)
 		)
 	)
@@ -4665,6 +4689,33 @@ ruleMemberCallOperator returns [Enumerator current=null]
 			{
 				$current = grammarAccess.getMemberCallOperatorAccess().getOPTIONALEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
 				newLeafNode(enumLiteral_1, grammarAccess.getMemberCallOperatorAccess().getOPTIONALEnumLiteralDeclaration_1());
+			}
+		)
+	)
+;
+
+// Rule Predefined
+rulePredefined returns [Enumerator current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			enumLiteral_0='error0'
+			{
+				$current = grammarAccess.getPredefinedAccess().getERROREnumLiteralDeclaration_0().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_0, grammarAccess.getPredefinedAccess().getERROREnumLiteralDeclaration_0());
+			}
+		)
+		    |
+		(
+			enumLiteral_1='info0'
+			{
+				$current = grammarAccess.getPredefinedAccess().getINFOEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_1, grammarAccess.getPredefinedAccess().getINFOEnumLiteralDeclaration_1());
 			}
 		)
 	)

@@ -669,7 +669,7 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	 *     IStringInter returns IStringVar
 	 *
 	 * Constraint:
-	 *     (direct?=':'? domain=[Domain|ID]? query=[SingleValDeclaration|ID])
+	 *     (direct?=':'? ((domain=[Domain|ID]? query=[SingleValDeclaration|ID]) | predefined=Predefined))
 	 * </pre>
 	 */
 	protected void sequence_IStringInter(ISerializationContext context, IStringVar semanticObject) {

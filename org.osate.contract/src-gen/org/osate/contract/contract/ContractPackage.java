@@ -1458,13 +1458,22 @@ public interface ContractPackage extends EPackage
   int ISTRING_VAR__QUERY = ISTRING_PART_FEATURE_COUNT + 2;
 
   /**
+   * The feature id for the '<em><b>Predefined</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ISTRING_VAR__PREDEFINED = ISTRING_PART_FEATURE_COUNT + 3;
+
+  /**
    * The number of structural features of the '<em>IString Var</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ISTRING_VAR_FEATURE_COUNT = ISTRING_PART_FEATURE_COUNT + 3;
+  int ISTRING_VAR_FEATURE_COUNT = ISTRING_PART_FEATURE_COUNT + 4;
 
   /**
    * The meta object id for the '{@link org.osate.contract.contract.impl.ContractAssumptionImpl <em>Assumption</em>}' class.
@@ -2022,6 +2031,16 @@ public interface ContractPackage extends EPackage
    * @generated
    */
   int MEMBER_CALL_OPERATOR = 41;
+
+  /**
+   * The meta object id for the '{@link org.osate.contract.contract.Predefined <em>Predefined</em>}' enum.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.osate.contract.contract.Predefined
+   * @see org.osate.contract.contract.impl.ContractPackageImpl#getPredefined()
+   * @generated
+   */
+  int PREDEFINED = 42;
 
 
   /**
@@ -2693,6 +2712,17 @@ public interface ContractPackage extends EPackage
   EReference getIStringVar_Query();
 
   /**
+   * Returns the meta object for the attribute '{@link org.osate.contract.contract.IStringVar#getPredefined <em>Predefined</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Predefined</em>'.
+   * @see org.osate.contract.contract.IStringVar#getPredefined()
+   * @see #getIStringVar()
+   * @generated
+   */
+  EAttribute getIStringVar_Predefined();
+
+  /**
    * Returns the meta object for class '{@link org.osate.contract.contract.ContractAssumption <em>Assumption</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -3114,6 +3144,16 @@ public interface ContractPackage extends EPackage
    * @generated
    */
   EEnum getMemberCallOperator();
+
+  /**
+   * Returns the meta object for enum '{@link org.osate.contract.contract.Predefined <em>Predefined</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for enum '<em>Predefined</em>'.
+   * @see org.osate.contract.contract.Predefined
+   * @generated
+   */
+  EEnum getPredefined();
 
   /**
    * Returns the factory that creates the instances of the model.
@@ -3693,6 +3733,14 @@ public interface ContractPackage extends EPackage
     EReference ISTRING_VAR__QUERY = eINSTANCE.getIStringVar_Query();
 
     /**
+     * The meta object literal for the '<em><b>Predefined</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute ISTRING_VAR__PREDEFINED = eINSTANCE.getIStringVar_Predefined();
+
+    /**
      * The meta object literal for the '{@link org.osate.contract.contract.impl.ContractAssumptionImpl <em>Assumption</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4045,6 +4093,16 @@ public interface ContractPackage extends EPackage
      * @generated
      */
     EEnum MEMBER_CALL_OPERATOR = eINSTANCE.getMemberCallOperator();
+
+    /**
+     * The meta object literal for the '{@link org.osate.contract.contract.Predefined <em>Predefined</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.osate.contract.contract.Predefined
+     * @see org.osate.contract.contract.impl.ContractPackageImpl#getPredefined()
+     * @generated
+     */
+    EEnum PREDEFINED = eINSTANCE.getPredefined();
 
   }
 
