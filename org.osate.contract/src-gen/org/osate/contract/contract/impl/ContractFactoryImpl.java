@@ -116,6 +116,9 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
       case ContractPackage.CONTRACT_ASSUMPTION: return createContractAssumption();
       case ContractPackage.ARGUMENT_ASSUMPTION: return createArgumentAssumption();
       case ContractPackage.CODE_ASSUMPTION: return createCodeAssumption();
+      case ContractPackage.ARGUMENT_AND: return createArgumentAnd();
+      case ContractPackage.ARGUMENT_OR: return createArgumentOr();
+      case ContractPackage.ARGUMENT_NOT: return createArgumentNot();
       case ContractPackage.TUPLE_DECLARATION: return createTupleDeclaration();
       case ContractPackage.OR_EXPRESSION: return createOrExpression();
       case ContractPackage.AND_EXPRESSION: return createAndExpression();
@@ -505,6 +508,42 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
   {
     CodeAssumptionImpl codeAssumption = new CodeAssumptionImpl();
     return codeAssumption;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ArgumentAnd createArgumentAnd()
+  {
+    ArgumentAndImpl argumentAnd = new ArgumentAndImpl();
+    return argumentAnd;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ArgumentOr createArgumentOr()
+  {
+    ArgumentOrImpl argumentOr = new ArgumentOrImpl();
+    return argumentOr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ArgumentNot createArgumentNot()
+  {
+    ArgumentNotImpl argumentNot = new ArgumentNotImpl();
+    return argumentNot;
   }
 
   /**

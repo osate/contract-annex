@@ -64,6 +64,8 @@
         upperBound="-1" eType="#//ContractElement"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="arguments" unique="false"
         upperBound="-1" eType="#//ContractElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nested" upperBound="-1"
+        eType="#//ArgumentExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VerificationPlan" eSuperTypes="#//ContractElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="componentImplementation"
@@ -134,6 +136,9 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="guarantee" eType="#//Guarantee"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ArgumentAnd" eSuperTypes="#//ArgumentExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ArgumentOr" eSuperTypes="#//ArgumentExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ArgumentNot" eSuperTypes="#//ArgumentExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="TupleDeclaration" eSuperTypes="#//Query">
     <eStructuralFeatures xsi:type="ecore:EReference" name="names" upperBound="-1"
         eType="#//TupleName" containment="true"/>

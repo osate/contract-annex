@@ -40,6 +40,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link org.osate.contract.contract.ArgumentExpression#getContracts <em>Contracts</em>}</li>
  *   <li>{@link org.osate.contract.contract.ArgumentExpression#getArguments <em>Arguments</em>}</li>
+ *   <li>{@link org.osate.contract.contract.ArgumentExpression#getNested <em>Nested</em>}</li>
  * </ul>
  *
  * @see org.osate.contract.contract.ContractPackage#getArgumentExpression()
@@ -71,5 +72,17 @@ public interface ArgumentExpression extends EObject
    * @generated
    */
   EList<ContractElement> getArguments();
+
+  /**
+   * Returns the value of the '<em><b>Nested</b></em>' containment reference list.
+   * The list contents are of type {@link org.osate.contract.contract.ArgumentExpression}.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Nested</em>' containment reference list.
+   * @see org.osate.contract.contract.ContractPackage#getArgumentExpression_Nested()
+   * @model containment="true"
+   * @generated
+   */
+  EList<ArgumentExpression> getNested();
 
 } // ArgumentExpression
