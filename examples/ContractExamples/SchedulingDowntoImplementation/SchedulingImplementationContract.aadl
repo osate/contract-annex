@@ -949,9 +949,9 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 			<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
 		argument
 			or(
-				contract RMAHarmonicBoundContract
+				contract RMAHarmonicBoundContract,
 				contract RMANonHarmonicBoundContract
-				--contract fpResponseTimeContract
+				or (not contract fpResponseTimeContract)
 			);
 	}
 	

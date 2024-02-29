@@ -839,6 +839,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final Keyword cArgumentKeyword_5_0 = (Keyword)cGroup_5.eContents().get(0);
 		private final Assignment cArgumentExpressionAssignment_5_1 = (Assignment)cGroup_5.eContents().get(1);
 		private final RuleCall cArgumentExpressionArgumentExpressionParserRuleCall_5_1_0 = (RuleCall)cArgumentExpressionAssignment_5_1.eContents().get(0);
+		private final Keyword cSemicolonKeyword_5_2 = (Keyword)cGroup_5.eContents().get(2);
 		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
 		//Argument:
@@ -850,7 +851,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//        Exact guarantee=Guarantee ';'
 		//    )?
 		//    ('argument'
-		//        argumentExpression=ArgumentExpression
+		//        argumentExpression=ArgumentExpression ';'
 		//    )?
 		//    '}'
 		//;
@@ -864,7 +865,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//    Exact guarantee=Guarantee ';'
 		//)?
 		//('argument'
-		//    argumentExpression=ArgumentExpression
+		//    argumentExpression=ArgumentExpression ';'
 		//)?
 		//'}'
 		public Group getGroup() { return cGroup; }
@@ -913,7 +914,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		public Keyword getSemicolonKeyword_4_3() { return cSemicolonKeyword_4_3; }
 		
 		//('argument'
-		//    argumentExpression=ArgumentExpression
+		//    argumentExpression=ArgumentExpression ';'
 		//)?
 		public Group getGroup_5() { return cGroup_5; }
 		
@@ -926,51 +927,122 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//ArgumentExpression
 		public RuleCall getArgumentExpressionArgumentExpressionParserRuleCall_5_1_0() { return cArgumentExpressionArgumentExpressionParserRuleCall_5_1_0; }
 		
+		//';'
+		public Keyword getSemicolonKeyword_5_2() { return cSemicolonKeyword_5_2; }
+		
 		//'}'
 		public Keyword getRightCurlyBracketKeyword_6() { return cRightCurlyBracketKeyword_6; }
 	}
 	public class ArgumentExpressionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.ArgumentExpression");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cArgumentExpressionAction_0 = (Action)cGroup.eContents().get(0);
-		private final Keyword cOrKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Keyword cLeftParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Alternatives cAlternatives_3 = (Alternatives)cGroup.eContents().get(3);
-		private final Group cGroup_3_0 = (Group)cAlternatives_3.eContents().get(0);
-		private final Keyword cContractKeyword_3_0_0 = (Keyword)cGroup_3_0.eContents().get(0);
-		private final Assignment cContractsAssignment_3_0_1 = (Assignment)cGroup_3_0.eContents().get(1);
-		private final CrossReference cContractsContractElementCrossReference_3_0_1_0 = (CrossReference)cContractsAssignment_3_0_1.eContents().get(0);
-		private final RuleCall cContractsContractElementQPREFParserRuleCall_3_0_1_0_1 = (RuleCall)cContractsContractElementCrossReference_3_0_1_0.eContents().get(1);
-		private final Group cGroup_3_1 = (Group)cAlternatives_3.eContents().get(1);
-		private final Keyword cArgumentKeyword_3_1_0 = (Keyword)cGroup_3_1.eContents().get(0);
-		private final Assignment cArgumentsAssignment_3_1_1 = (Assignment)cGroup_3_1.eContents().get(1);
-		private final CrossReference cArgumentsContractElementCrossReference_3_1_1_0 = (CrossReference)cArgumentsAssignment_3_1_1.eContents().get(0);
-		private final RuleCall cArgumentsContractElementQPREFParserRuleCall_3_1_1_0_1 = (RuleCall)cArgumentsContractElementCrossReference_3_1_1_0.eContents().get(1);
-		private final Keyword cRightParenthesisKeyword_4 = (Keyword)cGroup.eContents().get(4);
-		private final Keyword cSemicolonKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cArgumentOrParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cArgumentAndParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cArgumentNotParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
 		
 		//ArgumentExpression:
-		//    {ArgumentExpression}
-		//    'or' '('
-		//     (
-		//         'contract' contracts+=[ContractElement|QPREF]
-		//         | 'argument' arguments+=[ContractElement|QPREF]
-		//     )*
-		//    ')' ';'
+		//    (
+		//      ArgumentOr
+		//    | ArgumentAnd
+		//    | ArgumentNot
+		//    )
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{ArgumentExpression}
-		//'or' '('
-		// (
-		//     'contract' contracts+=[ContractElement|QPREF]
-		//     | 'argument' arguments+=[ContractElement|QPREF]
-		// )*
-		//')' ';'
+		//(
+		//  ArgumentOr
+		//| ArgumentAnd
+		//| ArgumentNot
+		//)
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//ArgumentOr
+		public RuleCall getArgumentOrParserRuleCall_0() { return cArgumentOrParserRuleCall_0; }
+		
+		//ArgumentAnd
+		public RuleCall getArgumentAndParserRuleCall_1() { return cArgumentAndParserRuleCall_1; }
+		
+		//ArgumentNot
+		public RuleCall getArgumentNotParserRuleCall_2() { return cArgumentNotParserRuleCall_2; }
+	}
+	public class ArgumentAndElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.ArgumentAnd");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cArgumentAndAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cAndKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cLeftParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final RuleCall cArgumentTermParserRuleCall_3 = (RuleCall)cGroup.eContents().get(3);
+		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
+		private final Keyword cCommaKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
+		private final RuleCall cArgumentTermParserRuleCall_4_1 = (RuleCall)cGroup_4.eContents().get(1);
+		private final Keyword cRightParenthesisKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		
+		//ArgumentAnd returns ArgumentExpression:
+		//    {ArgumentAnd}
+		//    'and' '('
+		//        ArgumentTerm (','? ArgumentTerm)*
+		//    ')'
+		//;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{ArgumentAnd}
+		//'and' '('
+		//    ArgumentTerm (','? ArgumentTerm)*
+		//')'
 		public Group getGroup() { return cGroup; }
 		
-		//{ArgumentExpression}
-		public Action getArgumentExpressionAction_0() { return cArgumentExpressionAction_0; }
+		//{ArgumentAnd}
+		public Action getArgumentAndAction_0() { return cArgumentAndAction_0; }
+		
+		//'and'
+		public Keyword getAndKeyword_1() { return cAndKeyword_1; }
+		
+		//'('
+		public Keyword getLeftParenthesisKeyword_2() { return cLeftParenthesisKeyword_2; }
+		
+		//ArgumentTerm
+		public RuleCall getArgumentTermParserRuleCall_3() { return cArgumentTermParserRuleCall_3; }
+		
+		//(','? ArgumentTerm)*
+		public Group getGroup_4() { return cGroup_4; }
+		
+		//','?
+		public Keyword getCommaKeyword_4_0() { return cCommaKeyword_4_0; }
+		
+		//ArgumentTerm
+		public RuleCall getArgumentTermParserRuleCall_4_1() { return cArgumentTermParserRuleCall_4_1; }
+		
+		//')'
+		public Keyword getRightParenthesisKeyword_5() { return cRightParenthesisKeyword_5; }
+	}
+	public class ArgumentOrElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.ArgumentOr");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cArgumentOrAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cOrKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cLeftParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final RuleCall cArgumentTermParserRuleCall_3 = (RuleCall)cGroup.eContents().get(3);
+		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
+		private final Keyword cCommaKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
+		private final RuleCall cArgumentTermParserRuleCall_4_1 = (RuleCall)cGroup_4.eContents().get(1);
+		private final Keyword cRightParenthesisKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		
+		//ArgumentOr returns ArgumentExpression:
+		//    {ArgumentOr}
+		//    'or' '('
+		//        ArgumentTerm (','? ArgumentTerm)*
+		//    ')'
+		//;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{ArgumentOr}
+		//'or' '('
+		//    ArgumentTerm (','? ArgumentTerm)*
+		//')'
+		public Group getGroup() { return cGroup; }
+		
+		//{ArgumentOr}
+		public Action getArgumentOrAction_0() { return cArgumentOrAction_0; }
 		
 		//'or'
 		public Keyword getOrKeyword_1() { return cOrKeyword_1; }
@@ -978,47 +1050,140 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//'('
 		public Keyword getLeftParenthesisKeyword_2() { return cLeftParenthesisKeyword_2; }
 		
-		//(
-		//    'contract' contracts+=[ContractElement|QPREF]
-		//    | 'argument' arguments+=[ContractElement|QPREF]
-		//)*
-		public Alternatives getAlternatives_3() { return cAlternatives_3; }
+		//ArgumentTerm
+		public RuleCall getArgumentTermParserRuleCall_3() { return cArgumentTermParserRuleCall_3; }
 		
-		//'contract' contracts+=[ContractElement|QPREF]
-		public Group getGroup_3_0() { return cGroup_3_0; }
+		//(','? ArgumentTerm)*
+		public Group getGroup_4() { return cGroup_4; }
 		
-		//'contract'
-		public Keyword getContractKeyword_3_0_0() { return cContractKeyword_3_0_0; }
+		//','?
+		public Keyword getCommaKeyword_4_0() { return cCommaKeyword_4_0; }
 		
-		//contracts+=[ContractElement|QPREF]
-		public Assignment getContractsAssignment_3_0_1() { return cContractsAssignment_3_0_1; }
-		
-		//[ContractElement|QPREF]
-		public CrossReference getContractsContractElementCrossReference_3_0_1_0() { return cContractsContractElementCrossReference_3_0_1_0; }
-		
-		//QPREF
-		public RuleCall getContractsContractElementQPREFParserRuleCall_3_0_1_0_1() { return cContractsContractElementQPREFParserRuleCall_3_0_1_0_1; }
-		
-		//'argument' arguments+=[ContractElement|QPREF]
-		public Group getGroup_3_1() { return cGroup_3_1; }
-		
-		//'argument'
-		public Keyword getArgumentKeyword_3_1_0() { return cArgumentKeyword_3_1_0; }
-		
-		//arguments+=[ContractElement|QPREF]
-		public Assignment getArgumentsAssignment_3_1_1() { return cArgumentsAssignment_3_1_1; }
-		
-		//[ContractElement|QPREF]
-		public CrossReference getArgumentsContractElementCrossReference_3_1_1_0() { return cArgumentsContractElementCrossReference_3_1_1_0; }
-		
-		//QPREF
-		public RuleCall getArgumentsContractElementQPREFParserRuleCall_3_1_1_0_1() { return cArgumentsContractElementQPREFParserRuleCall_3_1_1_0_1; }
+		//ArgumentTerm
+		public RuleCall getArgumentTermParserRuleCall_4_1() { return cArgumentTermParserRuleCall_4_1; }
 		
 		//')'
-		public Keyword getRightParenthesisKeyword_4() { return cRightParenthesisKeyword_4; }
+		public Keyword getRightParenthesisKeyword_5() { return cRightParenthesisKeyword_5; }
+	}
+	public class ArgumentNotElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.ArgumentNot");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
+		private final Action cArgumentNotAction_0_0 = (Action)cGroup_0.eContents().get(0);
+		private final Keyword cNotKeyword_0_1 = (Keyword)cGroup_0.eContents().get(1);
+		private final RuleCall cArgumentTermParserRuleCall_0_2 = (RuleCall)cGroup_0.eContents().get(2);
+		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
+		private final Keyword cLeftParenthesisKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
+		private final RuleCall cArgumentTermParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
+		private final Keyword cRightParenthesisKeyword_1_2 = (Keyword)cGroup_1.eContents().get(2);
 		
-		//';'
-		public Keyword getSemicolonKeyword_5() { return cSemicolonKeyword_5; }
+		//ArgumentNot returns ArgumentExpression:
+		//    {ArgumentNot}
+		//    'not'
+		//        ArgumentTerm
+		//      | ('(' ArgumentTerm')')
+		//;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{ArgumentNot}
+		//'not'
+		//    ArgumentTerm
+		//  | ('(' ArgumentTerm')')
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//{ArgumentNot}
+		//'not'
+		//    ArgumentTerm
+		public Group getGroup_0() { return cGroup_0; }
+		
+		//{ArgumentNot}
+		public Action getArgumentNotAction_0_0() { return cArgumentNotAction_0_0; }
+		
+		//'not'
+		public Keyword getNotKeyword_0_1() { return cNotKeyword_0_1; }
+		
+		//ArgumentTerm
+		public RuleCall getArgumentTermParserRuleCall_0_2() { return cArgumentTermParserRuleCall_0_2; }
+		
+		//('(' ArgumentTerm')')
+		public Group getGroup_1() { return cGroup_1; }
+		
+		//'('
+		public Keyword getLeftParenthesisKeyword_1_0() { return cLeftParenthesisKeyword_1_0; }
+		
+		//ArgumentTerm
+		public RuleCall getArgumentTermParserRuleCall_1_1() { return cArgumentTermParserRuleCall_1_1; }
+		
+		//')'
+		public Keyword getRightParenthesisKeyword_1_2() { return cRightParenthesisKeyword_1_2; }
+	}
+	public class ArgumentTermElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.ArgumentTerm");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(0);
+		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
+		private final Keyword cContractKeyword_0_0 = (Keyword)cGroup_0.eContents().get(0);
+		private final Assignment cContractsAssignment_0_1 = (Assignment)cGroup_0.eContents().get(1);
+		private final CrossReference cContractsContractElementCrossReference_0_1_0 = (CrossReference)cContractsAssignment_0_1.eContents().get(0);
+		private final RuleCall cContractsContractElementQPREFParserRuleCall_0_1_0_1 = (RuleCall)cContractsContractElementCrossReference_0_1_0.eContents().get(1);
+		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
+		private final Keyword cArgumentKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
+		private final Assignment cArgumentsAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final CrossReference cArgumentsContractElementCrossReference_1_1_0 = (CrossReference)cArgumentsAssignment_1_1.eContents().get(0);
+		private final RuleCall cArgumentsContractElementQPREFParserRuleCall_1_1_0_1 = (RuleCall)cArgumentsContractElementCrossReference_1_1_0.eContents().get(1);
+		private final Assignment cNestedAssignment_2 = (Assignment)cAlternatives.eContents().get(2);
+		private final RuleCall cNestedArgumentExpressionParserRuleCall_2_0 = (RuleCall)cNestedAssignment_2.eContents().get(0);
+		
+		//fragment ArgumentTerm*:
+		//    (
+		//       'contract' contracts+=[ContractElement|QPREF]
+		//     | 'argument' arguments+=[ContractElement|QPREF]
+		//     | nested+=ArgumentExpression
+		//    )
+		//;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//(
+		//   'contract' contracts+=[ContractElement|QPREF]
+		// | 'argument' arguments+=[ContractElement|QPREF]
+		// | nested+=ArgumentExpression
+		//)
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//'contract' contracts+=[ContractElement|QPREF]
+		public Group getGroup_0() { return cGroup_0; }
+		
+		//'contract'
+		public Keyword getContractKeyword_0_0() { return cContractKeyword_0_0; }
+		
+		//contracts+=[ContractElement|QPREF]
+		public Assignment getContractsAssignment_0_1() { return cContractsAssignment_0_1; }
+		
+		//[ContractElement|QPREF]
+		public CrossReference getContractsContractElementCrossReference_0_1_0() { return cContractsContractElementCrossReference_0_1_0; }
+		
+		//QPREF
+		public RuleCall getContractsContractElementQPREFParserRuleCall_0_1_0_1() { return cContractsContractElementQPREFParserRuleCall_0_1_0_1; }
+		
+		//'argument' arguments+=[ContractElement|QPREF]
+		public Group getGroup_1() { return cGroup_1; }
+		
+		//'argument'
+		public Keyword getArgumentKeyword_1_0() { return cArgumentKeyword_1_0; }
+		
+		//arguments+=[ContractElement|QPREF]
+		public Assignment getArgumentsAssignment_1_1() { return cArgumentsAssignment_1_1; }
+		
+		//[ContractElement|QPREF]
+		public CrossReference getArgumentsContractElementCrossReference_1_1_0() { return cArgumentsContractElementCrossReference_1_1_0; }
+		
+		//QPREF
+		public RuleCall getArgumentsContractElementQPREFParserRuleCall_1_1_0_1() { return cArgumentsContractElementQPREFParserRuleCall_1_1_0_1; }
+		
+		//nested+=ArgumentExpression
+		public Assignment getNestedAssignment_2() { return cNestedAssignment_2; }
+		
+		//ArgumentExpression
+		public RuleCall getNestedArgumentExpressionParserRuleCall_2_0() { return cNestedArgumentExpressionParserRuleCall_2_0; }
 	}
 	public class VerificationPlanElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.VerificationPlan");
@@ -2228,6 +2393,10 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	private final DomainElements pDomain;
 	private final ArgumentElements pArgument;
 	private final ArgumentExpressionElements pArgumentExpression;
+	private final ArgumentAndElements pArgumentAnd;
+	private final ArgumentOrElements pArgumentOr;
+	private final ArgumentNotElements pArgumentNot;
+	private final ArgumentTermElements pArgumentTerm;
 	private final VerificationPlanElements pVerificationPlan;
 	private final ClaimsElements pClaims;
 	private final LanguageElements eLanguage;
@@ -2290,6 +2459,10 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		this.pDomain = new DomainElements();
 		this.pArgument = new ArgumentElements();
 		this.pArgumentExpression = new ArgumentExpressionElements();
+		this.pArgumentAnd = new ArgumentAndElements();
+		this.pArgumentOr = new ArgumentOrElements();
+		this.pArgumentNot = new ArgumentNotElements();
+		this.pArgumentTerm = new ArgumentTermElements();
 		this.pVerificationPlan = new VerificationPlanElements();
 		this.pClaims = new ClaimsElements();
 		this.eLanguage = new LanguageElements();
@@ -2603,7 +2776,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	//        Exact guarantee=Guarantee ';'
 	//    )?
 	//    ('argument'
-	//        argumentExpression=ArgumentExpression
+	//        argumentExpression=ArgumentExpression ';'
 	//    )?
 	//    '}'
 	//;
@@ -2616,13 +2789,11 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	}
 	
 	//ArgumentExpression:
-	//    {ArgumentExpression}
-	//    'or' '('
-	//     (
-	//         'contract' contracts+=[ContractElement|QPREF]
-	//         | 'argument' arguments+=[ContractElement|QPREF]
-	//     )*
-	//    ')' ';'
+	//    (
+	//      ArgumentOr
+	//    | ArgumentAnd
+	//    | ArgumentNot
+	//    )
 	//;
 	public ArgumentExpressionElements getArgumentExpressionAccess() {
 		return pArgumentExpression;
@@ -2630,6 +2801,63 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	
 	public ParserRule getArgumentExpressionRule() {
 		return getArgumentExpressionAccess().getRule();
+	}
+	
+	//ArgumentAnd returns ArgumentExpression:
+	//    {ArgumentAnd}
+	//    'and' '('
+	//        ArgumentTerm (','? ArgumentTerm)*
+	//    ')'
+	//;
+	public ArgumentAndElements getArgumentAndAccess() {
+		return pArgumentAnd;
+	}
+	
+	public ParserRule getArgumentAndRule() {
+		return getArgumentAndAccess().getRule();
+	}
+	
+	//ArgumentOr returns ArgumentExpression:
+	//    {ArgumentOr}
+	//    'or' '('
+	//        ArgumentTerm (','? ArgumentTerm)*
+	//    ')'
+	//;
+	public ArgumentOrElements getArgumentOrAccess() {
+		return pArgumentOr;
+	}
+	
+	public ParserRule getArgumentOrRule() {
+		return getArgumentOrAccess().getRule();
+	}
+	
+	//ArgumentNot returns ArgumentExpression:
+	//    {ArgumentNot}
+	//    'not'
+	//        ArgumentTerm
+	//      | ('(' ArgumentTerm')')
+	//;
+	public ArgumentNotElements getArgumentNotAccess() {
+		return pArgumentNot;
+	}
+	
+	public ParserRule getArgumentNotRule() {
+		return getArgumentNotAccess().getRule();
+	}
+	
+	//fragment ArgumentTerm*:
+	//    (
+	//       'contract' contracts+=[ContractElement|QPREF]
+	//     | 'argument' arguments+=[ContractElement|QPREF]
+	//     | nested+=ArgumentExpression
+	//    )
+	//;
+	public ArgumentTermElements getArgumentTermAccess() {
+		return pArgumentTerm;
+	}
+	
+	public ParserRule getArgumentTermRule() {
+		return getArgumentTermAccess().getRule();
 	}
 	
 	//VerificationPlan:

@@ -244,6 +244,21 @@ public class ContractAdapterFactory extends AdapterFactoryImpl
         return createCodeAssumptionAdapter();
       }
       @Override
+      public Adapter caseArgumentAnd(ArgumentAnd object)
+      {
+        return createArgumentAndAdapter();
+      }
+      @Override
+      public Adapter caseArgumentOr(ArgumentOr object)
+      {
+        return createArgumentOrAdapter();
+      }
+      @Override
+      public Adapter caseArgumentNot(ArgumentNot object)
+      {
+        return createArgumentNotAdapter();
+      }
+      @Override
       public Adapter caseTupleDeclaration(TupleDeclaration object)
       {
         return createTupleDeclarationAdapter();
@@ -766,6 +781,51 @@ public class ContractAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createCodeAssumptionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.osate.contract.contract.ArgumentAnd <em>Argument And</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.osate.contract.contract.ArgumentAnd
+   * @generated
+   */
+  public Adapter createArgumentAndAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.osate.contract.contract.ArgumentOr <em>Argument Or</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.osate.contract.contract.ArgumentOr
+   * @generated
+   */
+  public Adapter createArgumentOrAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.osate.contract.contract.ArgumentNot <em>Argument Not</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.osate.contract.contract.ArgumentNot
+   * @generated
+   */
+  public Adapter createArgumentNotAdapter()
   {
     return null;
   }
