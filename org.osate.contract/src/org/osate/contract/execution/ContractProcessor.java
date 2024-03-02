@@ -41,7 +41,11 @@ import org.osate.aadl2.ComponentImplementation;
 import org.osate.aadl2.DefaultAnnexSubclause;
 import org.osate.aadl2.instance.ComponentInstance;
 import org.osate.contract.contract.Argument;
+import org.osate.contract.contract.ArgumentAnd;
 import org.osate.contract.contract.ArgumentAssumption;
+import org.osate.contract.contract.ArgumentExpression;
+import org.osate.contract.contract.ArgumentNot;
+import org.osate.contract.contract.ArgumentOr;
 import org.osate.contract.contract.CodeAssumption;
 import org.osate.contract.contract.Contract;
 import org.osate.contract.contract.ContractAssumption;
@@ -368,25 +372,7 @@ public class ContractProcessor {
 					Implies(
 					""").indent();
 		}
-		pb.addCode("""
-				Or(
-				""").indent();
-		var ae = argument.getArgumentExpression();
-		for (var ce : ae.getContracts()) {
-			// add referenced contract's guarantee here and add referenced contract itself later
-			Contract c = (Contract) ce;
-			pb.addCode(c.getGuarantee().getCode(), ",");
-			deferredContracts.add(c);
-		}
-		for (var ce : ae.getArguments()) {
-			// add referenced contract's guarantee here and add referenced contract itself later
-			Argument a = (Argument) ce;
-			pb.addCode(a.getGuarantee().getCode(), ",");
-			deferredArguments.add(a);
-		}
-		pb.outdent().addCode("""
-				),
-				""");
+		smtArgumentExpression(argument.getArgumentExpression(), pb);
 		var guarantee = argument.getGuarantee();
 		if (argument.isExact()) {
 			pb.addCode(guarantee.getCode(), ",");
@@ -405,6 +391,41 @@ public class ContractProcessor {
 					""");
 		}
 		return pb.getScript();
+	}
+
+	private void smtArgumentExpression(ArgumentExpression ae, PythonBuilder pb) {
+		if (ae instanceof ArgumentAnd) {
+			pb.addCode("""
+					And(
+					""");
+		} else if (ae instanceof ArgumentOr) {
+			pb.addCode("""
+					Or(
+					""");
+		} else if (ae instanceof ArgumentNot) {
+			pb.addCode("""
+					Not(
+					""");
+		}
+		pb.indent();
+		for (var ce : ae.getContracts()) {
+			// add referenced contract's guarantee here and add referenced contract itself later
+			Contract c = (Contract) ce;
+			pb.addCode(c.getGuarantee().getCode(), ",");
+			deferredContracts.add(c);
+		}
+		for (var ce : ae.getArguments()) {
+			// add referenced argument's guarantee here and add referenced contract itself later
+			Argument a = (Argument) ce;
+			pb.addCode(a.getGuarantee().getCode(), ",");
+			deferredArguments.add(a);
+		}
+		for (var ne : ae.getNested()) {
+			smtArgumentExpression(ne, pb);
+		}
+		pb.outdent().addCode("""
+				),
+				""");
 	}
 
 	@Deprecated(forRemoval = true)
