@@ -41,6 +41,7 @@ import org.osate.aadl2.instance.SystemInstance;
 import org.osate.contract.contract.IString;
 import org.osate.contract.contract.IStringLiteral;
 import org.osate.contract.contract.IStringVar;
+import org.osate.contract.contract.Predefined;
 import org.osate.contract.tuples.Tuple;
 import org.osate.contract.typing.ContractInterpreter;
 
@@ -76,8 +77,12 @@ public class PythonHelper {
 			if (part instanceof IStringLiteral literal) {
 				sb.append(literal.getValue());
 			} else if (part instanceof IStringVar svar) {
-				if (svar.getPredefined() != null) {
-					// ignore for python
+				if (svar.getQuery() == null) {
+					if (svar.getPredefined() == Predefined.ERROR) {
+						sb.append("error0");
+					} else if (svar.getPredefined() == Predefined.INFO) {
+						sb.append("info0");
+					}
 				} else {
 					var q = svar.getQuery();
 					var result = queryInterpreter.evaluateQuery(env, q);
