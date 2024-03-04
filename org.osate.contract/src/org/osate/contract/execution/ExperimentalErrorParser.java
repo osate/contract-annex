@@ -40,6 +40,13 @@ public class ExperimentalErrorParser {
 		}
 	}
 
+	public void markUnfulfilledObjectives(String errString) {
+		ArrayList<ExperimentalErrorParser.ErrorPair> errors = parseErrors(null, errString);
+		for (ErrorPair pair : errors) {
+			errManager.error(pair.element, pair.error + " Unfulfilled. Not enough details to satisfy all assumptions");
+		}
+	}
+
 	public void markInfo(String errString) {
 		ArrayList<ExperimentalErrorParser.ErrorPair> errors = parseErrors(null, errString);
 		for (ErrorPair pair : errors) {

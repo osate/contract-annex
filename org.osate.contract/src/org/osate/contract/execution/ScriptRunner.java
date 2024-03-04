@@ -70,6 +70,9 @@ public class ScriptRunner {
 				System.out.println("Error Explanations: " + error);
 				ExperimentalErrorParser errorParser = ExperimentalErrorParser.getParser();
 				errorParser.markErrors(error.get(0));
+				if (error.get(0).trim().length() == 0) {
+					errorParser.markUnfulfilledObjectives(info.get(0));
+				}
 			} else {
 				ExperimentalErrorParser errorParser = ExperimentalErrorParser.getParser();
 				errorParser.markInfo(info.get(0));
