@@ -41,6 +41,7 @@ import org.osate.aadl2.instance.SystemInstance;
 import org.osate.contract.contract.IString;
 import org.osate.contract.contract.IStringLiteral;
 import org.osate.contract.contract.IStringVar;
+import org.osate.contract.contract.Predefined;
 import org.osate.contract.tuples.Tuple;
 import org.osate.contract.typing.ContractInterpreter;
 
@@ -62,7 +63,7 @@ public class PythonHelper {
 		return ioid;
 	}
 
-	private PythonHelper() {
+	public PythonHelper() {
 	}
 
 	public String interpolateIString(ComponentInstance context, IString is, Map<String, Object> variables) {
@@ -75,25 +76,33 @@ public class PythonHelper {
 		for (var part : is.getParts()) {
 			if (part instanceof IStringLiteral literal) {
 				sb.append(literal.getValue());
-			} else if (part instanceof IStringVar varRef) {
-				var q = varRef.getQuery();
-				var result = queryInterpreter.evaluateQuery(env, q);
-				if (result.failed()) {
-					System.out.println(result.getRuleFailedException());
+			} else if (part instanceof IStringVar svar) {
+				if (svar.getQuery() == null) {
+					if (svar.getPredefined() == Predefined.ERROR) {
+						sb.append("error0");
+					} else if (svar.getPredefined() == Predefined.INFO) {
+						sb.append("info0");
+					}
 				} else {
-					Object o = result.getValue().get(q.getName());
-					if (varRef.isDirect()) {
-						if (variables.containsKey(q.getName())) {
-							if (variables.get(q.getName()) != o) {
-								throw new IllegalArgumentException("Inconsistent value for query " + q.getName());
-							}
-						} else {
-							variables.put(q.getName(), o);
-						}
-						sb.append(q.getName());
+					var q = svar.getQuery();
+					var result = queryInterpreter.evaluateQuery(env, q);
+					if (result.failed()) {
+						System.out.println(result.getRuleFailedException());
 					} else {
-						var value = toPythonString(o);
-						sb.append(value);
+						Object o = result.getValue().get(q.getName());
+						if (svar.isDirect()) {
+							if (variables.containsKey(q.getName())) {
+								if (variables.get(q.getName()) != o) {
+									throw new IllegalArgumentException("Inconsistent value for query " + q.getName());
+								}
+							} else {
+								variables.put(q.getName(), o);
+							}
+							sb.append(q.getName());
+						} else {
+							var value = toPythonString(o);
+							sb.append(value);
+						}
 					}
 				}
 			}

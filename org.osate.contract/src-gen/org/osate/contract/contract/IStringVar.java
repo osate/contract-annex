@@ -38,6 +38,7 @@ package org.osate.contract.contract;
  *   <li>{@link org.osate.contract.contract.IStringVar#isDirect <em>Direct</em>}</li>
  *   <li>{@link org.osate.contract.contract.IStringVar#getDomain <em>Domain</em>}</li>
  *   <li>{@link org.osate.contract.contract.IStringVar#getQuery <em>Query</em>}</li>
+ *   <li>{@link org.osate.contract.contract.IStringVar#getPredefined <em>Predefined</em>}</li>
  * </ul>
  *
  * @see org.osate.contract.contract.ContractPackage#getIStringVar()
@@ -111,5 +112,30 @@ public interface IStringVar extends IStringPart
    * @generated
    */
   void setQuery(SingleValDeclaration value);
+
+  /**
+   * Returns the value of the '<em><b>Predefined</b></em>' attribute.
+   * The literals are from the enumeration {@link org.osate.contract.contract.Predefined}.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Predefined</em>' attribute.
+   * @see org.osate.contract.contract.Predefined
+   * @see #setPredefined(Predefined)
+   * @see org.osate.contract.contract.ContractPackage#getIStringVar_Predefined()
+   * @model
+   * @generated
+   */
+  Predefined getPredefined();
+
+  /**
+   * Sets the value of the '{@link org.osate.contract.contract.IStringVar#getPredefined <em>Predefined</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Predefined</em>' attribute.
+   * @see org.osate.contract.contract.Predefined
+   * @see #getPredefined()
+   * @generated
+   */
+  void setPredefined(Predefined value);
 
 } // IStringVar

@@ -27,13 +27,18 @@ package org.osate.contract.contract.impl;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.osate.contract.contract.ArgumentExpression;
 import org.osate.contract.contract.ContractElement;
@@ -49,6 +54,7 @@ import org.osate.contract.contract.ContractPackage;
  * <ul>
  *   <li>{@link org.osate.contract.contract.impl.ArgumentExpressionImpl#getContracts <em>Contracts</em>}</li>
  *   <li>{@link org.osate.contract.contract.impl.ArgumentExpressionImpl#getArguments <em>Arguments</em>}</li>
+ *   <li>{@link org.osate.contract.contract.impl.ArgumentExpressionImpl#getNested <em>Nested</em>}</li>
  * </ul>
  *
  * @generated
@@ -74,6 +80,16 @@ public class ArgumentExpressionImpl extends MinimalEObjectImpl.Container impleme
    * @ordered
    */
   protected EList<ContractElement> arguments;
+
+  /**
+   * The cached value of the '{@link #getNested() <em>Nested</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getNested()
+   * @generated
+   * @ordered
+   */
+  protected EList<ArgumentExpression> nested;
 
   /**
    * <!-- begin-user-doc -->
@@ -132,6 +148,37 @@ public class ArgumentExpressionImpl extends MinimalEObjectImpl.Container impleme
    * @generated
    */
   @Override
+  public EList<ArgumentExpression> getNested()
+  {
+    if (nested == null)
+    {
+      nested = new EObjectContainmentEList<ArgumentExpression>(ArgumentExpression.class, this, ContractPackage.ARGUMENT_EXPRESSION__NESTED);
+    }
+    return nested;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case ContractPackage.ARGUMENT_EXPRESSION__NESTED:
+        return ((InternalEList<?>)getNested()).basicRemove(otherEnd, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
     switch (featureID)
@@ -140,6 +187,8 @@ public class ArgumentExpressionImpl extends MinimalEObjectImpl.Container impleme
         return getContracts();
       case ContractPackage.ARGUMENT_EXPRESSION__ARGUMENTS:
         return getArguments();
+      case ContractPackage.ARGUMENT_EXPRESSION__NESTED:
+        return getNested();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -163,6 +212,10 @@ public class ArgumentExpressionImpl extends MinimalEObjectImpl.Container impleme
         getArguments().clear();
         getArguments().addAll((Collection<? extends ContractElement>)newValue);
         return;
+      case ContractPackage.ARGUMENT_EXPRESSION__NESTED:
+        getNested().clear();
+        getNested().addAll((Collection<? extends ArgumentExpression>)newValue);
+        return;
     }
     super.eSet(featureID, newValue);
   }
@@ -183,6 +236,9 @@ public class ArgumentExpressionImpl extends MinimalEObjectImpl.Container impleme
       case ContractPackage.ARGUMENT_EXPRESSION__ARGUMENTS:
         getArguments().clear();
         return;
+      case ContractPackage.ARGUMENT_EXPRESSION__NESTED:
+        getNested().clear();
+        return;
     }
     super.eUnset(featureID);
   }
@@ -201,6 +257,8 @@ public class ArgumentExpressionImpl extends MinimalEObjectImpl.Container impleme
         return contracts != null && !contracts.isEmpty();
       case ContractPackage.ARGUMENT_EXPRESSION__ARGUMENTS:
         return arguments != null && !arguments.isEmpty();
+      case ContractPackage.ARGUMENT_EXPRESSION__NESTED:
+        return nested != null && !nested.isEmpty();
     }
     return super.eIsSet(featureID);
   }

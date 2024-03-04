@@ -337,6 +337,30 @@ public class ContractSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case ContractPackage.ARGUMENT_AND:
+      {
+        ArgumentAnd argumentAnd = (ArgumentAnd)theEObject;
+        T result = caseArgumentAnd(argumentAnd);
+        if (result == null) result = caseArgumentExpression(argumentAnd);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ContractPackage.ARGUMENT_OR:
+      {
+        ArgumentOr argumentOr = (ArgumentOr)theEObject;
+        T result = caseArgumentOr(argumentOr);
+        if (result == null) result = caseArgumentExpression(argumentOr);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ContractPackage.ARGUMENT_NOT:
+      {
+        ArgumentNot argumentNot = (ArgumentNot)theEObject;
+        T result = caseArgumentNot(argumentNot);
+        if (result == null) result = caseArgumentExpression(argumentNot);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case ContractPackage.TUPLE_DECLARATION:
       {
         TupleDeclaration tupleDeclaration = (TupleDeclaration)theEObject;
@@ -883,6 +907,54 @@ public class ContractSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseCodeAssumption(CodeAssumption object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Argument And</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Argument And</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseArgumentAnd(ArgumentAnd object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Argument Or</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Argument Or</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseArgumentOr(ArgumentOr object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Argument Not</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Argument Not</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseArgumentNot(ArgumentNot object)
   {
     return null;
   }

@@ -1,0 +1,112 @@
+-- Assurance Contract Annex Plugin for OSATE
+-- Copyright 2023 Carnegie Mellon University.
+-- NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
+-- MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
+-- WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
+-- NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
+-- RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
+-- ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+-- INFRINGEMENT.
+-- Released under a BSD (SEI)-style license, please see license.txt or contact 
+-- permission@sei.cmu.edu for full terms.
+-- [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
+-- unlimited distribution.  Please see Copyright notice for non-US Government use and 
+-- distribution.
+-- Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+-- Mellon University.
+-- This Software includes and/or makes use of the following Third-Party Software subject 
+-- to its own license:
+-- 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+-- Corporation.
+-- 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+-- contributors and others.
+-- DM23-0575
+
+package BindingContract
+public
+	with VerificationProperties;
+	
+    annex contract {**
+        contract implementation i {`
+def addError(error,msg):
+	error[0]+="|"+msg
+
+def checkSecureBindings(connectionsBindingsImplementedAs, error0):
+	print(connectionsBindingsImplementedAs)
+	allGood = True
+	for (ci, scList) in connectionsBindingsImplementedAs:
+		for (sc, noBinding, bindings) in scList:
+			if noBinding:
+				print("Secure connection missing binding to secure channel")
+				addError(error0, "{" + str(sc) + "}Secure connection missing binding to secure channel")
+				allGood = False
+			else:
+				if len(bindings) != 1:
+					print("Secure connection has too many bindings")
+					addError(error0, "{" + str(sc) + "}Secure connection must have exactly 1 binding")
+					allGood = False
+				else:
+					(vb, noImplementedBy, classifier) = bindings[0]
+					vbJava = to_java.getInstanceObject(vb)
+					print(vbJava.getCategory().getName())
+					## TODO: Should check specifics of binding, but not sure what
+					## exactly they should be right now					
+					if not vbJava.getCategory().getName() == "virtual bus":
+						print("Not bound to virtual bus")
+						addError(error0, "{" + str(sc) + "}Secure connection not bound to virtual bus")
+						allGood = False
+					else:
+						if noImplementedBy:
+							print("Secure connection binding missing implementation")
+							addError(error0, "{" + str(sc) + "}Secure connection binding missing implementation")
+							allGood = False
+						## TODO: Should check classifer, but currently cannot do anything with 
+						## with it
+	return allGood
+`}
+
+		domain Bindings {
+			queries
+				val connectionsBindingsImplementedAs = root.allComponents.map {
+					ci -> (ci, ci#VerificationProperties::UsesSecureChannels)
+				}.filterTupleElementsPresent.filter {
+					(ci, useSecureChannels) -> useSecureChannels 
+				}.map {
+					(ci, useSecureChannels) -> (ci, ci.allConnections.map {
+						sc ->
+							val acb = sc#Actual_Connection_Binding;
+							(sc, acb.isEmpty, acb.map {
+								list -> list.map {
+									vb ->
+									val implementedAs = vb#Implemented_As;
+									-- XXX: Want to use the (optional) classifier implementedAs here,
+									-- but the classifier is eliminated when passed to Python!
+									-- Furthermore, cannot DO ANYTHING with the classifer in the 
+									-- query language.
+									-- XXX: So for now just pass a string as a placeholder for the name
+									-- (vb, implementedAs.isEmpty, implementedAs)
+									(vb, implementedAs.isEmpty, "Placeholder")
+								}
+							} )
+					})
+				};
+       	declarations
+        	-- Ideally one flag per channel, but one global one for now
+        		'''
+        		connectionsAreBound = Bool('connectionsAreBound')
+        		'''
+		}
+
+        contract SecureChannelBindings {
+        	domains
+        		Bindings;
+            input assumptions
+            assumptions
+            guarantee
+                <=> `connectionsAreBound`;            	
+            analysis
+            	'''checkSecureBindings(${connectionsBindingsImplementedAs$}, error0)''';
+        }
+	**};
+
+end BindingContract;

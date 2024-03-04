@@ -116,6 +116,9 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
       case ContractPackage.CONTRACT_ASSUMPTION: return createContractAssumption();
       case ContractPackage.ARGUMENT_ASSUMPTION: return createArgumentAssumption();
       case ContractPackage.CODE_ASSUMPTION: return createCodeAssumption();
+      case ContractPackage.ARGUMENT_AND: return createArgumentAnd();
+      case ContractPackage.ARGUMENT_OR: return createArgumentOr();
+      case ContractPackage.ARGUMENT_NOT: return createArgumentNot();
       case ContractPackage.TUPLE_DECLARATION: return createTupleDeclaration();
       case ContractPackage.OR_EXPRESSION: return createOrExpression();
       case ContractPackage.AND_EXPRESSION: return createAndExpression();
@@ -145,6 +148,8 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
     {
       case ContractPackage.LANGUAGE:
         return createLanguageFromString(eDataType, initialValue);
+      case ContractPackage.PREDEFINED:
+        return createPredefinedFromString(eDataType, initialValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -162,6 +167,8 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
     {
       case ContractPackage.LANGUAGE:
         return convertLanguageToString(eDataType, instanceValue);
+      case ContractPackage.PREDEFINED:
+        return convertPredefinedToString(eDataType, instanceValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -509,6 +516,42 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
    * @generated
    */
   @Override
+  public ArgumentAnd createArgumentAnd()
+  {
+    ArgumentAndImpl argumentAnd = new ArgumentAndImpl();
+    return argumentAnd;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ArgumentOr createArgumentOr()
+  {
+    ArgumentOrImpl argumentOr = new ArgumentOrImpl();
+    return argumentOr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ArgumentNot createArgumentNot()
+  {
+    ArgumentNotImpl argumentNot = new ArgumentNotImpl();
+    return argumentNot;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public TupleDeclaration createTupleDeclaration()
   {
     TupleDeclarationImpl tupleDeclaration = new TupleDeclarationImpl();
@@ -665,6 +708,28 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
    * @generated
    */
   public String convertLanguageToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Predefined createPredefinedFromString(EDataType eDataType, String initialValue)
+  {
+    Predefined result = Predefined.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertPredefinedToString(EDataType eDataType, Object instanceValue)
   {
     return instanceValue == null ? null : instanceValue.toString();
   }

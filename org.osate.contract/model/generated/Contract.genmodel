@@ -11,6 +11,10 @@
       <genEnumLiterals ecoreEnumLiteral="Contract.ecore#//Language/JAVA"/>
       <genEnumLiterals ecoreEnumLiteral="Contract.ecore#//Language/SMT"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Contract.ecore#//Predefined">
+      <genEnumLiterals ecoreEnumLiteral="Contract.ecore#//Predefined/ERROR"/>
+      <genEnumLiterals ecoreEnumLiteral="Contract.ecore#//Predefined/INFO"/>
+    </genEnums>
     <genClasses ecoreClass="Contract.ecore#//ContractLibrary">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//ContractLibrary/contractElements"/>
     </genClasses>
@@ -55,6 +59,7 @@
     <genClasses ecoreClass="Contract.ecore#//ArgumentExpression">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//ArgumentExpression/contracts"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//ArgumentExpression/arguments"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//ArgumentExpression/nested"/>
     </genClasses>
     <genClasses ecoreClass="Contract.ecore#//VerificationPlan">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//VerificationPlan/componentImplementation"/>
@@ -90,6 +95,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//IStringVar/direct"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//IStringVar/domain"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//IStringVar/query"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//IStringVar/predefined"/>
     </genClasses>
     <genClasses ecoreClass="Contract.ecore#//ContractAssumption">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//ContractAssumption/contract"/>
@@ -102,6 +108,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//CodeAssumption/exact"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//CodeAssumption/guarantee"/>
     </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//ArgumentAnd"/>
+    <genClasses ecoreClass="Contract.ecore#//ArgumentOr"/>
+    <genClasses ecoreClass="Contract.ecore#//ArgumentNot"/>
     <genClasses ecoreClass="Contract.ecore#//TupleDeclaration">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//TupleDeclaration/names"/>
     </genClasses>

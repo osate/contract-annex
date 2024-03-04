@@ -22,8 +22,56 @@
 -- contributors and others.
 -- DM23-0575
 
-property set FailureProbabilities is
-	FailureProbability : aadlreal applies to (processor);
-	ReliabilityTarget : aadlreal applies to (system);
-	Replicating: reference (process) applies to (process);
-end FailureProbabilities;
+package EncryptedChannels
+public
+	with ARPKI_n3_Simplified;
+
+	-- Encryption/Description unit	
+	-- A "domain" in the ARPKI model!
+	system Crypt
+		prototypes
+			dt: data;
+		features
+			-- Unencrypted data comes in/out here
+			dec: in out event data port dt;
+			--= Encrypted data comes in/out here
+			enc: in out event data port;
+			PKI_FG: feature group ARPKI_n3_Simplified::Domain_FG;
+	end Crypt;
+
+	system implementation Crypt.i
+		subcomponents 
+			encDecProcess: process CryptoProcess.i;
+	end Crypt.i;
+
+	process CryptoProcess
+	end CryptoProcess;
+
+	process implementation CryptoProcess.i
+		subcomponents
+			refreshThread: thread {
+				period => 8 sec;
+			};
+	end CryptoProcess.i;
+
+	system ChannelRealization
+		prototypes
+			dt: data;
+		features
+			endPoint1: in out event data port dt;
+			endPoint2: in out event data port dt;
+			PKI_FG: feature group ARPKI_n3_Simplified::Domain_FG;
+	end ChannelRealization;
+
+	system implementation ChannelRealization.i
+		subcomponents
+			cr1: system Crypt.i (dt => data dt);
+			cr2: system Crypt.i (dt => data dt);
+		connections
+			c1: port endPoint1 <-> cr1.dec;
+			c2: port endPoint2 <-> cr2.dec;
+			actualEncryptedConnection: port cr1.enc <-> cr2.enc;
+			cpki1: feature group PKI_FG <-> cr1.PKI_FG;
+			cpki2: feature group PKI_FG <-> cr2.PKI_FG;
+	end ChannelRealization.i;
+end EncryptedChannels;

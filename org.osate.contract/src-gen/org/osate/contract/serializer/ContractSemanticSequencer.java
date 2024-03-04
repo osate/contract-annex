@@ -58,8 +58,11 @@ import org.osate.aadl2.StringLiteral;
 import org.osate.contract.contract.Analysis;
 import org.osate.contract.contract.AndExpression;
 import org.osate.contract.contract.Argument;
+import org.osate.contract.contract.ArgumentAnd;
 import org.osate.contract.contract.ArgumentAssumption;
 import org.osate.contract.contract.ArgumentExpression;
+import org.osate.contract.contract.ArgumentNot;
+import org.osate.contract.contract.ArgumentOr;
 import org.osate.contract.contract.CodeAssumption;
 import org.osate.contract.contract.Contract;
 import org.osate.contract.contract.ContractAssumption;
@@ -212,11 +215,20 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 			case ContractPackage.ARGUMENT:
 				sequence_Argument_Domains_Exact(context, (Argument) semanticObject); 
 				return; 
+			case ContractPackage.ARGUMENT_AND:
+				sequence_ArgumentAnd_ArgumentTerm(context, (ArgumentAnd) semanticObject); 
+				return; 
 			case ContractPackage.ARGUMENT_ASSUMPTION:
 				sequence_AssumptionElement(context, (ArgumentAssumption) semanticObject); 
 				return; 
 			case ContractPackage.ARGUMENT_EXPRESSION:
-				sequence_ArgumentExpression(context, (ArgumentExpression) semanticObject); 
+				sequence_ArgumentTerm(context, (ArgumentExpression) semanticObject); 
+				return; 
+			case ContractPackage.ARGUMENT_NOT:
+				sequence_ArgumentNot_ArgumentTerm(context, (ArgumentNot) semanticObject); 
+				return; 
+			case ContractPackage.ARGUMENT_OR:
+				sequence_ArgumentOr_ArgumentTerm(context, (ArgumentOr) semanticObject); 
 				return; 
 			case ContractPackage.CODE_ASSUMPTION:
 				sequence_AssumptionElement_Exact(context, (CodeAssumption) semanticObject); 
@@ -405,13 +417,59 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	/**
 	 * <pre>
 	 * Contexts:
-	 *     ArgumentExpression returns ArgumentExpression
+	 *     ArgumentExpression returns ArgumentAnd
+	 *     ArgumentAnd returns ArgumentAnd
 	 *
 	 * Constraint:
-	 *     (contracts+=[ContractElement|QPREF] | arguments+=[ContractElement|QPREF])*
+	 *     (contracts+=[ContractElement|QPREF] | arguments+=[ContractElement|QPREF] | nested+=ArgumentExpression)+
 	 * </pre>
 	 */
-	protected void sequence_ArgumentExpression(ISerializationContext context, ArgumentExpression semanticObject) {
+	protected void sequence_ArgumentAnd_ArgumentTerm(ISerializationContext context, ArgumentAnd semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
+	 *     ArgumentExpression returns ArgumentNot
+	 *     ArgumentNot returns ArgumentNot
+	 *
+	 * Constraint:
+	 *     (contracts+=[ContractElement|QPREF] | arguments+=[ContractElement|QPREF] | nested+=ArgumentExpression)
+	 * </pre>
+	 */
+	protected void sequence_ArgumentNot_ArgumentTerm(ISerializationContext context, ArgumentNot semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
+	 *     ArgumentExpression returns ArgumentOr
+	 *     ArgumentOr returns ArgumentOr
+	 *
+	 * Constraint:
+	 *     (contracts+=[ContractElement|QPREF] | arguments+=[ContractElement|QPREF] | nested+=ArgumentExpression)+
+	 * </pre>
+	 */
+	protected void sequence_ArgumentOr_ArgumentTerm(ISerializationContext context, ArgumentOr semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
+	 *     ArgumentExpression returns ArgumentExpression
+	 *     ArgumentNot returns ArgumentExpression
+	 *
+	 * Constraint:
+	 *     (contracts+=[ContractElement|QPREF] | arguments+=[ContractElement|QPREF] | nested+=ArgumentExpression)
+	 * </pre>
+	 */
+	protected void sequence_ArgumentTerm(ISerializationContext context, ArgumentExpression semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -662,7 +720,7 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	 *     IStringInter returns IStringVar
 	 *
 	 * Constraint:
-	 *     (direct?=':'? domain=[Domain|ID]? query=[SingleValDeclaration|ID])
+	 *     (direct?=':'? ((domain=[Domain|ID]? query=[SingleValDeclaration|ID]) | predefined=Predefined))
 	 * </pre>
 	 */
 	protected void sequence_IStringInter(ISerializationContext context, IStringVar semanticObject) {

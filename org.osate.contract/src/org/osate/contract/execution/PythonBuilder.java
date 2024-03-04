@@ -27,6 +27,7 @@ package org.osate.contract.execution;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -55,16 +56,22 @@ public class PythonBuilder {
 
 	protected Map<String, Object> variables = new HashMap<>();
 
-	ComponentInstance context;
+	private ComponentInstance context;
 
-	PythonHelper python;
+	private PythonHelper python;
 
-	JavaHelper java;
+	private JavaHelper java;
+
+	private List<String> error;
+
+	private List<String> info;
 
 	int indent = 0;
 
-	PythonBuilder(ComponentInstance context) {
+	PythonBuilder(ComponentInstance context, List<String> error, List<String> info) {
 		this.context = context;
+		this.error = error;
+		this.info = info;
 		python = PythonHelper.get();
 		java = JavaHelper.get();
 		variables.put("to_java", python.getInstanceObjectMapper());
@@ -119,7 +126,7 @@ public class PythonBuilder {
 
 		if (code.getLanguage() == Language.JAVA) {
 			if (code.getInter() != null) {
-				txt = java.callJava(context, code.getInter()) ? "True" : "False";
+				txt = java.callJava(context, code.getInter(), error, info) ? "True" : "False";
 				txt += term;
 			}
 		} else {

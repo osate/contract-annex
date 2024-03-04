@@ -39,8 +39,11 @@ import org.osate.aadl2.Aadl2Package;
 import org.osate.contract.contract.Analysis;
 import org.osate.contract.contract.AndExpression;
 import org.osate.contract.contract.Argument;
+import org.osate.contract.contract.ArgumentAnd;
 import org.osate.contract.contract.ArgumentAssumption;
 import org.osate.contract.contract.ArgumentExpression;
+import org.osate.contract.contract.ArgumentNot;
+import org.osate.contract.contract.ArgumentOr;
 import org.osate.contract.contract.AssumptionElement;
 import org.osate.contract.contract.CodeAssumption;
 import org.osate.contract.contract.Contract;
@@ -66,6 +69,7 @@ import org.osate.contract.contract.NameReference;
 import org.osate.contract.contract.NotExpression;
 import org.osate.contract.contract.OrExpression;
 import org.osate.contract.contract.Parameter;
+import org.osate.contract.contract.Predefined;
 import org.osate.contract.contract.PropertyLookup;
 import org.osate.contract.contract.Query;
 import org.osate.contract.contract.RootExpression;
@@ -289,6 +293,27 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass argumentAndEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass argumentOrEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass argumentNotEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass tupleDeclarationEClass = null;
 
   /**
@@ -374,6 +399,13 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   private EEnum languageEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum predefinedEEnum = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -832,6 +864,17 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   @Override
+  public EReference getArgumentExpression_Nested()
+  {
+    return (EReference)argumentExpressionEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getVerificationPlan()
   {
     return verificationPlanEClass;
@@ -1140,6 +1183,17 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   @Override
+  public EAttribute getIStringVar_Predefined()
+  {
+    return (EAttribute)iStringVarEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getContractAssumption()
   {
     return contractAssumptionEClass;
@@ -1220,6 +1274,39 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
   public EReference getCodeAssumption_Guarantee()
   {
     return (EReference)codeAssumptionEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getArgumentAnd()
+  {
+    return argumentAndEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getArgumentOr()
+  {
+    return argumentOrEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getArgumentNot()
+  {
+    return argumentNotEClass;
   }
 
   /**
@@ -1558,6 +1645,17 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   @Override
+  public EEnum getPredefined()
+  {
+    return predefinedEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public ContractFactory getContractFactory()
   {
     return (ContractFactory)getEFactoryInstance();
@@ -1629,6 +1727,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     argumentExpressionEClass = createEClass(ARGUMENT_EXPRESSION);
     createEReference(argumentExpressionEClass, ARGUMENT_EXPRESSION__CONTRACTS);
     createEReference(argumentExpressionEClass, ARGUMENT_EXPRESSION__ARGUMENTS);
+    createEReference(argumentExpressionEClass, ARGUMENT_EXPRESSION__NESTED);
 
     verificationPlanEClass = createEClass(VERIFICATION_PLAN);
     createEReference(verificationPlanEClass, VERIFICATION_PLAN__COMPONENT_IMPLEMENTATION);
@@ -1670,6 +1769,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     createEAttribute(iStringVarEClass, ISTRING_VAR__DIRECT);
     createEReference(iStringVarEClass, ISTRING_VAR__DOMAIN);
     createEReference(iStringVarEClass, ISTRING_VAR__QUERY);
+    createEAttribute(iStringVarEClass, ISTRING_VAR__PREDEFINED);
 
     contractAssumptionEClass = createEClass(CONTRACT_ASSUMPTION);
     createEReference(contractAssumptionEClass, CONTRACT_ASSUMPTION__CONTRACT);
@@ -1681,6 +1781,12 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     createEReference(codeAssumptionEClass, CODE_ASSUMPTION__CODE);
     createEAttribute(codeAssumptionEClass, CODE_ASSUMPTION__EXACT);
     createEReference(codeAssumptionEClass, CODE_ASSUMPTION__GUARANTEE);
+
+    argumentAndEClass = createEClass(ARGUMENT_AND);
+
+    argumentOrEClass = createEClass(ARGUMENT_OR);
+
+    argumentNotEClass = createEClass(ARGUMENT_NOT);
 
     tupleDeclarationEClass = createEClass(TUPLE_DECLARATION);
     createEReference(tupleDeclarationEClass, TUPLE_DECLARATION__NAMES);
@@ -1725,6 +1831,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
 
     // Create enums
     languageEEnum = createEEnum(LANGUAGE);
+    predefinedEEnum = createEEnum(PREDEFINED);
   }
 
   /**
@@ -1781,6 +1888,9 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     contractAssumptionEClass.getESuperTypes().add(this.getAssumptionElement());
     argumentAssumptionEClass.getESuperTypes().add(this.getAssumptionElement());
     codeAssumptionEClass.getESuperTypes().add(this.getAssumptionElement());
+    argumentAndEClass.getESuperTypes().add(this.getArgumentExpression());
+    argumentOrEClass.getESuperTypes().add(this.getArgumentExpression());
+    argumentNotEClass.getESuperTypes().add(this.getArgumentExpression());
     tupleDeclarationEClass.getESuperTypes().add(this.getQuery());
     orExpressionEClass.getESuperTypes().add(this.getExpression());
     andExpressionEClass.getESuperTypes().add(this.getExpression());
@@ -1841,6 +1951,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     initEClass(argumentExpressionEClass, ArgumentExpression.class, "ArgumentExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getArgumentExpression_Contracts(), this.getContractElement(), null, "contracts", null, 0, -1, ArgumentExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getArgumentExpression_Arguments(), this.getContractElement(), null, "arguments", null, 0, -1, ArgumentExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getArgumentExpression_Nested(), this.getArgumentExpression(), null, "nested", null, 0, -1, ArgumentExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(verificationPlanEClass, VerificationPlan.class, "VerificationPlan", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getVerificationPlan_ComponentImplementation(), theAadl2Package.getComponentImplementation(), null, "componentImplementation", null, 0, 1, VerificationPlan.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1882,6 +1993,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     initEAttribute(getIStringVar_Direct(), theEcorePackage.getEBoolean(), "direct", null, 0, 1, IStringVar.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getIStringVar_Domain(), this.getDomain(), null, "domain", null, 0, 1, IStringVar.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getIStringVar_Query(), this.getSingleValDeclaration(), null, "query", null, 0, 1, IStringVar.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getIStringVar_Predefined(), this.getPredefined(), "predefined", null, 0, 1, IStringVar.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(contractAssumptionEClass, ContractAssumption.class, "ContractAssumption", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getContractAssumption_Contract(), this.getContractElement(), null, "contract", null, 0, 1, ContractAssumption.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1893,6 +2005,12 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     initEReference(getCodeAssumption_Code(), this.getSource(), null, "code", null, 0, 1, CodeAssumption.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getCodeAssumption_Exact(), theEcorePackage.getEBoolean(), "exact", null, 0, 1, CodeAssumption.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getCodeAssumption_Guarantee(), this.getGuarantee(), null, "guarantee", null, 0, 1, CodeAssumption.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(argumentAndEClass, ArgumentAnd.class, "ArgumentAnd", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(argumentOrEClass, ArgumentOr.class, "ArgumentOr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(argumentNotEClass, ArgumentNot.class, "ArgumentNot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(tupleDeclarationEClass, TupleDeclaration.class, "TupleDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getTupleDeclaration_Names(), this.getTupleName(), null, "names", null, 0, -1, TupleDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1940,6 +2058,10 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     addEEnumLiteral(languageEEnum, Language.PYTHON);
     addEEnumLiteral(languageEEnum, Language.JAVA);
     addEEnumLiteral(languageEEnum, Language.SMT);
+
+    initEEnum(predefinedEEnum, Predefined.class, "Predefined");
+    addEEnumLiteral(predefinedEEnum, Predefined.ERROR);
+    addEEnumLiteral(predefinedEEnum, Predefined.INFO);
 
     // Create resource
     createResource(eNS_URI);

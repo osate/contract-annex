@@ -22,8 +22,39 @@
 -- contributors and others.
 -- DM23-0575
 
-property set FailureProbabilities is
-	FailureProbability : aadlreal applies to (processor);
-	ReliabilityTarget : aadlreal applies to (system);
-	Replicating: reference (process) applies to (process);
-end FailureProbabilities;
+package BLP_Logical
+public
+	with VerificationProperties;
+	
+	data Secret
+	end Secret;
+
+	system A
+		features
+			o: out event data port Secret {
+				VerificationProperties::Level => 2;
+			};
+		properties
+			VerificationProperties::Level => 2;
+	end A;
+	
+	system B
+		features
+			i: in event data port Secret {
+				VerificationProperties::Level => 2;
+			};
+		properties
+			VerificationProperties::Level => 2;
+	end B;
+	
+	system CommunicatingSystems
+	end CommunicatingSystems;
+	
+	system implementation CommunicatingSystems.i
+		subcomponents
+			a: system A;
+			b: system B;
+		connections
+			c_ab: port a.o -> b.i;
+	end CommunicatingSystems.i;
+end BLP_Logical;

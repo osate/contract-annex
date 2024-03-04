@@ -298,6 +298,33 @@ public interface ContractFactory extends EFactory
   CodeAssumption createCodeAssumption();
 
   /**
+   * Returns a new object of class '<em>Argument And</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Argument And</em>'.
+   * @generated
+   */
+  ArgumentAnd createArgumentAnd();
+
+  /**
+   * Returns a new object of class '<em>Argument Or</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Argument Or</em>'.
+   * @generated
+   */
+  ArgumentOr createArgumentOr();
+
+  /**
+   * Returns a new object of class '<em>Argument Not</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Argument Not</em>'.
+   * @generated
+   */
+  ArgumentNot createArgumentNot();
+
+  /**
    * Returns a new object of class '<em>Tuple Declaration</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

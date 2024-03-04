@@ -22,8 +22,31 @@
 -- contributors and others.
 -- DM23-0575
 
-property set FailureProbabilities is
-	FailureProbability : aadlreal applies to (processor);
-	ReliabilityTarget : aadlreal applies to (system);
-	Replicating: reference (process) applies to (process);
-end FailureProbabilities;
+package ARPKI_Contract
+public
+    annex contract {**
+    	domain ARPKI {
+        	declarations
+        	-- Ideally one flag per channel, but one global one for now
+        		'''
+        		channelsAreImplementedCorrectly = Bool('channelsAreImplementedCorrectly')
+        		'''
+    	}
+    	
+        contract ARPKIImplementedCorrectly {
+        	domains
+        		CountContract::Counts;
+        		PeriodContract::Period;
+        		ARPKI;
+            assumptions
+                -- NB. This is checking the ARPKI subsystem and the channel subsystem together.
+            	contract CountContract::ComponentCounts;
+            	contract PeriodContract::RequiredPeriods;
+            	-- Also Bindings of Crypt and components to the same processor
+            	-- Also feature group connections
+            guarantee
+            	<=> '''channelsAreImplementedCorrectly''';        
+        }
+	**};
+
+end ARPKI_Contract;

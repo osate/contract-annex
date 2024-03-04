@@ -40,6 +40,7 @@ import org.osate.aadl2.instance.ComponentInstance;
 import org.osate.contract.contract.IString;
 import org.osate.contract.contract.IStringLiteral;
 import org.osate.contract.contract.IStringVar;
+import org.osate.contract.contract.Predefined;
 import org.osate.contract.typing.ContractInterpreter;
 
 public class JavaHelper {
@@ -57,7 +58,7 @@ public class JavaHelper {
 	private JavaHelper() {
 	}
 
-	public boolean callJava(ComponentInstance context, IString is) {
+	public boolean callJava(ComponentInstance context, IString is, List<String> error, List<String> info) {
 		var env = new RuleEnvironment(new RuleEnvironmentEntry("self", context));
 		String name = "";
 		List<Object> args = new ArrayList<>();
@@ -68,13 +69,21 @@ public class JavaHelper {
 				var str = literal.getValue();
 				name = str.substring(0, str.indexOf('(')).trim();
 				first = false;
-			} else if (part instanceof IStringVar varRef) {
-				var q = varRef.getQuery();
-				var result = queryInterpreter.evaluateQuery(env, q);
-				if (result.failed()) {
-					System.out.println(result.getRuleFailedException());
+			} else if (part instanceof IStringVar sVar) {
+				if (sVar.getQuery() == null) {
+					if (sVar.getPredefined() == Predefined.ERROR) {
+						args.add(error);
+					} else if (sVar.getPredefined() == Predefined.INFO) {
+						args.add(info);
+					}
 				} else {
-					args.add(extractOptional(result.getValue().get(q.getName())));
+					var q = sVar.getQuery();
+					var result = queryInterpreter.evaluateQuery(env, q);
+					if (result.failed()) {
+						System.out.println(result.getRuleFailedException());
+					} else {
+						args.add(extractOptional(result.getValue().get(q.getName())));
+					}
 				}
 			}
 		}

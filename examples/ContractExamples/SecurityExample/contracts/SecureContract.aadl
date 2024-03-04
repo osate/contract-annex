@@ -22,8 +22,33 @@
 -- contributors and others.
 -- DM23-0575
 
-property set FailureProbabilities is
-	FailureProbability : aadlreal applies to (processor);
-	ReliabilityTarget : aadlreal applies to (system);
-	Replicating: reference (process) applies to (process);
-end FailureProbabilities;
+package SecureContract
+public
+	annex contract {**
+		contract SystemIsSecure {
+			domains
+				ARPKI_Contract::ARPKI;
+				BindingContract::Bindings;
+				BLContract::Bell_LaPadula;
+			assumptions
+				contract ARPKI_Contract::ARPKIImplementedCorrectly;
+				contract BindingContract::SecureChannelBindings;
+				contract BLContract::BLP_SS_Star;
+			guarantee
+				<=> '''And([blpOkay, channelsAreImplementedCorrectly, connectionsAreBound])''';
+		}
+			
+		
+		verification plan verifySystemSecurity {
+			component
+				s: Secure_System::TheSystem.Impl;
+			domains
+				ARPKI_Contract::ARPKI;
+				BindingContract::Bindings;
+			claims
+				'''And([blpOkay, channelsAreImplementedCorrectly, connectionsAreBound])''';
+			contracts
+				SecureContract::SystemIsSecure;
+		}
+	**};
+end SecureContract;

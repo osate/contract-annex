@@ -25,15 +25,17 @@
  *******************************************************************************/
 package org.osate.contract.example;
 
+import java.util.List;
+
 import org.osate.aadl2.instance.SystemInstance;
 
 public class JavaCall {
 
-	public boolean getTrue(SystemInstance root) {
+	public boolean getTrue(SystemInstance root, List<String> error, List<String> info) {
 		return true;
 	}
 
-	public boolean getFalse(SystemInstance root) {
+	public boolean getFalse(SystemInstance root, List<String> error, List<String> info) {
 		return false;
 	}
 
