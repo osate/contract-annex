@@ -1,0 +1,476 @@
+-- Assurance Contract Annex Plugin for OSATE
+-- Copyright 2023 Carnegie Mellon University.
+-- NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
+-- MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
+-- WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
+-- NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
+-- RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
+-- ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+-- INFRINGEMENT.
+-- Released under a BSD (SEI)-style license, please see license.txt or contact 
+-- permission@sei.cmu.edu for full terms.
+-- [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
+-- unlimited distribution.  Please see Copyright notice for non-US Government use and 
+-- distribution.
+-- Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+-- Mellon University.
+-- This Software includes and/or makes use of the following Third-Party Software subject 
+-- to its own license:
+-- 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+-- Corporation.
+-- 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+-- contributors and others.
+-- DM23-0575
+
+package EndtoEndContracts
+public
+	
+annex contract {**
+		
+	contract implementation E2ELatency {`
+import math
+
+def getResponseTimes(threads):
+	# threads is [(th, th.name, th.period, th.wcet, th.prio, th.deadline)]
+	# in increasing priority order
+	respTimes = [0] * len(threads)
+	for i in range(len(threads)):
+		r = 0
+		r1 = threads[i][3]
+		while r < r1 and r1 <= threads[i][5]:
+			r = r1
+			r1 = threads[i][3]
+			for j in range(0, i):
+				r1 = r1 + math.ceil(r / threads[j][2]) * threads[j][3]
+		respTimes[i] = r1
+	return respTimes
+		
+def isResponseTimeSchedulable(boundThreads):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	for p in range(len(boundThreads)):
+		threads = boundThreads[p][2]
+		inc = sorted(threads, reverse = True, key = lambda td: td[4])
+		rt = getResponseTimes(inc)
+		for i in range(len(rt)):
+			deadline = inc[i][5]
+			if rt[i] > deadline:
+				print("ResponseTimeSchedulable=FALSE")
+				print("thread:",inc[i][1]," response time:",rt[i]," > deadline:", deadline)
+				return False
+	print("ReponseTimeSchedulable=TRUE")
+	return True
+	
+def areAllPrioritiesSet(priorities,names):
+	if len(priorities) == len(names):
+		return True
+	return False
+	
+def areAllThreadsPeriodic(threads, threadActivations, names):
+	for i in range(len(threads)):
+		if threadActivations[i].lower() != 'periodic':
+			print("thread " + names[i] + " activation is "+threadActivations[i]+" only periodic activations are allowed")
+			return False
+	return True	
+		
+def arePeriodsHarmonic(boundThreads):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet)])]
+	for p in range(len(boundThreads)):
+		incPeriods = sorted(boundThreads[p][2], key=lambda td: td[2])
+		for i in range(len(incPeriods)-1):
+			if incPeriods[i+1][2] % incPeriods[i][2] != 0:
+				print("period ",str(incPeriods[i+1][2])," is not a multiple of period "+str(incPeriods[i][2]))
+				return False
+	return True
+	
+def arePeriodsNonHarmonic(processors,periods):
+	return not arePeriodsHarmonic(processors,periods)	
+
+def areAllDeadlinesImplicit(periods,deadlines,names):
+	for i in range(len(periods)):
+		if periods[i] != deadlines[i]:
+			print("thread "+names[i]+" period is not equal to its deadline (not implicit)")
+			return False
+	return True
+
+def areAllDeadlinesConstrained(periods,deadlines,names):
+	for i in range(len(periods)):
+		if periods[i] < deadlines[i]:
+			print("thread "+names[i]+" period is smaller than its deadline (not constrained)")
+			return False
+	return True
+	
+def allProcessorHarmonicBoundSchedulable(boundThreads):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet)])]
+	for i in range(len(boundThreads)):
+		util=0.0
+		for j in range(len(boundThreads[i][2])):
+			util = util + boundThreads[i][2][j][3] / boundThreads[i][2][j][2]
+		if util > 1.0:
+			print("processor ",boundThreads[i][1]," workload exceeds 100% bound ")
+			return False
+	print("allProcessorsHarmonicBoundSchedulable=TRUE")
+	return True
+
+def arePrioritiesRM(boundThreads):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio)])]
+	for p in range(len(processors)):
+		for i in range(len(processors[p])-1):
+			for j in range(i+1,len(processors[p])):
+				if (periods[processors[p][i]] < periods[processors[p][j]] and priorities[processors[p][i]]<priorities[processors[p][j]]):
+					print("thread "+names[processors[p][i]]+" has shorter period than thread "+names[processors[p][j]]+" but lower priority")
+					return False
+	return True
+	
+def z3arePrioritiesRM(periods, priorities, names):
+	Priorities = IntVector('priority',len(names))
+	Periods = IntVector('period', len(names))
+	rateMonotonicPriorities = [Implies(Periods[i] < Periods[j], Priorities[i]>Priorities[j]) for i in range(len(names)) for j in range(len(names))]
+	s = Solver()
+	s.add(rateMonotonicPriorities)
+	for i in range(len(periods)):
+		s.add(Periods[i] == periods[i])
+	for i in range(len(priorities)):
+		s.add(Priorities[i] == priorities[i])
+	if s.check() == sat :
+		return True
+	print("Priorities are not RM")
+	return False
+	
+def z3getRMPrioritiesConstraints(periods, priorities, names):
+	rmconstraints = "[Implies(Periods[i] < Periods[j], Priorities[i]>Priorities[j]) for i in range(len(Periods)) for j in range(len(Priorities))]"
+	periodconstraints="["
+	sep=""
+	for i in range(len(periods)):
+		periodconstraints += sep+"Periods["+str(i)+"] == "+str(periods[i])
+		sep =","
+	periodconstraints +="]"
+	prioritiesconstraints="["
+	sep=""
+	for i in range(len(priorities)):
+		prioritiesconstraints += sep+"Priorities["+str(i)+"] == "+str(priorities[i])
+		sep=","
+	prioritiesconstraints += "]"
+	return "And("+rmconstraints +"+"+periodconstraints+"+"+prioritiesconstraints+")"
+
+def allProcessorNonHarmonicBoundSchedulable(boundThreads):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet)])]
+	for i in range(len(boundThreads)):
+		util=0.0
+		for j in range(len(boundThreads[i][2])):
+			util = util + boundThreads[i][2][j][3] / boundThreads[i][2][j][2]
+		if util > 0.69:
+			print("processor ",boundThreads[i][1]," workload exceeds 69% bound ")
+			return False
+	print("allProcessorsNonHarmonicBoundSchedulable=TRUE")
+	return True
+
+def allThreadsBoundToSingleProcessor(bindings):
+	for i in range(len(bindings)):
+		if bindings[i][2] is None or len(bindings[i][2]) == 0:
+			print ("thread " + bindings[i][1] + " is not assigned to run to any processor")
+			return False
+		if len(bindings[i][2]) > 1:
+			print ("thread " + bindings[i][1] + " is assigned to run in more than one processor")
+			return False
+	return True
+	
+def allThreadsSchedulable(processors,periods, wcets, deadlines, names):
+	for i in range(len(processors)):
+		print("processor[",i,"]:")
+		for j in range(len(processors[i])):
+			print("\tthread[",processors[i][j],"]:")
+			print("\t\tperiod: ",periods[processors[i][j]])
+			print("\t\twcet: ",wcets[processors[i][j]])
+			print("\t\tdeadline: ",deadlines[processors[i][j]])
+			print("\t\tname: "+names[processors[i][j]])
+	return True
+			
+def areConnectionsDelayed(connections, connectionsTiming, connectionNames):
+	if len(connections) != len(connectionsTiming):
+		print("connections (len=",len(connections),") and timing (len=",len(connectionsTiming),") have not the same length")
+	for i in range(len(connections)):
+		if connectionsTiming[i].lower() == 'immediate' :
+			print("Connection " + connectionNames[i] + " is Immediate")
+			return False
+	return True
+	
+def getEndToEndFlowSpecLatency(e2eflows,flowElementLatencies):
+	responseTimes = [0] * len(e2eflows)
+	for i in range(len(e2eflows)):
+		responseTimes[i]=0
+		for j in range(len(e2eflows[i])):
+			flowElementIdx = e2eflows[i][j]
+			responseTimes[i] += flowElementLatencies[flowElementIdx]
+		print("e2eflow latency: ", responseTimes[i])
+	return responseTimes
+	
+def meetEndToEndSpecLatencies(e2eflows, e2eflowLatencies, flowElementLatencies):
+	rts = getEndToEndFlowSpecLatency(e2eflows,flowElementLatencies)
+	for i in range(len(e2eflows)):
+		if rts[i] > e2eflowLatencies[i]:
+			return False
+	return True
+
+# sum periods of all components (assumed to be threads) in all flows
+def getEndToEndResponseTime(flowComponents):
+	responseTimes=[0]*len(flowComponents)
+	for i in range(len(flowComponents)):
+		flow = flowComponents[i]
+		print("flow : ", flow[1])
+		responseTimes[i]=0
+		for j in range(len(flow[3])):
+			thread = flow[3][j];
+			responseTimes[i] += thread[2]
+			print("thread(",thread[1],") period: ",str(thread[2])," exec: ",str(thread[3])," deadline: ",str(thread[4]))
+		print("end-to-end reponse time: ",responseTimes[i])
+	return responseTimes
+
+# FIXME: there is no assumtion that all components are, in fact, threads
+# FIXME: no assumption that all flows have latencies
+def meetEndToEndLatencies(flowComponents):
+	# flowComponents is [(f, f.name, f.latency, [(th, th.name, th.period, th.wcet, th.deadline)])]
+	rts = getEndToEndResponseTime(flowComponents)
+	for i in range(len(flowComponents)):
+		flow = flowComponents[i]
+		latency = flow[2]
+		if rts[i] > latency:
+			print("flow[",flow[1],"] real latency (",str(rts[i]),") is larger than the required latency (",str(latency),")")
+			return False
+	return True
+	
+def areEndToEndLatenciesInputDataComplete(periods, exectimes, deadlines, threadnames):
+	return len(periods) != 0 and len(periods) == len(exectimes) == len(deadlines) == len(threadnames)
+
+def areNotEndToEndLatenciesInputDataComplete(periods, exectimes, deadlines, threadnames):
+	return not areEndToEndLatenciesInputDataComplete(periods, exectimes, deadlines, threadnames)
+`}		
+	
+	domain schedulability {
+		queries
+			val threads = root.allSubcomponents.filter { 
+				s -> s.isThread
+			};
+			val names = threads.map {
+				t-> t.name
+			};
+			val periods = threads.map {
+				t -> t#Period.map {
+					p -> p.scaledTo(ms)
+				}
+			};
+			val priorities = threads.map {
+				t -> t#Priority
+			};
+			val deadlines = threads.map {
+				t -> t#Deadline.map {
+					p -> p.scaledTo(ms)
+				}
+			};
+			val wcets = threads.map {
+				t -> t#Compute_Execution_Time.map {
+					cet -> cet.maximum.scaledTo(ms)
+				}
+			};
+			val protocols = threads.map {
+				t -> t#Dispatch_Protocol
+			};
+			-- only threads in flows?
+			val threadCount = root.allSubcomponents.map{t -> t.isThread}.size;
+			val threadToProcessorBindings = threads.map { t -> (t, t.name, t#Actual_Processor_Binding) };
+			val boundThreads = root.allSubcomponents
+					.filter { s -> s.isProcessor }
+					.map { p -> 
+							val ts = p.processorBindingSources
+									.filter { s -> s.isThread }
+									.map { t ->
+											val period = t#Period.map { v -> v.scaledTo(ms)};
+											val wcet = t#Compute_Execution_Time.map {cet -> cet.maximum.scaledTo(ms)};
+											val prio = t#Priority;
+											val deadline = t#Deadline.map { v -> v.scaledTo(ms)};
+											(t, t.name, period, wcet, prio, deadline)
+									};
+							(p, p.name, ts)
+					};
+			
+		declarations 
+			'''
+			Deadlines = IntVector('deadline', ${threadCount$})
+			Responses = IntVector('response', ${threadCount$})
+			Priorities = IntVector('priority', ${threadCount$})
+			SelfSuspendings = BoolVector('selfSuspending', ${threadCount$})
+			Periods = IntVector('period', ${threadCount$})	
+			Periodics = BoolVector('periodic', ${threadCount$})
+			'''
+	}
+	
+	domain latency {
+		queries
+			val e2es = root.allEndToEndFlows;
+			val e2eCount = e2es.size;
+			val connections = root.allConnections;
+			val connectionTiming = connections.map { c -> c#Timing };
+			val connectionNames = connections.map { c -> c.name };
+			val connCount = connections.size;
+			val flowComponents = e2es
+														.map { f -> 
+															val latency = f#Latency.map { l -> l.maximum }.map { l -> l.scaledTo(ms) };
+															val ts = f.components
+																				.filter { c -> c.isThread }
+																				.map { t -> 
+																					val period = t#Period.map { v -> v.scaledTo(ms)};
+																					val wcet = t#Compute_Execution_Time.map {cet -> cet.maximum.scaledTo(ms)};
+																					val deadline = t#Deadline.map { v -> v.scaledTo(ms)};
+																					(t, t.name, period, wcet, deadline)
+																				};
+															(f, f.name, latency, ts)
+													};
+		declarations 
+			'''
+			E2EResponses = IntVector('e2eresponse', ${e2eCount$})
+			E2ELatencies = IntVector('e2elantency', ${e2eCount$})
+			DelayedConnections = BoolVector('delayconnection', ${connCount$})
+			'''
+	}
+
+--	contract schedulable {
+--		domains
+--			schedulability;
+--		queries
+--			--threads = this.THREAD
+--			--connections = this.ConnectionInstance
+--			--flows = this.EndToEndFlowInstance
+--			--processors = this.PROCESSOR
+--			;
+--		assumptions
+--			'''allThreadsBoundToSingleProcessor(processor,thread.name)''';
+--		guarantee
+--			=> `And([Deadlines[i] => Response[i] for i in range(len(Deadlines))])`;
+--		invocation
+--			`allThreadsSchedulable(processor,thread.period, thread.compute_execution_time,thread.deadline,thread.name)`;
+--	}
+	
+	contract fpResponseTimeContract {
+		domains
+			schedulability;
+		queries
+		assumptions
+			'''areAllDeadlinesConstrained(${periods$}, ${deadlines$}, ${names$})''';
+			'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$})''';
+			'''areAllPrioritiesSet(${priorities$}, ${names$})''';
+			`True` => `Not(Or([SelfSuspendings[i] for i in range(len(SelfSuspendings))]))`;
+		guarantee
+			<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+		invocation
+			'''isResponseTimeSchedulable(${boundThreads$})''';
+	}
+	
+	contract RMAHarmonicBoundContract {
+		domains
+			schedulability;
+		assumptions
+			smt'''z3getRMPrioritiesConstraints(${periods$},${priorities$},${names$})''';
+			'''areAllDeadlinesImplicit(${periods$},${deadlines$},${names$})''';
+			'''arePeriodsHarmonic(${boundThreads$})''';
+			'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$})''';
+		guarantee
+			=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+		invocation
+			'''allProcessorHarmonicBoundSchedulable(${boundThreads$})''';
+	}
+
+	contract RMANonHarmonicBoundContract {
+		domains
+			schedulability;
+		assumptions
+			'''z3arePrioritiesRM(${periods$}, ${priorities$}, ${names$})''';
+			'''areAllDeadlinesImplicit(${periods$},${deadlines$},${names$})''';
+			'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$})''';
+		guarantee
+			=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+		invocation
+			'''allProcessorNonHarmonicBoundSchedulable(${boundThreads$})''';
+	}
+
+	-- This should be configured by the Analysis developer
+	-- individual analysis could be developed by different people
+	-- and another specialist from the same scientific domain configures
+	-- the "relationship between these individual analysis : into this argument
+	argument schedulabilityArgument {
+		domains
+			schedulability;
+		guarantee
+			<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+		argument
+			or(
+				contract RMAHarmonicBoundContract
+				contract RMANonHarmonicBoundContract
+				contract fpResponseTimeContract
+			);
+	}
+
+	contract areConnectionsDelayedContract {
+		domains
+			schedulability;
+			latency;
+		guarantee
+			<=> `And([DelayedConnections[i] for i in range(len(DelayedConnections))])`;
+		analysis
+			'''areConnectionsDelayed(${latency::connections$}, ${latency::connectionTiming$}, ${latency::connectionNames$})''';
+	}
+
+--	contract EndToEndFlowSpecContract {
+--		domains
+--			schedulability;
+--		queries
+--		input assumptions
+--			`areNotEndToEndLatenciesInputDataComplete(thread.period, thread.compute_execution_time, thread.deadline, thread.name)`;
+--		assumptions
+--		guarantee
+--			<=> `And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+--		analysis
+--			`meetEndToEndSpecLatencies(EndToEndFlowInstance_subflows, EndToEndFlowInstance.latency, FlowSpecificationInstanceImpl.latency)`;
+--	}
+
+	contract EndToEndDelayedCommunicationContract {
+		domains
+			schedulability;
+		queries
+		input assumptions
+			'''areEndToEndLatenciesInputDataComplete(${periods$}, ${wcets$}, ${deadlines$}, ${names$})''';
+		assumptions
+			contract areConnectionsDelayedContract;
+			'''areAllThreadsPeriodic(${threads$}, ${protocols$}, ${names$})''' 
+				=> `And([Periodics[i] for i in range(len(Periodics))])`;
+			'''areAllDeadlinesConstrained(${periods$}, ${deadlines$}, ${names$})''' 
+				=> `And([Deadlines[i] <= Periods[i] for i in range(len(Deadlines))])`;
+			argument schedulabilityArgument;
+		guarantee
+			<=> `And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+		analysis
+			'''meetEndToEndLatencies(${latency::flowComponents$})''';
+	}
+
+--	argument endToEndLatencyArgument {
+--		domains
+--			schedulability;
+--		guarantee
+--			<=> `And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+--		argument
+--			or (
+--				contract EndToEndDelayedCommunicationContract
+--				contract EndToEndFlowSpecContract
+--			);
+--	}
+
+	verification plan verifyLatency {
+		component
+			s: EndToEndTimingExample::mysystem.i;
+		domains
+			schedulability;
+		claims
+			`And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+		contracts
+			EndToEndDelayedCommunicationContract;
+	} 
+**};
+end EndtoEndContracts;

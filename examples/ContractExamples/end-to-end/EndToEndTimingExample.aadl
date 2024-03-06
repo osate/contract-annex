@@ -1,0 +1,252 @@
+-- Assurance Contract Annex Plugin for OSATE
+-- Copyright 2023 Carnegie Mellon University.
+-- NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
+-- MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
+-- WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
+-- NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
+-- RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
+-- ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+-- INFRINGEMENT.
+-- Released under a BSD (SEI)-style license, please see license.txt or contact 
+-- permission@sei.cmu.edu for full terms.
+-- [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
+-- unlimited distribution.  Please see Copyright notice for non-US Government use and 
+-- distribution.
+-- Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+-- Mellon University.
+-- This Software includes and/or makes use of the following Third-Party Software subject 
+-- to its own license:
+-- 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+-- Corporation.
+-- 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+-- contributors and others.
+-- DM23-0575
+
+package EndToEndTimingExample
+public
+	
+	system mysystem
+	end mysystem;
+	
+	process mpi
+		features
+			out1: out event data port ;
+			out2: out event data port ;	
+		flows
+			sf1: flow source out1;
+			sf2: flow source out2;
+	end mpi;
+	
+	process mpo
+		features
+			in1: in event data port;
+			in2: in event data port;
+		flows
+			kf1: flow sink in1;
+			kf2: flow sink in2;
+	end mpo;
+	
+	process mp
+		features
+			in1: in event data port ;
+			in2: in event data port ;
+			out1: out event data port;
+			out2: out event data port;
+		flows
+			fp1: flow path in1->out1;
+			fp2: flow path in2->out2;
+	end mp;
+	
+	thread mti
+		features
+			out1: out event data port;
+		flows
+			tfs1: flow source out1;			
+	end mti;
+	
+	thread mto
+		features
+			in1: in event data port;
+		flows
+			tfk1: flow sink in1;
+	end mto;
+	
+	thread mt
+		features
+			in1: in event data port;
+			out1: out event data port;
+		flows
+			tfp1: flow path in1->out1;
+	end mt;
+	
+	process implementation mpi.i1
+		subcomponents
+			sensingThread1: thread mti;
+			SensingThread2: thread mti;
+		connections
+			c1:port sensingThread1.out1->out1;
+			c2:port sensingThread2.out1->out2;
+		flows
+			sf1: flow source sensingThread1.tfs1->c1->out1;
+			sf2: flow source sensingThread2.tfs1->c2->out2;
+		properties
+			Timing => Delayed applies to c1;
+			Timing => Delayed applies to c2;
+	end mpi.i1;
+		
+	process implementation mp.i2
+		subcomponents
+			computingThread1: thread mt;
+			computingThread2: thread mt;
+		connections
+			c1: port in1->computingThread1.in1;
+			c2: port computingThread1.out1->out1;
+			c3: port in2->computingThread2.in1;
+			c4: port computingThread2.out1->out2;
+		flows
+			fp1: flow path in1->c1->computingThread1.tfp1->c2->out1;
+			fp2: flow path in2->c3->computingThread2.tfp1->c4->out2;
+		properties
+			Timing => Delayed applies to c1;
+			Timing => Delayed applies to c2;
+			Timing => Delayed applies to c3;
+			Timing => Delayed applies to c4;
+	end mp.i2;
+	
+	process implementation mpo.i3
+		subcomponents
+			actuatingThread1: thread mto;
+			actuatingThread2: thread mto;
+		connections
+			c1: port in1->actuatingThread1.in1;
+			c2: port in2->actuatingThread2.in1;
+		flows
+			kf1: flow sink in1->c1->actuatingThread1.tfk1;
+			kf2: flow sink in2->c2->actuatingThread2.tfk1;
+		properties
+			Timing => Delayed applies to c1;
+			Timing => Delayed applies to c2;
+	end mpo.i3;
+
+	system implementation mysystem.no_threads
+		subcomponents
+			sensProc1:processor;
+			compProc1:processor;
+			actProc1:processor;
+			sensing: process mpi;
+			computing: process mp;
+			actuating: process mpo;
+		connections
+			c1: port sensing.out1->computing.in1;
+			c2: port sensing.out2->computing.in2;
+			c3: port computing.out1->actuating.in1;
+			c4: port computing.out2->actuating.in2;
+		flows
+			e2ef1: end to end flow sensing.sf1->c1->computing.fp1->c3->actuating.kf1;
+			e2ef2: end to end flow sensing.sf2->c2->computing.fp2->c4->actuating.kf2;	
+		properties
+			Latency =>100 ms..300 ms applies to e2ef1;
+			Latency => 200 ms..600 ms applies to e2ef2;
+			Latency => 10 ms .. 100 ms applies to sensing.sf1;
+			Latency => 20 ms .. 200 ms applies to sensing.sf2;
+			Latency => 10 ms .. 100 ms applies to computing.fp1;
+			Latency => 20 ms .. 200 ms applies to computing.fp2;
+			Latency => 10 ms .. 100 ms applies to actuating.kf1;
+			Latency => 20 ms .. 200 ms applies to actuating.kf2;
+			Timing => Delayed applies to c1;
+			Timing => Delayed applies to c2;
+			Timing => Delayed applies to c3;
+			Timing => Delayed applies to c4;
+	end mysystem.no_threads;
+	
+	system implementation mysystem.i
+		subcomponents
+			sensProc1:processor;
+			compProc1:processor;
+			actProc1:processor;
+			sensing: process mpi.i1;
+			computing: process mp.i2;
+			actuating: process mpo.i3;
+		connections
+			c1: port sensing.out1->computing.in1;
+			c2: port sensing.out2->computing.in2;
+			c3: port computing.out1->actuating.in1;
+			c4: port computing.out2->actuating.in2;
+		flows
+			e2ef1: end to end flow sensing.sf1->c1->computing.fp1->c3->actuating.kf1;
+			e2ef2: end to end flow sensing.sf2->c2->computing.fp2->c4->actuating.kf2;
+		properties
+			Latency =>100 ms..300 ms applies to e2ef1;
+			Latency => 200 ms..600 ms applies to e2ef2;
+			Latency => 10 ms .. 100 ms applies to sensing.sensingThread1.tfs1;
+			Latency => 10 ms .. 100 ms applies to sensing.sf1;
+			Latency => 20 ms .. 200 ms applies to sensing.sensingThread2.tfs1;
+			Latency => 20 ms .. 200 ms applies to sensing.sf2;
+			Latency => 10 ms .. 100 ms applies to computing.computingThread1.tfp1;
+			Latency => 10 ms .. 100 ms applies to computing.fp1;
+			Latency => 20 ms .. 200 ms applies to computing.computingThread2.tfp1;
+			Latency => 20 ms .. 200 ms applies to computing.fp2;
+			Latency => 10 ms .. 100 ms applies to actuating.actuatingThread1.tfk1;
+			Latency => 10 ms .. 100 ms applies to actuating.kf1;
+			Latency => 20 ms .. 200 ms applies to actuating.actuatingThread2.tfk1;
+			Latency => 20 ms .. 200 ms applies to actuating.kf2;			
+			
+				--Queue_Processing_Protocol => PRIORITY applies to sensing.out1;
+			
+			Period => 100 ms applies to sensing.sensingThread1;
+			--Deadline => 30 ms applies to sensing.sensingThread1;
+			Deadline => 100 ms applies to sensing.sensingThread1;
+			--Priority => 3 applies to sensing.sensingThread1;
+			-- Priority => 1 applies to sensing.sensingThread1; -- breaks RM priorities
+			Dispatch_Protocol => Periodic applies to sensing.sensingThread1;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to sensing.sensingThread1;
+			Actual_Processor_Binding => (reference (sensProc1)) applies to sensing.sensingThread1;
+			
+			Period => 100 ms applies to computing.computingThread1;
+			--Deadline => 60 ms applies to computing.computingThread3;
+			Deadline => 100 ms applies to computing.computingThread1;
+			Priority => 3 applies to computing.computingThread1;
+			Dispatch_Protocol => Periodic applies to computing.computingThread1;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to computing.computingThread1;
+			Actual_Processor_Binding => (reference (compProc1)) applies to computing.computingThread1;
+			
+
+			Period => 100 ms applies to actuating.actuatingThread1;
+			Deadline => 100 ms applies to actuating.actuatingThread1;
+			Priority => 3 applies to actuating.actuatingThread1;
+			Dispatch_Protocol => Periodic applies to actuating.actuatingThread1;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to actuating.actuatingThread1;
+			Actual_Processor_Binding => (reference (actProc1)) applies to actuating.actuatingThread1;
+
+			Period => 200 ms applies to sensing.sensingThread2;
+			--Deadline => 30 ms applies to sensing.sensingThread2;
+			Deadline => 200 ms applies to sensing.sensingThread2;
+			Priority => 2 applies to sensing.sensingThread2;
+			Dispatch_Protocol => Periodic applies to sensing.sensingThread2;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to sensing.sensingThread2;
+			Actual_Processor_Binding => (reference (sensProc1)) applies to sensing.sensingThread2;
+			
+			Period => 200 ms applies to computing.computingThread2;
+			--Deadline => 60 ms applies to computing.computingThread4;
+			Deadline => 200 ms applies to computing.computingThread2;
+			Priority => 2 applies to computing.computingThread2;
+			Dispatch_Protocol => Periodic applies to computing.computingThread2;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to computing.computingThread2;
+			Actual_Processor_Binding => (reference (compProc1)) applies to computing.computingThread2;
+
+			Period => 200 ms applies to actuating.actuatingThread2;
+			Deadline => 200 ms applies to actuating.actuatingThread2;
+			Priority => 2 applies to actuating.actuatingThread2;
+			Dispatch_Protocol => Periodic applies to actuating.actuatingThread2;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to actuating.actuatingThread2;
+			Actual_Processor_Binding => (reference (actProc1)) applies to actuating.actuatingThread2;
+			
+			Timing => Delayed applies to c1;
+			Timing => Delayed applies to c2;
+			Timing => Delayed applies to c3;
+			Timing => Delayed applies to c4;
+			annex contract {**
+				verify FlowSynchronizationContract::verifyEndToEndLatency;
+			**};
+	end mysystem.i;
+end EndToEndTimingExample;
