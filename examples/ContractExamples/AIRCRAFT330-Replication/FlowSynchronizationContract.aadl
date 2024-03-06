@@ -62,13 +62,23 @@ def isResponseTimeSchedulable(boundThreads,error0):
 	print("ReponseTimeSchedulable=TRUE")
 	return True
 	
-def areAllPrioritiesSet(priorities,names):
-	if len(priorities) == len(names):
-		for i in range(len(priorities)):
-			if priorities[i] is None:
+def areAllPrioritiesSet(boundThreads,priorities,names,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	print("checking if all threads have priorities")
+	for p in range(len(boundThreads)):
+		threads = boundThreads[p][2]
+		for i in range(len(threads)):
+			if threads[i][4] is None:
+				addError(error0,"{"+str(threads[i][0])+"}thread " + threads[i][1] + " does not have priority ")
+				print("Thread "+threads[i][1]+" does not have a priority assigned")
 				return False
-		return True
-	return False
+	return True
+	#if len(priorities) == len(names):
+	#	for i in range(len(priorities)):
+	#		if priorities[i] is None:
+	#			return False
+	#	return True
+	#return False
 	
 def areAllThreadsPeriodic(threads, threadActivations, names,error0):
 	for i in range(len(threads)):
@@ -131,7 +141,7 @@ def arePrioritiesRM(boundThreads,error0):
 				priorityk = boundThreads[i][2][k][4]
 				namek = boundThreads[i][2][k][1]
 				if (periodj < periodk and priorityj<priorityk):
-					addError(error0,"{"+str(boundThreads[i][0])+"}thread "+namej+" has shorter period than thread "+namek+" but lower priority")
+					addError(error0,"{"+str(boundThreads[i][2][j][0])+"}thread "+namej+" has shorter period than thread "+namek+" but lower priority")
 					print(" **NOT RMPRIORITIES thread "+namej+" has shorter period than "+namek+" but lower priority")
 					return False
 	print(" **RMPRIORITIES ")
@@ -607,6 +617,7 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 			SelfSuspendings = BoolVector('selfSuspending', ${threadCount$})
 			Periods = IntVector('period', ${threadCount$})	
 			Periodics = BoolVector('periodic', ${threadCount$})
+			RESPONSETIME_SHORTER_DEADLINES = And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])
 			'''
 	}
 
@@ -618,7 +629,7 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 				val failProbs = e.components.filter { c -> c.isThread }.map { t ->
 					val procs = t#Actual_Processor_Binding;
 					val proc = procs.map{p1->p1.map{p2->
- 					val probFail = p2#ReplicationProperties::FailureProbability;
+					val probFail = p2#ReplicationProperties::FailureProbability;
 					(p2,probFail)
 					}};
 					proc
@@ -682,7 +693,7 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 			schedulability;
 		queries
 		input assumptions
-			'''areAllPrioritiesSet(${priorities$}, ${names$})''';
+			'''areAllPrioritiesSet(${boundThreads$},${priorities$}, ${names$},error0)''';
 		assumptions
 			'''areAllDeadlinesConstrained(${threads$},${periods$}, ${deadlines$}, ${names$},error0)''';
 			'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
@@ -697,7 +708,7 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 		domains
 			schedulability;
 		input assumptions
-			'''areAllPrioritiesSet(${priorities$}, ${names$})''';			
+			'''areAllPrioritiesSet(${boundThreads$},${priorities$}, ${names$},error0)''';			
 		guarantee
 			<=>`And([(Periods[i]<Periods[j]) == (Priorities[i]>Priorities[j]) for i in range(len(Periods)-1) for j in range(i+1,len(Periods))])`;
 		analysis
@@ -708,14 +719,14 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 		domains
 			schedulability;
 		assumptions
-			'''arePrioritiesRM(${boundThreads$},error0)''';
-			--contract RMPrioritiesContract;
+			--'''arePrioritiesRM(${boundThreads$},error0)''';
+			contract RMPrioritiesContract;
 			'''areAllDeadlinesImplicit(${threads$}, ${periods$},${deadlines$},${names$},error0)''';
 			'''arePeriodsHarmonic(${boundThreads$},error0)''';
 			'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
 		guarantee
 			=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
-		invocation
+		analysis
 			'''allProcessorHarmonicBoundSchedulable(${boundThreads$},error0)''';
 	}
 
@@ -723,13 +734,13 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 		domains
 			schedulability;
 		assumptions
-			'''arePrioritiesRM(${boundThreads$},error0)''';
-			--contract RMPrioritiesContract;
+			--'''arePrioritiesRM(${boundThreads$},error0)''';
+			contract RMPrioritiesContract;
 			'''areAllDeadlinesImplicit(${threads$},${periods$},${deadlines$},${names$},error0)''';
 			'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
 		guarantee
 			=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
-		invocation
+		analysis
 			'''allProcessorNonHarmonicBoundSchedulable(${boundThreads$},error0)''';
 	}
 
@@ -737,11 +748,15 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 		domains
 			schedulability;
 		guarantee
-			<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+			--<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+			<=> `RESPONSETIME_SHORTER_DEADLINES`;
 		argument
-			or(
+			and(
+				contract RMPrioritiesContract
+				or(
 				contract RMAHarmonicBoundContract
 				contract RMANonHarmonicBoundContract
+				)
 				--contract fpResponseTimeContract
 			);
 	}
@@ -759,6 +774,7 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 			'''areAllDeadlinesConstrained(${threads$},${periods$}, ${deadlines$}, ${names$},error0)''' 
 				=> `And([Deadlines[i] <= Periods[i] for i in range(len(Deadlines))])`;
 			argument schedulabilityArgument;
+			-- contract RMANonHarmonicBoundContract;
 		guarantee
 			<=> `And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
 		analysis
@@ -794,6 +810,7 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 		domains
 			synchronization;
 			reliability;
+			schedulability;
 		claims
 			`And([E2ESamplingJitter[i] <= E2ESamplingJitterTolerance[i] for i in range(len(E2ESamplingJitter))])`;
 			`And([Reliability[i]>=ReliabiiltyTarget[i] for i in range(len(Reliability))])`;
@@ -819,6 +836,17 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 			EndToEndDelayedCommunicationContract;
 			ReliabilityContract;
 	} 
+	
+	verification plan verifyEndToEndLatency {
+		component
+			s: Aircraft330::FlightSystem.externalCommonSensor;
+		domains
+			schedulability;
+		claims
+			`And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+		contracts
+			EndToEndDelayedCommunicationContract;
+	}
 
 **};
 end FlowSynchronizationContract;
