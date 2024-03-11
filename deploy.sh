@@ -1,7 +1,7 @@
 set -x
 
 FROMDIR=org.osate.contract.repository/target/repository
-TODIR=/var/www/html/p2/contract-annex
+TODIR=/var/www/html/download/osate/components/contract-annex
 
 rm -fr ${TODIR}
 mkdir -p ${TODIR}
