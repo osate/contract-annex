@@ -33,6 +33,10 @@
             id="org.osate.contract.evaluation.ui.evaluateQueries"
             name="Debug: Evaluate Queries">
       </command>
+      <command
+            id="org.osate.contract.evaluation.ui.generateYamlGsn"
+            name="Generate YAML-GSN">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -44,6 +48,29 @@
                   definitionId="org.osate.ui.definition.isInstanceFileOrComponentInstanceSelected">
             </reference>
          </enabledWhen>
+      </handler>
+      <handler
+            class="org.osate.contract.evaluation.ui.GenerateYamlGsnHandler"
+            commandId="org.osate.contract.evaluation.ui.generateYamlGsn">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <adapt
+                           type="org.eclipse.xtext.ui.editor.outline.impl.EObjectNode">
+                        <test
+                              forcePluginActivation="true"
+                              property="org.osate.contract.evaluation.ui.superType"
+                              value="VerificationPlan">
+                        </test>
+                     </adapt>
+                  </iterate>
+               </and>
+            </with></enabledWhen>
       </handler>
    </extension>
    <extension
@@ -126,5 +153,26 @@
             
          </menu>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.osate.xtext.aadl2.ui.outline?after=additions">
+         <command
+               commandId="org.osate.contract.evaluation.ui.generateYamlGsn"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="org.osate.contract.evaluation.ui.EObjectNodeContractSuperTypePropertyTester"
+            id="org.osate.contract.evaluation.ui.EObjectSuperTypePropertyTester"
+            namespace="org.osate.contract.evaluation.ui"
+            properties="superType"
+            type="org.eclipse.xtext.ui.editor.outline.impl.EObjectNode">
+      </propertyTester>
    </extension>
 </plugin>
