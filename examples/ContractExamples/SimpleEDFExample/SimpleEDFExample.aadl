@@ -1,0 +1,39 @@
+package SimpleEDFExample
+public
+	system mysystem
+	
+	end mysystem;
+	
+	process myprocess	
+	end myprocess;
+	
+	process implementation myprocess.i
+		subcomponents
+			t1: thread;
+			t2: thread;
+			t3: thread;
+	end myprocess.i;
+	
+	system implementation mysystem.i
+		subcomponents
+			hwr: processor;
+			sw: process myprocess.i;
+		properties
+			Actual_Processor_Binding =>(reference (hwr)) applies to sw.t1;
+			Actual_Processor_Binding =>(reference (hwr)) applies to sw.t2;
+			Actual_Processor_Binding =>(reference (hwr)) applies to sw.t3;
+			Scheduling_Protocol => (EDF) applies to hwr;
+			Period => 100 ms applies to sw.t1;
+			Period => 200 ms applies to sw.t2;
+			Period => 400 ms applies to sw.t3;
+			Deadline => 90 ms applies to sw.t1;
+			Deadline => 95 ms applies to sw.t2;
+			Deadline => 90 ms applies to sw.t3;
+			Compute_Execution_Time => 70 ms .. 70 ms applies to sw.t1;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to sw.t2;
+			Compute_Execution_Time => 15 ms .. 15 ms applies to sw.t3;
+						annex contract {**
+				verify FlowSynchronizationContract::EDFSchedulabilityPlan;
+			**};
+	end mysystem.i;
+end SimpleEDFExample;
