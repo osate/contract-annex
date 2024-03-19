@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="ASCII"?>
+<diagram:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:diagram="http://osate.org/diagram" formatVersion="7">
+  <element uuid="bbd6da04-c5bd-4120-8d43-07de3f9c2aed" manual="true">
+    <element uuid="dc510e22-867d-4d05-a714-6a8f11cad6a3" manual="true">
+      <element uuid="b6571d64-8b7a-4363-be08-845e3e2632cd" manual="true" dockArea="right">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>airlandMode</seg>
+        </bo>
+        <position x="140.02213287353516" y="10.0"/>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>component_instance</seg>
+        <seg>landingGear</seg>
+      </bo>
+      <position x="20.0" y="170.0"/>
+      <size width="225.40103912353516" height="60.0"/>
+    </element>
+    <element uuid="b3b2bf38-67b2-497f-a5d7-251639a2ac7a" manual="true">
+      <element uuid="645bb1e9-acef-4900-bef9-2bb56e795f7c" manual="true" dockArea="right">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>position</seg>
+        </bo>
+        <position x="119.44010162353516" y="10.0"/>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>component_instance</seg>
+        <seg>pedals</seg>
+      </bo>
+      <position x="50.0" y="70.0"/>
+      <size width="177.39713287353516" height="60.0"/>
+    </element>
+    <element uuid="817ade52-0924-452b-89ff-c174c8b0787c" manual="true">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>component_instance</seg>
+        <seg>proc</seg>
+      </bo>
+      <position x="480.0" y="300.0"/>
+      <size width="77.93749809265137" height="35.0"/>
+    </element>
+    <element uuid="e786fac4-05e0-407f-aa31-2998292d92b1" manual="true">
+      <element uuid="b3485cc2-b418-4d83-883a-26f05d7b6795" manual="true">
+        <element uuid="26a499cf-9b4e-497a-b2a2-2d01f69cfb76" manual="true" dockArea="left">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>feature_instance</seg>
+            <seg>modeRegister</seg>
+          </bo>
+          <position y="55.0"/>
+        </element>
+        <element uuid="86ba754d-5d69-4862-94f8-8d223309e588" manual="true" dockArea="right">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>feature_instance</seg>
+            <seg>modeSample</seg>
+          </bo>
+          <position x="199.4387969970703" y="65.0"/>
+        </element>
+        <element uuid="3caa0347-a055-43d6-b7b9-5f934776d648" manual="true" dockArea="left">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>feature_instance</seg>
+            <seg>pedalRegister</seg>
+          </bo>
+          <position y="10.0"/>
+        </element>
+        <element uuid="5e06d661-57e1-4602-8534-41923b6a14f0" manual="true" dockArea="right">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>feature_instance</seg>
+            <seg>pedalSample</seg>
+          </bo>
+          <position x="200.16796875" y="20.0"/>
+        </element>
+        <element uuid="33629113-1201-437d-9d8f-65d7781caae1" manual="true">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>flow_specification_instance</seg>
+            <seg>modeFlowSource</seg>
+          </bo>
+          <position x="213.0" y="98.0"/>
+        </element>
+        <element uuid="39ec9d8a-398b-4fd3-ac82-99c7f416b03d" manual="true">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>flow_specification_instance</seg>
+            <seg>pedalFlowSource</seg>
+          </bo>
+          <position x="224.0" y="53.0"/>
+        </element>
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>component_instance</seg>
+          <seg>samplerThread</seg>
+        </bo>
+        <position x="162.60287475585938" y="42.0"/>
+        <size width="290.0" height="120.0"/>
+      </element>
+      <element uuid="65173cf2-3257-4559-9431-0ed46b6ee301" manual="true" dockArea="right">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>flightMode</seg>
+        </bo>
+        <position x="499.08595275878906" y="107.0"/>
+      </element>
+      <element uuid="d460de26-13c9-49e1-af74-705c18d6815c" manual="true" dockArea="left">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>flightModeRegister</seg>
+        </bo>
+        <position y="98.0"/>
+      </element>
+      <element uuid="2823dc7e-4d42-48bf-a7e2-f8b5de78dc8d" manual="true" dockArea="right">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>pedalPosition</seg>
+        </bo>
+        <position x="480.5442810058594" y="62.0"/>
+      </element>
+      <element uuid="589a3789-b604-43b2-9ba9-8c24b57d3e42" manual="true" dockArea="left">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>pedalsPositionRegister</seg>
+        </bo>
+        <position y="38.0"/>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>component_instance</seg>
+        <seg>sensingProc</seg>
+      </bo>
+      <position x="277.3971252441406" y="58.0"/>
+      <size width="572.6028747558594" height="192.0"/>
+    </element>
+    <element uuid="30a881b8-162a-4f90-98c6-d45eca71a063" manual="true">
+      <element uuid="730bfa69-11ee-49f9-85e7-26dd132963e3" manual="true">
+        <bo>
+          <seg>pvg</seg>
+          <seg>Communication_Properties::Timing</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>c1 : CommonSensor_commonThread_Instance.landingGear.airlandMode -> CommonSensor_commonThread_Instance.sensingProc.flightModeRegister</seg>
+      </bo>
+    </element>
+    <element uuid="894b6762-9cd3-42d4-bdf4-5ad9180a3680" manual="true">
+      <element uuid="2feb4b92-1c5f-4b53-8e8f-34d0f71d994f" manual="true">
+        <bo>
+          <seg>pvg</seg>
+          <seg>Communication_Properties::Timing</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>c1 : CommonSensor_commonThread_Instance.sensingProc.flightModeRegister -> CommonSensor_commonThread_Instance.sensingProc.samplerThread.modeRegister</seg>
+      </bo>
+    </element>
+    <element uuid="95fbc530-758f-4f2e-a0bf-72c2a69e8b1e" manual="true">
+      <element uuid="d0de66cb-f666-4960-bfe9-0c45e682220c" manual="true">
+        <bo>
+          <seg>pvg</seg>
+          <seg>Communication_Properties::Timing</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>c2 : CommonSensor_commonThread_Instance.pedals.position -> CommonSensor_commonThread_Instance.sensingProc.pedalsPositionRegister</seg>
+      </bo>
+    </element>
+    <element uuid="442b621a-bc55-4008-9c21-dbb553040baf" manual="true">
+      <element uuid="f19f89d5-2711-4067-9789-1726332cc94e" manual="true">
+        <bo>
+          <seg>pvg</seg>
+          <seg>Communication_Properties::Timing</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>c2 : CommonSensor_commonThread_Instance.sensingProc.pedalsPositionRegister -> CommonSensor_commonThread_Instance.sensingProc.samplerThread.pedalRegister</seg>
+      </bo>
+    </element>
+    <element uuid="2cbc4288-56eb-4751-9319-2d85dfc33d6b" manual="true">
+      <element uuid="e354ff73-8081-4312-9223-6b1bc6562b42" manual="true">
+        <bo>
+          <seg>pvg</seg>
+          <seg>Communication_Properties::Timing</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>c3 : CommonSensor_commonThread_Instance.sensingProc.flightMode -> CommonSensor_commonThread_Instance.flightMode</seg>
+      </bo>
+    </element>
+    <element uuid="295c7601-238c-4a00-81b8-a574586509b2" manual="true">
+      <element uuid="458f2910-7bc1-41ce-b409-a9f834efe962" manual="true">
+        <bo>
+          <seg>pvg</seg>
+          <seg>Communication_Properties::Timing</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>c3 : CommonSensor_commonThread_Instance.sensingProc.samplerThread.modeSample -> CommonSensor_commonThread_Instance.sensingProc.flightMode</seg>
+      </bo>
+    </element>
+    <element uuid="6c8f0805-ed09-497d-9d0c-6b808a7b682d" manual="true">
+      <element uuid="dd5820bf-81ab-4280-a2dc-e0a1600a545c" manual="true">
+        <bo>
+          <seg>pvg</seg>
+          <seg>Communication_Properties::Timing</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>c4 : CommonSensor_commonThread_Instance.sensingProc.pedalPosition -> CommonSensor_commonThread_Instance.pedalPosition</seg>
+      </bo>
+    </element>
+    <element uuid="e9b3a34d-5ec8-4658-bf71-3e63626bb3e2" manual="true">
+      <element uuid="0a3905d9-dc09-4a77-a972-e83c0d871c2c" manual="true">
+        <bo>
+          <seg>pvg</seg>
+          <seg>Communication_Properties::Timing</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>c4 : CommonSensor_commonThread_Instance.sensingProc.samplerThread.pedalSample -> CommonSensor_commonThread_Instance.sensingProc.pedalPosition</seg>
+      </bo>
+    </element>
+    <element uuid="6b1dbb1d-3a04-48ae-bbfc-4363b7946a64" manual="true" dockArea="right">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>feature_instance</seg>
+        <seg>flightMode</seg>
+      </bo>
+      <position x="916.4830780029297" y="215.0"/>
+    </element>
+    <element uuid="71478a7c-5d82-4313-9184-76e5048e987e" manual="true" dockArea="right">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>feature_instance</seg>
+        <seg>pedalPosition</seg>
+      </bo>
+      <position x="897.94140625" y="120.0"/>
+    </element>
+    <bo>
+      <seg>org.osate.ge.diagrams.instance</seg>
+      <seg>system_instance</seg>
+      <seg>/sar_exercises/instances/airbus330_commonsensor_commonthread_instance.aaxl2</seg>
+    </bo>
+    <position x="240.0"/>
+    <size width="990.0" height="350.0"/>
+  </element>
+  <config type="structure" connectionPrimaryLabelsVisible="false">
+    <enabledAadlProperties>
+      <property>deployment_properties::actual_processor_binding</property>
+    </enabledAadlProperties>
+    <context>
+      <seg>org.osate.ge.diagrams.instance</seg>
+      <seg>system_instance</seg>
+      <seg>/sar_exercises/instances/airbus330_commonsensor_commonthread_instance.aaxl2</seg>
+    </context>
+  </config>
+</diagram:Diagram>
