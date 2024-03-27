@@ -1,0 +1,10 @@
+package invalid_optional_call_member
+public
+	annex contract {**
+		contract InvalidOptionalCallMember {
+			queries
+				val valid = self.parent?.name;
+				val invalid = self.parent?.foo;
+		}
+	**};
+end invalid_optional_call_member;

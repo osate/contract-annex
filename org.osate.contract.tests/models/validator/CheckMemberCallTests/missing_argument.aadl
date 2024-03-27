@@ -30,6 +30,10 @@ public
 				val valid = self#Period.map { period -> period.scaledTo(ms) };
 				val invalid1 = self#Period.map { period -> period.scaledTo };
 				val invalid2 = self#Transmission_Time.map { transmission_time -> transmission_time.get };
+				
+				val validOptional = self#Period?.scaledTo(ms);
+				val invalidOptional1 = self#Period?.scaledTo;
+				val invalidOptional2 = self#Transmission_Time?.get;
 		}
 	**};
 end missing_argument;

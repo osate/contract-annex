@@ -5,6 +5,9 @@ public
 			queries
 				val valid = self.name;
 				val invalid = self.name<ComponentInstance>;
+				
+				val validOptional = self.parent?.name;
+				val invalidOptional = self.parent?.name<ComponentInstance>;
 		}
 	**};
 end extra_generics;

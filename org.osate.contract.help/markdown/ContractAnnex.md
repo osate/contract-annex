@@ -357,6 +357,53 @@ val threadsAndProcesses = self.allSubcomponents
   .filter { (subcomponent, name, category) -> subcomponent.isThread || subcomponent.isProcess };
 ```
 
+### Optional Member Calls
+
+The optional member call operator (`?.`) is used on optional types such as `ComponentInstance?` or `FeatureInstance?` to
+call a member on the optional's base type if the optional has a value. Optional member calls take the following form:
+
+```
+<expression>?.<function_name>
+```
+
+The resulting type of an optional member call is always an optional type. If the expression to the left of the operator
+has a value, then the member call is executed and the return value is wrapped in an optional. If the expression to the
+left of the operator does not have a value, then the result of the operation is an empty optional.
+
+This is an example of an optional member call:
+
+```
+val minimum = self#Compute_Execution_Time?.minimum;
+```
+
+An optional member call is syntactic sugar for calling `map` on an optional type. The above example is equivalent to the
+following example:
+
+```
+val minimum = self#Compute_Execution_Time.map { property ->
+  property.minimum
+};
+```
+
+If an optional member call calls a member that itself returns an optional, then the optional member call is syntactic
+sugar for calling `flatMap` instead of `map` on the optional. This is an example of calling a member that returns an
+optional:
+
+```
+val cet_delta = self#Compute_Execution_Time?.getDelta;
+```
+
+The query `cet_delta` has the type `LongWithUnits<AADL_Project::Time_Units>?`. It does not have the type
+`LongWithUnits<AADL_Project::Time_Units>??`.
+
+The above example is equivalent to the following example:
+
+```
+val cet_delta = self#Compute_Execution_Time.flatMap { property ->
+  property.getDelta
+};
+```
+
 ### Types
 
 The query language is statically typed with type inference. Every val statement and lambda parameter has a type which is

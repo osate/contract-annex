@@ -81,6 +81,7 @@ public class ContractParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getSignedRealAccess().getAlternatives_0(), "rule__SignedReal__Alternatives_0");
 			builder.put(grammarAccess.getNumAltAccess().getAlternatives(), "rule__NumAlt__Alternatives");
 			builder.put(grammarAccess.getLanguageAccess().getAlternatives(), "rule__Language__Alternatives");
+			builder.put(grammarAccess.getMemberCallOperatorAccess().getAlternatives(), "rule__MemberCallOperator__Alternatives");
 			builder.put(grammarAccess.getPredefinedAccess().getAlternatives(), "rule__Predefined__Alternatives");
 			builder.put(grammarAccess.getContractLibraryAccess().getGroup(), "rule__ContractLibrary__Group__0");
 			builder.put(grammarAccess.getContractAccess().getGroup(), "rule__Contract__Group__0");
@@ -245,6 +246,7 @@ public class ContractParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getExpressionAccess().getRightAssignment_1_2(), "rule__Expression__RightAssignment_1_2");
 			builder.put(grammarAccess.getAndExpressionAccess().getRightAssignment_1_2(), "rule__AndExpression__RightAssignment_1_2");
 			builder.put(grammarAccess.getNotExpressionAccess().getOperandAssignment_1_2(), "rule__NotExpression__OperandAssignment_1_2");
+			builder.put(grammarAccess.getCallExpressionAccess().getOperatorAssignment_1_0_1(), "rule__CallExpression__OperatorAssignment_1_0_1");
 			builder.put(grammarAccess.getCallExpressionAccess().getRightAssignment_1_0_2(), "rule__CallExpression__RightAssignment_1_0_2");
 			builder.put(grammarAccess.getCallExpressionAccess().getTypeArgumentAssignment_1_0_3_1(), "rule__CallExpression__TypeArgumentAssignment_1_0_3_1");
 			builder.put(grammarAccess.getCallExpressionAccess().getArgumentAssignment_1_0_4_1(), "rule__CallExpression__ArgumentAssignment_1_0_4_1");

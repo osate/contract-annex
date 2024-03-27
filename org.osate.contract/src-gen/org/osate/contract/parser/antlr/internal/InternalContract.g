@@ -2152,10 +2152,25 @@ ruleCallExpression returns [EObject current=null]
 							$current);
 					}
 				)
-				otherlv_2='.'
-				{
-					newLeafNode(otherlv_2, grammarAccess.getCallExpressionAccess().getFullStopKeyword_1_0_1());
-				}
+				(
+					(
+						{
+							newCompositeNode(grammarAccess.getCallExpressionAccess().getOperatorMemberCallOperatorEnumRuleCall_1_0_1_0());
+						}
+						lv_operator_2_0=ruleMemberCallOperator
+						{
+							if ($current==null) {
+								$current = createModelElementForParent(grammarAccess.getCallExpressionRule());
+							}
+							set(
+								$current,
+								"operator",
+								lv_operator_2_0,
+								"org.osate.contract.Contract.MemberCallOperator");
+							afterParserOrEnumRuleCall();
+						}
+					)
+				)
 				(
 					(
 						lv_right_3_0=RULE_ID
@@ -4886,6 +4901,33 @@ ruleLanguage returns [Enumerator current=null]
 			{
 				$current = grammarAccess.getLanguageAccess().getSMTEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
 				newLeafNode(enumLiteral_2, grammarAccess.getLanguageAccess().getSMTEnumLiteralDeclaration_2());
+			}
+		)
+	)
+;
+
+// Rule MemberCallOperator
+ruleMemberCallOperator returns [Enumerator current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			enumLiteral_0='.'
+			{
+				$current = grammarAccess.getMemberCallOperatorAccess().getNORMALEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_0, grammarAccess.getMemberCallOperatorAccess().getNORMALEnumLiteralDeclaration_0());
+			}
+		)
+		    |
+		(
+			enumLiteral_1='?.'
+			{
+				$current = grammarAccess.getMemberCallOperatorAccess().getOPTIONALEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_1, grammarAccess.getMemberCallOperatorAccess().getOPTIONALEnumLiteralDeclaration_1());
 			}
 		)
 	)

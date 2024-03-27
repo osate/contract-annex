@@ -33,6 +33,10 @@ public
 					.map { parent -> parent.category };
 				val v3 = self#Transmission_Time.flatMap { property -> property.get(Fixed) };
 				val v4 = self#ps::reference_property.filterType<ComponentInstance>;
+				
+				val v5 = self.parent?.name;
+				val v6 = self#Transmission_Time?.get(Fixed);
+				val v7 = self#Data_Rate?.scaledTo(kbps);
 		}
 	**};
 end optional_test;

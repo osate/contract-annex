@@ -559,7 +559,14 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	 *     TerminalExpression.TupleExpression_4_2_0 returns MemberCall
 	 *
 	 * Constraint:
-	 *     (left=CallExpression_MemberCall_1_0_0 right=ID typeArgument=ID? argument=Expression? lambda=Lambda?)
+	 *     (
+	 *         left=CallExpression_MemberCall_1_0_0 
+	 *         operator=MemberCallOperator 
+	 *         right=ID 
+	 *         typeArgument=ID? 
+	 *         argument=Expression? 
+	 *         lambda=Lambda?
+	 *     )
 	 * </pre>
 	 */
 	protected void sequence_CallExpression(ISerializationContext context, MemberCall semanticObject) {

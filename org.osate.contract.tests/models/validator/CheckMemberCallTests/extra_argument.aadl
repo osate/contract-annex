@@ -29,6 +29,9 @@ public
 			queries
 				val valid = self.name;
 				val invalid = self.name(ms);
+				
+				val validOptional = self.parent?.name;
+				val invalidOptional = self.parent?.name(ms);
 		}
 	**};
 end extra_argument;

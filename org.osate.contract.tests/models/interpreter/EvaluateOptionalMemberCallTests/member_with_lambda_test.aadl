@@ -1,0 +1,35 @@
+package member_with_lambda_test
+public
+	with ps;
+	
+	annex contract {**
+		contract MemberWithLambdaTest {
+			queries
+				val presentMap = self#ps::reference_list_1?.filterType<ComponentInstance>?.filter { c -> c.isProcess };
+				val emptyMap = self#ps::reference_list_2?.filterType<ComponentInstance>?.filter { c -> c.isProcess };
+		}
+	**};
+	
+	system s
+		features
+			port_1: in data port;
+			port_2: in data port;
+	end s;
+	
+	system implementation s.i
+		subcomponents
+			process_1: process;
+			process_2: process;
+			memory_1: memory;
+			memory_2: memory;
+		properties
+			ps::reference_list_1 => (
+				reference (port_1),
+				reference (port_2),
+				reference (process_1),
+				reference (process_2),
+				reference (memory_1),
+				reference (memory_2)
+			);
+	end s.i;
+end member_with_lambda_test;

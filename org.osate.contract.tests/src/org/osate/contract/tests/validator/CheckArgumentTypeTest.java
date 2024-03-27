@@ -38,7 +38,7 @@ public class CheckArgumentTypeTest {
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		var issues = validationHelper.validate(pkg);
-		assertEquals(1, issues.size());
+		assertEquals(2, issues.size());
 		with(issues.get(0), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("Expected UnitLiteral; found ComponentInstance", issue.getMessage());
@@ -46,6 +46,11 @@ public class CheckArgumentTypeTest {
 					EcoreUtil.getURI(
 							((MemberCall) contract.getQueries().get(1).getValue()).getLambda().getReturnValue()),
 					issue.getUriToProblem());
+		});
+		with(issues.get(1), issue -> {
+			assertEquals(Severity.ERROR, issue.getSeverity());
+			assertEquals("Expected UnitLiteral; found ComponentInstance", issue.getMessage());
+			assertEquals(EcoreUtil.getURI((contract.getQueries().get(3).getValue())), issue.getUriToProblem());
 		});
 	}
 
@@ -56,7 +61,7 @@ public class CheckArgumentTypeTest {
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		var issues = validationHelper.validate(pkg);
-		assertEquals(1, issues.size());
+		assertEquals(2, issues.size());
 		with(issues.get(0), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("Expected RecordField; found Boolean", issue.getMessage());
@@ -64,6 +69,11 @@ public class CheckArgumentTypeTest {
 					EcoreUtil.getURI(
 							((MemberCall) contract.getQueries().get(1).getValue()).getLambda().getReturnValue()),
 					issue.getUriToProblem());
+		});
+		with(issues.get(1), issue -> {
+			assertEquals(Severity.ERROR, issue.getSeverity());
+			assertEquals("Expected RecordField; found Boolean", issue.getMessage());
+			assertEquals(EcoreUtil.getURI((contract.getQueries().get(3).getValue())), issue.getUriToProblem());
 		});
 	}
 }

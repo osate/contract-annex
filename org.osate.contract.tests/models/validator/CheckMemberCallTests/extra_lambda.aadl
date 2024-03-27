@@ -32,6 +32,9 @@ public
 				val invalid2 = self#Transmission_Time.map { property ->
 					property.get(Fixed) { parameter -> parameter }
 				};
+				
+				val validOptional = self.parent?.name;
+				val invalidOptional = self.parent?.name { parameter -> parameter };
 		}
 	**};
 end extra_lambda;

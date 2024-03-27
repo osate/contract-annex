@@ -1,0 +1,26 @@
+package member_with_type_parameter_test
+public
+	with ps;
+	
+	annex contract {**
+		contract MemberWithTypeParameterTest {
+			queries
+				val presentMap = self#ps::reference_list_1?.filterType<ComponentInstance>;
+				val emptyMap = self#ps::reference_list_2?.filterType<ComponentInstance>;
+		}
+	**};
+	
+	system s
+		features
+			port1: in data port;
+			port2: in data port;
+	end s;
+	
+	system implementation s.i
+		subcomponents
+			sub1: system;
+			sub2: system;
+		properties
+			ps::reference_list_1 => (reference (port1), reference (port2), reference (sub1), reference (sub2));
+	end s.i;
+end member_with_type_parameter_test;

@@ -143,7 +143,7 @@ public class CheckMemberCallTest {
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		var issues = validationHelper.validate(pkg);
-		assertEquals(2, issues.size());
+		assertEquals(3, issues.size());
 		with(issues.get(0), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("Lambda expected for call to 'map'", issue.getMessage());
@@ -154,6 +154,11 @@ public class CheckMemberCallTest {
 			assertEquals("Lambda expected for call to 'map'", issue.getMessage());
 			assertEquals(EcoreUtil.getURI(contract.getQueries().get(2).getValue()), issue.getUriToProblem());
 		});
+		with(issues.get(2), issue -> {
+			assertEquals(Severity.ERROR, issue.getSeverity());
+			assertEquals("Lambda expected for call to 'map'", issue.getMessage());
+			assertEquals(EcoreUtil.getURI(contract.getQueries().get(4).getValue()), issue.getUriToProblem());
+		});
 	}
 
 	@Test
@@ -163,7 +168,7 @@ public class CheckMemberCallTest {
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		var issues = validationHelper.validate(pkg);
-		assertEquals(2, issues.size());
+		assertEquals(3, issues.size());
 		with(issues.get(0), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("Unexpected lambda for call to 'name'", issue.getMessage());
@@ -178,6 +183,12 @@ public class CheckMemberCallTest {
 							.getLambda()),
 					issue.getUriToProblem());
 		});
+		with(issues.get(2), issue -> {
+			assertEquals(Severity.ERROR, issue.getSeverity());
+			assertEquals("Unexpected lambda for call to 'name'", issue.getMessage());
+			assertEquals(EcoreUtil.getURI(((MemberCall) contract.getQueries().get(4).getValue()).getLambda()),
+					issue.getUriToProblem());
+		});
 	}
 
 	@Test
@@ -187,7 +198,7 @@ public class CheckMemberCallTest {
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		var issues = validationHelper.validate(pkg);
-		assertEquals(2, issues.size());
+		assertEquals(4, issues.size());
 		with(issues.get(0), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("Argument expected for call to 'scaledTo'", issue.getMessage());
@@ -204,6 +215,16 @@ public class CheckMemberCallTest {
 							((MemberCall) contract.getQueries().get(2).getValue()).getLambda().getReturnValue()),
 					issue.getUriToProblem());
 		});
+		with(issues.get(2), issue -> {
+			assertEquals(Severity.ERROR, issue.getSeverity());
+			assertEquals("Argument expected for call to 'scaledTo'", issue.getMessage());
+			assertEquals(EcoreUtil.getURI((contract.getQueries().get(4).getValue())), issue.getUriToProblem());
+		});
+		with(issues.get(3), issue -> {
+			assertEquals(Severity.ERROR, issue.getSeverity());
+			assertEquals("Argument expected for call to 'get'", issue.getMessage());
+			assertEquals(EcoreUtil.getURI((contract.getQueries().get(5).getValue())), issue.getUriToProblem());
+		});
 	}
 
 	@Test
@@ -213,7 +234,7 @@ public class CheckMemberCallTest {
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		var issues = validationHelper.validate(pkg);
-		assertEquals(2, issues.size());
+		assertEquals(4, issues.size());
 		with(issues.get(0), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("Couldn't resolve reference to 'ms'.", issue.getMessage());
@@ -222,8 +243,19 @@ public class CheckMemberCallTest {
 		});
 		with(issues.get(1), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
+			assertEquals("Couldn't resolve reference to 'ms'.", issue.getMessage());
+			assertEquals(EcoreUtil.getURI(((MemberCall) contract.getQueries().get(3).getValue()).getArgument()),
+					issue.getUriToProblem());
+		});
+		with(issues.get(2), issue -> {
+			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("Unexpected argument for call to 'name'", issue.getMessage());
 			assertEquals(EcoreUtil.getURI(contract.getQueries().get(1).getValue()), issue.getUriToProblem());
+		});
+		with(issues.get(3), issue -> {
+			assertEquals(Severity.ERROR, issue.getSeverity());
+			assertEquals("Unexpected argument for call to 'name'", issue.getMessage());
+			assertEquals(EcoreUtil.getURI(contract.getQueries().get(3).getValue()), issue.getUriToProblem());
 		});
 	}
 
@@ -234,11 +266,16 @@ public class CheckMemberCallTest {
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		var issues = validationHelper.validate(pkg);
-		assertEquals(1, issues.size());
+		assertEquals(2, issues.size());
 		with(issues.get(0), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("Type argument expected for call to 'filterType'", issue.getMessage());
 			assertEquals(EcoreUtil.getURI(contract.getQueries().get(1).getValue()), issue.getUriToProblem());
+		});
+		with(issues.get(1), issue -> {
+			assertEquals(Severity.ERROR, issue.getSeverity());
+			assertEquals("Type argument expected for call to 'filterType'", issue.getMessage());
+			assertEquals(EcoreUtil.getURI(contract.getQueries().get(3).getValue()), issue.getUriToProblem());
 		});
 	}
 
@@ -249,11 +286,16 @@ public class CheckMemberCallTest {
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		var issues = validationHelper.validate(pkg);
-		assertEquals(1, issues.size());
+		assertEquals(2, issues.size());
 		with(issues.get(0), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("Unexpected type argument for call to 'name'", issue.getMessage());
 			assertEquals(EcoreUtil.getURI(contract.getQueries().get(1).getValue()), issue.getUriToProblem());
+		});
+		with(issues.get(1), issue -> {
+			assertEquals(Severity.ERROR, issue.getSeverity());
+			assertEquals("Unexpected type argument for call to 'name'", issue.getMessage());
+			assertEquals(EcoreUtil.getURI(contract.getQueries().get(3).getValue()), issue.getUriToProblem());
 		});
 	}
 
@@ -286,6 +328,36 @@ public class CheckMemberCallTest {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("'flatten' is not a member of the type List<String>", issue.getMessage());
 			assertEquals(EcoreUtil.getURI(contract.getQueries().get(6).getValue()), issue.getUriToProblem());
+		});
+	}
+
+	@Test
+	public void testInvalidOptionalCallMember() {
+		var pkg = testHelper.parseFile(PATH + "invalid_optional_call_member.aadl");
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var contract = (Contract) contractLibrary.getContractElements().get(0);
+		var issues = validationHelper.validate(pkg);
+		assertEquals(1, issues.size());
+		with(issues.get(0), issue -> {
+			assertEquals(Severity.ERROR, issue.getSeverity());
+			assertEquals("'foo' is not a member of the type ComponentInstance", issue.getMessage());
+			assertEquals(EcoreUtil.getURI(contract.getQueries().get(1).getValue()), issue.getUriToProblem());
+		});
+	}
+
+	@Test
+	public void testOptionalCallOnNonOptional() {
+		var pkg = testHelper.parseFile(PATH + "optional_call_on_non_optional.aadl");
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var contract = (Contract) contractLibrary.getContractElements().get(0);
+		var issues = validationHelper.validate(pkg);
+		assertEquals(1, issues.size());
+		with(issues.get(0), issue -> {
+			assertEquals(Severity.ERROR, issue.getSeverity());
+			assertEquals("Cannot use optional member call on non-optional type ComponentInstance", issue.getMessage());
+			assertEquals(EcoreUtil.getURI(contract.getQueries().get(1).getValue()), issue.getUriToProblem());
 		});
 	}
 }

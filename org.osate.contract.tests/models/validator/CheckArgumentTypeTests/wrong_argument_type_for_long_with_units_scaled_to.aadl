@@ -5,6 +5,9 @@ public
 			queries
 				val valid = self#Period.map { period -> period.scaledTo(ms) };
 				val invalid = self#Period.map { period -> period.scaledTo(self) };
+				
+				val validOptional = self#Period?.scaledTo(ms);
+				val invalidOptional = self#Period?.scaledTo(self);
 		}
 	**};
 end wrong_argument_type_for_long_with_units_scaled_to;

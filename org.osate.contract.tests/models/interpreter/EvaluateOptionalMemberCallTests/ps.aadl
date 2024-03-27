@@ -1,0 +1,14 @@
+property set ps is
+	integer_range_1: range of aadlinteger applies to (all);
+	integer_range_2: range of aadlinteger applies to (all);
+	integer_range_3: range of aadlinteger applies to (all);
+	
+	reference_list_1: list of reference applies to (all);
+	reference_list_2: list of reference applies to (all);
+	
+	integer_with_units_1: aadlinteger units Time_Units applies to (all);
+	integer_with_units_2: aadlinteger units Time_Units applies to (all);
+	
+	record_1: record (field_1: aadlstring; field_2: aadlstring;) applies to (all);
+	record_2: record (field_1: aadlstring;) applies to (all);
+end ps;
