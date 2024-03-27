@@ -55,7 +55,7 @@ public
 			Deadline => 200ms applies to prog.t2;
 			Compute_Execution_Time => 10ms .. 10ms applies to prog.t1;
 			Compute_Execution_Time => 20ms .. 20ms applies to prog.t2;
-			Priority => 4 applies to prog.t1;
+			Priority => 2 applies to prog.t1;
 			Priority => 3 applies to prog.t2;
 			POSIX_Scheduling_Policy => SCHED_FIFO applies to prog.t1;
 			POSIX_Scheduling_Policy => SCHED_FIFO applies to prog.t2;

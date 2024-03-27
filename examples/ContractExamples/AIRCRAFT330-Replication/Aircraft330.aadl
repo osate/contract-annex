@@ -754,8 +754,8 @@ public
 			ReplicationProperties::FailureProbability => 0.1 applies to rep3.com.proc;
 			ReplicationProperties::FailureProbability => 0.1 applies to rep3.mon.proc;
 			
-			ReplicationProperties::ReplicaStartJitterTolerance => 0 ms applies to pedalToActuationComRep1;
-			ReplicationProperties::ReplicaStartJitterTolerance => 0 ms applies to pedalToActuationMonRep1;
+			ReplicationProperties::ReplicaStartJitterTolerance => 100 ms applies to pedalToActuationComRep1;
+			ReplicationProperties::ReplicaStartJitterTolerance => 100 ms applies to pedalToActuationMonRep1;
 			ReplicationProperties::ReplicaStartJitterTolerance => 100 ms applies to pedalToActuationComRep2;
 			ReplicationProperties::ReplicaStartJitterTolerance => 100 ms applies to pedalToActuationMonRep2;
 			ReplicationProperties::ReplicaStartJitterTolerance => 100 ms applies to pedalToActuationComRep3;

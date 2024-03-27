@@ -47,6 +47,8 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected ContractGrammarAccess grammarAccess;
 	protected AbstractElementAlias match_Analyses_SemicolonKeyword_1_a;
 	protected AbstractElementAlias match_Analyses_SemicolonKeyword_1_p;
+	protected AbstractElementAlias match_ArgumentAnd_CommaKeyword_4_0_q;
+	protected AbstractElementAlias match_ArgumentOr_CommaKeyword_4_0_q;
 	protected AbstractElementAlias match_Assumptions_SemicolonKeyword_1_a;
 	protected AbstractElementAlias match_Assumptions_SemicolonKeyword_1_p;
 	protected AbstractElementAlias match_Claims_SemicolonKeyword_1_a;
@@ -68,6 +70,8 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 		grammarAccess = (ContractGrammarAccess) access;
 		match_Analyses_SemicolonKeyword_1_a = new TokenAlias(true, true, grammarAccess.getAnalysesAccess().getSemicolonKeyword_1());
 		match_Analyses_SemicolonKeyword_1_p = new TokenAlias(true, false, grammarAccess.getAnalysesAccess().getSemicolonKeyword_1());
+		match_ArgumentAnd_CommaKeyword_4_0_q = new TokenAlias(false, true, grammarAccess.getArgumentAndAccess().getCommaKeyword_4_0());
+		match_ArgumentOr_CommaKeyword_4_0_q = new TokenAlias(false, true, grammarAccess.getArgumentOrAccess().getCommaKeyword_4_0());
 		match_Assumptions_SemicolonKeyword_1_a = new TokenAlias(true, true, grammarAccess.getAssumptionsAccess().getSemicolonKeyword_1());
 		match_Assumptions_SemicolonKeyword_1_p = new TokenAlias(true, false, grammarAccess.getAssumptionsAccess().getSemicolonKeyword_1());
 		match_Claims_SemicolonKeyword_1_a = new TokenAlias(true, true, grammarAccess.getClaimsAccess().getSemicolonKeyword_1());
@@ -154,6 +158,10 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_Analyses_SemicolonKeyword_1_a(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_Analyses_SemicolonKeyword_1_p.equals(syntax))
 				emit_Analyses_SemicolonKeyword_1_p(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_ArgumentAnd_CommaKeyword_4_0_q.equals(syntax))
+				emit_ArgumentAnd_CommaKeyword_4_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_ArgumentOr_CommaKeyword_4_0_q.equals(syntax))
+				emit_ArgumentOr_CommaKeyword_4_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_Assumptions_SemicolonKeyword_1_a.equals(syntax))
 				emit_Assumptions_SemicolonKeyword_1_a(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_Assumptions_SemicolonKeyword_1_p.equals(syntax))
@@ -219,6 +227,50 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * </pre>
 	 */
 	protected void emit_Analyses_SemicolonKeyword_1_p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * <pre>
+	 * Ambiguous syntax:
+	 *     ','?
+	 *
+	 * This ambiguous syntax occurs at:
+	 *     arguments+=[ContractElement|QPREF] (ambiguity) 'argument' arguments+=[ContractElement|QPREF]
+	 *     arguments+=[ContractElement|QPREF] (ambiguity) 'contract' contracts+=[ContractElement|QPREF]
+	 *     arguments+=[ContractElement|QPREF] (ambiguity) nested+=ArgumentExpression
+	 *     contracts+=[ContractElement|QPREF] (ambiguity) 'argument' arguments+=[ContractElement|QPREF]
+	 *     contracts+=[ContractElement|QPREF] (ambiguity) 'contract' contracts+=[ContractElement|QPREF]
+	 *     contracts+=[ContractElement|QPREF] (ambiguity) nested+=ArgumentExpression
+	 *     nested+=ArgumentExpression (ambiguity) 'argument' arguments+=[ContractElement|QPREF]
+	 *     nested+=ArgumentExpression (ambiguity) 'contract' contracts+=[ContractElement|QPREF]
+	 *     nested+=ArgumentExpression (ambiguity) nested+=ArgumentExpression
+	 
+	 * </pre>
+	 */
+	protected void emit_ArgumentAnd_CommaKeyword_4_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * <pre>
+	 * Ambiguous syntax:
+	 *     ','?
+	 *
+	 * This ambiguous syntax occurs at:
+	 *     arguments+=[ContractElement|QPREF] (ambiguity) 'argument' arguments+=[ContractElement|QPREF]
+	 *     arguments+=[ContractElement|QPREF] (ambiguity) 'contract' contracts+=[ContractElement|QPREF]
+	 *     arguments+=[ContractElement|QPREF] (ambiguity) nested+=ArgumentExpression
+	 *     contracts+=[ContractElement|QPREF] (ambiguity) 'argument' arguments+=[ContractElement|QPREF]
+	 *     contracts+=[ContractElement|QPREF] (ambiguity) 'contract' contracts+=[ContractElement|QPREF]
+	 *     contracts+=[ContractElement|QPREF] (ambiguity) nested+=ArgumentExpression
+	 *     nested+=ArgumentExpression (ambiguity) 'argument' arguments+=[ContractElement|QPREF]
+	 *     nested+=ArgumentExpression (ambiguity) 'contract' contracts+=[ContractElement|QPREF]
+	 *     nested+=ArgumentExpression (ambiguity) nested+=ArgumentExpression
+	 
+	 * </pre>
+	 */
+	protected void emit_ArgumentOr_CommaKeyword_4_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

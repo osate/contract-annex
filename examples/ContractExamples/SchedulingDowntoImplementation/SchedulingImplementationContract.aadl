@@ -32,6 +32,9 @@ import subprocess
 import re
 import shutil
 
+def addError(error,msg):
+	error[0]+="|"+msg
+	
 def klee_createSchedulingAssignments(testdir,thread_variables):
     outfile = open(testdir+"/klee_app_thread_setschedparam_assertions.h","w")
     outfile.write("ghost_scheduling_policy = policy;\n")
@@ -160,13 +163,19 @@ def klee_verifyPriorityAssignment(threadComponentId,compilerCommand, verifierCom
                 for i in range(len(thread_variables)):
                     if thread_variables[i] in line:
                         if "policy" in line:
-                            error0[0] += "{"+str(threadComponentId[i])+"}Thread: "+thread_variables[i]+" not assigned scheduling policy "+threadpolicies[thread_variables[i]]
+                        	addError(error0,"{"+str(threadComponentId[i])+"}Thread: "+thread_variables[i]+" not assigned scheduling policy "+threadpolicies[thread_variables[i]])
+                            #error0[0] += "{"+str(threadComponentId[i])+"}Thread: "+thread_variables[i]+" not assigned scheduling policy "+threadpolicies[thread_variables[i]]
                         elif "priority" in line:
-                            error0[0] += "{"+str(threadComponentId[i])+"}Thread: "+thread_variables[i]+" not assigned scheduling priority "+str(threadpriorities[thread_variables[i]])
+                            addError(error0,"{"+str(threadComponentId[i])+"}Thread: "+thread_variables[i]+" not assigned scheduling priority "+str(threadpriorities[thread_variables[i]]))
+                            #error0[0] += "{"+str(threadComponentId[i])+"}Thread: "+thread_variables[i]+" not assigned scheduling priority "+str(threadpriorities[thread_variables[i]])
                         else:
-                            error0[0] += line
+                            addError(error0, line)
+                            #error0[0] += line
                         break
             return False
+    for i in range(len(thread_variables)):
+        addError(info0,"{"+str(threadComponentId[i])+"}Thread: "+thread_variables[i]+" scheduling policy validated as "+threadpolicies[thread_variables[i]])
+        addError(info0,"{"+str(threadComponentId[i])+"}Thread: "+thread_variables[i]+" scheduling priority validated as "+str(threadpriorities[thread_variables[i]]))
     return True
 
 def klee_copyVerifierFilesToWorkingDirectory(verifierDir,testdir):
@@ -223,9 +232,6 @@ def kleeVerificationWrapper(boundThreads, schedulingImplementationVerificationDi
 	#return True
 
 
-def addError(error,msg):
-	error[0]+="|"+msg
-	
 def getResponseTimes(threads):
 	# threads is [(th, th.name, th.period, th.wcet, th.prio, th.deadline)]
 	# in increasing priority order
@@ -949,9 +955,9 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 			<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
 		argument
 			or(
-				contract RMAHarmonicBoundContract
+				contract RMAHarmonicBoundContract,
 				contract RMANonHarmonicBoundContract
-				--contract fpResponseTimeContract
+				or (not contract fpResponseTimeContract)
 			);
 	}
 	

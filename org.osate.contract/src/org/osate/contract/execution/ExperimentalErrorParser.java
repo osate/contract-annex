@@ -40,6 +40,13 @@ public class ExperimentalErrorParser {
 		}
 	}
 
+	public void markUnfulfilledObjectives(String errString) {
+		ArrayList<ExperimentalErrorParser.ErrorPair> errors = parseErrors(null, errString);
+		for (ErrorPair pair : errors) {
+			errManager.error(pair.element, pair.error + " Unfulfilled. Not enough details to satisfy all assumptions");
+		}
+	}
+
 	public void markInfo(String errString) {
 		ArrayList<ExperimentalErrorParser.ErrorPair> errors = parseErrors(null, errString);
 		for (ErrorPair pair : errors) {
@@ -50,14 +57,6 @@ public class ExperimentalErrorParser {
 	public ArrayList<ErrorPair> parseErrors(Element root, String errString) {
 
 		ArrayList<ErrorPair> errors = new ArrayList<ErrorPair>();
-
-		// First need to ignore anything before, and including, a comma
-		final int comma = errString.indexOf(',');
-		if (comma == -1) {
-			return errors;
-		} else {
-			errString = errString.substring(comma + 1);
-		}
 
 		if (errString.length() == 0) {
 			return errors;

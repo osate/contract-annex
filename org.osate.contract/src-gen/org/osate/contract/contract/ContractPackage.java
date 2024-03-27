@@ -779,13 +779,22 @@ public interface ContractPackage extends EPackage
   int ARGUMENT_EXPRESSION__ARGUMENTS = 1;
 
   /**
+   * The feature id for the '<em><b>Nested</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ARGUMENT_EXPRESSION__NESTED = 2;
+
+  /**
    * The number of structural features of the '<em>Argument Expression</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ARGUMENT_EXPRESSION_FEATURE_COUNT = 2;
+  int ARGUMENT_EXPRESSION_FEATURE_COUNT = 3;
 
   /**
    * The meta object id for the '{@link org.osate.contract.contract.impl.VerificationPlanImpl <em>Verification Plan</em>}' class.
@@ -1578,6 +1587,144 @@ public interface ContractPackage extends EPackage
   int CODE_ASSUMPTION_FEATURE_COUNT = ASSUMPTION_ELEMENT_FEATURE_COUNT + 3;
 
   /**
+   * The meta object id for the '{@link org.osate.contract.contract.impl.ArgumentAndImpl <em>Argument And</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.osate.contract.contract.impl.ArgumentAndImpl
+   * @see org.osate.contract.contract.impl.ContractPackageImpl#getArgumentAnd()
+   * @generated
+   */
+  int ARGUMENT_AND = 28;
+
+  /**
+   * The feature id for the '<em><b>Contracts</b></em>' reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ARGUMENT_AND__CONTRACTS = ARGUMENT_EXPRESSION__CONTRACTS;
+
+  /**
+   * The feature id for the '<em><b>Arguments</b></em>' reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ARGUMENT_AND__ARGUMENTS = ARGUMENT_EXPRESSION__ARGUMENTS;
+
+  /**
+   * The feature id for the '<em><b>Nested</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ARGUMENT_AND__NESTED = ARGUMENT_EXPRESSION__NESTED;
+
+  /**
+   * The number of structural features of the '<em>Argument And</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ARGUMENT_AND_FEATURE_COUNT = ARGUMENT_EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link org.osate.contract.contract.impl.ArgumentOrImpl <em>Argument Or</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.osate.contract.contract.impl.ArgumentOrImpl
+   * @see org.osate.contract.contract.impl.ContractPackageImpl#getArgumentOr()
+   * @generated
+   */
+  int ARGUMENT_OR = 29;
+
+  /**
+   * The feature id for the '<em><b>Contracts</b></em>' reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ARGUMENT_OR__CONTRACTS = ARGUMENT_EXPRESSION__CONTRACTS;
+
+  /**
+   * The feature id for the '<em><b>Arguments</b></em>' reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ARGUMENT_OR__ARGUMENTS = ARGUMENT_EXPRESSION__ARGUMENTS;
+
+  /**
+   * The feature id for the '<em><b>Nested</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ARGUMENT_OR__NESTED = ARGUMENT_EXPRESSION__NESTED;
+
+  /**
+   * The number of structural features of the '<em>Argument Or</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ARGUMENT_OR_FEATURE_COUNT = ARGUMENT_EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link org.osate.contract.contract.impl.ArgumentNotImpl <em>Argument Not</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.osate.contract.contract.impl.ArgumentNotImpl
+   * @see org.osate.contract.contract.impl.ContractPackageImpl#getArgumentNot()
+   * @generated
+   */
+  int ARGUMENT_NOT = 30;
+
+  /**
+   * The feature id for the '<em><b>Contracts</b></em>' reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ARGUMENT_NOT__CONTRACTS = ARGUMENT_EXPRESSION__CONTRACTS;
+
+  /**
+   * The feature id for the '<em><b>Arguments</b></em>' reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ARGUMENT_NOT__ARGUMENTS = ARGUMENT_EXPRESSION__ARGUMENTS;
+
+  /**
+   * The feature id for the '<em><b>Nested</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ARGUMENT_NOT__NESTED = ARGUMENT_EXPRESSION__NESTED;
+
+  /**
+   * The number of structural features of the '<em>Argument Not</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ARGUMENT_NOT_FEATURE_COUNT = ARGUMENT_EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
    * The meta object id for the '{@link org.osate.contract.contract.impl.TupleDeclarationImpl <em>Tuple Declaration</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1585,7 +1732,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getTupleDeclaration()
    * @generated
    */
-  int TUPLE_DECLARATION = 28;
+  int TUPLE_DECLARATION = 31;
 
   /**
    * The feature id for the '<em><b>Owned Element</b></em>' reference list.
@@ -1640,7 +1787,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getOrExpression()
    * @generated
    */
-  int OR_EXPRESSION = 29;
+  int OR_EXPRESSION = 32;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1677,7 +1824,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getAndExpression()
    * @generated
    */
-  int AND_EXPRESSION = 30;
+  int AND_EXPRESSION = 33;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1714,7 +1861,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getNotExpression()
    * @generated
    */
-  int NOT_EXPRESSION = 31;
+  int NOT_EXPRESSION = 34;
 
   /**
    * The feature id for the '<em><b>Operand</b></em>' containment reference.
@@ -1742,7 +1889,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getMemberCall()
    * @generated
    */
-  int MEMBER_CALL = 32;
+  int MEMBER_CALL = 35;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1815,7 +1962,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getPropertyLookup()
    * @generated
    */
-  int PROPERTY_LOOKUP = 33;
+  int PROPERTY_LOOKUP = 36;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1852,7 +1999,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getTupleParameter()
    * @generated
    */
-  int TUPLE_PARAMETER = 34;
+  int TUPLE_PARAMETER = 37;
 
   /**
    * The feature id for the '<em><b>Owned Element</b></em>' reference list.
@@ -1898,7 +2045,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getSelfExpression()
    * @generated
    */
-  int SELF_EXPRESSION = 35;
+  int SELF_EXPRESSION = 38;
 
   /**
    * The number of structural features of the '<em>Self Expression</em>' class.
@@ -1917,7 +2064,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getRootExpression()
    * @generated
    */
-  int ROOT_EXPRESSION = 36;
+  int ROOT_EXPRESSION = 39;
 
   /**
    * The number of structural features of the '<em>Root Expression</em>' class.
@@ -1936,7 +2083,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getStringLiteral()
    * @generated
    */
-  int STRING_LITERAL = 37;
+  int STRING_LITERAL = 40;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -1964,7 +2111,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getNameReference()
    * @generated
    */
-  int NAME_REFERENCE = 38;
+  int NAME_REFERENCE = 41;
 
   /**
    * The feature id for the '<em><b>Reference</b></em>' reference.
@@ -1992,7 +2139,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getTupleExpression()
    * @generated
    */
-  int TUPLE_EXPRESSION = 39;
+  int TUPLE_EXPRESSION = 42;
 
   /**
    * The feature id for the '<em><b>Elements</b></em>' containment reference list.
@@ -2020,7 +2167,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getLanguage()
    * @generated
    */
-  int LANGUAGE = 40;
+  int LANGUAGE = 43;
 
   /**
    * The meta object id for the '{@link org.osate.contract.contract.MemberCallOperator <em>Member Call Operator</em>}' enum.
@@ -2030,7 +2177,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getMemberCallOperator()
    * @generated
    */
-  int MEMBER_CALL_OPERATOR = 41;
+  int MEMBER_CALL_OPERATOR = 44;
 
   /**
    * The meta object id for the '{@link org.osate.contract.contract.Predefined <em>Predefined</em>}' enum.
@@ -2040,7 +2187,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getPredefined()
    * @generated
    */
-  int PREDEFINED = 42;
+  int PREDEFINED = 45;
 
 
   /**
@@ -2415,6 +2562,17 @@ public interface ContractPackage extends EPackage
    * @generated
    */
   EReference getArgumentExpression_Arguments();
+
+  /**
+   * Returns the meta object for the containment reference list '{@link org.osate.contract.contract.ArgumentExpression#getNested <em>Nested</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Nested</em>'.
+   * @see org.osate.contract.contract.ArgumentExpression#getNested()
+   * @see #getArgumentExpression()
+   * @generated
+   */
+  EReference getArgumentExpression_Nested();
 
   /**
    * Returns the meta object for class '{@link org.osate.contract.contract.VerificationPlan <em>Verification Plan</em>}'.
@@ -2806,6 +2964,36 @@ public interface ContractPackage extends EPackage
    * @generated
    */
   EReference getCodeAssumption_Guarantee();
+
+  /**
+   * Returns the meta object for class '{@link org.osate.contract.contract.ArgumentAnd <em>Argument And</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Argument And</em>'.
+   * @see org.osate.contract.contract.ArgumentAnd
+   * @generated
+   */
+  EClass getArgumentAnd();
+
+  /**
+   * Returns the meta object for class '{@link org.osate.contract.contract.ArgumentOr <em>Argument Or</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Argument Or</em>'.
+   * @see org.osate.contract.contract.ArgumentOr
+   * @generated
+   */
+  EClass getArgumentOr();
+
+  /**
+   * Returns the meta object for class '{@link org.osate.contract.contract.ArgumentNot <em>Argument Not</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Argument Not</em>'.
+   * @see org.osate.contract.contract.ArgumentNot
+   * @generated
+   */
+  EClass getArgumentNot();
 
   /**
    * Returns the meta object for class '{@link org.osate.contract.contract.TupleDeclaration <em>Tuple Declaration</em>}'.
@@ -3483,6 +3671,14 @@ public interface ContractPackage extends EPackage
     EReference ARGUMENT_EXPRESSION__ARGUMENTS = eINSTANCE.getArgumentExpression_Arguments();
 
     /**
+     * The meta object literal for the '<em><b>Nested</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ARGUMENT_EXPRESSION__NESTED = eINSTANCE.getArgumentExpression_Nested();
+
+    /**
      * The meta object literal for the '{@link org.osate.contract.contract.impl.VerificationPlanImpl <em>Verification Plan</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3809,6 +4005,36 @@ public interface ContractPackage extends EPackage
      * @generated
      */
     EReference CODE_ASSUMPTION__GUARANTEE = eINSTANCE.getCodeAssumption_Guarantee();
+
+    /**
+     * The meta object literal for the '{@link org.osate.contract.contract.impl.ArgumentAndImpl <em>Argument And</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.osate.contract.contract.impl.ArgumentAndImpl
+     * @see org.osate.contract.contract.impl.ContractPackageImpl#getArgumentAnd()
+     * @generated
+     */
+    EClass ARGUMENT_AND = eINSTANCE.getArgumentAnd();
+
+    /**
+     * The meta object literal for the '{@link org.osate.contract.contract.impl.ArgumentOrImpl <em>Argument Or</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.osate.contract.contract.impl.ArgumentOrImpl
+     * @see org.osate.contract.contract.impl.ContractPackageImpl#getArgumentOr()
+     * @generated
+     */
+    EClass ARGUMENT_OR = eINSTANCE.getArgumentOr();
+
+    /**
+     * The meta object literal for the '{@link org.osate.contract.contract.impl.ArgumentNotImpl <em>Argument Not</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.osate.contract.contract.impl.ArgumentNotImpl
+     * @see org.osate.contract.contract.impl.ContractPackageImpl#getArgumentNot()
+     * @generated
+     */
+    EClass ARGUMENT_NOT = eINSTANCE.getArgumentNot();
 
     /**
      * The meta object literal for the '{@link org.osate.contract.contract.impl.TupleDeclarationImpl <em>Tuple Declaration</em>}' class.
