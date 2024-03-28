@@ -1,0 +1,8 @@
+package SimplePlan
+public
+	annex contract {**
+		verification plan SimplePlan {
+			component s: pkg1::s.i;
+		}
+	**};
+end SimplePlan;

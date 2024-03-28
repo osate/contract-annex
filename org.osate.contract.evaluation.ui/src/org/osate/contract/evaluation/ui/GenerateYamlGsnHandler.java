@@ -22,6 +22,7 @@ import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode;
 import org.osate.aadl2.AadlPackage;
 import org.osate.aadl2.modelsupport.resources.OsateResourceUtil;
 import org.osate.contract.contract.VerificationPlan;
+import org.osate.contract.gsn.YamlGsnGenerator;
 
 public class GenerateYamlGsnHandler extends AbstractHandler {
 	@Override
@@ -32,7 +33,7 @@ public class GenerateYamlGsnHandler extends AbstractHandler {
 			var project = OsateResourceUtil.toIFile(verificationPlan.eResource().getURI()).getProject();
 			var aadlPackage = EcoreUtil2.getContainerOfType(verificationPlan, AadlPackage.class);
 			var outputFileName = aadlPackage.getName() + "_" + verificationPlan.getName() + ".gsn.yaml";
-			return new GeneratedYAML(project, outputFileName, "TODO: Fill YAML Contents");
+			return new GeneratedYAML(project, outputFileName, YamlGsnGenerator.generateYamlGsn(verificationPlan));
 		});
 		var folderPath = generatedYaml.project().getFullPath().append("yaml-gen");
 		var stream = new ByteArrayInputStream(generatedYaml.contents().getBytes());
