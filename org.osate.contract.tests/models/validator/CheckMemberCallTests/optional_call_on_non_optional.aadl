@@ -1,0 +1,10 @@
+package optional_call_on_non_optional
+public
+	annex contract {**
+		contract OptionalCallOnNonOptional {
+			queries
+				val valid = self.parent?.name;
+				val invalid = self?.name;
+		}
+	**};
+end optional_call_on_non_optional;

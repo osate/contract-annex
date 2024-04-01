@@ -36,6 +36,7 @@ package org.osate.contract.contract;
  * </p>
  * <ul>
  *   <li>{@link org.osate.contract.contract.MemberCall#getLeft <em>Left</em>}</li>
+ *   <li>{@link org.osate.contract.contract.MemberCall#getOperator <em>Operator</em>}</li>
  *   <li>{@link org.osate.contract.contract.MemberCall#getRight <em>Right</em>}</li>
  *   <li>{@link org.osate.contract.contract.MemberCall#getTypeArgument <em>Type Argument</em>}</li>
  *   <li>{@link org.osate.contract.contract.MemberCall#getArgument <em>Argument</em>}</li>
@@ -69,6 +70,31 @@ public interface MemberCall extends Expression
    * @generated
    */
   void setLeft(Expression value);
+
+  /**
+   * Returns the value of the '<em><b>Operator</b></em>' attribute.
+   * The literals are from the enumeration {@link org.osate.contract.contract.MemberCallOperator}.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Operator</em>' attribute.
+   * @see org.osate.contract.contract.MemberCallOperator
+   * @see #setOperator(MemberCallOperator)
+   * @see org.osate.contract.contract.ContractPackage#getMemberCall_Operator()
+   * @model
+   * @generated
+   */
+  MemberCallOperator getOperator();
+
+  /**
+   * Sets the value of the '{@link org.osate.contract.contract.MemberCall#getOperator <em>Operator</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Operator</em>' attribute.
+   * @see org.osate.contract.contract.MemberCallOperator
+   * @see #getOperator()
+   * @generated
+   */
+  void setOperator(MemberCallOperator value);
 
   /**
    * Returns the value of the '<em><b>Right</b></em>' attribute.

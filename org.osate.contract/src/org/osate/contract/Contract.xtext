@@ -246,9 +246,14 @@ NotExpression returns Expression:
 
 CallExpression returns Expression:
 	TerminalExpression (
-		{MemberCall.left=current} '.' right=ID ('<' typeArgument=ID '>')? ('(' argument=Expression ')')? lambda=Lambda? |
+		{MemberCall.left=current} operator=MemberCallOperator right=ID ('<' typeArgument=ID '>')?
+			('(' argument=Expression ')')? lambda=Lambda? |
 		{PropertyLookup.left=current} '#' right=[aadl2::Property|QPREF]
 	)*
+;
+
+enum MemberCallOperator:
+	NORMAL='.' | OPTIONAL='?.'
 ;
 
 Lambda:

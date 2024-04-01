@@ -7,6 +7,9 @@ public
 					.map { transmissionTime -> transmissionTime.get(Fixed) };
 				val invalid = self#Transmission_Time
 					.map { transmissionTime -> transmissionTime.get(self.subcomponents.empty) };
+				
+				val validOptional = self#Transmission_Time?.get(Fixed);
+				val invalidOptional = self#Transmission_Time?.get(self.subcomponents.empty);
 		}
 	**};
 end wrong_argument_type_for_record_get;

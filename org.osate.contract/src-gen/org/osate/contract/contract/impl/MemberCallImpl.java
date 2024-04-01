@@ -37,6 +37,7 @@ import org.osate.contract.contract.ContractPackage;
 import org.osate.contract.contract.Expression;
 import org.osate.contract.contract.Lambda;
 import org.osate.contract.contract.MemberCall;
+import org.osate.contract.contract.MemberCallOperator;
 
 /**
  * <!-- begin-user-doc -->
@@ -47,6 +48,7 @@ import org.osate.contract.contract.MemberCall;
  * </p>
  * <ul>
  *   <li>{@link org.osate.contract.contract.impl.MemberCallImpl#getLeft <em>Left</em>}</li>
+ *   <li>{@link org.osate.contract.contract.impl.MemberCallImpl#getOperator <em>Operator</em>}</li>
  *   <li>{@link org.osate.contract.contract.impl.MemberCallImpl#getRight <em>Right</em>}</li>
  *   <li>{@link org.osate.contract.contract.impl.MemberCallImpl#getTypeArgument <em>Type Argument</em>}</li>
  *   <li>{@link org.osate.contract.contract.impl.MemberCallImpl#getArgument <em>Argument</em>}</li>
@@ -66,6 +68,26 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
    * @ordered
    */
   protected Expression left;
+
+  /**
+   * The default value of the '{@link #getOperator() <em>Operator</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getOperator()
+   * @generated
+   * @ordered
+   */
+  protected static final MemberCallOperator OPERATOR_EDEFAULT = MemberCallOperator.NORMAL;
+
+  /**
+   * The cached value of the '{@link #getOperator() <em>Operator</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getOperator()
+   * @generated
+   * @ordered
+   */
+  protected MemberCallOperator operator = OPERATOR_EDEFAULT;
 
   /**
    * The default value of the '{@link #getRight() <em>Right</em>}' attribute.
@@ -196,6 +218,31 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
     }
     else if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.MEMBER_CALL__LEFT, newLeft, newLeft));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public MemberCallOperator getOperator()
+  {
+    return operator;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setOperator(MemberCallOperator newOperator)
+  {
+    MemberCallOperator oldOperator = operator;
+    operator = newOperator == null ? OPERATOR_EDEFAULT : newOperator;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.MEMBER_CALL__OPERATOR, oldOperator, operator));
   }
 
   /**
@@ -380,6 +427,8 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
     {
       case ContractPackage.MEMBER_CALL__LEFT:
         return getLeft();
+      case ContractPackage.MEMBER_CALL__OPERATOR:
+        return getOperator();
       case ContractPackage.MEMBER_CALL__RIGHT:
         return getRight();
       case ContractPackage.MEMBER_CALL__TYPE_ARGUMENT:
@@ -404,6 +453,9 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
     {
       case ContractPackage.MEMBER_CALL__LEFT:
         setLeft((Expression)newValue);
+        return;
+      case ContractPackage.MEMBER_CALL__OPERATOR:
+        setOperator((MemberCallOperator)newValue);
         return;
       case ContractPackage.MEMBER_CALL__RIGHT:
         setRight((String)newValue);
@@ -434,6 +486,9 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
       case ContractPackage.MEMBER_CALL__LEFT:
         setLeft((Expression)null);
         return;
+      case ContractPackage.MEMBER_CALL__OPERATOR:
+        setOperator(OPERATOR_EDEFAULT);
+        return;
       case ContractPackage.MEMBER_CALL__RIGHT:
         setRight(RIGHT_EDEFAULT);
         return;
@@ -462,6 +517,8 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
     {
       case ContractPackage.MEMBER_CALL__LEFT:
         return left != null;
+      case ContractPackage.MEMBER_CALL__OPERATOR:
+        return operator != OPERATOR_EDEFAULT;
       case ContractPackage.MEMBER_CALL__RIGHT:
         return RIGHT_EDEFAULT == null ? right != null : !RIGHT_EDEFAULT.equals(right);
       case ContractPackage.MEMBER_CALL__TYPE_ARGUMENT:
@@ -485,7 +542,9 @@ public class MemberCallImpl extends ExpressionImpl implements MemberCall
     if (eIsProxy()) return super.toString();
 
     StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (right: ");
+    result.append(" (operator: ");
+    result.append(operator);
+    result.append(", right: ");
     result.append(right);
     result.append(", typeArgument: ");
     result.append(typeArgument);

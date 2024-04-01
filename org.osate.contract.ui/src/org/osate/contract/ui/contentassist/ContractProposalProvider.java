@@ -35,6 +35,7 @@ import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
 import org.osate.contract.contract.MemberCall;
 import org.osate.contract.typing.ContractTypeSystem;
 import org.osate.contract.typing.GenericTypeArgumentRegistry;
+import org.osate.contract.typing.OptionalType;
 
 import com.google.inject.Inject;
 
@@ -52,8 +53,12 @@ public class ContractProposalProvider extends AbstractContractProposalProvider {
 		super.completeCallExpression_Right(model, assignment, context, acceptor);
 		if (model instanceof MemberCall memberCall) {
 			var leftType = typeSystem.expressionType(memberCall.getLeft()).getValue();
-			if (leftType != null) {
-				for (var memberName : leftType.getMembers().keySet()) {
+			var receiverType = switch (memberCall.getOperator()) {
+			case NORMAL -> leftType;
+			case OPTIONAL -> leftType instanceof OptionalType optionalType ? optionalType.getElementType() : null;
+			};
+			if (receiverType != null) {
+				for (var memberName : receiverType.getMembers().keySet()) {
 					acceptor.accept(createCompletionProposal(memberName, null, getImage(memberCall), 700,
 							context.getPrefix(), context));
 				}

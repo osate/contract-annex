@@ -1596,7 +1596,8 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
 		private final Group cGroup_1_0 = (Group)cAlternatives_1.eContents().get(0);
 		private final Action cMemberCallLeftAction_1_0_0 = (Action)cGroup_1_0.eContents().get(0);
-		private final Keyword cFullStopKeyword_1_0_1 = (Keyword)cGroup_1_0.eContents().get(1);
+		private final Assignment cOperatorAssignment_1_0_1 = (Assignment)cGroup_1_0.eContents().get(1);
+		private final RuleCall cOperatorMemberCallOperatorEnumRuleCall_1_0_1_0 = (RuleCall)cOperatorAssignment_1_0_1.eContents().get(0);
 		private final Assignment cRightAssignment_1_0_2 = (Assignment)cGroup_1_0.eContents().get(2);
 		private final RuleCall cRightIDTerminalRuleCall_1_0_2_0 = (RuleCall)cRightAssignment_1_0_2.eContents().get(0);
 		private final Group cGroup_1_0_3 = (Group)cGroup_1_0.eContents().get(3);
@@ -1620,14 +1621,16 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		
 		//CallExpression returns Expression:
 		//    TerminalExpression (
-		//        {MemberCall.left=current} '.' right=ID ('<' typeArgument=ID '>')? ('(' argument=Expression ')')? lambda=Lambda? |
+		//        {MemberCall.left=current} operator=MemberCallOperator right=ID ('<' typeArgument=ID '>')?
+		//            ('(' argument=Expression ')')? lambda=Lambda? |
 		//        {PropertyLookup.left=current} '#' right=[aadl2::Property|QPREF]
 		//    )*
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//TerminalExpression (
-		//    {MemberCall.left=current} '.' right=ID ('<' typeArgument=ID '>')? ('(' argument=Expression ')')? lambda=Lambda? |
+		//    {MemberCall.left=current} operator=MemberCallOperator right=ID ('<' typeArgument=ID '>')?
+		//        ('(' argument=Expression ')')? lambda=Lambda? |
 		//    {PropertyLookup.left=current} '#' right=[aadl2::Property|QPREF]
 		//)*
 		public Group getGroup() { return cGroup; }
@@ -1636,19 +1639,24 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		public RuleCall getTerminalExpressionParserRuleCall_0() { return cTerminalExpressionParserRuleCall_0; }
 		
 		//(
-		//       {MemberCall.left=current} '.' right=ID ('<' typeArgument=ID '>')? ('(' argument=Expression ')')? lambda=Lambda? |
+		//       {MemberCall.left=current} operator=MemberCallOperator right=ID ('<' typeArgument=ID '>')?
+		//           ('(' argument=Expression ')')? lambda=Lambda? |
 		//       {PropertyLookup.left=current} '#' right=[aadl2::Property|QPREF]
 		//   )*
 		public Alternatives getAlternatives_1() { return cAlternatives_1; }
 		
-		//{MemberCall.left=current} '.' right=ID ('<' typeArgument=ID '>')? ('(' argument=Expression ')')? lambda=Lambda?
+		//{MemberCall.left=current} operator=MemberCallOperator right=ID ('<' typeArgument=ID '>')?
+		//    ('(' argument=Expression ')')? lambda=Lambda?
 		public Group getGroup_1_0() { return cGroup_1_0; }
 		
 		//{MemberCall.left=current}
 		public Action getMemberCallLeftAction_1_0_0() { return cMemberCallLeftAction_1_0_0; }
 		
-		//'.'
-		public Keyword getFullStopKeyword_1_0_1() { return cFullStopKeyword_1_0_1; }
+		//operator=MemberCallOperator
+		public Assignment getOperatorAssignment_1_0_1() { return cOperatorAssignment_1_0_1; }
+		
+		//MemberCallOperator
+		public RuleCall getOperatorMemberCallOperatorEnumRuleCall_1_0_1_0() { return cOperatorMemberCallOperatorEnumRuleCall_1_0_1_0; }
 		
 		//right=ID
 		public Assignment getRightAssignment_1_0_2() { return cRightAssignment_1_0_2; }
@@ -2343,6 +2351,34 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//'smt'
 		public Keyword getSMTSmtKeyword_2_0() { return cSMTSmtKeyword_2_0; }
 	}
+	public class MemberCallOperatorElements extends AbstractElementFinder.AbstractEnumRuleElementFinder {
+		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.MemberCallOperator");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final EnumLiteralDeclaration cNORMALEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cNORMALFullStopKeyword_0_0 = (Keyword)cNORMALEnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cOPTIONALEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cOPTIONALQuestionMarkFullStopKeyword_1_0 = (Keyword)cOPTIONALEnumLiteralDeclaration_1.eContents().get(0);
+		
+		//enum MemberCallOperator:
+		//    NORMAL='.' | OPTIONAL='?.'
+		//;
+		public EnumRule getRule() { return rule; }
+		
+		//NORMAL='.' | OPTIONAL='?.'
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//NORMAL='.'
+		public EnumLiteralDeclaration getNORMALEnumLiteralDeclaration_0() { return cNORMALEnumLiteralDeclaration_0; }
+		
+		//'.'
+		public Keyword getNORMALFullStopKeyword_0_0() { return cNORMALFullStopKeyword_0_0; }
+		
+		//OPTIONAL='?.'
+		public EnumLiteralDeclaration getOPTIONALEnumLiteralDeclaration_1() { return cOPTIONALEnumLiteralDeclaration_1; }
+		
+		//'?.'
+		public Keyword getOPTIONALQuestionMarkFullStopKeyword_1_0() { return cOPTIONALQuestionMarkFullStopKeyword_1_0; }
+	}
 	public class PredefinedElements extends AbstractElementFinder.AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.Predefined");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
@@ -2407,6 +2443,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	private final AndExpressionElements pAndExpression;
 	private final NotExpressionElements pNotExpression;
 	private final CallExpressionElements pCallExpression;
+	private final MemberCallOperatorElements eMemberCallOperator;
 	private final LambdaElements pLambda;
 	private final ParameterElements pParameter;
 	private final SingleParameterElements pSingleParameter;
@@ -2473,6 +2510,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		this.pAndExpression = new AndExpressionElements();
 		this.pNotExpression = new NotExpressionElements();
 		this.pCallExpression = new CallExpressionElements();
+		this.eMemberCallOperator = new MemberCallOperatorElements();
 		this.pLambda = new LambdaElements();
 		this.pParameter = new ParameterElements();
 		this.pSingleParameter = new SingleParameterElements();
@@ -2974,7 +3012,8 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	
 	//CallExpression returns Expression:
 	//    TerminalExpression (
-	//        {MemberCall.left=current} '.' right=ID ('<' typeArgument=ID '>')? ('(' argument=Expression ')')? lambda=Lambda? |
+	//        {MemberCall.left=current} operator=MemberCallOperator right=ID ('<' typeArgument=ID '>')?
+	//            ('(' argument=Expression ')')? lambda=Lambda? |
 	//        {PropertyLookup.left=current} '#' right=[aadl2::Property|QPREF]
 	//    )*
 	//;
@@ -2984,6 +3023,17 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	
 	public ParserRule getCallExpressionRule() {
 		return getCallExpressionAccess().getRule();
+	}
+	
+	//enum MemberCallOperator:
+	//    NORMAL='.' | OPTIONAL='?.'
+	//;
+	public MemberCallOperatorElements getMemberCallOperatorAccess() {
+		return eMemberCallOperator;
+	}
+	
+	public EnumRule getMemberCallOperatorRule() {
+		return getMemberCallOperatorAccess().getRule();
 	}
 	
 	//Lambda:

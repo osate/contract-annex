@@ -39,6 +39,7 @@ import org.osate.aadl2.properties.PropertyNotPresentException
 import org.osate.contract.contract.AndExpression
 import org.osate.contract.contract.Expression
 import org.osate.contract.contract.MemberCall
+import org.osate.contract.contract.MemberCallOperator
 import org.osate.contract.contract.NameReference
 import org.osate.contract.contract.NotExpression
 import org.osate.contract.contract.OrExpression
@@ -116,37 +117,56 @@ from {
 rule EvaluateMemberCall
 	G |- MemberCall expression ~> Object result
 from {
-	val leftType = typeSystem.expressionType(expression.left).value
 	G |- expression.left ~> var Object leftValue
-	result = switch member : leftType.members.get(expression.right) {
-		SimpleMember<Object, Object>: member.evaluate(leftValue)
-		MemberWithTypeParameter<Object, Object>: {
-			val javaType = GenericTypeArgumentRegistry.getJavaType(expression.typeArgument)
-			if (javaType !== null) {
-				member.evaluate(leftValue, javaType)
+	result = if (expression.operator == MemberCallOperator.OPTIONAL && (leftValue as Optional<?>).^empty) {
+		Optional.^empty
+	} else {
+		val leftType = typeSystem.expressionType(expression.left).value
+		val receiverType = switch expression.operator {
+			case NORMAL: leftType
+			case OPTIONAL: if (leftType instanceof OptionalType) {
+				leftType.elementType
 			}
 		}
-		MemberWithArgument<Object, Object, Object>: {
-			G |- expression.argument ~> var Object argumentValue
-			member.evaluate(leftValue, argumentValue)
+		val receiverValue = switch expression.operator {
+			case NORMAL: leftValue
+			case OPTIONAL: (leftValue as Optional<?>).get
 		}
-		MemberWithLambda<Object, Object, Object>: {
-			val lambda = expression.lambda
-			val parameter = lambda.parameter
-			member.evaluate(leftValue) [element |
-				val withParameters = new RuleEnvironment(G)
-				switch parameter {
-					SingleParameter: withParameters.add(parameter.name, element)
-					TupleParameter: {
-						val tuple = element as Tuple
-						for (var i = 0; i < parameter.names.size; i++) {
-							withParameters.add(parameter.names.get(i).name, tuple.elements.get(i))
+		val evaluationResult = switch member : receiverType.members.get(expression.right) {
+			SimpleMember<Object, Object>: member.evaluate(receiverValue)
+			MemberWithTypeParameter<Object, Object>: {
+				val javaType = GenericTypeArgumentRegistry.getJavaType(expression.typeArgument)
+				if (javaType !== null) {
+					member.evaluate(receiverValue, javaType)
+				}
+			}
+			MemberWithArgument<Object, Object, Object>: {
+				G |- expression.argument ~> var Object argumentValue
+				member.evaluate(receiverValue, argumentValue)
+			}
+			MemberWithLambda<Object, Object, Object>: {
+				val lambda = expression.lambda
+				val parameter = lambda.parameter
+				member.evaluate(receiverValue) [element |
+					val withParameters = new RuleEnvironment(G)
+					switch parameter {
+						SingleParameter: withParameters.add(parameter.name, element)
+						TupleParameter: {
+							val tuple = element as Tuple
+							for (var i = 0; i < parameter.names.size; i++) {
+								withParameters.add(parameter.names.get(i).name, tuple.elements.get(i))
+							}
 						}
 					}
-				}
-				withParameters |- lambda.returnValue ~> var Object lambdaResult
-				lambdaResult
-			]
+					withParameters |- lambda.returnValue ~> var Object lambdaResult
+					lambdaResult
+				]
+			}
+		}
+		if (expression.operator == MemberCallOperator.OPTIONAL && !(evaluationResult instanceof Optional)) {
+			Optional.of(evaluationResult)
+		} else {
+			evaluationResult
 		}
 	}
 }

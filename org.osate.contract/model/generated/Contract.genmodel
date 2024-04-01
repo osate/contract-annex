@@ -11,6 +11,10 @@
       <genEnumLiterals ecoreEnumLiteral="Contract.ecore#//Language/JAVA"/>
       <genEnumLiterals ecoreEnumLiteral="Contract.ecore#//Language/SMT"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Contract.ecore#//MemberCallOperator">
+      <genEnumLiterals ecoreEnumLiteral="Contract.ecore#//MemberCallOperator/NORMAL"/>
+      <genEnumLiterals ecoreEnumLiteral="Contract.ecore#//MemberCallOperator/OPTIONAL"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Contract.ecore#//Predefined">
       <genEnumLiterals ecoreEnumLiteral="Contract.ecore#//Predefined/ERROR"/>
       <genEnumLiterals ecoreEnumLiteral="Contract.ecore#//Predefined/INFO"/>
@@ -127,6 +131,7 @@
     </genClasses>
     <genClasses ecoreClass="Contract.ecore#//MemberCall">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//MemberCall/left"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//MemberCall/operator"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//MemberCall/right"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//MemberCall/typeArgument"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//MemberCall/argument"/>

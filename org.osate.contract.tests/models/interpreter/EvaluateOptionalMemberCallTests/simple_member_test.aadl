@@ -1,0 +1,25 @@
+package simple_member_test
+public
+	with ps;
+	
+	annex contract {**
+		contract SimpleMemberTest {
+			queries
+				val presentMap = self#ps::integer_range_1?.minimum;
+				val emptyMap = self#ps::integer_range_2?.minimum;
+				
+				val presentFlatMap = self#ps::integer_range_1?.getDelta;
+				val outerEmptyFlatMap = self#ps::integer_range_2?.getDelta;
+				val innerEmptyFlatMap = self#ps::integer_range_3?.getDelta;
+		}
+	**};
+	
+	system s
+		properties
+			ps::integer_range_1 => 1 .. 10 delta 2;
+			ps::integer_range_3 => 20 .. 30;
+	end s;
+	
+	system implementation s.i
+	end s.i;
+end simple_member_test;

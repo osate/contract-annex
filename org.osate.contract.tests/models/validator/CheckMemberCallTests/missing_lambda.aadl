@@ -30,6 +30,9 @@ public
 				val valid = self.subcomponents.map { subcomponent -> subcomponent };
 				val invalid = self.subcomponents.map;
 				val invalidOptional = self#Period.map;
+				
+				val validOptionalCall = self.parent?.subcomponents?.map { subcomponent -> subcomponent };
+				val invalidOptionalCall = self.parent?.subcomponents?.map;
 		}
 	**};
 end missing_lambda;

@@ -1,0 +1,17 @@
+package chained_optional_calls_test
+public
+	annex contract {**
+		contract ChainedOptionalCallsTest {
+			queries
+				val v1 = self;
+				val v2 = self.parent;
+				val v3 = self.parent?.subcomponents;
+				val v4 = self.parent?.subcomponents?.map { subcomponent -> subcomponent };
+				val v5 = self.parent
+					?.subcomponents
+					?.map { subcomponent -> (subcomponent.name, subcomponent.category) }
+					?.map { (name, category) -> name };
+				val v6 = self.parent?.subcomponents?.filter { subcomponent -> subcomponent.isProcess };
+		}
+	**};
+end chained_optional_calls_test;

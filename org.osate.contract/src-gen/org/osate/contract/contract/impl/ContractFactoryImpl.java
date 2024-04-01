@@ -148,6 +148,8 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
     {
       case ContractPackage.LANGUAGE:
         return createLanguageFromString(eDataType, initialValue);
+      case ContractPackage.MEMBER_CALL_OPERATOR:
+        return createMemberCallOperatorFromString(eDataType, initialValue);
       case ContractPackage.PREDEFINED:
         return createPredefinedFromString(eDataType, initialValue);
       default:
@@ -167,6 +169,8 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
     {
       case ContractPackage.LANGUAGE:
         return convertLanguageToString(eDataType, instanceValue);
+      case ContractPackage.MEMBER_CALL_OPERATOR:
+        return convertMemberCallOperatorToString(eDataType, instanceValue);
       case ContractPackage.PREDEFINED:
         return convertPredefinedToString(eDataType, instanceValue);
       default:
@@ -708,6 +712,28 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
    * @generated
    */
   public String convertLanguageToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public MemberCallOperator createMemberCallOperatorFromString(EDataType eDataType, String initialValue)
+  {
+    MemberCallOperator result = MemberCallOperator.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertMemberCallOperatorToString(EDataType eDataType, Object instanceValue)
   {
     return instanceValue == null ? null : instanceValue.toString();
   }
