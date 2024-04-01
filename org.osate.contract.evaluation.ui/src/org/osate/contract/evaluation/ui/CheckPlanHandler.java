@@ -91,6 +91,7 @@ public class CheckPlanHandler extends AbstractHandler {
 					consoleMgr.addConsoles(new IConsole[] { con });
 					return con;
 				});
+		console.clearConsole();
 		out = new PrintStream(console.newMessageStream());
 		System.setOut(out);
 		System.setErr(out);
