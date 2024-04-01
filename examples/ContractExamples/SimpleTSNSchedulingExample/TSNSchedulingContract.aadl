@@ -57,8 +57,8 @@ annex contract {**
 #     Of course, our tool works also for the case that there are more than two periods. 
 
 from z3 import *
-import matplotlib.pyplot as plt
-import ast
+#import matplotlib.pyplot as plt
+#import ast
 
 frameheader_overhead_in_bytes = 14
 Gbps = 1000000000.0
@@ -495,7 +495,8 @@ def isTSNSchedulable(flowComponents,buses,processors,connectedPairs):
 		network_links.append(procPair)
 		contention_domains.append([linkIndex])
 		linkIndex += 1
-		link_speeds.append(buses[i][2])
+		# in Gbps: Translate from Transmission Time Per Byte == (8 * 1000,000,000) / X
+		link_speeds.append((8 * 1000000000)/buses[i][2])
 	message_streams = []
 	message_periods = []
 	message_deadlines = []
@@ -577,7 +578,13 @@ def isTSNSchedulable(flowComponents,buses,processors,connectedPairs):
 												b ->
 												val n = b.name;
 												val transtime = b#TSNProperties::BitsPerSecond;
-												(b,n,transtime)
+												val fixedMaxTransTime = b#Transmission_Time.flatMap{ b1 ->
+														b1.get(Fixed).map{ b2 -> b2.maximum.scaledTo(ns)} 
+													};
+												val perByteMaxTransTime = b#Transmission_time.flatMap {b1->
+														b1.get(PerByte).map{ b2 -> b2.maximum.scaledTo(ns)}
+													};
+												(b,n,perByteMaxTransTime)
 											};
 			
 			val flowComponents = e2es

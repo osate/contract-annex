@@ -196,7 +196,7 @@ public
 			Period => 100 ms applies to sensing.sensingThread1;
 			--Deadline => 30 ms applies to sensing.sensingThread1;
 			Deadline => 100 ms applies to sensing.sensingThread1;
-			--Priority => 3 applies to sensing.sensingThread1;
+			-- Priority => 3 applies to sensing.sensingThread1;
 			-- Priority => 1 applies to sensing.sensingThread1; -- breaks RM priorities
 			Dispatch_Protocol => Periodic applies to sensing.sensingThread1;
 			Compute_Execution_Time => 10 ms .. 10 ms applies to sensing.sensingThread1;

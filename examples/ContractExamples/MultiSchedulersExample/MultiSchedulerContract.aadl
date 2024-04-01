@@ -1,0 +1,636 @@
+package MultiSchedulerContract
+public
+	annex contract {**
+
+	contract implementation MultiSchedulerContractImplementation {`		
+import math
+
+def addError(error,msg):
+	error[0]+="|"+msg
+
+def areAllThreadsWithSchedulingEDFSchedulingParameters(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	for p in range(len(boundThreads)):
+		for i in range(len(boundThreads[p][2])):
+			if boundThreads[p][2][i][2] is None:
+				addError(error0,"{"+str(boundThreads[p][2][i][0])+"} thread "+boundThreads[p][2][i][1]+" is missing the Period Property")
+				return False
+			if boundThreads[p][2][i][3] is None:
+				addError(error0,"{"+str(boundThreads[p][2][i][0])+"} thread "+boundThreads[p][2][i][1]+" is missing the Compute Execution Time Property")
+				return False			
+			if boundThreads[p][2][i][5] is None:
+				addError(error0,"{"+str(boundThreads[p][2][i][0])+"} thread "+boundThreads[p][2][i][1]+" is missing the Deadline Property")
+				return False
+	return True						
+
+def areAllProcessorsWithSchedulingProtocol(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	for p in range(len(boundThreads)):
+		if boundThreads[p][3] is None:
+			print("Processor (",boundThreads[p][1],") does not have a scheduling protocol set")
+			addError(error0,"{"+str(boundThreads[p][0])+"} processor: does not have the Scheduling Protocol set")
+			return False
+	return True
+	
+def areAllProcessorsEdfScheduled(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	for p in range(len(boundThreads)):
+		if boundThreads[p][3] is None:
+			addError(error0,"{"+str(boundThreads[p][0])+"} processor: does not have the Scheduling Protocol set")
+			return False
+		if boundThreads[p][3][0] != "EDF":
+			addError(error0,"{"+str(boundThreads[p][0])+"} processor: does not have an EDF scheduling protocol set")		
+			return False
+	return True
+
+#tasks =[ [T,D,C] ]
+def utilization(tasks):
+	u=0.0
+	for i in range(len(tasks)):
+		u += tasks[i][2]/tasks[i][0]
+	return u
+
+#tasks =[ [T,D,C] ]
+def allTasksDeadlineLargerThanPeriod(tasks):
+	for i in range(len(tasks)):
+		if tasks[i][0] >= tasks[i][1]:
+			return False
+	return True
+	
+# Demand bound function sched test 
+# S.K.Baruah, A.K. Mok and L.E. Rossier, "Preemptively Scheduling Hard Real-Time Tasks on One Processor"
+# Proceedings of the 11th Real-Time Systems Symposium. 1990.
+#tasks =[ [T,D,C] ]
+def EdfDBFSchedulable(tasks):
+	u = utilization(tasks)
+	if u>1.0 :
+		print("EDF not schedulable")
+		return False
+	if allTasksDeadlineLargerThanPeriod(tasks):
+		return True
+	periods = [tasks[i][0] for i in range(len(tasks))]
+	deadlines = [tasks[i][1] for i in range(len(tasks))]
+	P = math.lcm(*periods)
+	D = max(deadlines)
+	M = P + D
+	if u == 1:
+		T=M
+	else:
+		T= min(M,math.ceil(u/(1-u)*max([periods[i]-deadlines[i] for i in range(len(periods))])))
+	H=0
+	for t in range(1,T):
+		for i in range(len(tasks)):
+			if t>= tasks[i][1] and (t % tasks[i][0]) == tasks[i][1]:
+				H += tasks[i][2]
+		if H>t:
+			return False
+	return True	
+	
+def isEdfDBFSchedulable(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	for p in range(len(boundThreads)):
+		#tasks =[ [T,D,C] ]
+		tasks=[]
+		for i in range(len(boundThreads[p][2])):
+			tasks.append([round(boundThreads[p][2][i][2]),round(boundThreads[p][2][i][5]),round(boundThreads[p][2][i][3])])
+		if not EdfDBFSchedulable(tasks):
+			addError(error0,"{"+str(boundThreads[p][0])+"} processor:"+boundThreads[p][1]+" has taskset that is not EDF schedulable")
+			return False
+	addError(info0,"{"+str(boundThreads[p][0])+"} processor:"+boundThreads[p][1]+" has taskset that is EDF schedulable")
+	return True
+		
+		
+def arePrioritiesRM(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.priom th.deadline)])]
+	#  (t, t.name, period, wcet, prio, deadline)
+	for i in range(len(boundThreads)):
+		util=0.0
+		for j in range(len(boundThreads[i][2])):
+			for k in range(j+1, len(boundThreads[i][2])):
+				periodj = boundThreads[i][2][j][2]
+				priorityj = boundThreads[i][2][j][4]
+				namej = boundThreads[i][2][j][1]
+				periodk = boundThreads[i][2][k][2]
+				priorityk = boundThreads[i][2][k][4]
+				namek = boundThreads[i][2][k][1]
+				if (periodj < periodk and priorityj<priorityk):
+					addError(error0,"{"+str(boundThreads[i][2][j][0])+"}thread "+namej+" has shorter period than thread "+namek+" but lower priority")
+					print(" **NOT RMPRIORITIES thread "+namej+" has shorter period than "+namek+" but lower priority")
+					return False
+	print(" **RMPRIORITIES ")
+	return True
+
+def arePrioritiesDM(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.priom th.deadline)])]
+	#  (t, t.name, period, wcet, prio, deadline)
+	for i in range(len(boundThreads)):
+		util=0.0
+		for j in range(len(boundThreads[i][2])):
+			for k in range(j+1, len(boundThreads[i][2])):
+				periodj = boundThreads[i][2][j][2]
+				deadlinej = boundThreads[i][2][j][5]
+				priorityj = boundThreads[i][2][j][4]
+				namej = boundThreads[i][2][j][1]
+				periodk = boundThreads[i][2][k][2]
+				priorityk = boundThreads[i][2][k][4]
+				deadlinek = boundThreads[i][2][k][5]
+				namek = boundThreads[i][2][k][1]
+				if (deadlinej < deadlinek and priorityj<priorityk):
+					addError(error0,"{"+str(boundThreads[i][2][j][0])+"}thread "+namej+" has shorter deadline than thread "+namek+" but lower priority")
+					print(" **NOT DMPRIORITIES thread "+namej+" has shorter deadline than "+namek+" but lower priority")
+					return False
+	print(" **DMPRIORITIES ")
+	return True
+
+def getResponseTimes(threads):
+	# threads is [(th, th.name, th.period, th.wcet, th.prio, th.deadline)]
+	# in increasing priority order
+	respTimes = [0] * len(threads)
+	for i in range(len(threads)):
+		r = 0
+		r1 = threads[i][3]
+		while r < r1 and r1 <= threads[i][5]:
+			r = r1
+			r1 = threads[i][3]
+			for j in range(0, i):
+				r1 = r1 + math.ceil(r / threads[j][2]) * threads[j][3]
+		respTimes[i] = r1
+	return respTimes
+		
+def isResponseTimeSchedulable(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	for p in range(len(boundThreads)):
+		threads = boundThreads[p][2]
+		for i in range(len(threads)):
+			if threads[i][4] is None:
+				return False
+		inc = sorted(threads, reverse = True, key = lambda td: td[4])
+		rt = getResponseTimes(inc)
+		for i in range(len(rt)):
+			deadline = inc[i][5]
+			if rt[i] > deadline:
+				addError(error0,"{"+str(inc[i][0])+"}thread:"+inc[i][1]+" response time:"+str(rt[i])+" > deadline:"+str(deadline))
+				return False
+	print("ReponseTimeSchedulable=TRUE")
+	return True
+	
+def areAllPrioritiesSet(boundThreads,priorities,names,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	print("checking if all threads have priorities")
+	for p in range(len(boundThreads)):
+		threads = boundThreads[p][2]
+		for i in range(len(threads)):
+			if threads[i][4] is None:
+				addError(error0,"{"+str(threads[i][0])+"}thread " + threads[i][1] + " does not have priority ")
+				print("Thread "+threads[i][1]+" does not have a priority assigned")
+				return False
+	return True
+	#if len(priorities) == len(names):
+	#	for i in range(len(priorities)):
+	#		if priorities[i] is None:
+	#			return False
+	#	return True
+	#return False
+
+def areAllPrioritiesForFixedPrioritySet(boundThreads,priorities,names,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	print("checking if all threads have priorities")
+	for p in range(len(boundThreads)):
+		if not(boundThreads[p][3] is None):
+			if boundThreads[p][3][0] == 'RMS' or boundThreads[p][3][0] == 'DMS':
+				threads = boundThreads[p][2]
+				for i in range(len(threads)):
+					if threads[i][4] is None:
+						addError(error0,"{"+str(threads[i][0])+"}thread " + threads[i][1] + " does not have priority ")
+						print("Thread "+threads[i][1]+" does not have a priority assigned")
+						return False
+	return True
+	#if len(priorities) == len(names):
+	#	for i in range(len(priorities)):
+	#		if priorities[i] is None:
+	#			return False
+	#	return True
+	#return False
+	
+def areAllThreadsPeriodic(threads, threadActivations, names,error0):
+	for i in range(len(threads)):
+		if threadActivations[i].lower() != 'periodic':
+			addError(error0,"{"+str(threads[i])+"}thread " + names[i] + " activation is "+threadActivations[i]+" only periodic activations are allowed")
+			return False
+	return True	
+		
+def arePeriodsHarmonic(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet)])]
+	for p in range(len(boundThreads)):
+		incPeriods = sorted(boundThreads[p][2], key=lambda td: td[2])
+		for i in range(len(incPeriods)-1):
+			if incPeriods[i+1][2] % incPeriods[i][2] != 0:
+				addError(error0,"{"+str(incPeriods[i][0])+"}period "+str(incPeriods[i+1][2])+" is not a multiple of period "+str(incPeriods[i][2]))
+				return False
+	return True
+	
+#def arePeriodsNonHarmonic(threads,processors,periods,error0):
+#	return not arePeriodsHarmonic(threads,processors,periods,error0)	
+
+def areAllDeadlinesImplicit(threads, periods,deadlines,names,error0):
+	for i in range(len(periods)):
+		if periods[i] != deadlines[i]:
+			addError(error0,"{"+str(threads[i])+"}thread "+names[i]+" period is not equal to its deadline (not implicit)")
+			return False
+	return True
+
+def areAllDeadlinesConstrained(threads,periods,deadlines,names,error0):
+	for i in range(len(periods)):
+		if periods[i] < deadlines[i]:
+			#addError(error0,"{"+str(threads[i][0])+"}thread "+names[i]+" period is smaller than its deadline (not constrained)")
+			addError(error0,"{"+str(threads[i])+"}thread "+names[i]+" period is smaller than its deadline (not constrained)")
+			return False
+	return True
+	
+def allProcessorHarmonicBoundSchedulable(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet)])]
+	for i in range(len(boundThreads)):
+		util=0.0
+		for j in range(len(boundThreads[i][2])):
+			util = util + boundThreads[i][2][j][3] / boundThreads[i][2][j][2]
+		if util > 1.0:
+			addError(error0,"{"+str(boundThreads[i][0])+"}processor "+boundThreads[i][1]+" workload exceeds 100% bound ")
+			return False
+	print("allProcessorsHarmonicBoundSchedulable=TRUE")
+	return True
+
+def allProcessorNonHarmonicBoundSchedulable(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet)])]
+	for i in range(len(boundThreads)):
+		util=0.0
+		for j in range(len(boundThreads[i][2])):
+			util = util + boundThreads[i][2][j][3] / boundThreads[i][2][j][2]
+		if util > 0.69:
+			addError(error0,"processor "+boundThreads[i][1]+" workload exceeds 69% bound ")
+			return False
+	print("allProcessorsNonHarmonicBoundSchedulable=TRUE")
+	return True
+
+def allThreadsBoundToSingleProcessor(bindings,error0):
+	for i in range(len(bindings)):
+		if bindings[i][2] is None or len(bindings[i][2]) == 0:
+			addError(error0,"{"+str(bindings[i][0])+"}thread " + bindings[i][1] + " is not assigned to run to any processor")
+			return False
+		if len(bindings[i][2]) > 1:
+			addError(error0,"{"+str(bindings[i][0])+"}thread " + bindings[i][1] + " is assigned to run in more than one processor")
+			return False
+	return True
+	
+def allProcessorsHaveSchedulingProtocol(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet)], schedProtocol)]
+	for p in range(len(boundThreads)):
+		if boundThreads[p][3] is None:
+			addError(error0,"{"+str(boundThreads[p][0])+"}processor "+boundThreads[p][1]+" does not have a SchedulingProtocol")
+			return False
+		print("sched protocol: ",boundThreads[p][3][0])
+		if not (boundThreads[p][3][0] == 'EDF' or boundThreads[p][3][0] == 'RMS' or boundThreads[p][3][0] == 'DMS'):
+			addError(error0,"{"+str(boundThreads[p][0])+"}processor "+boundThreads[p][1]+" SchedulingProtocol is not EDF, RMS or DMS")
+			return False
+	return True
+	
+def smtProcessorsSchedulingProtocol(boundThreads):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet)], schedProtocol)]
+	smt ="And("
+	sep=""
+	for p in range(len(boundThreads)):
+		if not(boundThreads[p][3] is None):
+			smt += sep + "ProcessorSchedulingProcotol["+str(p)+"] == "+boundThreads[p][3][0]
+			sep=","
+	smt += ")" 
+	return smt
+	
+def getEDFScheduledProcessors(boundThreads,edfBoundThreads,edfThreadIndex):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet)], schedProtocol)]
+	for p in range(len(boundThreads)):
+		if not(boundThreads[p][3] is None):
+			if boundThreads[p][3][0] == 'EDF':
+				edfBoundThreads.append(boundThreads[p])
+				for i in range(len(boundThreads[p][2])):
+					edfThreadIndex.append(threadId2Index[boundThreads[p][2][i][0]])
+	print("EDFSched: boundThreads: ",boundThreads," edfBoundThreads: ",edfBoundThreads, " edfThreadIndex: ",edfThreadIndex)
+	return True
+
+def getRMSScheduledProcessors(boundThreads,rmsBoundThreads,rmsThreadIndex):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet)], schedProtocol)]
+	for p in range(len(boundThreads)):
+		if not(boundThreads[p][3] is None):
+			if boundThreads[p][3][0] == 'RMS':
+				dmsBoundThreads.append(boundThreads[p])
+				for i in range(len(boundThreads[p][2])):
+					rmsThreadIndex.append(threadId2Index[boundThreads[p][2][i][0]])
+	print("RMSSched: boundThreads: ",boundThreads," rmsBoundThreads: ",rmsBoundThreads, " rmsThreadIndex: ",rmsThreadIndex)
+	return True
+
+def getDMSScheduledProcessors(boundThreads,dmsBoundThreads,dmsThreadIndex):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet)], schedProtocol)]
+	for p in range(len(boundThreads)):
+		if not(boundThreads[p][3] is None):
+			if boundThreads[p][3][0] == 'DMS':
+				dmsBoundThreads.append(boundThreads[p])
+				for i in range(len(boundThreads[p][2])):
+					dmsThreadIndex.append(threadId2Index[boundThreads[p][2][i][0]])
+	print("DMSSched: boundThreads: ",boundThreads," dmsBoundThreads: ",dmsBoundThreads, " dmsThreadIndex: ",dmsThreadIndex)
+	return True
+
+def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet)], schedProtocol)]
+	for p in range(len(boundThreads)):
+		if boundThreads[p][3] is None:
+			rtBoundThreads.append(boundThreads[p])
+			for i in range(len(boundThreads[p][2])):
+				rtThreadIndex.append(threadId2Index[boundThreads[p][2][i][0]])
+	print("RTSSched: boundThreads: ",boundThreads," rtBoundThreads: ",rtBoundThreads, " rtThreadIndex: ",rtThreadIndex)
+	return True
+	
+`}
+
+	domain schedulability {
+		queries
+			val threads = root.allSubcomponents.filter { 
+				s -> s.isThread
+			};
+			
+			val threadIds = threads.map{t->t};
+			
+			val names = threads.map {
+				t-> t.name
+			};
+			val periods = threads.map {
+				t -> t#Period.map {
+					p -> p.scaledTo(ms)
+				}
+			};
+			val priorities = threads.map {
+				t -> t#Priority
+			};
+			val deadlines = threads.map {
+				t -> t#Deadline.map {
+					p -> p.scaledTo(ms)
+				}
+			};
+			val wcets = threads.map {
+				t -> t#Compute_Execution_Time.map {
+					cet -> cet.maximum.scaledTo(ms)
+				}
+			};
+			val protocols = threads.map {
+				t -> t#Dispatch_Protocol
+			};
+			-- only threads in flows?
+			val processorCount = root.allSubcomponents.filter{ t-> t.isProcessor}.size;
+			val threadCount = root.allSubcomponents.map{t -> t.isThread}.size;
+			val threadToProcessorBindings = threads.map { t -> (t, t.name, t#Actual_Processor_Binding) };
+			val boundThreads = root.allSubcomponents
+					.filter { s -> s.isProcessor }
+					.map { p -> 
+							val ts = p.processorBindingSources
+									.filter { s -> s.isThread }
+									.map { t ->
+											val period = t#Period.map { v -> v.scaledTo(ms)};
+											val wcet = t#Compute_Execution_Time.map {cet -> cet.maximum.scaledTo(ms)};
+											val prio = t#Priority;
+											val deadline = t#Deadline.map { v -> v.scaledTo(ms)};
+											(t, t.name, period, wcet, prio, deadline)
+									};
+							val schedProtocol = p#Scheduling_Protocol;
+							(p, p.name, ts, schedProtocol)
+					};
+			
+			-- 	[(p, p.name, [(th, th.name, th.period, th.wcet)], schedProtocol)]
+		declarations 
+			'''
+			DMS = 1
+			RMS = 2
+			EDF = 3
+			NONE = 0
+			SchedProtocols = [DMS,RMS,EDF] 
+			ProcessorSchedulingProcotol = IntVector('processorSchedulingProtocol',${processorCount$})
+			threadId2Index = {${threadIds$}[i] : i for i in range(len(${threadIds$}))}
+			print('threadid2index: ',threadId2Index)
+			edfBoundThreads=[]
+			edfThreadIndex = []
+			rmsBoundThreads=[]
+			rmsThreadIndex = []
+			rmHarmonicBoundThreads=[]
+			rmHarmonicThreadIndex=[]
+			rmNonHarmonicBoundThreads=[]
+			rmNonHarmonicThreadIndex=[]
+			dmsBoundThreads=[]
+			dmsThreadIndex = []
+			rtBoundThreads=[]
+			rtThreadIndex=[]
+			Deadlines = IntVector('deadline', ${threadCount$})
+			Responses = IntVector('response', ${threadCount$})
+			Priorities = IntVector('priority', ${threadCount$})
+			SelfSuspendings = BoolVector('selfSuspending', ${threadCount$})
+			Periods = IntVector('period', ${threadCount$})	
+			Periodics = BoolVector('periodic', ${threadCount$})
+			RESPONSETIME_SHORTER_DEADLINES = And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])
+			'''
+	}
+	
+	contract partitionedSchedulable{
+		domains
+			schedulability;
+		input assumptions
+			'''areAllThreadsWithSchedulingEDFSchedulingParameters(${boundThreads$},error0)''';		
+		assumptions
+			'''getRMSScheduledProcessors(${boundThreads$},rmsBoundThreads,rmsThreadIndex)''';		
+			'''getEDFScheduledProcessors(${boundThreads$},edfBoundThreads,edfThreadIndex)''';				
+			'''getDMSScheduledProcessors(${boundThreads$},dmsBoundThreads,dmsThreadIndex)''';
+			'''getRTScheduledProcessors(${boundThreads$},rtBoundThreads,rtThreadIndex)''';
+			contract edfSchedulability;
+			contract rmsSchedulability;
+			contract dmsSchedulability;
+			contract rtSchedulability;
+		guarantee
+			<=> `And(
+					And([Deadlines[i] >= Responses[i] for i in rmsThreadIndex]),
+					And([Deadlines[i] >= Responses[i] for i in edfThreadIndex]),
+					And([Deadlines[i] >= Responses[i] for i in dmsThreadIndex]),
+					And([Deadlines[i] >= Responses[i] for i in rtThreadIndex])
+			)`;
+	}
+	
+	contract edfSchedulability {
+		domains
+			schedulability;
+		queries
+		input assumptions
+--			'''areAllThreadsWithSchedulingEDFSchedulingParameters(edfBoundThreads,error0)''';
+		assumptions
+			'''areAllProcessorsEdfScheduled(edfBoundThreads,error0)''';
+		guarantee
+			<=> `And([Deadlines[i] >= Responses[i] for i in edfThreadIndex])`;
+		invocation
+			'''isEdfDBFSchedulable(edfBoundThreads,error0)''';
+		
+	}
+	
+	contract rmsSchedulability {
+		domains
+			schedulability;
+		queries
+		input assumptions
+--			'''areAllPrioritiesForFixedPrioritySet(${boundThreads$},error0)''';
+		assumptions
+			contract RMPrioritiesContract;
+		guarantee
+			<=> `And([Deadlines[i] >= Responses[i] for i in rmsThreadIndex])`;
+		invocation
+			'''isResponseTimeSchedulable(rmsBoundThreads,error0)''';
+	}
+
+	contract dmsSchedulability {
+		domains
+			schedulability;
+		queries
+		input assumptions
+--			'''areAllPrioritiesForFixedPrioritySet(${boundThreads$},error0)''';
+		assumptions
+			contract DMPrioritiesContract;
+		guarantee
+			<=> `And([Deadlines[i] >= Responses[i] for i in dmsThreadIndex])`;
+		invocation
+			'''isResponseTimeSchedulable(dmsBoundThreads,error0)''';
+	}
+
+	contract rtSchedulability {
+		domains
+			schedulability;
+		queries
+		input assumptions
+			'''areAllPrioritiesForFixedPrioritySet(${boundThreads$},error0)''';
+		assumptions
+		guarantee
+			<=> `And([Deadlines[i] >= Responses[i] for i in rtThreadIndex])`;
+		invocation
+			'''isResponseTimeSchedulable(rtBoundThreads,error0)''';
+	}
+	
+	contract fpResponseTimeContract {
+		domains
+			schedulability;
+		queries
+		input assumptions
+			'''areAllPrioritiesSet(${boundThreads$},${priorities$}, ${names$},error0)''';
+		assumptions
+			'''areAllDeadlinesConstrained(${threads$},${periods$}, ${deadlines$}, ${names$},error0)''';
+			'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
+			`True` => `Not(Or([SelfSuspendings[i] for i in range(len(SelfSuspendings))]))`;
+		guarantee
+			<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+		invocation
+			'''isResponseTimeSchedulable(${boundThreads$},error0)''';
+	}
+	
+	contract RMPrioritiesContract {
+		domains
+			schedulability;
+		assumptions
+			'''areAllPrioritiesSet(rmsBoundThreads,${priorities$}, ${names$},error0)''';			
+		guarantee
+			<=>`And([(Periods[i]<Periods[j]) == (Priorities[i]>Priorities[j]) for i in rmsThreadIndex for j in rmsThreadIndex])`;
+		analysis
+			'''arePrioritiesRM(${boundThreads$},error0)''';	
+	}
+	
+	contract DMPrioritiesContract {
+		domains
+			schedulability;
+		assumptions
+			'''areAllPrioritiesSet(dmsBoundThreads,${priorities$}, ${names$},error0)''';			
+		guarantee
+			<=>`And([(Deadlines[i]<Deadlines[j]) == (Priorities[i]>Priorities[j]) for i in dmsThreadIndex for j in dmsThreadIndex])`;
+		analysis
+			'''arePrioritiesDM(${boundThreads$},error0)''';	
+	}
+	
+	contract RMAHarmonicBoundContract {
+		domains
+			schedulability;
+		assumptions
+			--'''arePrioritiesRM(${boundThreads$},error0)''';
+			contract RMPrioritiesContract;
+			'''areAllDeadlinesImplicit(${threads$}, ${periods$},${deadlines$},${names$},error0)''';
+			'''arePeriodsHarmonic(${boundThreads$},error0)''';
+			'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
+		guarantee
+			=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+		analysis
+			'''allProcessorHarmonicBoundSchedulable(${boundThreads$},error0)''';
+	}
+
+	contract RMANonHarmonicBoundContract {
+		domains
+			schedulability;
+		assumptions
+			contract RMPrioritiesContract;
+			'''areAllDeadlinesImplicit(${threads$},${periods$},${deadlines$},${names$},error0)''';
+			'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
+		guarantee
+			=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+		analysis
+			'''allProcessorNonHarmonicBoundSchedulable(${boundThreads$},error0)''';
+	}
+
+	contract ProcessorsWithSchedulingProtocolContract {
+		domains
+			schedulability;
+		input assumptions
+		assumptions
+			smt'''smtProcessorsSchedulingProtocol(${boundThreads$})''';
+		guarantee
+			<=> `And([Or([ProcessorSchedulingProcotol[i] == SchedProtocols[j] for j in range(len(SchedProtocols))]) for i in range(len(ProcessorSchedulingProcotol))])`;
+		analysis
+			'''allProcessorsHaveSchedulingProtocol(${boundThreads$},error0)''';
+	}
+	
+	argument schedulabilityArgument {
+		domains
+			schedulability;
+		guarantee
+			--<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+			<=> `RESPONSETIME_SHORTER_DEADLINES`;
+		argument
+			and (
+				contract ProcessorsWithSchedulingProtocolContract
+				or(
+					and(
+						contract RMPrioritiesContract
+							or(
+								contract RMAHarmonicBoundContract
+								contract RMANonHarmonicBoundContract
+							)
+						),
+					contract fpResponseTimeContract
+				)
+			);
+	}
+	
+	contract SchedulabilityContract {
+		domains
+			schedulability;
+		input assumptions
+		assumptions
+		guarantee
+			<=>`RESPONSETIME_SHORTER_DEADLINES`;
+	}
+	
+	verification plan schedulablePlan {
+		component
+			s: MultiSchedulerExample::mysystem.i;
+		domains
+			schedulability;
+		claims
+			`RESPONSETIME_SHORTER_DEADLINES`;
+		contracts
+			partitionedSchedulable;
+	}
+**};
+end MultiSchedulerContract;
