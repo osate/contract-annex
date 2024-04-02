@@ -402,6 +402,14 @@ def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
 					};
 			
 			-- 	[(p, p.name, [(th, th.name, th.period, th.wcet)], schedProtocol)]
+			val rmsBoundThreads = boundThreads
+					.filter { bt ->
+							val (p1, p2, p3, oprotos) = bt;
+							val r = oprotos.map { protos ->
+								protos.filter { proto -> proto.is(RMS)}
+							};
+							!r.filter { l -> !l.empty }.isEmpty
+					};
 		declarations 
 			'''
 			DMS = 1
@@ -483,7 +491,7 @@ def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
 		guarantee
 			<=> `And([Deadlines[i] >= Responses[i] for i in rmsThreadIndex])`;
 		invocation
-			'''isResponseTimeSchedulable(rmsBoundThreads,error0)''';
+			'''isResponseTimeSchedulable(${rmsBoundThreads$},error0)''';
 	}
 
 	contract dmsSchedulability {
