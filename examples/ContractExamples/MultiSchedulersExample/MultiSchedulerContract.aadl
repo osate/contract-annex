@@ -306,44 +306,45 @@ def smtProcessorsSchedulingProtocol(boundThreads):
 	
 def getEDFScheduledProcessors(boundThreads,edfBoundThreads,edfThreadIndex):
 	# [(p, p.name, [(th, th.name, th.period, th.wcet)], schedProtocol)]
-	for p in range(len(boundThreads)):
-		if not(boundThreads[p][3] is None):
-			if boundThreads[p][3][0] == 'EDF':
-				edfBoundThreads.append(boundThreads[p])
-				for i in range(len(boundThreads[p][2])):
-					edfThreadIndex.append(threadId2Index[boundThreads[p][2][i][0]])
+	#for p in range(len(boundThreads)):
+	#	if not(boundThreads[p][3] is None):
+	#		if boundThreads[p][3][0] == 'EDF':
+	#			edfBoundThreads.append(boundThreads[p])
+	#			for i in range(len(boundThreads[p][2])):
+	#				edfThreadIndex.append(threadId2Index[boundThreads[p][2][i][0]])
 	print("EDFSched: boundThreads: ",boundThreads," edfBoundThreads: ",edfBoundThreads, " edfThreadIndex: ",edfThreadIndex)
 	return True
 
-def getRMSScheduledProcessors(boundThreads,rmsBoundThreads,rmsThreadIndex):
+def getRMSScheduledProcessors(boundThreads,rmsBoundThreads,rmsThreadIndex,threadIds):
 	# [(p, p.name, [(th, th.name, th.period, th.wcet)], schedProtocol)]
-	for p in range(len(boundThreads)):
-		if not(boundThreads[p][3] is None):
-			if boundThreads[p][3][0] == 'RMS':
-				dmsBoundThreads.append(boundThreads[p])
-				for i in range(len(boundThreads[p][2])):
-					rmsThreadIndex.append(threadId2Index[boundThreads[p][2][i][0]])
+	#for p in range(len(boundThreads)):
+	#	if not(boundThreads[p][3] is None):
+	#		if boundThreads[p][3][0] == 'RMS':
+	#			dmsBoundThreads.append(boundThreads[p])
+	#			#for i in range(len(boundThreads[p][2])):
+	#			#	rmsThreadIndex.append(threadId2Index[boundThreads[p][2][i][0]])
+	# rmsThreadIndex += [k for p in range(len(boundThreads)) for i in range(len(boundThreads[p][2])) for k in range(len(threadIds)) if boundThreads[p][3][0] == 'RMS' and boundThreads[p][2][i][0] == threadIds[k]]
 	print("RMSSched: boundThreads: ",boundThreads," rmsBoundThreads: ",rmsBoundThreads, " rmsThreadIndex: ",rmsThreadIndex)
 	return True
 
 def getDMSScheduledProcessors(boundThreads,dmsBoundThreads,dmsThreadIndex):
 	# [(p, p.name, [(th, th.name, th.period, th.wcet)], schedProtocol)]
-	for p in range(len(boundThreads)):
-		if not(boundThreads[p][3] is None):
-			if boundThreads[p][3][0] == 'DMS':
-				dmsBoundThreads.append(boundThreads[p])
-				for i in range(len(boundThreads[p][2])):
-					dmsThreadIndex.append(threadId2Index[boundThreads[p][2][i][0]])
+	#for p in range(len(boundThreads)):
+	#	if not(boundThreads[p][3] is None):
+	#		if boundThreads[p][3][0] == 'DMS':
+	#			dmsBoundThreads.append(boundThreads[p])
+	#			for i in range(len(boundThreads[p][2])):
+	#				dmsThreadIndex.append(threadId2Index[boundThreads[p][2][i][0]])
 	print("DMSSched: boundThreads: ",boundThreads," dmsBoundThreads: ",dmsBoundThreads, " dmsThreadIndex: ",dmsThreadIndex)
 	return True
 
 def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
 	# [(p, p.name, [(th, th.name, th.period, th.wcet)], schedProtocol)]
-	for p in range(len(boundThreads)):
-		if boundThreads[p][3] is None:
-			rtBoundThreads.append(boundThreads[p])
-			for i in range(len(boundThreads[p][2])):
-				rtThreadIndex.append(threadId2Index[boundThreads[p][2][i][0]])
+	#for p in range(len(boundThreads)):
+	#	if boundThreads[p][3] is None:
+	#		rtBoundThreads.append(boundThreads[p])
+	#		for i in range(len(boundThreads[p][2])):
+	#			rtThreadIndex.append(threadId2Index[boundThreads[p][2][i][0]])
 	print("RTSSched: boundThreads: ",boundThreads," rtBoundThreads: ",rtBoundThreads, " rtThreadIndex: ",rtThreadIndex)
 	return True
 	
@@ -410,6 +411,30 @@ def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
 							};
 							!r.filter { l -> !l.empty }.isEmpty
 					};
+			val dmsBoundThreads = boundThreads
+					.filter { bt ->
+							val (p1, p2, p3, oprotos) = bt;
+							val r = oprotos.map { protos ->
+								protos.filter { proto -> proto.is(DMS)}
+							};
+							!r.filter { l -> !l.empty }.isEmpty
+					};
+			val edfBoundThreads = boundThreads
+					.filter { bt ->
+							val (p1, p2, p3, oprotos) = bt;
+							val r = oprotos.map { protos ->
+								protos.filter { proto -> proto.is(EDF)}
+							};
+							!r.filter { l -> !l.empty }.isEmpty
+					};					
+			val rtBoundThreads = boundThreads
+					.filter { bt ->
+							val (p1, p2, p3, oprotos) = bt;
+							val r = oprotos.map { protos ->
+								protos
+							};
+							r.filter { l -> !l.empty }.isEmpty
+					};					
 		declarations 
 			'''
 			DMS = 1
@@ -420,18 +445,14 @@ def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
 			ProcessorSchedulingProcotol = IntVector('processorSchedulingProtocol',${processorCount$})
 			threadId2Index = {${threadIds$}[i] : i for i in range(len(${threadIds$}))}
 			print('threadid2index: ',threadId2Index)
-			edfBoundThreads=[]
-			edfThreadIndex = []
-			rmsBoundThreads=[]
-			rmsThreadIndex = []
+			rmsThreadIndex = [k for p in range(len(${rmsBoundThreads$})) for i in range(len(${rmsBoundThreads$}[p][2])) for k in range(len(${threadIds$})) if ${rmsBoundThreads$}[p][2][i][0] == ${threadIds$}[k]]
+			edfThreadIndex = [k for p in range(len(${edfBoundThreads$})) for i in range(len(${edfBoundThreads$}[p][2])) for k in range(len(${threadIds$})) if ${edfBoundThreads$}[p][2][i][0] == ${threadIds$}[k]]
+			dmsThreadIndex = [k for p in range(len(${dmsBoundThreads$})) for i in range(len(${dmsBoundThreads$}[p][2])) for k in range(len(${threadIds$})) if ${dmsBoundThreads$}[p][2][i][0] == ${threadIds$}[k]]
+			rtThreadIndex = [k for p in range(len(${rtBoundThreads$})) for i in range(len(${rtBoundThreads$}[p][2])) for k in range(len(${threadIds$})) if ${rtBoundThreads$}[p][2][i][0] == ${threadIds$}[k]]
 			rmHarmonicBoundThreads=[]
 			rmHarmonicThreadIndex=[]
 			rmNonHarmonicBoundThreads=[]
 			rmNonHarmonicThreadIndex=[]
-			dmsBoundThreads=[]
-			dmsThreadIndex = []
-			rtBoundThreads=[]
-			rtThreadIndex=[]
 			Deadlines = IntVector('deadline', ${threadCount$})
 			Responses = IntVector('response', ${threadCount$})
 			Priorities = IntVector('priority', ${threadCount$})
@@ -448,10 +469,10 @@ def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
 		input assumptions
 			'''areAllThreadsWithSchedulingEDFSchedulingParameters(${boundThreads$},error0)''';		
 		assumptions
-			'''getRMSScheduledProcessors(${boundThreads$},rmsBoundThreads,rmsThreadIndex)''';		
-			'''getEDFScheduledProcessors(${boundThreads$},edfBoundThreads,edfThreadIndex)''';				
-			'''getDMSScheduledProcessors(${boundThreads$},dmsBoundThreads,dmsThreadIndex)''';
-			'''getRTScheduledProcessors(${boundThreads$},rtBoundThreads,rtThreadIndex)''';
+--			'''getRMSScheduledProcessors(${boundThreads$},${rmsBoundThreads$},rmsThreadIndex,${threadIds$})''';		
+--			'''getEDFScheduledProcessors(${boundThreads$},${edfBoundThreads$},edfThreadIndex)''';				
+--			'''getDMSScheduledProcessors(${boundThreads$},${dmsBoundThreads$},dmsThreadIndex)''';
+--			'''getRTScheduledProcessors(${boundThreads$},${rtBoundThreads$},rtThreadIndex)''';
 			contract edfSchedulability;
 			contract rmsSchedulability;
 			contract dmsSchedulability;
@@ -472,11 +493,11 @@ def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
 		input assumptions
 --			'''areAllThreadsWithSchedulingEDFSchedulingParameters(edfBoundThreads,error0)''';
 		assumptions
-			'''areAllProcessorsEdfScheduled(edfBoundThreads,error0)''';
+--			'''areAllProcessorsEdfScheduled(${edfBoundThreads$},error0)''';
 		guarantee
 			<=> `And([Deadlines[i] >= Responses[i] for i in edfThreadIndex])`;
 		invocation
-			'''isEdfDBFSchedulable(edfBoundThreads,error0)''';
+			'''isEdfDBFSchedulable(${edfBoundThreads$},error0)''';
 		
 	}
 	
@@ -485,7 +506,7 @@ def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
 			schedulability;
 		queries
 		input assumptions
---			'''areAllPrioritiesForFixedPrioritySet(${boundThreads$},error0)''';
+--			'''areAllPrioritiesForFixedPrioritySet(${boundThreads$},${priorities$}${names$},error0)''';
 		assumptions
 			contract RMPrioritiesContract;
 		guarantee
@@ -499,13 +520,13 @@ def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
 			schedulability;
 		queries
 		input assumptions
---			'''areAllPrioritiesForFixedPrioritySet(${boundThreads$},error0)''';
+--			'''areAllPrioritiesForFixedPrioritySet(${boundThreads$},${priorities$},${names$},error0)''';
 		assumptions
 			contract DMPrioritiesContract;
 		guarantee
 			<=> `And([Deadlines[i] >= Responses[i] for i in dmsThreadIndex])`;
 		invocation
-			'''isResponseTimeSchedulable(dmsBoundThreads,error0)''';
+			'''isResponseTimeSchedulable(${dmsBoundThreads$},error0)''';
 	}
 
 	contract rtSchedulability {
@@ -513,12 +534,12 @@ def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
 			schedulability;
 		queries
 		input assumptions
-			'''areAllPrioritiesForFixedPrioritySet(${boundThreads$},error0)''';
+			'''areAllPrioritiesForFixedPrioritySet(${boundThreads$},${priorities$}, ${names$},error0)''';
 		assumptions
 		guarantee
 			<=> `And([Deadlines[i] >= Responses[i] for i in rtThreadIndex])`;
 		invocation
-			'''isResponseTimeSchedulable(rtBoundThreads,error0)''';
+			'''isResponseTimeSchedulable(${rtBoundThreads$},error0)''';
 	}
 	
 	contract fpResponseTimeContract {
@@ -541,18 +562,18 @@ def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
 		domains
 			schedulability;
 		assumptions
-			'''areAllPrioritiesSet(rmsBoundThreads,${priorities$}, ${names$},error0)''';			
+			'''areAllPrioritiesSet(${rmsBoundThreads$},${priorities$}, ${names$},error0)''';			
 		guarantee
 			<=>`And([(Periods[i]<Periods[j]) == (Priorities[i]>Priorities[j]) for i in rmsThreadIndex for j in rmsThreadIndex])`;
 		analysis
-			'''arePrioritiesRM(${boundThreads$},error0)''';	
+			'''arePrioritiesRM(${rmsBoundThreads$},error0)''';	
 	}
 	
 	contract DMPrioritiesContract {
 		domains
 			schedulability;
 		assumptions
-			'''areAllPrioritiesSet(dmsBoundThreads,${priorities$}, ${names$},error0)''';			
+			'''areAllPrioritiesSet(${dmsBoundThreads$},${priorities$}, ${names$},error0)''';			
 		guarantee
 			<=>`And([(Deadlines[i]<Deadlines[j]) == (Priorities[i]>Priorities[j]) for i in dmsThreadIndex for j in dmsThreadIndex])`;
 		analysis
