@@ -546,6 +546,11 @@ type refers to the named element that contains the unnamed enumeration type. For
 is declared within a property, then an example of the ultimate type would be
 `Enumeration<Communication_Properties::Fan_Out_Policy>`. `Enumeration` has no members.
 
+`Enumeration` has the following members:
+
+* `is`: Returns a `Boolean` indicating if the receiver is a specific enumeration literal. An enumeration literal
+  of the enumeration type's AADL enumeration type is passed as a parameter to `is`.
+
 #### EventInstance
 
 The `EventInstance` type is backed by the Java type `org.osate.aadl2.errormodel.instance.EventInstance` and has the
@@ -683,6 +688,8 @@ present. Optional types appear with a question mark appended to the end of anoth
 list of optional components. The optional type has the following members:
 
 * `isEmpty`: Returns a `Boolean` indicating if a value is not present.
+* `filter`: If the optional has a value and the value matches the filter criterion, then return an optional with the
+  same value. Otherwise return an empty optional.
 * `filterType`: If the optional has a value and the value is an instance of the specified type argument, then
   `filterType` returns a new optional with the same value. If the optional is empty or if the optional has a value, but
   the value is not an instance of the specified type argument, then `filterType` returns an empty optional. The type of

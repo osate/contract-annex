@@ -76,6 +76,15 @@ def EdfDBFSchedulable(tasks):
 			return False
 	return True
 	
+def areAllProcessorsEdfScheduled(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	for p in range(len(boundThreads)):
+		print("Sched Protocol: ",boundThreads[p][3][0])
+		if boundThreads[p][3][0] != "EDF":
+			addError(error0,"{"+str(boundThreads[p][0])+"} processor: does not have an EDF scheduling protocol set")		
+			return False
+	return True
+	
 def isEdfDBFSchedulable(boundThreads,error0):
 	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
 	for p in range(len(boundThreads)):
@@ -662,7 +671,8 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 											val deadline = t#Deadline.map { v -> v.scaledTo(ms)};
 											(t, t.name, period, wcet, prio, deadline)
 									};
-							(p, p.name, ts)
+							val schedProtocol = p#Scheduling_Protocol;
+							(p, p.name, ts, schedProtocol)
 					};
 			
 		declarations 
@@ -765,6 +775,8 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 			schedulability;
 		queries
 		input assumptions
+		assumptions
+			'''areAllProcessorsEdfScheduled(${boundThreads$},error0)''';
 		guarantee
 			<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
 		invocation

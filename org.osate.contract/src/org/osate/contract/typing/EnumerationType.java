@@ -25,12 +25,34 @@
  *******************************************************************************/
 package org.osate.contract.typing;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.osate.aadl2.EnumerationLiteral;
+import org.osate.contract.contract.Expression;
+
 public final class EnumerationType implements Type {
+	private final org.osate.aadl2.EnumerationType enumType;
+	private final Map<String, Member> members;
 	private final String label;
 
-	public EnumerationType(org.osate.aadl2.EnumerationType type) {
-		var genericName = type.hasName() ? type.getQualifiedName() : TypeSystemUtils.generateName(type);
+	public EnumerationType(org.osate.aadl2.EnumerationType enumType) {
+		this.enumType = enumType;
+
+		members = new LinkedHashMap<>();
+		members.put("is", new IsMember());
+
+		var genericName = enumType.hasName() ? enumType.getQualifiedName() : TypeSystemUtils.generateName(enumType);
 		label = "Enumeration<" + genericName + '>';
+	}
+
+	public org.osate.aadl2.EnumerationType getEnumerationType() {
+		return enumType;
+	}
+
+	@Override
+	public Map<String, Member> getMembers() {
+		return members;
 	}
 
 	@Override
@@ -41,5 +63,17 @@ public final class EnumerationType implements Type {
 	@Override
 	public String toString() {
 		return label;
+	}
+
+	private static class IsMember implements MemberWithArgument<EnumerationLiteral, Boolean, EnumerationLiteral> {
+		@Override
+		public Type getReturnType(Expression argument) {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(EnumerationLiteral receiver, EnumerationLiteral argument) {
+			return receiver.getName().equalsIgnoreCase(argument.getName());
+		}
 	}
 }

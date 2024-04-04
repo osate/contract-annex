@@ -48,11 +48,16 @@ public
 			b9: bus access n5.b1 <-> l5;
 			b10: bus access n6.b1 <-> l5;
 		properties
-			TSNProperties::BitsPerSecond => 1000000000 applies to l1;
-			TSNProperties::BitsPerSecond => 100000000 applies to l2;
-			TSNProperties::BitsPerSecond => 1000000000 applies to l3;
-			TSNProperties::BitsPerSecond => 1000000000 applies to l4;
-			TSNProperties::BitsPerSecond => 1000000000 applies to l5;
+--			TSNProperties::BitsPerSecond => 1000000000 applies to l1; -- 1 Gbps
+--			TSNProperties::BitsPerSecond => 100000000 applies to l2;  -- 0.1 Gbps
+--			TSNProperties::BitsPerSecond => 1000000000 applies to l3;
+--			TSNProperties::BitsPerSecond => 1000000000 applies to l4;
+--			TSNProperties::BitsPerSecond => 1000000000 applies to l5;
+			Transmission_Time => [Fixed => 0 us .. 0 us; PerByte => 8 ns .. 8 ns; ] applies to l1; -- 1 Gbps
+			Transmission_Time => [Fixed => 0 us .. 0 us; PerByte => 80 ns .. 80 ns; ] applies to l2; -- 0.1 Gbps
+			Transmission_Time => [Fixed => 0 us .. 0 us; PerByte => 8 ns .. 8 ns; ] applies to l3;-- 1 Gbps
+			Transmission_Time => [Fixed => 0 us .. 0 us; PerByte => 8 ns .. 8 ns; ] applies to l4;-- 1 Gbps
+			Transmission_Time => [Fixed => 0 us .. 0 us; PerByte => 8 ns .. 8 ns; ] applies to l5;-- 1 Gbps
 	end hardware.i;
 
 	system software
