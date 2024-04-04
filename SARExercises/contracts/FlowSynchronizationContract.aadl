@@ -32,63 +32,7 @@ import math
 
 def addError(error,msg):
 	error[0]+="|"+msg
-
-#tasks =[ [T,D,C] ]
-def utilization(tasks):
-	u=0.0
-	for i in range(len(tasks)):
-		u += tasks[i][2]/tasks[i][0]
-	return u
-
-
-#tasks =[ [T,D,C] ]
-def allTasksDeadlineLargerThanPeriod(tasks):
-	for i in range(len(tasks)):
-		if tasks[i][0] >= tasks[i][1]:
-			return False
-	return True
-
-# Demand bound function sched test 
-# S.K.Baruah, A.K. Mok and L.E. Rossier, "Preemptively Scheduling Hard Real-Time Tasks on One Processor"
-# Proceedings of the 11th Real-Time Systems Symposium. 1990.
-#tasks =[ [T,D,C] ]
-def EdfDBFSchedulable(tasks):
-	u = utilization(tasks)
-	if u>1.0 :
-		return False
-	if allTasksDeadlineLargerThanPeriod(tasks):
-		return True
-	periods = [tasks[i][0] for i in range(len(tasks))]
-	deadlines = [tasks[i][1] for i in range(len(tasks))]
-	P = math.lcm(*periods)
-	D = max(deadlines)
-	M = P + D
-	if u == 1:
-		T=M
-	else:
-		T= min(M,math.ceil(u/(1-u)*max([periods[i]-deadlines[i] for i in range(len(periods))])))
-	H=0
-	for t in range(1,T):
-		for i in range(len(tasks)):
-			if t>= tasks[i][1] and (t % tasks[i][0]) == tasks[i][1]:
-				H += tasks[i][2]
-		if H>t:
-			return False
-	return True
 	
-def isEdfDBFSchedulable(boundThreads,error0):
-	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
-	for p in range(len(boundThreads)):
-		#tasks =[ [T,D,C] ]
-		tasks=[]
-		for i in range(len(boundThreads[p][2])):
-			tasks.append([round(boundThreads[p][2][i][2]),round(boundThreads[p][2][i][5]),round(boundThreads[p][2][i][3])])
-		if not EdfDBFSchedulable(tasks):
-			addError(error0,"{"+str(boundThreads[p][0])+"} processor:"+boundThreads[p][1]+" has taskset that is not EDF schedulable")
-			return False
-	addError(info0,"{"+str(boundThreads[p][0])+"} processor:"+boundThreads[p][1]+" has taskset that is EDF schedulable")
-	return True
-
 def getResponseTimes(threads):
 	# threads is [(th, th.name, th.period, th.wcet, th.prio, th.deadline)]
 	# in increasing priority order
@@ -166,7 +110,6 @@ def areAllDeadlinesImplicit(threads, periods,deadlines,names,error0):
 def areAllDeadlinesConstrained(threads,periods,deadlines,names,error0):
 	for i in range(len(periods)):
 		if periods[i] < deadlines[i]:
-			#addError(error0,"{"+str(threads[i][0])+"}thread "+names[i]+" period is smaller than its deadline (not constrained)")
 			addError(error0,"{"+str(threads[i])+"}thread "+names[i]+" period is smaller than its deadline (not constrained)")
 			return False
 	return True
@@ -760,18 +703,6 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 			'''isResponseTimeSchedulable(${boundThreads$},error0)''';
 	}
 	
-	contract edfSchedulability {
-		domains
-			schedulability;
-		queries
-		input assumptions
-		guarantee
-			<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
-		invocation
-			'''isEdfDBFSchedulable(${boundThreads$},error0)''';
-		
-	}
-	
 	contract RMPrioritiesContract {
 		domains
 			schedulability;
@@ -793,7 +724,7 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 			'''arePeriodsHarmonic(${boundThreads$},error0)''';
 			'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
 		guarantee
-			=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+			<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
 		analysis
 			'''allProcessorHarmonicBoundSchedulable(${boundThreads$},error0)''';
 	}
@@ -803,7 +734,7 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 			schedulability;
 		assumptions
 			--'''arePrioritiesRM(${boundThreads$},error0)''';
-			contract RMPrioritiesContract;
+			-- contract RMPrioritiesContract;
 			'''areAllDeadlinesImplicit(${threads$},${periods$},${deadlines$},${names$},error0)''';
 			'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
 		guarantee
@@ -816,19 +747,18 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 		domains
 			schedulability;
 		guarantee
-			<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
-			--<=> `RESPONSETIME_SHORTER_DEADLINES`;
+			--<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+			<=> `RESPONSETIME_SHORTER_DEADLINES`;
 		argument
 			and(
 				contract RMPrioritiesContract
 				or(
-					contract RMAHarmonicBoundContract
-					contract RMANonHarmonicBoundContract
+				contract RMAHarmonicBoundContract
+				contract RMANonHarmonicBoundContract
 				)
 				--contract fpResponseTimeContract
 			);
 	}
-	
 	
 	contract EndToEndDelayedCommunicationContract {
 		domains
@@ -843,7 +773,6 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 			'''areAllDeadlinesConstrained(${threads$},${periods$}, ${deadlines$}, ${names$},error0)''' 
 				=> `And([Deadlines[i] <= Periods[i] for i in range(len(Deadlines))])`;
 			argument schedulabilityArgument;
-			-- contract RMANonHarmonicBoundContract;
 		guarantee
 			<=> `And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
 		analysis
@@ -873,60 +802,19 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 			'''areFlowsInSync1(${synchronization::flowComponents$},error0)''';
 	}
 
-	verification plan verifySynchronization {
-		component
-			s: Aircraft330::FlightSystem.externalCommonSensor; 
-		domains
-			synchronization;
-			reliability;
-			schedulability;
-		claims
-			`And([E2ESamplingJitter[i] <= E2ESamplingJitterTolerance[i] for i in range(len(E2ESamplingJitter))])`;
-			`And([Reliability[i]>=ReliabiiltyTarget[i] for i in range(len(Reliability))])`;
-			`And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
-		contracts
-			SamplingSynchronizationContract;
-			EndToEndDelayedCommunicationContract;
-			ReliabilityContract;
-	} 
-
-	verification plan verifySynchronizationWithSharedSensors {
-		component
-			s: Aircraft330::FlightSystem.externalCommonSensor;
-		domains
-			synchronization;
-			reliability;
-		claims
-			`And([E2ESamplingJitter[i] <= E2ESamplingJitterTolerance[i] for i in range(len(E2ESamplingJitter))])`;
-			`And([Reliability[i]>=ReliabiiltyTarget[i] for i in range(len(Reliability))])`;
-			`And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
-		contracts
-			SamplingSynchronizationWithSharedProcessorsContract;
-			EndToEndDelayedCommunicationContract;
-			ReliabilityContract;
-	} 
-	
-	verification plan verifyEndToEndLatency {
-		component
-			s: EndToEndTimingExample::mysystem.i;
-		domains
-			schedulability;
-		claims
-			`And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
-		contracts
-			EndToEndDelayedCommunicationContract;
-	}
-
-	verification plan EDFSchedulabilityPlan {
-		component
-			s: SimpleEDFExample::mysystem.i;
-		domains
-			schedulability;
-		claims
-			`And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
-		contracts
-			edfSchedulability;
-	}
-
+--	verification plan verifySynchronization {
+--		component
+--			s: EndToEndTimingExample::mysystem.i;
+--		domains
+--			synchronization;
+--			reliability;
+--		claims
+--			`And([E2ESamplingJitter[i] <= E2ESamplingJitterTolerance[i] for i in range(len(E2ESamplingJitter))])`;
+--			`And([Reliability[i]>=ReliabiiltyTarget[i] for i in range(len(Reliability))])`;
+--		contracts
+--			SamplingSynchronizationContract;
+--			EndToEndDelayedCommunicationContract;
+--			ReliabilityContract;
+--	} 
 **};
 end FlowSynchronizationContract;
