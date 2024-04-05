@@ -113,8 +113,8 @@ def arePrioritiesRM(boundThreads,error0):
 				periodk = boundThreads[i][2][k][2]
 				priorityk = boundThreads[i][2][k][4]
 				namek = boundThreads[i][2][k][1]
-				if (periodj < periodk and priorityj<priorityk):
-					addError(error0,"{"+str(boundThreads[i][2][j][0])+"}thread "+namej+" has shorter period than thread "+namek+" but lower priority")
+				if (periodj < periodk and priorityj<=priorityk):
+					addError(error0,"{"+str(boundThreads[i][2][j][0])+"}thread "+namej+" has shorter period than thread "+namek+" but lower or equal priority")
 					print(" **NOT RMPRIORITIES thread "+namej+" has shorter period than "+namek+" but lower priority")
 					return False
 	print(" **RMPRIORITIES ")
@@ -135,8 +135,8 @@ def arePrioritiesDM(boundThreads,error0):
 				priorityk = boundThreads[i][2][k][4]
 				deadlinek = boundThreads[i][2][k][5]
 				namek = boundThreads[i][2][k][1]
-				if (deadlinej < deadlinek and priorityj<priorityk):
-					addError(error0,"{"+str(boundThreads[i][2][j][0])+"}thread "+namej+" has shorter deadline than thread "+namek+" but lower priority")
+				if (deadlinej < deadlinek and priorityj<=priorityk):
+					addError(error0,"{"+str(boundThreads[i][2][j][0])+"}thread "+namej+" has shorter deadline than thread "+namek+" but lower or equal priority")
 					print(" **NOT DMPRIORITIES thread "+namej+" has shorter deadline than "+namek+" but lower priority")
 					return False
 	print(" **DMPRIORITIES ")
@@ -171,6 +171,7 @@ def isResponseTimeSchedulable(boundThreads,error0):
 			if rt[i] > deadline:
 				addError(error0,"{"+str(inc[i][0])+"}thread:"+inc[i][1]+" response time:"+str(rt[i])+" > deadline:"+str(deadline))
 				return False
+		addError(info0,"{"+str(boundThreads[p][0])+"} processor("+boundThreads[p][1]+") is schedulable with Worst-Case Response Time Analysis")
 	print("ReponseTimeSchedulable=TRUE")
 	return True
 	
@@ -409,7 +410,7 @@ def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
 							val r = oprotos.map { protos ->
 								protos.filter { proto -> proto.is(RMS)}
 							};
-							!r.filter { l -> !l.empty }.isEmpty
+							!r.filter { l -> !l.empty }.isEmpty 
 					};
 			val dmsBoundThreads = boundThreads
 					.filter { bt ->
@@ -449,6 +450,12 @@ def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
 			edfThreadIndex = [k for p in range(len(${edfBoundThreads$})) for i in range(len(${edfBoundThreads$}[p][2])) for k in range(len(${threadIds$})) if ${edfBoundThreads$}[p][2][i][0] == ${threadIds$}[k]]
 			dmsThreadIndex = [k for p in range(len(${dmsBoundThreads$})) for i in range(len(${dmsBoundThreads$}[p][2])) for k in range(len(${threadIds$})) if ${dmsBoundThreads$}[p][2][i][0] == ${threadIds$}[k]]
 			rtThreadIndex = [k for p in range(len(${rtBoundThreads$})) for i in range(len(${rtBoundThreads$}[p][2])) for k in range(len(${threadIds$})) if ${rtBoundThreads$}[p][2][i][0] == ${threadIds$}[k]]
+			
+			print("rmsBoundThreads: ",${rmsBoundThreads$})
+			print("edfBoundThreads: ",${edfBoundThreads$})
+			print("dmsBoundThreads: ",${dmsBoundThreads$})
+			print("rtBoundThreads: ",${rtBoundThreads$})
+			
 			rmHarmonicBoundThreads=[]
 			rmHarmonicThreadIndex=[]
 			rmNonHarmonicBoundThreads=[]
@@ -469,21 +476,12 @@ def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
 		input assumptions
 			'''areAllThreadsWithSchedulingEDFSchedulingParameters(${boundThreads$},error0)''';		
 		assumptions
---			'''getRMSScheduledProcessors(${boundThreads$},${rmsBoundThreads$},rmsThreadIndex,${threadIds$})''';		
---			'''getEDFScheduledProcessors(${boundThreads$},${edfBoundThreads$},edfThreadIndex)''';				
---			'''getDMSScheduledProcessors(${boundThreads$},${dmsBoundThreads$},dmsThreadIndex)''';
---			'''getRTScheduledProcessors(${boundThreads$},${rtBoundThreads$},rtThreadIndex)''';
 			contract edfSchedulability;
 			contract rmsSchedulability;
 			contract dmsSchedulability;
 			contract rtSchedulability;
 		guarantee
-			<=> `And(
-					And([Deadlines[i] >= Responses[i] for i in rmsThreadIndex]),
-					And([Deadlines[i] >= Responses[i] for i in edfThreadIndex]),
-					And([Deadlines[i] >= Responses[i] for i in dmsThreadIndex]),
-					And([Deadlines[i] >= Responses[i] for i in rtThreadIndex])
-			)`;
+		<=>`And([Deadlines[i]>= Responses[i] for i in range(len(Deadlines))])`;
 	}
 	
 	contract edfSchedulability {
@@ -534,7 +532,7 @@ def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
 			schedulability;
 		queries
 		input assumptions
-			'''areAllPrioritiesForFixedPrioritySet(${boundThreads$},${priorities$}, ${names$},error0)''';
+			'''areAllPrioritiesSet(${rtBoundThreads$},${priorities$}, ${names$},error0)''';
 		assumptions
 		guarantee
 			<=> `And([Deadlines[i] >= Responses[i] for i in rtThreadIndex])`;
@@ -577,7 +575,7 @@ def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
 		guarantee
 			<=>`And([(Deadlines[i]<Deadlines[j]) == (Priorities[i]>Priorities[j]) for i in dmsThreadIndex for j in dmsThreadIndex])`;
 		analysis
-			'''arePrioritiesDM(${boundThreads$},error0)''';	
+			'''arePrioritiesDM(${dmsBoundThreads$},error0)''';	
 	}
 	
 	contract RMAHarmonicBoundContract {

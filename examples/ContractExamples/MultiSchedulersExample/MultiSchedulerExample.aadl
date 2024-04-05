@@ -37,27 +37,27 @@ public
 			Deadline => 100 ms applies to process1.thread1;
 			Compute_Execution_Time => 10 ms .. 10 ms applies to process1.thread1;
 			
-			Period => 100 ms applies to process1.thread2;
-			Deadline => 100 ms applies to process1.thread2;
+			Period => 200 ms applies to process1.thread2;
+			Deadline => 200 ms applies to process1.thread2;
 			Compute_Execution_Time => 10 ms .. 10 ms applies to process1.thread2;
 			
 			Period => 100 ms applies to process2.thread1;
 			Deadline => 100 ms applies to process2.thread1;
 			Compute_Execution_Time => 10 ms .. 10 ms applies to process2.thread1;
-			Priority => 1 applies to process2.thread1;
+			Priority => 2 applies to process2.thread1;
 
-			Period => 100 ms applies to process2.thread2;
-			Deadline => 100 ms applies to process2.thread2;
+			Period => 200 ms applies to process2.thread2;
+			Deadline => 200 ms applies to process2.thread2;
 			Compute_Execution_Time => 10 ms .. 10 ms applies to process2.thread2;
 			Priority => 1 applies to process2.thread2;
 			
 			Period => 100 ms applies to process3.thread1;
 			Deadline => 100 ms applies to process3.thread1;
 			Compute_Execution_Time => 10 ms .. 10 ms applies to process3.thread1;
-			Priority => 1 applies to process3.thread1;
+			Priority => 2 applies to process3.thread1;
 
-			Period => 100 ms applies to process3.thread2;
-			Deadline => 100 ms applies to process3.thread2;
+			Period => 200 ms applies to process3.thread2;
+			Deadline => 200 ms applies to process3.thread2;
 			Compute_Execution_Time => 10 ms .. 10 ms applies to process3.thread2;
 			Priority => 1 applies to process3.thread2;
 			
