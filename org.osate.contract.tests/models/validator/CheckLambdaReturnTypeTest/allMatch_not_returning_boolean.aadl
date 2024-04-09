@@ -1,0 +1,12 @@
+package allMatch_not_returning_boolean
+public
+	annex contract {**
+		contract AllMatchNotReturningBoolean {
+			queries
+				val valid = self.subcomponents
+					.allMatch { subcomponent -> subcomponent.isThread };
+				val invalid = self.subcomponents
+					.allMatch { subcomponent -> subcomponent.name };
+		}
+	**};
+end allMatch_not_returning_boolean;

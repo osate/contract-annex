@@ -365,7 +365,7 @@ public class MemberCallTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(16, contract.getQueries().size());
+		assertEquals(17, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
 			assertEquals("Long", type.toString());
@@ -431,6 +431,10 @@ public class MemberCallTest {
 		with(contract.getQueries().get(15), query -> {
 			var type = typeSystem.expressionType(query.getValue()).getValue();
 			assertEquals("List<FeatureInstance>", type.toString());
+		});
+		with(contract.getQueries().get(16), query -> {
+			var type = typeSystem.expressionType(query.getValue()).getValue();
+			assertEquals("Boolean", type.toString());
 		});
 	}
 

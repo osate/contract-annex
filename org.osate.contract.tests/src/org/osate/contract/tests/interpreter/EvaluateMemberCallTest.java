@@ -598,7 +598,7 @@ public class EvaluateMemberCallTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(19, contract.getQueries().size());
+		assertEquals(21, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
@@ -715,6 +715,16 @@ public class EvaluateMemberCallTest {
 			assertEquals(1, result.size());
 			assertIterableEquals(List.of("f1", "f2", "f1", "f2"),
 					((List<FeatureInstance>) result.get("v19")).stream().map(NamedElement::getName).toList());
+		});
+		with(contract.getQueries().get(19), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertTrue((Boolean) result.get("v20"));
+		});
+		with(contract.getQueries().get(20), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertFalse((Boolean) result.get("v21"));
 		});
 	}
 
