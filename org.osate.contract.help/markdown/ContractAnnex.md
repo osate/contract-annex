@@ -475,6 +475,7 @@ following members:
 
 * `name`: Returns the name of the feature or component as a `String`.
 * `parent`: Returns the container of the connection end as a `ComponentInstance`.
+* `isDataPort`: Returns a `Boolean` indicating if the connection end is a data port.
 
 #### DoubleRange
 
