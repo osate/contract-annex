@@ -1,0 +1,22 @@
+package PlanWithThreeContracts
+public
+	annex contract {**
+		verification plan PlanWithThreeContracts {
+			component
+				s: pkg1::s.i;
+			contracts
+				Contract1;
+				Contract2;
+				Contract3;
+		}
+		
+		contract Contract1 {
+		}
+		
+		contract Contract2 {
+		}
+		
+		contract Contract3 {
+		}
+	**};
+end PlanWithThreeContracts;
