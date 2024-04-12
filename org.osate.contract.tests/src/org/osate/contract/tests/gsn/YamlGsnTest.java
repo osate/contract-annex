@@ -115,4 +115,32 @@ public class YamlGsnTest {
 				  nodeType: Assumption""";
 		assertEquals(expected, actual);
 	}
+
+	@Test
+	public void testPlanWithThreeClaims() {
+		var pkg = testHelper.parseFile(PATH + "PlanWithThreeClaims.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				PlanWithThreeClaims:
+				  text: PlanWithThreeClaims
+				  nodeType: Goal
+				  inContextOf: [PlanWithThreeClaims_claim_1, PlanWithThreeClaims_claim_2, PlanWithThreeClaims_claim_3]
+
+				PlanWithThreeClaims_claim_1:
+				  text: And([E2ESamplingJitter[i] <= E2ESamplingJitterTolerance[i] for i in range(len(E2ESamplingJitter))])
+				  nodeType: Assumption
+
+				PlanWithThreeClaims_claim_2:
+				  text: And([Reliability[i]>=ReliabiiltyTarget[i] for i in range(len(Reliability))])
+				  nodeType: Assumption
+
+				PlanWithThreeClaims_claim_3:
+				  text: And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])
+				  nodeType: Assumption""";
+		assertEquals(expected, actual);
+	}
 }
