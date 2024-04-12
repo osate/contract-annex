@@ -16,11 +16,11 @@ public final class YamlGsnGenerator {
 	public static String generateYamlGsn(VerificationPlan verificationPlan) {
 		var elements = new ArrayList<String>();
 		elements.add(generateVerificationPlan(verificationPlan));
-		for (var contract : verificationPlan.getContracts()) {
-			elements.add(generateContract(contract));
-		}
 		for (var claim : verificationPlan.getClaims()) {
 			elements.add(generateClaim(claim, verificationPlan));
+		}
+		for (var contract : verificationPlan.getContracts()) {
+			elements.add(generateContract(contract));
 		}
 		return elements.stream().collect(Collectors.joining("\n\n"));
 	}

@@ -143,4 +143,48 @@ public class YamlGsnTest {
 				  nodeType: Assumption""";
 		assertEquals(expected, actual);
 	}
+
+	@Test
+	public void testPlanWithContractsAndClaims() {
+		var pkg = testHelper.parseFile(PATH + "PlanWithContractsAndClaims.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				PlanWithContractsAndClaims:
+				  text: PlanWithContractsAndClaims
+				  nodeType: Goal
+				  supportedBy: [Contract1, Contract2, Contract3]
+				  inContextOf: [PlanWithContractsAndClaims_claim_1, PlanWithContractsAndClaims_claim_2, PlanWithContractsAndClaims_claim_3]
+
+				PlanWithContractsAndClaims_claim_1:
+				  text: And([E2ESamplingJitter[i] <= E2ESamplingJitterTolerance[i] for i in range(len(E2ESamplingJitter))])
+				  nodeType: Assumption
+
+				PlanWithContractsAndClaims_claim_2:
+				  text: And([Reliability[i]>=ReliabiiltyTarget[i] for i in range(len(Reliability))])
+				  nodeType: Assumption
+
+				PlanWithContractsAndClaims_claim_3:
+				  text: And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])
+				  nodeType: Assumption
+
+				Contract1:
+				  text: Contract1
+				  nodeType: Goal
+				  undeveloped: true
+
+				Contract2:
+				  text: Contract2
+				  nodeType: Goal
+				  undeveloped: true
+
+				Contract3:
+				  text: Contract3
+				  nodeType: Goal
+				  undeveloped: true""";
+		assertEquals(expected, actual);
+	}
 }
