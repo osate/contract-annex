@@ -40,4 +40,5 @@ Export-Package: org.osate.contract,
  org.osate.contract.typing,
  org.osate.contract.validation
 Import-Package: org.apache.log4j
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/ST-4.3.4.jar
