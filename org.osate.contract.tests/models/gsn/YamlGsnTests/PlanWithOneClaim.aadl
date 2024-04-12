@@ -1,0 +1,11 @@
+package PlanWithOneClaim
+public
+	annex contract {**
+		verification plan PlanWithOneClaim {
+			component
+				s: pkg1::s.i;
+			claims
+				`And([E2ESamplingJitter[i] <= E2ESamplingJitterTolerance[i] for i in range(len(E2ESamplingJitter))])`;
+		}
+	**};
+end PlanWithOneClaim;

@@ -95,4 +95,24 @@ public class YamlGsnTest {
 				  undeveloped: true""";
 		assertEquals(expected, actual);
 	}
+
+	@Test
+	public void testPlanWithOneClaim() {
+		var pkg = testHelper.parseFile(PATH + "PlanWithOneClaim.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				PlanWithOneClaim:
+				  text: PlanWithOneClaim
+				  nodeType: Goal
+				  inContextOf: [PlanWithOneClaim_claim_1]
+
+				PlanWithOneClaim_claim_1:
+				  text: And([E2ESamplingJitter[i] <= E2ESamplingJitterTolerance[i] for i in range(len(E2ESamplingJitter))])
+				  nodeType: Assumption""";
+		assertEquals(expected, actual);
+	}
 }
