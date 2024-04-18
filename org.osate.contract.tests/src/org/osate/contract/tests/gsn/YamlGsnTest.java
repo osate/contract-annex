@@ -243,4 +243,37 @@ public class YamlGsnTest {
 				  nodeType: Solution""";
 		assertEquals(expected, actual);
 	}
+
+	@Test
+	public void testContractWithThreeAnalyses() {
+		var pkg = testHelper.parseFile(PATH + "ContractWithThreeAnalyses.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				ContractWithThreeAnalyses:
+				  text: ContractWithThreeAnalyses
+				  nodeType: Goal
+				  supportedBy: [Contract1]
+
+				Contract1:
+				  text: Contract1
+				  nodeType: Goal
+				  supportedBy: [withoutParens, withParens, withParameters]
+
+				withoutParens:
+				  text: withoutParens
+				  nodeType: Solution
+
+				withParens:
+				  text: withParens
+				  nodeType: Solution
+
+				withParameters:
+				  text: withParameters
+				  nodeType: Solution""";
+		assertEquals(expected, actual);
+	}
 }
