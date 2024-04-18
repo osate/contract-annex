@@ -1,0 +1,26 @@
+package ContractText
+public
+	annex contract {**
+		verification plan ContractText {
+			component
+				s: pkg1::s.i;
+			contracts
+				Contract1;
+				Contract2;
+				Contract3;
+		}
+		
+		contract Contract1 {
+		}
+		
+		contract Contract2 {
+			guarantee
+				=> `harmonicBoundSchedulable`;
+		}
+		
+		contract Contract3 {
+			guarantee
+				<=> `harmonicBoundSchedulable`;
+		}
+	**};
+end ContractText;

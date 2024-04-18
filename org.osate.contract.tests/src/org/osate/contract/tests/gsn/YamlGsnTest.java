@@ -187,4 +187,35 @@ public class YamlGsnTest {
 				  undeveloped: true""";
 		assertEquals(expected, actual);
 	}
+
+	@Test
+	public void testContractText() {
+		var pkg = testHelper.parseFile(PATH + "ContractText.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				ContractText:
+				  text: ContractText
+				  nodeType: Goal
+				  supportedBy: [Contract1, Contract2, Contract3]
+
+				Contract1:
+				  text: Contract1
+				  nodeType: Goal
+				  undeveloped: true
+
+				Contract2:
+				  text: => harmonicBoundSchedulable
+				  nodeType: Goal
+				  undeveloped: true
+
+				Contract3:
+				  text: <=> harmonicBoundSchedulable
+				  nodeType: Goal
+				  undeveloped: true""";
+		assertEquals(expected, actual);
+	}
 }

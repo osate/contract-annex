@@ -68,10 +68,16 @@ public final class YamlGsnGenerator {
 	private static String generateContract(Contract contract) {
 		var template = new ST("""
 				%name%:
-				  text: %name%
+				  text: %text%
 				  nodeType: Goal
 				  undeveloped: true""", '%', '%');
 		template.add("name", contract.getName());
+		if (contract.getGuarantee() == null) {
+			template.add("text", contract.getName());
+		} else {
+			var symbol = contract.isExact() ? "<=>" : "=>";
+			template.add("text", symbol + ' ' + contract.getGuarantee().getCode().getSource());
+		}
 		return template.render();
 	}
 
