@@ -218,4 +218,29 @@ public class YamlGsnTest {
 				  undeveloped: true""";
 		assertEquals(expected, actual);
 	}
+
+	@Test
+	public void testContractWithOneAnalysis() {
+		var pkg = testHelper.parseFile(PATH + "ContractWithOneAnalysis.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				ContractWithOneAnalysis:
+				  text: ContractWithOneAnalysis
+				  nodeType: Goal
+				  supportedBy: [Contract1]
+
+				Contract1:
+				  text: Contract1
+				  nodeType: Goal
+				  supportedBy: [isHarmonicBoundSchedulable]
+
+				isHarmonicBoundSchedulable:
+				  text: isHarmonicBoundSchedulable
+				  nodeType: Solution""";
+		assertEquals(expected, actual);
+	}
 }

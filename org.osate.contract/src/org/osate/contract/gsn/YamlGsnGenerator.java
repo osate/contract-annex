@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import org.osate.aadl2.NamedElement;
+import org.osate.contract.contract.Analysis;
 import org.osate.contract.contract.Contract;
 import org.osate.contract.contract.Source;
 import org.osate.contract.contract.VerificationPlan;
@@ -21,6 +22,9 @@ public final class YamlGsnGenerator {
 		}
 		for (var contract : verificationPlan.getContracts()) {
 			elements.add(generateContract(contract));
+			for (var analysis : contract.getAnalyses()) {
+				elements.add(generateAnalysis(analysis));
+			}
 		}
 		return elements.stream().collect(Collectors.joining("\n\n"));
 	}
@@ -70,7 +74,8 @@ public final class YamlGsnGenerator {
 				%name%:
 				  text: %text%
 				  nodeType: Goal
-				  undeveloped: true""", '%', '%');
+				  %supportedBy%
+				  %undeveloped%""", '%', '%');
 		template.add("name", contract.getName());
 		if (contract.getGuarantee() == null) {
 			template.add("text", contract.getName());
@@ -78,7 +83,19 @@ public final class YamlGsnGenerator {
 			var symbol = contract.isExact() ? "<=>" : "=>";
 			template.add("text", symbol + ' ' + contract.getGuarantee().getCode().getSource());
 		}
-		return template.render();
+		if (contract.getAnalyses().isEmpty()) {
+			template.add("supportedBy", "");
+			template.add("undeveloped", "undeveloped: true");
+		} else {
+			var supportedBy = contract.getAnalyses()
+					.stream()
+					.map(YamlGsnGenerator::getAnalysisName)
+					.collect(Collectors.joining(", ", "supportedBy: [", "]"));
+			template.add("supportedBy", supportedBy);
+			template.add("undeveloped", "");
+		}
+		// The result is trimmed because there could be an extra line ending at the end if %undeveloped% is blank.
+		return template.render().trim();
 	}
 
 	private static String generateClaim(Source claim, VerificationPlan verificationPlan) {
@@ -93,5 +110,24 @@ public final class YamlGsnGenerator {
 
 	private static String getClaimName(Source claim, VerificationPlan verificationPlan) {
 		return verificationPlan.getName() + "_claim_" + (verificationPlan.getClaims().indexOf(claim) + 1);
+	}
+
+	private static String generateAnalysis(Analysis analysis) {
+		var template = new ST("""
+				%name%:
+				  text: %name%
+				  nodeType: Solution""", '%', '%');
+		template.add("name", getAnalysisName(analysis));
+		return template.render();
+	}
+
+	private static String getAnalysisName(Analysis analysis) {
+		var source = analysis.getCode().getSource();
+		var paren = source.indexOf('(');
+		if (paren == -1) {
+			return source;
+		} else {
+			return source.substring(0, paren);
+		}
 	}
 }
