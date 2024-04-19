@@ -94,9 +94,9 @@ def isEdfDBFSchedulable(boundThreads,error0):
 		for i in range(len(boundThreads[p][2])):
 			tasks.append([round(boundThreads[p][2][i][2]),round(boundThreads[p][2][i][5]),round(boundThreads[p][2][i][3])])
 		if not EdfDBFSchedulable(tasks):
-			addError(error0,"{"+str(boundThreads[p][0])+"} processor:"+boundThreads[p][1]+" has taskset that is not EDF schedulable")
+			addError(error0,"{"+str(boundThreads[p][0])+"} isEdfDBFSchedulable: processor:"+boundThreads[p][1]+" has taskset that is not EDF schedulable")
 			return False
-	addError(info0,"{"+str(boundThreads[p][0])+"} processor:"+boundThreads[p][1]+" has taskset that is EDF schedulable")
+		addError(info0,"{"+str(boundThreads[p][0])+"} isEdfDBFSchedulable: processor:"+boundThreads[p][1]+" has taskset that is EDF schedulable")
 	return True
 		
 		
@@ -169,9 +169,9 @@ def isResponseTimeSchedulable(boundThreads,error0):
 		for i in range(len(rt)):
 			deadline = inc[i][5]
 			if rt[i] > deadline:
-				addError(error0,"{"+str(inc[i][0])+"}thread:"+inc[i][1]+" response time:"+str(rt[i])+" > deadline:"+str(deadline))
+				addError(error0,"{"+str(inc[i][0])+"}isResponseTimeSchedulable: thread:"+inc[i][1]+" response time:"+str(rt[i])+" > deadline:"+str(deadline))
 				return False
-		addError(info0,"{"+str(boundThreads[p][0])+"} processor("+boundThreads[p][1]+") is schedulable with Worst-Case Response Time Analysis")
+		addError(info0,"{"+str(boundThreads[p][0])+"} isResponseTimeSchedulable: processor("+boundThreads[p][1]+") is schedulable with Worst-Case Response Time Analysis")
 	print("ReponseTimeSchedulable=TRUE")
 	return True
 	
