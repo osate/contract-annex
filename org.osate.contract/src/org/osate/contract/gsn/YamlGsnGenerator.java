@@ -170,25 +170,6 @@ public final class YamlGsnGenerator {
 		return verificationPlan.getName() + "_claim_" + (verificationPlan.getClaims().indexOf(claim) + 1);
 	}
 
-	private static String generateAnalysis(String name) {
-		var template = new ST("""
-				%name%:
-				  text: %name%
-				  nodeType: Solution""", '%', '%');
-		template.add("name", name);
-		return template.render();
-	}
-
-	private static String getAnalysisName(Analysis analysis) {
-		var source = analysis.getCode().getSource();
-		var paren = source.indexOf('(');
-		if (paren == -1) {
-			return source;
-		} else {
-			return source.substring(0, paren);
-		}
-	}
-
 	private static String generateAssumption(String name) {
 		var template = new ST("""
 				%name%:
@@ -199,12 +180,28 @@ public final class YamlGsnGenerator {
 	}
 
 	private static String getAssumptionName(CodeAssumption assumption) {
-		var source = assumption.getCode().getSource();
-		var paren = source.indexOf('(');
+		return trimParens(assumption.getCode().getSource());
+	}
+
+	private static String generateAnalysis(String name) {
+		var template = new ST("""
+				%name%:
+				  text: %name%
+				  nodeType: Solution""", '%', '%');
+		template.add("name", name);
+		return template.render();
+	}
+
+	private static String getAnalysisName(Analysis analysis) {
+		return trimParens(analysis.getCode().getSource());
+	}
+
+	private static String trimParens(String s) {
+		var paren = s.indexOf('(');
 		if (paren == -1) {
-			return source;
+			return s;
 		} else {
-			return source.substring(0, paren);
+			return s.substring(0, paren);
 		}
 	}
 }
