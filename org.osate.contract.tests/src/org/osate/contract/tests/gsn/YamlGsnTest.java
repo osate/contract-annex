@@ -303,7 +303,7 @@ public class YamlGsnTest {
 	}
 
 	@Test
-	public void textContractWithThreeAssumptions() {
+	public void testContractWithThreeAssumptions() {
 		var pkg = testHelper.parseFile(PATH + "ContractWithThreeAssumptions.aadl", PATH + "pkg1.aadl");
 		validationHelper.assertNoIssues(pkg);
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
