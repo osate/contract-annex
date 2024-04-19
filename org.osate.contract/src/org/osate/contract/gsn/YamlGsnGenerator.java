@@ -90,33 +90,35 @@ public final class YamlGsnGenerator {
 			var symbol = contract.isExact() ? "<=>" : "=>";
 			template.add("text", symbol + ' ' + contract.getGuarantee().getCode().getSource());
 		}
-		if (contract.getAnalyses().isEmpty() && (contract.getAssumptions().isEmpty()
-				|| contract.getAssumptions().stream().noneMatch(CodeAssumption.class::isInstance))) {
+
+		var supportedBy = new ArrayList<String>();
+		for (var analysis : contract.getAnalyses()) {
+			supportedBy.add(getAnalysisName(analysis));
+		}
+		if (supportedBy.isEmpty()) {
+			template.add("supportedBy", "");
+		} else {
+			template.add("supportedBy", supportedBy.stream().collect(Collectors.joining(", ", "supportedBy: [", "]")));
+		}
+
+		var inContextOf = new ArrayList<String>();
+		for (var assumption : contract.getAssumptions()) {
+			if (assumption instanceof CodeAssumption codeAssumption) {
+				inContextOf.add(getAssumptionName(codeAssumption));
+			}
+		}
+		if (inContextOf.isEmpty()) {
+			template.add("inContextOf", "");
+		} else {
+			template.add("inContextOf", inContextOf.stream().collect(Collectors.joining(", ", "inContextOf: [", "]")));
+		}
+
+		if (supportedBy.isEmpty() && inContextOf.isEmpty()) {
 			template.add("undeveloped", "undeveloped: true");
 		} else {
 			template.add("undeveloped", "");
 		}
-		if (contract.getAnalyses().isEmpty()) {
-			template.add("supportedBy", "");
-		} else {
-			var supportedBy = contract.getAnalyses()
-					.stream()
-					.map(YamlGsnGenerator::getAnalysisName)
-					.collect(Collectors.joining(", ", "supportedBy: [", "]"));
-			template.add("supportedBy", supportedBy);
-		}
-		if (contract.getAssumptions().isEmpty()
-				|| contract.getAssumptions().stream().noneMatch(CodeAssumption.class::isInstance)) {
-			template.add("inContextOf", "");
-		} else {
-			var inContextOf = contract.getAssumptions()
-					.stream()
-					.filter(CodeAssumption.class::isInstance)
-					.map(CodeAssumption.class::cast)
-					.map(YamlGsnGenerator::getAssumptionName)
-					.collect(Collectors.joining(", ", "inContextOf: [", "]"));
-			template.add("inContextOf", inContextOf);
-		}
+
 		// The result is trimmed because there could be an extra line ending at the end if %undeveloped% is blank.
 		return template.render().trim();
 	}
