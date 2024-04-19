@@ -479,4 +479,46 @@ public class YamlGsnTest {
 				  nodeType: Assumption""";
 		assertEquals(expected, actual);
 	}
+
+	@Test
+	public void testRepeatedAnalyses() {
+		var pkg = testHelper.parseFile(PATH + "RepeatedAnalyses.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				RepeatedAnalyses:
+				  text: RepeatedAnalyses
+				  nodeType: Goal
+				  supportedBy: [Contract1, Contract2]
+
+				Contract1:
+				  text: Contract1
+				  nodeType: Goal
+				  supportedBy: [analysis1, analysis2, analysis3]
+
+				Contract2:
+				  text: Contract2
+				  nodeType: Goal
+				  supportedBy: [analysis3, analysis4]
+
+				analysis1:
+				  text: analysis1
+				  nodeType: Solution
+
+				analysis2:
+				  text: analysis2
+				  nodeType: Solution
+
+				analysis3:
+				  text: analysis3
+				  nodeType: Solution
+
+				analysis4:
+				  text: analysis4
+				  nodeType: Solution""";
+		assertEquals(expected, actual);
+	}
 }

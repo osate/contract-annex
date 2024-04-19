@@ -3,7 +3,6 @@ package org.osate.contract.gsn;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import org.osate.aadl2.NamedElement;
@@ -22,7 +21,7 @@ public final class YamlGsnGenerator {
 	public static String generateYamlGsn(VerificationPlan verificationPlan) {
 		var contracts = new LinkedHashSet<Contract>();
 		var assumptions = new LinkedHashSet<String>();
-		var analyses = new ArrayList<Analysis>();
+		var analyses = new LinkedHashSet<String>();
 		for (var contract : verificationPlan.getContracts()) {
 			collectNodes(contract, contracts, assumptions, analyses);
 		}
@@ -46,7 +45,7 @@ public final class YamlGsnGenerator {
 	}
 
 	private static void collectNodes(Contract contract, Collection<Contract> contracts, Collection<String> assumptions,
-			List<Analysis> analyses) {
+			Collection<String> analyses) {
 		contracts.add(contract);
 		for (var assumption : contract.getAssumptions()) {
 			if (assumption instanceof ContractAssumption contractAssumption
@@ -57,7 +56,7 @@ public final class YamlGsnGenerator {
 			}
 		}
 		for (var analysis : contract.getAnalyses()) {
-			analyses.add(analysis);
+			analyses.add(getAnalysisName(analysis));
 		}
 	}
 
@@ -171,12 +170,12 @@ public final class YamlGsnGenerator {
 		return verificationPlan.getName() + "_claim_" + (verificationPlan.getClaims().indexOf(claim) + 1);
 	}
 
-	private static String generateAnalysis(Analysis analysis) {
+	private static String generateAnalysis(String name) {
 		var template = new ST("""
 				%name%:
 				  text: %name%
 				  nodeType: Solution""", '%', '%');
-		template.add("name", getAnalysisName(analysis));
+		template.add("name", name);
 		return template.render();
 	}
 
