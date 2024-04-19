@@ -21,7 +21,7 @@ public final class YamlGsnGenerator {
 
 	public static String generateYamlGsn(VerificationPlan verificationPlan) {
 		var contracts = new LinkedHashSet<Contract>();
-		var assumptions = new ArrayList<CodeAssumption>();
+		var assumptions = new LinkedHashSet<String>();
 		var analyses = new ArrayList<Analysis>();
 		for (var contract : verificationPlan.getContracts()) {
 			collectNodes(contract, contracts, assumptions, analyses);
@@ -45,15 +45,15 @@ public final class YamlGsnGenerator {
 		return nodes.stream().collect(Collectors.joining("\n\n"));
 	}
 
-	private static void collectNodes(Contract contract, Collection<Contract> contracts,
-			List<CodeAssumption> assumptions, List<Analysis> analyses) {
+	private static void collectNodes(Contract contract, Collection<Contract> contracts, Collection<String> assumptions,
+			List<Analysis> analyses) {
 		contracts.add(contract);
 		for (var assumption : contract.getAssumptions()) {
 			if (assumption instanceof ContractAssumption contractAssumption
 					&& contractAssumption.getContract() instanceof Contract referencedContract) {
 				collectNodes(referencedContract, contracts, assumptions, analyses);
 			} else if (assumption instanceof CodeAssumption codeAssumption) {
-				assumptions.add(codeAssumption);
+				assumptions.add(getAssumptionName(codeAssumption));
 			}
 		}
 		for (var analysis : contract.getAnalyses()) {
@@ -143,7 +143,8 @@ public final class YamlGsnGenerator {
 		if (inContextOf.isEmpty()) {
 			template.add("inContextOf", "");
 		} else {
-			template.add("inContextOf", inContextOf.stream().collect(Collectors.joining(", ", "inContextOf: [", "]")));
+			template.add("inContextOf",
+					inContextOf.stream().distinct().collect(Collectors.joining(", ", "inContextOf: [", "]")));
 		}
 
 		if (supportedBy.isEmpty() && inContextOf.isEmpty()) {
@@ -189,12 +190,12 @@ public final class YamlGsnGenerator {
 		}
 	}
 
-	private static String generateAssumption(CodeAssumption assumption) {
+	private static String generateAssumption(String name) {
 		var template = new ST("""
 				%name%:
 				  text: %name%
 				  nodeType: Assumption""", '%', '%');
-		template.add("name", getAssumptionName(assumption));
+		template.add("name", name);
 		return template.render();
 	}
 

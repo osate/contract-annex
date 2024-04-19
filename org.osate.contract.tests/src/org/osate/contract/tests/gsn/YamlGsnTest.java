@@ -437,4 +437,46 @@ public class YamlGsnTest {
 				  supportedBy: [Contract5]""";
 		assertEquals(expected, actual);
 	}
+
+	@Test
+	public void testRepeatedAssumptions() {
+		var pkg = testHelper.parseFile(PATH + "RepeatedAssumptions.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				RepeatedAssumptions:
+				  text: RepeatedAssumptions
+				  nodeType: Goal
+				  supportedBy: [Contract1, Contract2]
+
+				Contract1:
+				  text: Contract1
+				  nodeType: Goal
+				  inContextOf: [assumption1, assumption2, assumption3]
+
+				Contract2:
+				  text: Contract2
+				  nodeType: Goal
+				  inContextOf: [assumption3, assumption4]
+
+				assumption1:
+				  text: assumption1
+				  nodeType: Assumption
+
+				assumption2:
+				  text: assumption2
+				  nodeType: Assumption
+
+				assumption3:
+				  text: assumption3
+				  nodeType: Assumption
+
+				assumption4:
+				  text: assumption4
+				  nodeType: Assumption""";
+		assertEquals(expected, actual);
+	}
 }
