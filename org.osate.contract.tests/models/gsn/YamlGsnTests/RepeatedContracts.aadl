@@ -1,0 +1,36 @@
+package RepeatedContracts
+public
+	annex contract {**
+		verification plan RepeatedContracts {
+			component
+				s: pkg1::s.i;
+			contracts
+				Contract1;
+				Contract1;
+				Contract2;
+		}
+		
+		contract Contract1 {
+		}
+		
+		contract Contract2 {
+			assumptions
+				contract Contract3;
+				contract Contract4;
+		}
+		
+		contract Contract3 {
+			assumptions
+				contract Contract5;
+		}
+		
+		contract Contract4 {
+			assumptions
+				contract Contract5;
+				contract Contract5;
+		}
+		
+		contract Contract5 {
+		}
+	**};
+end RepeatedContracts;

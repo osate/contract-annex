@@ -1,6 +1,8 @@
 package org.osate.contract.gsn;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,7 +20,7 @@ public final class YamlGsnGenerator {
 	}
 
 	public static String generateYamlGsn(VerificationPlan verificationPlan) {
-		var contracts = new ArrayList<Contract>();
+		var contracts = new LinkedHashSet<Contract>();
 		var assumptions = new ArrayList<CodeAssumption>();
 		var analyses = new ArrayList<Analysis>();
 		for (var contract : verificationPlan.getContracts()) {
@@ -43,8 +45,8 @@ public final class YamlGsnGenerator {
 		return nodes.stream().collect(Collectors.joining("\n\n"));
 	}
 
-	private static void collectNodes(Contract contract, List<Contract> contracts, List<CodeAssumption> assumptions,
-			List<Analysis> analyses) {
+	private static void collectNodes(Contract contract, Collection<Contract> contracts,
+			List<CodeAssumption> assumptions, List<Analysis> analyses) {
 		contracts.add(contract);
 		for (var assumption : contract.getAssumptions()) {
 			if (assumption instanceof ContractAssumption contractAssumption
@@ -81,6 +83,7 @@ public final class YamlGsnGenerator {
 			var supportedBy = verificationPlan.getContracts()
 					.stream()
 					.map(NamedElement::getName)
+					.distinct()
 					.collect(Collectors.joining(", ", "supportedBy: [", "]"));
 			template.add("supportedBy", supportedBy);
 		}
@@ -133,7 +136,8 @@ public final class YamlGsnGenerator {
 		if (supportedBy.isEmpty()) {
 			template.add("supportedBy", "");
 		} else {
-			template.add("supportedBy", supportedBy.stream().collect(Collectors.joining(", ", "supportedBy: [", "]")));
+			template.add("supportedBy",
+					supportedBy.stream().distinct().collect(Collectors.joining(", ", "supportedBy: [", "]")));
 		}
 
 		if (inContextOf.isEmpty()) {
