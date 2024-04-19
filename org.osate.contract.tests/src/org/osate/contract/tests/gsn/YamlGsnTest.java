@@ -276,4 +276,62 @@ public class YamlGsnTest {
 				  nodeType: Solution""";
 		assertEquals(expected, actual);
 	}
+
+	@Test
+	public void testContractWithOneAssumption() {
+		var pkg = testHelper.parseFile(PATH + "ContractWithOneAssumption.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				ContractWithOneAssumption:
+				  text: ContractWithOneAssumption
+				  nodeType: Goal
+				  supportedBy: [Contract1]
+
+				Contract1:
+				  text: Contract1
+				  nodeType: Goal
+				  inContextOf: [areAllPeriodsHarmonic]
+
+				areAllPeriodsHarmonic:
+				  text: areAllPeriodsHarmonic
+				  nodeType: Assumption""";
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void textContractWithThreeAssumptions() {
+		var pkg = testHelper.parseFile(PATH + "ContractWithThreeAssumptions.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				ContractWithThreeAssumptions:
+				  text: ContractWithThreeAssumptions
+				  nodeType: Goal
+				  supportedBy: [Contract1]
+
+				Contract1:
+				  text: Contract1
+				  nodeType: Goal
+				  inContextOf: [areAllPeriodsHarmonic, areAllThreadsBoundToOneProcessor, areAllPeriodsEqualToDeadlines]
+
+				areAllPeriodsHarmonic:
+				  text: areAllPeriodsHarmonic
+				  nodeType: Assumption
+
+				areAllThreadsBoundToOneProcessor:
+				  text: areAllThreadsBoundToOneProcessor
+				  nodeType: Assumption
+
+				areAllPeriodsEqualToDeadlines:
+				  text: areAllPeriodsEqualToDeadlines
+				  nodeType: Assumption""";
+		assertEquals(expected, actual);
+	}
 }

@@ -1,0 +1,18 @@
+package ContractWithThreeAssumptions
+public
+	annex contract {**
+		verification plan ContractWithThreeAssumptions {
+			component
+				s: pkg1::s.i;
+			contracts
+				Contract1;
+		}
+		
+		contract Contract1 {
+			assumptions
+				`areAllPeriodsHarmonic`;
+				`areAllThreadsBoundToOneProcessor()`;
+				`areAllPeriodsEqualToDeadlines(stuff_in_the_middle)`;
+		}
+	**};
+end ContractWithThreeAssumptions;

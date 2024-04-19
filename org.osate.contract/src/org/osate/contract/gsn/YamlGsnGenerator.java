@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.osate.aadl2.NamedElement;
 import org.osate.contract.contract.Analysis;
+import org.osate.contract.contract.CodeAssumption;
 import org.osate.contract.contract.Contract;
 import org.osate.contract.contract.Source;
 import org.osate.contract.contract.VerificationPlan;
@@ -22,6 +23,11 @@ public final class YamlGsnGenerator {
 		}
 		for (var contract : verificationPlan.getContracts()) {
 			elements.add(generateContract(contract));
+			for (var assumption : contract.getAssumptions()) {
+				if (assumption instanceof CodeAssumption codeAssumption) {
+					elements.add(generateAssumption(codeAssumption));
+				}
+			}
 			for (var analysis : contract.getAnalyses()) {
 				elements.add(generateAnalysis(analysis));
 			}
@@ -75,6 +81,7 @@ public final class YamlGsnGenerator {
 				  text: %text%
 				  nodeType: Goal
 				  %supportedBy%
+				  %inContextOf%
 				  %undeveloped%""", '%', '%');
 		template.add("name", contract.getName());
 		if (contract.getGuarantee() == null) {
@@ -83,16 +90,32 @@ public final class YamlGsnGenerator {
 			var symbol = contract.isExact() ? "<=>" : "=>";
 			template.add("text", symbol + ' ' + contract.getGuarantee().getCode().getSource());
 		}
+		if (contract.getAnalyses().isEmpty() && (contract.getAssumptions().isEmpty()
+				|| contract.getAssumptions().stream().noneMatch(CodeAssumption.class::isInstance))) {
+			template.add("undeveloped", "undeveloped: true");
+		} else {
+			template.add("undeveloped", "");
+		}
 		if (contract.getAnalyses().isEmpty()) {
 			template.add("supportedBy", "");
-			template.add("undeveloped", "undeveloped: true");
 		} else {
 			var supportedBy = contract.getAnalyses()
 					.stream()
 					.map(YamlGsnGenerator::getAnalysisName)
 					.collect(Collectors.joining(", ", "supportedBy: [", "]"));
 			template.add("supportedBy", supportedBy);
-			template.add("undeveloped", "");
+		}
+		if (contract.getAssumptions().isEmpty()
+				|| contract.getAssumptions().stream().noneMatch(CodeAssumption.class::isInstance)) {
+			template.add("inContextOf", "");
+		} else {
+			var inContextOf = contract.getAssumptions()
+					.stream()
+					.filter(CodeAssumption.class::isInstance)
+					.map(CodeAssumption.class::cast)
+					.map(YamlGsnGenerator::getAssumptionName)
+					.collect(Collectors.joining(", ", "inContextOf: [", "]"));
+			template.add("inContextOf", inContextOf);
 		}
 		// The result is trimmed because there could be an extra line ending at the end if %undeveloped% is blank.
 		return template.render().trim();
@@ -123,6 +146,25 @@ public final class YamlGsnGenerator {
 
 	private static String getAnalysisName(Analysis analysis) {
 		var source = analysis.getCode().getSource();
+		var paren = source.indexOf('(');
+		if (paren == -1) {
+			return source;
+		} else {
+			return source.substring(0, paren);
+		}
+	}
+
+	private static String generateAssumption(CodeAssumption assumption) {
+		var template = new ST("""
+				%name%:
+				  text: %name%
+				  nodeType: Assumption""", '%', '%');
+		template.add("name", getAssumptionName(assumption));
+		return template.render();
+	}
+
+	private static String getAssumptionName(CodeAssumption assumption) {
+		var source = assumption.getCode().getSource();
 		var paren = source.indexOf('(');
 		if (paren == -1) {
 			return source;
