@@ -1,12 +1,14 @@
 package org.osate.contract.gsn;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.osate.aadl2.NamedElement;
 import org.osate.contract.contract.Analysis;
 import org.osate.contract.contract.CodeAssumption;
 import org.osate.contract.contract.Contract;
+import org.osate.contract.contract.ContractAssumption;
 import org.osate.contract.contract.Source;
 import org.osate.contract.contract.VerificationPlan;
 import org.stringtemplate.v4.ST;
@@ -16,23 +18,45 @@ public final class YamlGsnGenerator {
 	}
 
 	public static String generateYamlGsn(VerificationPlan verificationPlan) {
-		var elements = new ArrayList<String>();
-		elements.add(generateVerificationPlan(verificationPlan));
-		for (var claim : verificationPlan.getClaims()) {
-			elements.add(generateClaim(claim, verificationPlan));
-		}
+		var contracts = new ArrayList<Contract>();
+		var assumptions = new ArrayList<CodeAssumption>();
+		var analyses = new ArrayList<Analysis>();
 		for (var contract : verificationPlan.getContracts()) {
-			elements.add(generateContract(contract));
-			for (var assumption : contract.getAssumptions()) {
-				if (assumption instanceof CodeAssumption codeAssumption) {
-					elements.add(generateAssumption(codeAssumption));
-				}
-			}
-			for (var analysis : contract.getAnalyses()) {
-				elements.add(generateAnalysis(analysis));
+			collectNodes(contract, contracts, assumptions, analyses);
+		}
+
+		var nodes = new ArrayList<String>();
+		nodes.add(generateVerificationPlan(verificationPlan));
+		for (var claim : verificationPlan.getClaims()) {
+			nodes.add(generateClaim(claim, verificationPlan));
+		}
+		for (var contract : contracts) {
+			nodes.add(generateContract(contract));
+		}
+		for (var assumption : assumptions) {
+			nodes.add(generateAssumption(assumption));
+		}
+		for (var analysis : analyses) {
+			nodes.add(generateAnalysis(analysis));
+		}
+
+		return nodes.stream().collect(Collectors.joining("\n\n"));
+	}
+
+	private static void collectNodes(Contract contract, List<Contract> contracts, List<CodeAssumption> assumptions,
+			List<Analysis> analyses) {
+		contracts.add(contract);
+		for (var assumption : contract.getAssumptions()) {
+			if (assumption instanceof ContractAssumption contractAssumption
+					&& contractAssumption.getContract() instanceof Contract referencedContract) {
+				collectNodes(referencedContract, contracts, assumptions, analyses);
+			} else if (assumption instanceof CodeAssumption codeAssumption) {
+				assumptions.add(codeAssumption);
 			}
 		}
-		return elements.stream().collect(Collectors.joining("\n\n"));
+		for (var analysis : contract.getAnalyses()) {
+			analyses.add(analysis);
+		}
 	}
 
 	private static String generateVerificationPlan(VerificationPlan verificationPlan) {
@@ -92,21 +116,26 @@ public final class YamlGsnGenerator {
 		}
 
 		var supportedBy = new ArrayList<String>();
+		var inContextOf = new ArrayList<String>();
+
+		for (var assumption : contract.getAssumptions()) {
+			if (assumption instanceof ContractAssumption contractAssumption
+					&& contractAssumption.getContract() instanceof Contract referencedContract) {
+				supportedBy.add(referencedContract.getName());
+			} else if (assumption instanceof CodeAssumption codeAssumption) {
+				inContextOf.add(getAssumptionName(codeAssumption));
+			}
+		}
 		for (var analysis : contract.getAnalyses()) {
 			supportedBy.add(getAnalysisName(analysis));
 		}
+
 		if (supportedBy.isEmpty()) {
 			template.add("supportedBy", "");
 		} else {
 			template.add("supportedBy", supportedBy.stream().collect(Collectors.joining(", ", "supportedBy: [", "]")));
 		}
 
-		var inContextOf = new ArrayList<String>();
-		for (var assumption : contract.getAssumptions()) {
-			if (assumption instanceof CodeAssumption codeAssumption) {
-				inContextOf.add(getAssumptionName(codeAssumption));
-			}
-		}
 		if (inContextOf.isEmpty()) {
 			template.add("inContextOf", "");
 		} else {
