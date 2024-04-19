@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg classes="gsndiagram" viewBox="0 0 763 532" xmlns="http://www.w3.org/2000/svg">
+<symbol id="module_icon">
+<rect fill="lightgrey" height="5" stroke="black" stroke-width="1" width="10" x="0" y="0"/>
+<rect fill="lightgrey" height="10" stroke="black" stroke-width="1" width="20" x="0" y="5"/>
+</symbol>
+<marker id="composite_arrow" markerHeight="9" markerUnits="userSpaceOnUse" markerWidth="10" orient="auto-start-reverse" refX="0" refY="4.5">
+<polyline fill="none" points="0 0, 6 4.5, 0 9" stroke="black" stroke-width="1"/>
+<polyline fill="none" points="4 0, 10 4.5, 4 9" stroke="black" stroke-width="1"/>
+<polyline fill="none" points="0 4.5, 10 4.5" stroke="black" stroke-width="1"/>
+</marker>
+<marker id="supportedby_arrow" markerHeight="9" markerUnits="userSpaceOnUse" markerWidth="10" orient="auto-start-reverse" refX="0" refY="4.5">
+<polyline fill="black" points="0 0, 10 4.5, 0 9"/>
+</marker>
+<marker id="incontextof_arrow" markerHeight="9" markerUnits="userSpaceOnUse" markerWidth="10" orient="auto-start-reverse" refX="0" refY="4.5">
+<polyline fill="none" points="0 0, 10 4.5, 0 9, 0 0" stroke="black" stroke-width="1"/>
+</marker>
+<a href="./a330-sub2.gsn.svg#node_S4">
+<g class="gsn_module_Sub2 gsnelem gsnstgy" id="node_S4">
+<title>
+S4
+</title>
+<path class="border" d="M27,20 L305,20 L291,66 L13,66 z" fill="transparent" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="35" y="39">
+S4
+</text>
+<text font-family="DejaVuSans" font-size="12" x="35" y="58">
+Select Schedulability For Given Thread Data
+</text>
+</g>
+</a>
+<g class="gsn_module_Sub5 gsnelem gsngoal" id="node_G9">
+<title>
+G9
+</title>
+<path class="border" d="M28,116 L290,116 L290,162 L28,162 z" fill="transparent" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="35" y="135">
+G9
+</text>
+<text font-family="DejaVuSans" font-size="12" x="35" y="154">
+Worst-Case Response Time Schedulability
+</text>
+</g>
+<g class="gsn_module_Sub5 gsnelem gsnasmp" id="node_A10">
+<title>
+A10
+</title>
+<path class="border" d="M330,139 a144,33,0,1,0,289,0 a144,33,0,1,0,-289,0 z" fill="none" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="378" y="130">
+A10
+</text>
+<text font-family="DejaVuSans" font-size="12" x="378" y="149">
+Threads bound to one processor
+</text>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="613" y="167">
+A
+</text>
+</g>
+<a href="eclipse+command://org.osate.contract.uriHandler.GSNURIMarker?org.osate.contract.uriHandler.GSNURIMarker.analysisName=isResponseTimeSchedulable">
+<g class="gsn_notetype gsn_module_Sub5 gsnelem gsnsltn" id="node_Sn7">
+<title>
+Sn7
+</title>
+<path class="border" d="M44,327 a115,115,0,1,0,230,0 a115,115,0,1,0,-230,0 z" fill="none" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="59" y="318">
+Sn7
+</text>
+<text font-family="DejaVuSans" font-size="12" x="59" y="337">
+Thread Reponse Time&lt;= Deadline
+</text>
+</g>
+</a>
+<path class="gsnedge gsninctxt" d="M290,139 C320,139,300,139,320,139" fill="none" marker-end="url(#incontextof_arrow)" stroke="black" stroke-width="1"/>
+<path class="gsnedge gsninspby" d="M159,162 C159,192,159,182,159,202" fill="none" marker-end="url(#supportedby_arrow)" stroke="black" stroke-width="1"/>
+<path class="gsnedge gsninspby" d="M159,66 C159,96,159,86,159,106" fill="none" marker-end="url(#supportedby_arrow)" stroke="black" stroke-width="1"/>
+<g class="gsnmodule" id="node_gsn_module">
+<title>
+Module Information
+</title>
+<text font-family="DejaVuSans" font-size="12" x="431" y="498">
+Module: Sub5
+</text>
+<text font-family="DejaVuSans" font-size="12" x="431" y="512">
+Generated on: 2024-02-20 13:54:28.609257681 UTC
+</text>
+</g>
+</svg>

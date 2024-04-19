@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg classes="gsndiagram" viewBox="0 0 996 604" xmlns="http://www.w3.org/2000/svg">
+<symbol id="module_icon">
+<rect fill="lightgrey" height="5" stroke="black" stroke-width="1" width="10" x="0" y="0"/>
+<rect fill="lightgrey" height="10" stroke="black" stroke-width="1" width="20" x="0" y="5"/>
+</symbol>
+<marker id="composite_arrow" markerHeight="9" markerUnits="userSpaceOnUse" markerWidth="10" orient="auto-start-reverse" refX="0" refY="4.5">
+<polyline fill="none" points="0 0, 6 4.5, 0 9" stroke="black" stroke-width="1"/>
+<polyline fill="none" points="4 0, 10 4.5, 4 9" stroke="black" stroke-width="1"/>
+<polyline fill="none" points="0 4.5, 10 4.5" stroke="black" stroke-width="1"/>
+</marker>
+<marker id="supportedby_arrow" markerHeight="9" markerUnits="userSpaceOnUse" markerWidth="10" orient="auto-start-reverse" refX="0" refY="4.5">
+<polyline fill="black" points="0 0, 10 4.5, 0 9"/>
+</marker>
+<marker id="incontextof_arrow" markerHeight="9" markerUnits="userSpaceOnUse" markerWidth="10" orient="auto-start-reverse" refX="0" refY="4.5">
+<polyline fill="none" points="0 0, 10 4.5, 0 9, 0 0" stroke="black" stroke-width="1"/>
+</marker>
+<a href="./a330-main.gsn.svg#node_G2">
+<g class="gsn_module_Main gsnelem gsnawaygoal" id="node_G2">
+<title>
+G2
+</title>
+<path class="border" d="M503,72 V20 H657 V72" fill="transparent" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="510" y="39">
+G2
+</text>
+<text font-family="DejaVuSans" font-size="12" x="510" y="58">
+End-to-End Latency Met
+</text>
+<a href="./a330-main.gsn.svg#node_G2">
+<path class="border" d="M503,72 h155 v28 h-155 z" fill="transparent" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="537" y="93">
+Main
+</text>
+</a>
+<use href="#module_icon" x="510" y="79"/>
+</g>
+</a>
+<g class="gsn_module_Sub1 gsnelem gsnasmp" id="node_A2">
+<title>
+A2
+</title>
+<path class="border" d="M147,173 a145,33,0,1,0,291,0 a145,33,0,1,0,-291,0 z" fill="none" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="196" y="164">
+A2
+</text>
+<text font-family="DejaVuSans" font-size="12" x="196" y="183">
+All Thread Deadlines &lt;= Periods
+</text>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="432" y="201">
+A
+</text>
+</g>
+<g class="gsn_module_Sub1 gsnelem gsngoal" id="node_G5">
+<title>
+G5
+</title>
+<path class="border" d="M477,150 L683,150 L683,196 L477,196 z" fill="transparent" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="484" y="169">
+G5
+</text>
+<text font-family="DejaVuSans" font-size="12" x="484" y="188">
+E2E Response Time &lt;= Required
+</text>
+</g>
+<g class="gsn_module_Sub1 gsnelem gsnasmp" id="node_A1">
+<title>
+A1
+</title>
+<path class="border" d="M723,173 a91,33,0,1,0,182,0 a91,33,0,1,0,-182,0 z" fill="none" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="757" y="164">
+A1
+</text>
+<text font-family="DejaVuSans" font-size="12" x="757" y="183">
+All Threads Periodic
+</text>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="900" y="201">
+A
+</text>
+</g>
+<a href="./a330-sub2.gsn.svg#node_G6">
+<g class="gsn_module_Sub2 gsnelem gsnawaygoal" id="node_G6">
+<title>
+G6
+</title>
+<path class="border" d="M372,392 V340 H534 V392" fill="transparent" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="379" y="359">
+G6
+</text>
+<text font-family="DejaVuSans" font-size="12" x="379" y="378">
+All Tasks are Schedulable
+</text>
+<a href="./a330-sub2.gsn.svg#node_G6">
+<path class="border" d="M372,392 h162 v28 h-162 z" fill="transparent" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="406" y="413">
+Sub2
+</text>
+</a>
+<use href="#module_icon" x="379" y="399"/>
+</g>
+</a>
+<a href="eclipse+command://org.osate.contract.uriHandler.GSNURIMarker?org.osate.contract.uriHandler.GSNURIMarker.analysisName=meetEndToEndLatencies">
+<g class="gsn_module_Sub1 gsnelem gsnsltn" id="node_Sn3">
+<title>
+Sn3
+</title>
+<path class="border" d="M574,380 a134,134,0,1,0,268,0 a134,134,0,1,0,-268,0 z" fill="none" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="589" y="371">
+Sn3
+</text>
+<text font-family="DejaVuSans" font-size="12" x="589" y="390">
+Sum Thread Periods &lt; Latency Required
+</text>
+</g>
+</a>
+<path class="gsnedge gsninspby" d="M580,100 C580,130,580,120,580,140" fill="none" marker-end="url(#supportedby_arrow)" stroke="black" stroke-width="1"/>
+<path class="gsnedge gsninctxt" d="M683,173 C713,173,693,173,713,173" fill="none" marker-end="url(#incontextof_arrow)" stroke="black" stroke-width="1"/>
+<path class="gsnedge gsninctxt" d="M477,173 C447,173,467,173,447,173" fill="none" marker-end="url(#incontextof_arrow)" stroke="black" stroke-width="1"/>
+<path class="gsnedge gsninspby" d="M580,196 C580,226,453,310,453,330" fill="none" marker-end="url(#supportedby_arrow)" stroke="black" stroke-width="1"/>
+<path class="gsnedge gsninspby" d="M580,196 C580,226,708,216,708,236" fill="none" marker-end="url(#supportedby_arrow)" stroke="black" stroke-width="1"/>
+<g class="gsnmodule" id="node_gsn_module">
+<title>
+Module Information
+</title>
+<text font-family="DejaVuSans" font-size="12" x="664" y="570">
+Module: Sub1
+</text>
+<text font-family="DejaVuSans" font-size="12" x="664" y="584">
+Generated on: 2024-02-20 13:54:28.594868811 UTC
+</text>
+</g>
+</svg>

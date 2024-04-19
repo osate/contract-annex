@@ -122,9 +122,10 @@ def isResponseTimeSchedulable(boundThreads,error0):
 		for i in range(len(rt)):
 			deadline = inc[i][5]
 			if rt[i] > deadline:
-				addError(error0,"{"+str(inc[i][0])+"}thread:"+inc[i][1]+" response time:"+str(rt[i])+" > deadline:"+str(deadline))
+				addError(error0,"{"+str(inc[i][0])+"} isResponseTimeSchedulable: thread:"+inc[i][1]+" response time:"+str(rt[i])+" > deadline:"+str(deadline))
 				return False
 	print("ReponseTimeSchedulable=TRUE")
+	addError(info0,"{"+str(inc[i][0])+"} isResponseTimeSchedulable: thread:"+inc[i][1]+" response time:"+str(rt[i])+" <= deadline:"+str(deadline))
 	return True
 	
 def areAllPrioritiesSet(boundThreads,priorities,names,error0):
@@ -187,9 +188,10 @@ def allProcessorHarmonicBoundSchedulable(boundThreads,error0):
 		for j in range(len(boundThreads[i][2])):
 			util = util + boundThreads[i][2][j][3] / boundThreads[i][2][j][2]
 		if util > 1.0:
-			addError(error0,"{"+str(boundThreads[i][0])+"}processor "+boundThreads[i][1]+" workload exceeds 100% bound ")
+			addError(error0,"{"+str(boundThreads[i][0])+"} allProcessorHarmonicBoundSchedulable: processor "+boundThreads[i][1]+" workload exceeds 100% bound ")
 			return False
 	print("allProcessorsHarmonicBoundSchedulable=TRUE")
+	addError(info0,"{"+str(boundThreads[i][0])+"} allProcessorHarmonicBoundSchedulable: processor "+boundThreads[i][1]+" is schedulable")
 	return True
 
 def arePrioritiesRM(boundThreads,error0):
@@ -250,9 +252,10 @@ def allProcessorNonHarmonicBoundSchedulable(boundThreads,error0):
 		for j in range(len(boundThreads[i][2])):
 			util = util + boundThreads[i][2][j][3] / boundThreads[i][2][j][2]
 		if util > 0.69:
-			addError(error0,"processor "+boundThreads[i][1]+" workload exceeds 69% bound ")
+			addError(error0,"{"+str(boundThreads[i][0])+"} allProcessorNonHarmonicBoundSchedulable: processor "+boundThreads[i][1]+" workload exceeds 69% bound ")
 			return False
 	print("allProcessorsNonHarmonicBoundSchedulable=TRUE")
+	addError(info0,"{"+str(boundThreads[i][0])+"} allProcessorNonHarmonicBoundSchedulable: processor "+boundThreads[i][1]+" is schedulable")
 	return True
 
 def allThreadsBoundToSingleProcessor(bindings,error0):
@@ -325,10 +328,10 @@ def meetEndToEndLatencies(flowComponents,error0):
 		flow = flowComponents[i]
 		latency = flow[2]
 		if rts[i] > latency:
-			addError(error0,"{"+str(flow[0])+"}flow["+str(flow[1])+"] real latency ("+str(rts[i])+") is larger than the required latency ("+str(latency)+")")
+			addError(error0,"{"+str(flow[0])+"}flow["+str(flow[1])+"] meetEndToEndLatencies: real latency ("+str(rts[i])+") is larger than the required latency ("+str(latency)+")")
 			return False
 		else:
-			addError(info0,"{"+str(flow[0])+"}flow["+str(flow[1])+"] meets its end-to-end latency")
+			addError(info0,"{"+str(flow[0])+"}flow["+str(flow[1])+"] meetEndToEndLatencies: meets its end-to-end latency")
 	return True
 	
 def areEndToEndLatenciesInputDataComplete(periods, exectimes, deadlines, threadnames):
@@ -392,9 +395,9 @@ def areFlowsInSync1(flowComponents,error0):
 					thread2 = flowComponents[j][3][0]
 					if thread1[0] != thread2[0]:
 						if jitterTolerance < thread1[2]:
-							addError(error0,"{"+str(thread1[0])+"}thread("+str(thread1[0])+").name("+thread1[1]+") and thread("+str(thread2[0])+").name("+thread2[1]+") out of sync by: "+str(thread1[2])+" ms")
+							addError(error0,"{"+str(thread1[0])+"} areFlowsInSync1: thread("+str(thread1[0])+").name("+thread1[1]+") and thread("+str(thread2[0])+").name("+thread2[1]+") out of sync by: "+str(thread1[2])+" ms")
 							return False
-			addError(info0,"{"+str(flowComponents[i][0])+"} end to end flow in sync with replicas")
+			addError(info0,"{"+str(flowComponents[i][0])+"} areFlowsInSync1: end to end flow in sync with replicas")
 	return True
 						
 
@@ -582,10 +585,10 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 			print("reliability:",(1-probcutsets))
 			print("target reliability:",replicatede2eflows[i][1])
 			if replicatede2eflows[i][1] > (1-probcutsets):
-				addError(error0,"{"+str(replicatede2eflows[i][0])+"}Reliability of replicated flow :"+str(1-probcutsets)+" lower than target: "+str(replicatede2eflows[i][1]))
+				addError(error0,"{"+str(replicatede2eflows[i][0])+"} isE2EFlowProbabilityOfFailureMet: Reliability of replicated flow :"+str(1-probcutsets)+" lower than target: "+str(replicatede2eflows[i][1]))
 				return False
 			else:
-				addError(info0,"{"+str(replicatede2eflows[i][0])+"}Reliability of replicated flow :"+str(1-probcutsets)+" meet or exceeds its target: "+str(replicatede2eflows[i][1]))
+				addError(info0,"{"+str(replicatede2eflows[i][0])+"} isE2EFlowProbabilityOfFailureMet: Reliability of replicated flow :"+str(1-probcutsets)+" meet or exceeds its target: "+str(replicatede2eflows[i][1]))
 	return True
 
 `}
