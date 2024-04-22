@@ -18,10 +18,12 @@ Require-Bundle: org.osate.contract,
  org.eclipse.xtext.builder,
  org.eclipse.xsemantics.runtime,
  org.osate.aadl2,
- org.osate.xtext.aadl2.properties.ui
+ org.osate.xtext.aadl2.properties.ui,
+ org.eclipse.ease
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-17
-Export-Package: org.osate.contract.ui.quickfix,
+Export-Package: org.osate.contract.ui,
  org.osate.contract.ui.contentassist,
- org.osate.contract.ui.internal
+ org.osate.contract.ui.internal,
+ org.osate.contract.ui.quickfix
 Bundle-Activator: org.osate.contract.ui.internal.ContractActivator

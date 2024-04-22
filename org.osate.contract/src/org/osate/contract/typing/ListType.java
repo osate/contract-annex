@@ -54,6 +54,7 @@ public final class ListType implements Type {
 		members.put("flatMap", new FlatMapMember());
 		members.put("mapPresent", new MapPresentMember());
 		members.put("contains", new ContainsMember());
+		members.put("allMatch", new AllMatchMember());
 
 		if (elementType instanceof OptionalType optionalType) {
 			members.put("filterPresent", new FilterPresentMember(optionalType));
@@ -276,6 +277,35 @@ public final class ListType implements Type {
 		@Override
 		public Boolean evaluate(List<?> receiver, Object argument) {
 			return receiver.contains(argument);
+		}
+	}
+
+	private class AllMatchMember implements MemberWithLambda<List<?>, Boolean, Boolean> {
+		@Override
+		public Type getLambdaParameterType() {
+			return elementType;
+		}
+
+		@Override
+		public void validateLambdaReturnType(Type lambdaReturnType, Consumer<String> errorReporter) {
+			if (lambdaReturnType != BooleanType.INSTANCE) {
+				errorReporter.accept("Expected " + BooleanType.INSTANCE + "; found " + lambdaReturnType);
+			}
+		}
+
+		@Override
+		public Type getReturnType(Type lambdaType) {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(List<?> receiver, Function<Object, Boolean> evaluateLambda) {
+			for (var element : receiver) {
+				if (!evaluateLambda.apply(element)) {
+					return false;
+				}
+			}
+			return true;
 		}
 	}
 

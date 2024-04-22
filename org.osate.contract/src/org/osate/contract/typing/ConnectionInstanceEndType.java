@@ -6,6 +6,8 @@ import java.util.Map;
 import org.eclipse.xtext.EcoreUtil2;
 import org.osate.aadl2.instance.ComponentInstance;
 import org.osate.aadl2.instance.ConnectionInstanceEnd;
+import org.osate.aadl2.instance.FeatureCategory;
+import org.osate.aadl2.instance.FeatureInstance;
 
 public final class ConnectionInstanceEndType implements Type {
 	public static final ConnectionInstanceEndType INSTANCE = new ConnectionInstanceEndType();
@@ -15,6 +17,7 @@ public final class ConnectionInstanceEndType implements Type {
 		MEMBERS = new LinkedHashMap<>();
 		MEMBERS.put("name", new NameMember());
 		MEMBERS.put("parent", new ParentMember());
+		MEMBERS.put("isDataPort", new IsDataPortMember());
 	}
 
 	private ConnectionInstanceEndType() {
@@ -56,6 +59,18 @@ public final class ConnectionInstanceEndType implements Type {
 		@Override
 		public ComponentInstance evaluate(ConnectionInstanceEnd receiver) {
 			return EcoreUtil2.getContainerOfType(receiver.eContainer(), ComponentInstance.class);
+		}
+	}
+
+	private static class IsDataPortMember implements SimpleMember<ConnectionInstanceEnd, Boolean> {
+		@Override
+		public Type getReturnType() {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(ConnectionInstanceEnd receiver) {
+			return receiver instanceof FeatureInstance feature && feature.getCategory() == FeatureCategory.DATA_PORT;
 		}
 	}
 }

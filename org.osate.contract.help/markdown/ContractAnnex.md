@@ -475,6 +475,7 @@ following members:
 
 * `name`: Returns the name of the feature or component as a `String`.
 * `parent`: Returns the container of the connection end as a `ComponentInstance`.
+* `isDataPort`: Returns a `Boolean` indicating if the connection end is a data port.
 
 #### DoubleRange
 
@@ -605,6 +606,11 @@ elements of the list. A query or parameter with the type `List` will have its ge
   expression `components.mapPresent { c -> c#Queue_Size }` returns a `List<Long>`.
 * `contains`: Returns a `Boolean` indicating if the list contains a specified element. The element is passed as a
   parameter to `contains`.
+* `allMatch`: Returns a `Boolean` indicating if every element of the list matches a predicate which is passed as a
+  lambda to `allMatch`. Each element of the list is passed to the lambda and the lambda must return a `Boolean`
+  indicating if the element passes the predicate. If every element of the list passes the predicate, then true is
+  returned. If one or more elements fail the predicate, then false is returned. If the list is empty, then true is
+  returned.
 
 The following members only apply to lists that have an optional element type such as `List<ComponentInstance?>` or
 `List<String?>`:

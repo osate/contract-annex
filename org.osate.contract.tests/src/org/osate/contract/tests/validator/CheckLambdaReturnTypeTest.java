@@ -127,4 +127,22 @@ public class CheckLambdaReturnTypeTest {
 					issue.getUriToProblem());
 		});
 	}
+
+	@Test
+	public void testAllMatchNotReturningBoolean() {
+		var pkg = testHelper.parseFile(PATH + "allMatch_not_returning_boolean.aadl");
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var contract = (Contract) contractLibrary.getContractElements().get(0);
+		var issues = validationHelper.validate(pkg);
+		assertEquals(1, issues.size());
+		with(issues.get(0), issue -> {
+			assertEquals(Severity.ERROR, issue.getSeverity());
+			assertEquals("Expected Boolean; found String", issue.getMessage());
+			assertEquals(
+					EcoreUtil.getURI(
+							((MemberCall) contract.getQueries().get(1).getValue()).getLambda().getReturnValue()),
+					issue.getUriToProblem());
+		});
+	}
 }
