@@ -1,5 +1,7 @@
 package org.osate.contract.uriHandler;
 
+import java.util.Map;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -17,8 +19,9 @@ public class GSNURIMarkerCommandHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		var<String, String> set = event.getParameters();
-		String analysisName = (String) set.get("org.osate.contract.uriHandler.GSNURIMarker.analysisName");
+		@SuppressWarnings("unchecked")
+		Map<String, String> set = event.getParameters();
+		String analysisName = set.get("org.osate.contract.uriHandler.GSNURIMarker.analysisName");
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 		IWorkbenchPage page = window.getActivePage();
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
