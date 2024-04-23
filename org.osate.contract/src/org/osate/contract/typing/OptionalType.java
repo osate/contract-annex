@@ -40,6 +40,7 @@ public final class OptionalType implements Type {
 
 		members = new LinkedHashMap<>();
 		members.put("isEmpty", new IsEmptyMember());
+		members.put("filter", new FilterMember());
 		members.put("filterType", new FilterTypeMember());
 		members.put("map", new MapMember());
 		members.put("flatMap", new FlatMapMember());
@@ -73,6 +74,33 @@ public final class OptionalType implements Type {
 		@Override
 		public Boolean evaluate(Optional<?> receiver) {
 			return receiver.isEmpty();
+		}
+	}
+
+	private class FilterMember implements MemberWithLambda<Optional<?>, Optional<?>, Boolean> {
+		@Override
+		public Type getLambdaParameterType() {
+			return elementType;
+		}
+
+		@Override
+		public void validateLambdaReturnType(Type lambdaReturnType, Consumer<String> errorReporter) {
+			if (lambdaReturnType != BooleanType.INSTANCE) {
+				errorReporter.accept("Expected " + BooleanType.INSTANCE + "; found " + lambdaReturnType);
+			}
+		}
+
+		@Override
+		public Type getReturnType(Type lambdaType) {
+			return OptionalType.this;
+		}
+
+		@Override
+		public Optional<?> evaluate(Optional<?> receiver, Function<Object, Boolean> evaluateLambda) {
+			if (receiver.isPresent() && evaluateLambda.apply(receiver.get())) {
+				return Optional.of(receiver.get());
+			}
+			return Optional.empty();
 		}
 	}
 

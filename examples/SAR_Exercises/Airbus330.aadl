@@ -1,0 +1,535 @@
+package Airbus330
+public
+	with ReplicationProperties;
+	
+	device LandingGearSensor
+		features
+			airlandMode:out data port;
+	end LandingGearSensor;
+	
+	device PedalsSensor
+		features
+			position: out data port;
+	end PedalsSensor;
+	
+	device RudderActuator
+		features
+			position: out data port;
+			positionRate: in data port;
+	end RudderActuator;
+	
+	thread ModePedalSampler
+		features
+			modeRegister: in data port;
+			pedalRegister: in data port;
+			modeSample: out data port;
+			pedalSample: out data port;
+		flows
+			modeFlowSource: flow source modeSample;
+			pedalFlowSource: flow source pedalSample;
+	end ModePedalSampler;
+	
+	thread actuator
+		features
+			positionSetpoint: in event data port;
+			positionRate: out data port;
+			position: in data port;
+		flows
+			positionFlowSink: flow sink positionSetpoint;
+	end actuator;
+	
+	thread validator
+		features
+			flightMode : in data port;
+			ownRudderPosition: in data port;
+			backupRudderPosition:in data port;
+			outRudderPosition: out data port;
+			failed: out data port;
+		flows
+			flightModeFlowPath: flow path flightMode->outRudderPosition;
+			rudderFlowPath: flow path ownRudderPosition->outRudderPosition;
+			backupFlowPath: flow path backupRudderPosition->outRudderPosition;
+			failedFlowPath: flow path backupRudderPosition->failed;
+	end validator;
+	
+	thread ComputeRudderActuation
+		features
+			pedalPosition: in data port;
+			rudderPosition: out data port;
+		flows
+			pedalFlowPath: flow path pedalPosition->rudderPosition;
+	end ComputeRudderActuation;
+	
+	process ValidatorProcess
+		features
+			ownRudderPosition: in data port;
+			backupRudderPosition: in data port;
+			outRudderPosition: out data port;
+			failed : out data port;
+			flightMode: in data port;
+		flows
+			rudderFlowPath : flow path ownRudderPosition->outRudderPosition;
+			backRudderFlowPath: flow path backupRudderPosition->outRudderPosition;
+			failedFlowPath: flow path backupRudderPosition->failed;
+	end ValidatorProcess;
+	
+	process implementation ValidatorProcess.impl
+		subcomponents 
+			validatorThread: thread Validator;
+		connections
+			c1: port ownRudderPosition->validatorThread.ownRudderPosition;
+			c2: port backupRudderPosition->validatorThread.backupRudderPosition;
+			c3: port validatorThread.outRudderPosition->outRudderPosition;
+			c5: port validatorThread.failed->failed;
+			c6: port flightMode->validatorThread.flightMode;
+		flows
+			rudderFlowPath: flow path ownRudderPosition->c1->validatorThread.rudderFlowPath->c3->outRudderPosition;
+			failedFlowPath: flow path backupRudderPosition->c2->validatorThread.failedFlowPath->c5->failed;
+			backRudderFlowPath: flow path backupRudderPosition->c2->validatorThread.backupFlowPath->c3->outRudderPosition;
+		properties
+			Timing => Delayed applies to c1;
+			Timing => Delayed applies to c2;
+			Timing => Delayed applies to c3;
+			Timing => Delayed applies to c5;
+			Timing => Delayed applies to c6;
+	end ValidatorProcess.impl;
+	
+	process SensorProcess
+		features
+			flightModeRegister: in data port;
+			pedalsPositionRegister: in data port;
+			flightMode: out data port;
+			pedalPosition: out data port;
+		flows
+			pedalFlowSource: flow source pedalPosition;
+			modeFlowSource: flow source flightMode;
+	end SensorProcess;
+	
+	process implementation SensorProcess.commonThread
+		subcomponents
+			samplerThread: thread ModePedalSampler;
+		connections
+			c1: port flightModeRegister->samplerThread.modeRegister;
+			c2: port pedalsPositionRegister->samplerThread.pedalRegister;
+			c3: port samplerThread.modeSample->flightMode;
+			c4: port samplerThread.pedalSample->pedalPosition;
+		flows
+			pedalFlowSource: flow source samplerThread.pedalFlowSource->c4->pedalPosition;
+			modeFlowSource: flow source samplerThread.modeFlowSource->c3->flightMode;
+		properties
+			Timing => Delayed applies to c1;
+			Timing => Delayed applies to c2;
+			Timing => Delayed applies to c3;
+			Timing => Delayed applies to c4;
+	end SensorProcess.commonThread;
+		
+	system CommonSensor
+		features
+			pedalPosition: out data port;
+			flightMode: out data port;
+		flows
+			pedalFlowSource: flow source pedalPosition;
+			modeFlowSource: flow source flightMode;
+	end CommonSensor;
+	
+	system implementation CommonSensor.commonThread
+		subcomponents
+			landingGear: device LandingGearSensor;
+			pedals: device PedalsSensor;
+			proc: processor;
+			sensingProc: process SensorProcess.commonThread;
+		connections
+			c1: port landingGear.airlandMode->sensingProc.flightModeRegister;
+			c2: port pedals.position->sensingProc.pedalsPositionRegister;
+			c3: port sensingProc.flightMode->flightMode;
+			c4: port sensingProc.pedalPosition->pedalPosition;
+		flows
+			pedalFlowSource: flow source sensingProc.pedalFlowSource->c4->pedalPosition;
+			modeFlowSource: flow source sensingProc.modeFlowSource->c3->flightMode;
+		properties
+			Timing => Delayed applies to c1;
+			Timing => Delayed applies to c2;
+			Timing => Delayed applies to c3;
+			Timing => Delayed applies to c4;
+	end CommonSensor.commonThread;
+	
+	process SurfaceActuatingProcess
+		features
+			surfacePositionSetpoint: in data port;
+			surfacePosition: in data port;
+			surfacePositionRate: out data port;
+		flows
+			positionFlowSink: flow sink surfacePositionSetpoint;
+	end SurfaceActuatingProcess;
+	
+	process implementation SurfaceActuatingProcess.impl
+		subcomponents
+			actuatingThread: thread actuator;
+		connections
+			c1: port surfacePositionSetpoint->actuatingThread.positionSetpoint;
+			c2: port surfacePosition->actuatingThread.position;
+			c3: port actuatingThread.positionRate->surfacePositionRate;
+		flows
+			positionFlowSink: flow sink surfacePositionSetpoint->c1->actuatingThread.positionFlowSink;
+		properties
+			Timing => Delayed applies to c1;
+			Timing => Delayed applies to c2;
+			Timing => Delayed applies to c3;
+	end SurfaceActuatingProcess.impl;
+	
+	system FlightSurfaceActuator
+		features
+			rudderPosition: in data port;
+		flows
+			positionFlowSink: flow sink rudderPosition;
+	end FlightSurfaceActuator;
+	
+	system implementation FlightSurfaceActuator.impl
+		subcomponents
+			rudderActuator: device RudderActuator;
+			actuatingProc: process SurfaceActuatingProcess.impl;
+			proc: processor;
+		connections
+			c1: port rudderPosition->actuatingProc.surfacePositionSetpoint;
+			c2: port actuatingProc.surfacePositionRate->rudderActuator.positionRate;
+			c3: port rudderActuator.position->actuatingProc.surfacePosition;
+		flows
+			positionFlowSink: flow sink rudderPosition->c1->actuatingProc.positionFlowSink;
+		properties
+			Timing => Delayed applies to c1;
+			Timing => Delayed applies to c2;
+			Timing => Delayed applies to c3;
+	end FlightSurfaceActuator.impl;
+	
+	process ComputeRudderActuationProcess
+		features
+			pedalPosition: in data port;
+			rudderPosition: out data port;
+		flows
+			pedalFlowPath: flow path pedalPosition->rudderPosition;
+	end ComputeRudderActuationProcess;
+	
+	process implementation ComputeRudderActuationProcess.impl
+		subcomponents
+			compThread: thread ComputeRudderActuation;
+		connections
+			c1: port pedalPosition->compThread.pedalPosition;
+			c2: port compThread.rudderPosition->rudderPosition;
+		flows
+			pedalFlowPath: flow path pedalPosition->c1->compThread.pedalFlowPath->c2->rudderPosition;
+		properties
+			Timing => Delayed applies to c1;
+			Timing => Delayed applies to c2;
+	end ComputeRudderActuationProcess.impl;
+	
+	system ComputeActuationNoSensor
+		features 
+			pedalPosition: in data port;
+			failed: out data port;
+			rudderPosition: out data port;
+			backRudderPosition: in data port;
+			flightMode: in data port;	
+		flows
+			pedalFlowPath: flow path pedalPosition->rudderPosition;
+			backPedalFlowPath: flow path backRudderPosition->rudderPosition;
+			backPedalFailedFlowPath: flow path backRudderPosition->failed;
+	end ComputeActuationNoSensor;
+	
+	system implementation ComputeActuationNoSensor.impl
+		subcomponents
+			compProc: process ComputeRudderActuationProcess.impl;
+			validatorProc: process ValidatorProcess.impl;
+			proc: processor;
+		connections
+			c1: port pedalPosition->compProc.pedalPosition;
+			c2: port compProc.rudderPosition->validatorProc.ownRudderPosition;
+			c3: port backRudderPosition->validatorProc.backupRudderPosition;
+			c5: port validatorProc.failed->failed;
+			c6: port validatorProc.outRudderPosition->rudderPosition;
+		flows
+			pedalFlowPath: flow path pedalPosition->c1->compProc.pedalFlowPath->c2->validatorProc.rudderFlowPath->c6->rudderPosition;
+			backPedalFlowPath: flow path backRudderPosition->c3->validatorProc.backRudderFlowPath->c6->rudderPosition;
+			backPedalFailedFlowPath: flow path backRudderPosition->c3->validatorProc.failedFlowPath->c5->failed;
+		properties
+			Timing => Delayed applies to c1;
+			Timing => Delayed applies to c2;
+			Timing => Delayed applies to c3;
+			Timing => Delayed applies to c5;
+			Timing => Delayed applies to c6;
+	end ComputeActuationNoSensor.impl;
+
+	system CrossCheckingPairNoSensor
+		features
+			flightModeCom: in data port;
+			pedalPositionCom: in data port;
+			flightModeMon: in data port;
+			pedalPositionMon: in data port;
+			failed: out data port;
+			rudderPosition: out data port;
+		flows
+			rudderFlowPathCom: flow path pedalPositionCom->rudderPosition;
+			failedFlowPath: flow path pedalPositionMon->failed;
+			rudderFlowPathMon: flow path pedalPositionMon->rudderPosition;
+	end CrossCheckingPairNoSensor;
+	
+	system implementation CrossCheckingPairNoSensor.impl
+		subcomponents
+			com: system ComputeActuationNoSensor.impl;
+			mon: system ComputeActuationNoSensor.impl;
+		connections
+			c1: port flightModeCom -> com.flightMode;
+			c2: port pedalPositionCom->com.pedalPosition;
+			c3: port flightModeMon->mon.flightMode;
+			c4: port pedalPositionMon->mon.pedalPosition;
+			c5: port mon.rudderPosition->com.backRudderPosition;
+			c7: port com.failed->failed;
+			c8: port com.rudderPosition->rudderPosition;
+		flows
+			rudderFlowPathCom: flow path pedalPositionCom->c2->com.pedalFlowPath->c8->rudderPosition;
+			rudderFlowPathMon: flow path pedalPositionMon->c4->mon.pedalFlowPath->c5->com.backPedalFlowPath->c8->rudderPosition;
+			failedFlowPath: flow path pedalPositionMon->c4->mon.pedalFlowPath->c5->com.backPedalFailedFlowPath->c7->failed;
+		properties
+			Timing => Delayed applies to c1;
+			Timing => Delayed applies to c2;
+			Timing => Delayed applies to c3;
+			Timing => Delayed applies to c4;
+			Timing => Delayed applies to c5;
+			Timing => Delayed applies to c7;
+			Timing => Delayed applies to c8;
+	end CrossCheckingPairNoSensor.impl;
+	
+	system FlightSystem
+		features
+			failed: out data port;
+		flows
+			failedFlowSource: flow source failed;
+	end FlightSystem;			
+
+	system implementation FlightSystem.oneSensor
+		subcomponents
+			sensor1: system CommonSensor.commonThread;
+			rep1: system CrossCheckingPairNoSensor.impl;
+			act1: system FlightSurfaceActuator.impl;			
+		connections
+			c1: port sensor1.flightMode->rep1.flightModeCom;
+			c2: port sensor1.flightMode->rep1.flightModeMon;
+			c3: port sensor1.pedalPosition->rep1.pedalPositionCom;
+			c4: port sensor1.pedalPosition->rep1.pedalPositionMon;
+			c5: port rep1.failed->failed;
+			c8: port rep1.rudderPosition->act1.rudderPosition;
+		flows
+			pedalToActuationComRep1: end to end flow sensor1.pedalFlowSource->c3->rep1.rudderFlowPathCom->c8->act1.positionFlowSink;
+			pedalToActuationMonRep1: end to end flow sensor1.pedalFlowSource->c4->rep1.rudderFlowPathMon->c8->act1.positionFlowSink;
+			
+			-- FailedOver flows
+			failedFlowSource: flow source sensor1.pedalFlowSource->c4->rep1.failedFlowPath->c5->failed;
+		properties
+			Timing => Delayed applies to c1;
+			Timing => Delayed applies to c2;
+			Timing => Delayed applies to c3;
+			Timing => Delayed applies to c4;
+			Timing => Delayed applies to c5;
+			Timing => Delayed applies to c8;
+			
+			Dispatch_Protocol => Periodic applies to sensor1.sensingProc.samplerThread;
+			Period => 100 ms applies to sensor1.sensingProc.samplerThread;
+			Priority => 1 applies to sensor1.sensingProc.samplerThread;
+			Deadline => 100 ms applies to sensor1.sensingProc.samplerThread;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to sensor1.sensingProc.samplerThread;
+			Actual_Processor_Binding => (reference (sensor1.proc)) applies to sensor1.sensingProc.samplerThread;			
+
+			Dispatch_Protocol => Periodic applies to act1.actuatingProc.actuatingThread;
+			Period => 100 ms applies to act1.actuatingProc.actuatingThread;
+			Priority => 1 applies to act1.actuatingProc.actuatingThread;
+			Deadline => 100 ms applies to act1.actuatingProc.actuatingThread;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to act1.actuatingProc.actuatingThread;
+			Actual_Processor_Binding => (reference (act1.proc)) applies to act1.actuatingProc.actuatingThread;			
+
+			Dispatch_Protocol => Periodic applies to rep1.com.compProc.compThread;
+			Dispatch_Protocol => Periodic applies to rep1.com.validatorProc.validatorThread;
+			Dispatch_Protocol => Periodic applies to rep1.mon.compProc.compThread;
+			Dispatch_Protocol => Periodic applies to rep1.mon.validatorProc.validatorThread;
+
+			Period => 100 ms applies to rep1.com.compProc.compThread;
+			Period => 100 ms applies to rep1.com.validatorProc.validatorThread;
+			Period => 100 ms applies to rep1.mon.compProc.compThread;
+			Period => 100 ms applies to rep1.mon.validatorProc.validatorThread;
+
+			Priority => 1 applies to rep1.com.compProc.compThread;
+			Priority => 1 applies to rep1.com.validatorProc.validatorThread;
+			Priority => 1 applies to rep1.mon.compProc.compThread;
+			Priority => 1 applies to rep1.mon.validatorProc.validatorThread;
+
+			Deadline => 100 ms applies to rep1.com.compProc.compThread;
+			Deadline => 100 ms applies to rep1.com.validatorProc.validatorThread;
+			Deadline => 100 ms applies to rep1.mon.compProc.compThread;
+			Deadline => 100 ms applies to rep1.mon.validatorProc.validatorThread;
+
+			Compute_Execution_Time => 10 ms .. 10 ms applies to rep1.com.compProc.compThread;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to rep1.com.validatorProc.validatorThread;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to rep1.mon.compProc.compThread;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to rep1.mon.validatorProc.validatorThread;
+																	
+			Actual_Processor_Binding => (reference (rep1.com.proc)) applies to rep1.com.compProc.compThread;
+			Actual_Processor_Binding => (reference (rep1.com.proc)) applies to rep1.com.validatorProc.validatorThread;
+			Actual_Processor_Binding => (reference (rep1.mon.proc)) applies to rep1.mon.compProc.compThread;
+			Actual_Processor_Binding => (reference (rep1.mon.proc)) applies to rep1.mon.validatorProc.validatorThread;
+
+			-- ****************
+			-- * Normal Flows *
+			-- ****************
+			Latency =>100 ms..400 ms applies to pedalToActuationComRep1;
+			Latency =>100 ms..500 ms applies to pedalToActuationMonRep1;
+
+			-- *******************
+			-- * Fail over flows *
+			-- *******************
+			Latency =>100 ms..300 ms applies to failedFlowSource;
+			
+			-- *************************
+			-- * Hierarchical subflows *
+			-- *************************
+			Latency => 10 ms .. 100 ms applies to sensor1.sensingProc.samplerThread.pedalFlowSource;
+			Latency => 10 ms .. 100 ms applies to sensor1.sensingProc.pedalFlowSource;
+			Latency => 10 ms .. 100 ms applies to sensor1.pedalFlowSource;
+			Latency => 10 ms .. 100 ms applies to sensor1.sensingProc.samplerThread.modeFlowSource;
+			Latency => 10 ms .. 100 ms applies to sensor1.sensingProc.modeFlowSource;
+			Latency => 10 ms .. 100 ms applies to sensor1.modeFlowSource;
+			
+			Latency => 10 ms .. 100 ms applies to rep1.rudderFlowPathCom;
+			Latency => 10 ms .. 100 ms applies to rep1.rudderFlowPathMon;
+			Latency => 10 ms .. 100 ms applies to rep1.failedFlowPath;
+
+			ReplicationProperties::ValueReplicas => (reference (pedalToActuationComRep1)) applies to pedalToActuationMonRep1;
+	
+			ReplicationProperties::ReplicaStartJitterTolerance => 0 ms applies to pedalToActuationComRep1;
+			ReplicationProperties::ReplicaStartJitterTolerance => 0 ms applies to pedalToActuationMonRep1;
+			ReplicationProperties::ReplicaStartJitterTolerance => 100 ms applies to failedFlowSource;
+			
+		annex contract {**
+			verify VerificationPlans::verifySynchronizationCommon;
+		**};			
+	end FlightSystem.oneSensor;
+
+	system implementation FlightSystem.twoSensors
+		subcomponents
+			sensorCom: system CommonSensor.commonThread;
+			sensorMon: system CommonSensor.commonThread;
+			rep1: system CrossCheckingPairNoSensor.impl;
+			act1: system FlightSurfaceActuator.impl;			
+		connections
+			c1: port sensorCom.flightMode->rep1.flightModeCom;
+			c2: port sensorMon.flightMode->rep1.flightModeMon;
+			c3: port sensorCom.pedalPosition->rep1.pedalPositionCom;
+			c4: port sensorMon.pedalPosition->rep1.pedalPositionMon;
+			c5: port rep1.failed->failed;
+			c8: port rep1.rudderPosition->act1.rudderPosition;
+		flows
+			pedalToActuationComRep1: end to end flow sensorCom.pedalFlowSource->c3->rep1.rudderFlowPathCom->c8->act1.positionFlowSink;
+			pedalToActuationMonRep1: end to end flow sensorMon.pedalFlowSource->c4->rep1.rudderFlowPathMon->c8->act1.positionFlowSink;
+			
+			-- FailedOver flows
+			failedFlowSource: flow source sensorMon.pedalFlowSource->c4->rep1.failedFlowPath->c5->failed;
+		properties
+			Timing => Delayed applies to c1;
+			Timing => Delayed applies to c2;
+			Timing => Delayed applies to c3;
+			Timing => Delayed applies to c4;
+			Timing => Delayed applies to c5;
+			Timing => Delayed applies to c8;
+			
+			Dispatch_Protocol => Periodic applies to sensorCom.sensingProc.samplerThread;
+			Period => 100 ms applies to sensorCom.sensingProc.samplerThread;
+			Priority => 1 applies to sensorCom.sensingProc.samplerThread;
+			Deadline => 100 ms applies to sensorCom.sensingProc.samplerThread;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to sensorCom.sensingProc.samplerThread;
+			Actual_Processor_Binding => (reference (sensorCom.proc)) applies to sensorCom.sensingProc.samplerThread;			
+			
+			Dispatch_Protocol => Periodic applies to sensorMon.sensingProc.samplerThread;
+			Period => 100 ms applies to sensorMon.sensingProc.samplerThread;
+			Priority => 1 applies to sensorMon.sensingProc.samplerThread;
+			Deadline => 100 ms applies to sensorMon.sensingProc.samplerThread;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to sensorMon.sensingProc.samplerThread;
+			Actual_Processor_Binding => (reference (sensorMon.proc)) applies to sensorMon.sensingProc.samplerThread;			
+
+			Dispatch_Protocol => Periodic applies to act1.actuatingProc.actuatingThread;
+			Period => 100 ms applies to act1.actuatingProc.actuatingThread;
+			Priority => 1 applies to act1.actuatingProc.actuatingThread;
+			Deadline => 100 ms applies to act1.actuatingProc.actuatingThread;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to act1.actuatingProc.actuatingThread;
+			Actual_Processor_Binding => (reference (act1.proc)) applies to act1.actuatingProc.actuatingThread;			
+
+			Dispatch_Protocol => Periodic applies to rep1.com.compProc.compThread;
+			Dispatch_Protocol => Periodic applies to rep1.com.validatorProc.validatorThread;
+			Dispatch_Protocol => Periodic applies to rep1.mon.compProc.compThread;
+			Dispatch_Protocol => Periodic applies to rep1.mon.validatorProc.validatorThread;
+
+			Period => 100 ms applies to rep1.com.compProc.compThread;
+			Period => 100 ms applies to rep1.com.validatorProc.validatorThread;
+			Period => 100 ms applies to rep1.mon.compProc.compThread;
+			Period => 100 ms applies to rep1.mon.validatorProc.validatorThread;
+
+			Priority => 1 applies to rep1.com.compProc.compThread;
+			Priority => 1 applies to rep1.com.validatorProc.validatorThread;
+			Priority => 1 applies to rep1.mon.compProc.compThread;
+			Priority => 1 applies to rep1.mon.validatorProc.validatorThread;
+
+			Deadline => 100 ms applies to rep1.com.compProc.compThread;
+			Deadline => 100 ms applies to rep1.com.validatorProc.validatorThread;
+			Deadline => 100 ms applies to rep1.mon.compProc.compThread;
+			Deadline => 100 ms applies to rep1.mon.validatorProc.validatorThread;
+
+			Compute_Execution_Time => 10 ms .. 10 ms applies to rep1.com.compProc.compThread;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to rep1.com.validatorProc.validatorThread;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to rep1.mon.compProc.compThread;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to rep1.mon.validatorProc.validatorThread;
+																	
+			Actual_Processor_Binding => (reference (rep1.com.proc)) applies to rep1.com.compProc.compThread;
+			Actual_Processor_Binding => (reference (rep1.com.proc)) applies to rep1.com.validatorProc.validatorThread;
+			Actual_Processor_Binding => (reference (rep1.mon.proc)) applies to rep1.mon.compProc.compThread;
+			Actual_Processor_Binding => (reference (rep1.mon.proc)) applies to rep1.mon.validatorProc.validatorThread;
+
+			-- ****************
+			-- * Normal Flows *
+			-- ****************
+			Latency =>100 ms..400 ms applies to pedalToActuationComRep1;
+			Latency =>100 ms..500 ms applies to pedalToActuationMonRep1;
+
+			-- *******************
+			-- * Fail over flows *
+			-- *******************
+			Latency =>100 ms..300 ms applies to failedFlowSource;
+			
+			-- *************************
+			-- * Hierarchical subflows *
+			-- *************************
+			Latency => 10 ms .. 100 ms applies to sensorCom.sensingProc.samplerThread.pedalFlowSource;
+			Latency => 10 ms .. 100 ms applies to sensorCom.sensingProc.pedalFlowSource;
+			Latency => 10 ms .. 100 ms applies to sensorCom.pedalFlowSource;
+			Latency => 10 ms .. 100 ms applies to sensorCom.sensingProc.samplerThread.modeFlowSource;
+			Latency => 10 ms .. 100 ms applies to sensorCom.sensingProc.modeFlowSource;
+			Latency => 10 ms .. 100 ms applies to sensorCom.modeFlowSource;
+			
+			Latency => 10 ms .. 100 ms applies to sensorMon.sensingProc.samplerThread.pedalFlowSource;
+			Latency => 10 ms .. 100 ms applies to sensorMon.sensingProc.pedalFlowSource;
+			Latency => 10 ms .. 100 ms applies to sensorMon.pedalFlowSource;
+			Latency => 10 ms .. 100 ms applies to sensorMon.sensingProc.samplerThread.modeFlowSource;
+			Latency => 10 ms .. 100 ms applies to sensorMon.sensingProc.modeFlowSource;
+			Latency => 10 ms .. 100 ms applies to sensorMon.modeFlowSource;
+			
+			Latency => 10 ms .. 100 ms applies to rep1.rudderFlowPathCom;
+			Latency => 10 ms .. 100 ms applies to rep1.rudderFlowPathMon;
+			Latency => 10 ms .. 100 ms applies to rep1.failedFlowPath;
+
+			ReplicationProperties::ValueReplicas => (reference (pedalToActuationComRep1)) applies to pedalToActuationMonRep1;
+	
+			ReplicationProperties::ReplicaStartJitterTolerance => 0 ms applies to pedalToActuationComRep1;
+			ReplicationProperties::ReplicaStartJitterTolerance => 0 ms applies to pedalToActuationMonRep1;
+			ReplicationProperties::ReplicaStartJitterTolerance => 100 ms applies to failedFlowSource;
+			
+		annex contract {**
+			verify VerificationPlans::verifySynchronizationSeparate;
+		**};
+			
+	end FlightSystem.twoSensors;
+end Airbus330;

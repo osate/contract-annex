@@ -55,6 +55,7 @@ import org.osate.contract.contract.TupleName
 import org.osate.contract.contract.TupleParameter
 import org.osate.contract.tuples.Tuple
 import org.osate.pluginsupport.properties.CodeGenUtil
+import org.osate.aadl2.EnumerationLiteral
 
 system org.osate.contract.typing.ContractInterpreter
 
@@ -205,9 +206,10 @@ from {
 			result = tupleResult.elements.get(index)
 		}
 		/*
-		 * Special handling for LongWithUnits.scaledTo() and Record.get(). 
+		 * Special handling for LongWithUnits.scaledTo() and Record.get(), etc. 
 		 */
 		UnitLiteral,
+		EnumerationLiteral,
 		BasicProperty: result = named
 	}
 }

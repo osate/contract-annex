@@ -1,0 +1,305 @@
+package SimpleTNSSchedulingExample
+public
+	with TSNProperties;
+
+	data SampleData
+		properties
+			Data_Size => 64 bytes;
+	end SampleData;
+
+	processor myprocessor
+		features
+			b1: requires bus access;
+			b2: requires bus access;
+	end myprocessor;
+
+	processor myprocessor1
+		features
+			b1: requires bus access;
+			b2: requires bus access;
+			b3: requires bus access;
+	end myprocessor1;
+
+	system hardware
+	end hardware;
+
+	system implementation hardware.i
+		subcomponents
+			n1: processor myprocessor;
+			n2: processor myprocessor;
+			n3: processor myprocessor;
+			n4: processor myprocessor1;
+			n5: processor myprocessor;
+			n6: processor myprocessor;
+			l1: bus;
+			l2: bus;
+			l3: bus;
+			l4: bus;
+			l5: bus;
+		connections
+			b1: bus access n1.b1 <-> l1;
+			b2: bus access n2.b1 <-> l1;
+			b3: bus access n2.b2 <-> l2;
+			b4: bus access n3.b1 <-> l2;
+			b5: bus access n3.b2 <-> l3;
+			b6: bus access n4.b1 <-> l3;
+			b7: bus access n4.b2 <-> l4;
+			b8: bus access n5.b1 <-> l4;
+			b9: bus access n5.b1 <-> l5;
+			b10: bus access n6.b1 <-> l5;
+		properties
+--			TSNProperties::BitsPerSecond => 1000000000 applies to l1; -- 1 Gbps
+--			TSNProperties::BitsPerSecond => 100000000 applies to l2;  -- 0.1 Gbps
+--			TSNProperties::BitsPerSecond => 1000000000 applies to l3;
+--			TSNProperties::BitsPerSecond => 1000000000 applies to l4;
+--			TSNProperties::BitsPerSecond => 1000000000 applies to l5;
+			Transmission_Time => [Fixed => 0 us .. 0 us; PerByte => 8 ns .. 8 ns; ] applies to l1; -- 1 Gbps
+			Transmission_Time => [Fixed => 0 us .. 0 us; PerByte => 80 ns .. 80 ns; ] applies to l2; -- 0.1 Gbps
+			Transmission_Time => [Fixed => 0 us .. 0 us; PerByte => 8 ns .. 8 ns; ] applies to l3;-- 1 Gbps
+			Transmission_Time => [Fixed => 0 us .. 0 us; PerByte => 8 ns .. 8 ns; ] applies to l4;-- 1 Gbps
+			Transmission_Time => [Fixed => 0 us .. 0 us; PerByte => 8 ns .. 8 ns; ] applies to l5;-- 1 Gbps
+	end hardware.i;
+
+	system software
+	end software;
+
+	process sender
+		features
+			out1: out data port SampleData;
+		flows
+			s1: flow source out1;
+	end sender;
+
+	thread senderthread
+		features
+			out1: out data port SampleData;
+		flows
+			s1: flow source out1;
+	end senderthread;
+
+	process implementation sender.i
+		subcomponents
+			senderThread: thread senderthread;
+		connections
+			c1: port senderThread.out1 -> out1;
+		flows
+			s1: flow source senderThread.s1 -> c1 -> out1;
+	end sender.i;
+
+	process receiver
+		features
+			in1: in data port SampleData;
+		flows
+			k1: flow sink in1;
+	end receiver;
+
+	thread receiverthread
+		features
+			in1: in data port SampleData;
+		flows
+			k1: flow sink in1;
+	end receiverthread;
+
+	process implementation receiver.i
+		subcomponents
+			receiverThread: thread receiverthread;
+		connections
+			c1: port in1 -> receiverThread.in1;
+		flows
+			k1: flow sink in1 -> c1 -> receiverThread.k1;
+	end receiver.i;
+
+	process computing
+		features
+			in1: in data port SampleData;
+			out1: out data port SampleData;
+		flows
+			f1: flow path in1 -> out1;
+	end computing;
+
+	thread computingthread
+		features
+			in1: in data port SampleData;
+			out1: out data port SampleData;
+		flows
+			f1: flow path in1 -> out1;
+	end computingthread;
+
+	process implementation computing.i
+		subcomponents
+			computingThread: thread computingthread;
+		connections
+			c1: port in1 -> computingThread.in1;
+			c2: port computingThread.out1 -> out1;
+		flows
+			f1: flow path in1 -> c1 -> computingThread.f1 -> c2 -> out1;
+	end computing.i;
+
+	process computing1
+		features
+			in1: in data port SampleData;
+			out1: out data port SampleData;
+			out2: out data port SampleData;
+		flows
+			f1: flow path in1 -> out1;
+			f2: flow path in1 -> out2;
+	end computing1;
+
+	thread computingthread1
+		features
+			in1: in data port SampleData;
+			out1: out data port SampleData;
+			out2: out data port SampleData;
+		flows
+			f1: flow path in1 -> out1;
+			f2: flow path in1 -> out2;
+	end computingthread1;
+
+	process implementation computing1.i
+		subcomponents
+			computing1Thread: thread computingthread1;
+		connections
+			c1: port in1 -> computing1Thread.in1;
+			c2: port computing1Thread.out1 -> out1;
+			c3: port computing1Thread.out2 -> out2;
+		flows
+			f1: flow path in1 -> c1 -> computing1Thread.f1 -> c2 -> out1;
+			f2: flow path in1 -> c1 -> computing1Thread.f2 -> c3 -> out2;
+	end computing1.i;
+
+	system implementation software.i
+		subcomponents
+			-- Message Stream 1
+			msg1n1: process sender.i;
+			msg1n2: process computing.i;
+			msg1n3: process computing.i;
+			msg1n4: process computing.i;
+			msg1n5: process receiver.i;
+			-- Message Stream 2
+			msg2n1: process sender.i;
+			msg2n2: process computing.i;
+			msg2n3: process computing.i;
+			msg2n4: process computing.i;
+			msg2n5: process receiver.i;
+			-- Message Stream 3
+			msg3n1: process sender.i;
+			msg3n2: process computing.i;
+			msg3n3: process computing.i;
+			msg3n4: process computing.i;
+			msg3n5: process receiver.i;
+		connections
+			-- Message Stream 1
+			c1: port msg1n1.out1 -> msg1n2.in1;
+			c2: port msg1n2.out1 -> msg1n3.in1;
+			c3: port msg1n3.out1 -> msg1n4.in1;
+			c4: port msg1n4.out1 -> msg1n5.in1;
+			-- Message Stream 2
+			c5: port msg2n1.out1 -> msg2n2.in1;
+			c6: port msg2n2.out1 -> msg2n3.in1;
+			c7: port msg2n3.out1 -> msg2n4.in1;
+			c8: port msg2n4.out1 -> msg2n5.in1;
+			-- Message Stream 3
+			c9: port msg3n1.out1 -> msg3n2.in1;
+			c10: port msg3n2.out1 -> msg3n3.in1;
+			c11: port msg3n3.out1 -> msg3n4.in1;
+			c12: port msg3n4.out1 -> msg3n5.in1;
+		flows
+			-- Message Stream 1
+			msg1e1: end to end flow msg1n1.s1 -> c1 -> msg1n2.f1 -> c2 -> msg1n3.f1 -> c3 -> msg1n4.f1 -> c4 -> msg1n5.k1;
+			-- Message Stream 2
+			msg1e2: end to end flow msg2n1.s1 -> c5 -> msg2n2.f1 -> c6 -> msg2n3.f1 -> c7 -> msg2n4.f1 -> c8 -> msg2n5.k1;
+			-- Message Stream 3
+			msg1e3: end to end flow msg3n1.s1 -> c9 -> msg3n2.f1 -> c10 -> msg3n3.f1 -> c11 -> msg3n4.f1 -> c12 -> msg3n5.k1;
+	end software.i;
+
+	system mysystem
+	end mysystem;
+
+	system implementation mysystem.i
+		subcomponents
+			sw: system software.i;
+			hw: system hardware.i;
+		properties
+			-- Bindings for Message Stream 1
+			Actual_Processor_Binding => (reference (hw.n1)) applies to sw.msg1n1;
+			Actual_Processor_Binding => (reference (hw.n2)) applies to sw.msg1n2;
+			Actual_Processor_Binding => (reference (hw.n3)) applies to sw.msg1n3;
+			Actual_Processor_Binding => (reference (hw.n4)) applies to sw.msg1n4;
+			Actual_Processor_Binding => (reference (hw.n5)) applies to sw.msg1n5;
+			Actual_Connection_Binding => (reference (hw.l1)) applies to sw.c1;
+			Actual_Connection_Binding => (reference (hw.l2)) applies to sw.c2;
+			Actual_Connection_Binding => (reference (hw.l3)) applies to sw.c3;
+			Actual_Connection_Binding => (reference (hw.l4)) applies to sw.c4;
+			-- Bindings for Message Stream 2
+			Actual_Processor_Binding => (reference (hw.n1)) applies to sw.msg2n1;
+			Actual_Processor_Binding => (reference (hw.n2)) applies to sw.msg2n2;
+			Actual_Processor_Binding => (reference (hw.n3)) applies to sw.msg2n3;
+			Actual_Processor_Binding => (reference (hw.n4)) applies to sw.msg2n4;
+			Actual_Processor_Binding => (reference (hw.n6)) applies to sw.msg2n5;
+			Actual_Connection_Binding => (reference (hw.l1)) applies to sw.c5;
+			Actual_Connection_Binding => (reference (hw.l2)) applies to sw.c6;
+			Actual_Connection_Binding => (reference (hw.l3)) applies to sw.c7;
+			Actual_Connection_Binding => (reference (hw.l5)) applies to sw.c8;
+			-- Bindings for Message Stream 3
+			Actual_Processor_Binding => (reference (hw.n1)) applies to sw.msg3n1;
+			Actual_Processor_Binding => (reference (hw.n2)) applies to sw.msg3n2;
+			Actual_Processor_Binding => (reference (hw.n3)) applies to sw.msg3n3;
+			Actual_Processor_Binding => (reference (hw.n4)) applies to sw.msg3n4;
+			Actual_Processor_Binding => (reference (hw.n6)) applies to sw.msg3n5;
+			Actual_Connection_Binding => (reference (hw.l1)) applies to sw.c9;
+			Actual_Connection_Binding => (reference (hw.l2)) applies to sw.c10;
+			Actual_Connection_Binding => (reference (hw.l3)) applies to sw.c11;
+			Actual_Connection_Binding => (reference (hw.l5)) applies to sw.c12;
+			--
+			-- Scheduling Parameters
+			--
+			-- Message Stream 1
+			Period => 200us applies to sw.msg1n1;
+			Deadline => 30us applies to sw.msg1n1;
+			Period => 200us applies to sw.msg1n2;
+			Deadline => 30us applies to sw.msg1n2;
+			Period => 200us applies to sw.msg1n3;
+			Deadline => 30us applies to sw.msg1n3;
+			Period => 200us applies to sw.msg1n4;
+			Deadline => 30us applies to sw.msg1n4;
+			Period => 200us applies to sw.msg1n5;
+			Deadline => 30us applies to sw.msg1n5;
+			Latency => 30us .. 30us applies to sw.c1;
+			Latency => 30us .. 30us applies to sw.c2;
+			Latency => 30us .. 30us applies to sw.c3;
+			Latency => 30us .. 30us applies to sw.c4;
+			-- Message Stream 2
+			Period => 300us applies to sw.msg2n1;
+			Deadline => 30us applies to sw.msg2n1;
+			Period => 300us applies to sw.msg2n2;
+			Deadline => 30us applies to sw.msg2n2;
+			Period => 300us applies to sw.msg2n3;
+			Deadline => 30us applies to sw.msg2n3;
+			Period => 300us applies to sw.msg2n4;
+			Deadline => 30us applies to sw.msg2n4;
+			Period => 300us applies to sw.msg2n5;
+			Deadline => 30us applies to sw.msg2n5;
+			Latency => 30us .. 30us applies to sw.c5;
+			Latency => 30us .. 30us applies to sw.c6;
+			Latency => 30us .. 30us applies to sw.c7;
+			Latency => 30us .. 30us applies to sw.c8;
+			-- Message Stream 2
+			Period => 500us applies to sw.msg3n1;
+			Deadline => 30us applies to sw.msg3n1;
+			Period => 500us applies to sw.msg3n2;
+			Deadline => 30us applies to sw.msg3n2;
+			Period => 500us applies to sw.msg3n3;
+			Deadline => 30us applies to sw.msg3n3;
+			Period => 500us applies to sw.msg3n4;
+			Deadline => 30us applies to sw.msg3n4;
+			Period => 500us applies to sw.msg3n5;
+			Deadline => 30us applies to sw.msg3n5;
+			Latency => 30us .. 30us applies to sw.c9;
+			Latency => 30us .. 30us applies to sw.c10;
+			Latency => 30us .. 30us applies to sw.c11;
+			Latency => 30us .. 30us applies to sw.c12;
+		annex contract {**
+				verify TSNSchedulingContract::verifyTSNSchedule;
+			**};
+	end mysystem.i;
+end SimpleTNSSchedulingExample;

@@ -1,0 +1,10 @@
+property set ReplicationProperties is
+	ReplicaThreadID : aadlinteger applies to (thread);
+	ReplicaThreadName : aadlstring applies to (thread);
+	ReplicaProcessorID : aadlinteger applies to (processor);
+	Replicating: list of reference (end to end flow) applies to (end to end flow);
+	ValueReplicas: list of reference (end to end flow) applies to (end to end flow);
+	ReplicaStartJitterTolerance: Time applies to (end to end flow, flow);
+	FailureProbability : aadlreal applies to (processor);
+	ReliabilityTarget : aadlreal applies to (system, end to end flow);
+end ReplicationProperties;

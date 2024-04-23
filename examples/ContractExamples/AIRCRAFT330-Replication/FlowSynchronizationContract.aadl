@@ -32,7 +32,72 @@ import math
 
 def addError(error,msg):
 	error[0]+="|"+msg
+
+#tasks =[ [T,D,C] ]
+def utilization(tasks):
+	u=0.0
+	for i in range(len(tasks)):
+		u += tasks[i][2]/tasks[i][0]
+	return u
+
+
+#tasks =[ [T,D,C] ]
+def allTasksDeadlineLargerThanPeriod(tasks):
+	for i in range(len(tasks)):
+		if tasks[i][0] >= tasks[i][1]:
+			return False
+	return True
+
+# Demand bound function sched test 
+# S.K.Baruah, A.K. Mok and L.E. Rossier, "Preemptively Scheduling Hard Real-Time Tasks on One Processor"
+# Proceedings of the 11th Real-Time Systems Symposium. 1990.
+#tasks =[ [T,D,C] ]
+def EdfDBFSchedulable(tasks):
+	u = utilization(tasks)
+	if u>1.0 :
+		return False
+	if allTasksDeadlineLargerThanPeriod(tasks):
+		return True
+	periods = [tasks[i][0] for i in range(len(tasks))]
+	deadlines = [tasks[i][1] for i in range(len(tasks))]
+	P = math.lcm(*periods)
+	D = max(deadlines)
+	M = P + D
+	if u == 1:
+		T=M
+	else:
+		T= min(M,math.ceil(u/(1-u)*max([periods[i]-deadlines[i] for i in range(len(periods))])))
+	H=0
+	for t in range(1,T):
+		for i in range(len(tasks)):
+			if t>= tasks[i][1] and (t % tasks[i][0]) == tasks[i][1]:
+				H += tasks[i][2]
+		if H>t:
+			return False
+	return True
 	
+def areAllProcessorsEdfScheduled(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	for p in range(len(boundThreads)):
+		print("Sched Protocol: ",boundThreads[p][3][0])
+		if boundThreads[p][3][0] != "EDF":
+			addError(error0,"{"+str(boundThreads[p][0])+"} processor: does not have an EDF scheduling protocol set")		
+			return False
+	return True
+	
+def isEdfDBFSchedulable(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	for p in range(len(boundThreads)):
+		#tasks =[ [T,D,C] ]
+		tasks=[]
+		for i in range(len(boundThreads[p][2])):
+			tasks.append([round(boundThreads[p][2][i][2]),round(boundThreads[p][2][i][5]),round(boundThreads[p][2][i][3])])
+		if not EdfDBFSchedulable(tasks):
+			addError(error0,"{"+str(boundThreads[p][0])+"} processor:"+boundThreads[p][1]+" has taskset that is not EDF schedulable")
+			return False
+	addError(info0,"{"+str(boundThreads[p][0])+"} processor:"+boundThreads[p][1]+" has taskset that is EDF schedulable")
+	return True
+
 def getResponseTimes(threads):
 	# threads is [(th, th.name, th.period, th.wcet, th.prio, th.deadline)]
 	# in increasing priority order
@@ -57,9 +122,10 @@ def isResponseTimeSchedulable(boundThreads,error0):
 		for i in range(len(rt)):
 			deadline = inc[i][5]
 			if rt[i] > deadline:
-				addError(error0,"{"+str(inc[i][0])+"}thread:"+inc[i][1]+" response time:"+str(rt[i])+" > deadline:"+str(deadline))
+				addError(error0,"{"+str(inc[i][0])+"} isResponseTimeSchedulable: thread:"+inc[i][1]+" response time:"+str(rt[i])+" > deadline:"+str(deadline))
 				return False
 	print("ReponseTimeSchedulable=TRUE")
+	addError(info0,"{"+str(inc[i][0])+"} isResponseTimeSchedulable: thread:"+inc[i][1]+" response time:"+str(rt[i])+" <= deadline:"+str(deadline))
 	return True
 	
 def areAllPrioritiesSet(boundThreads,priorities,names,error0):
@@ -122,9 +188,10 @@ def allProcessorHarmonicBoundSchedulable(boundThreads,error0):
 		for j in range(len(boundThreads[i][2])):
 			util = util + boundThreads[i][2][j][3] / boundThreads[i][2][j][2]
 		if util > 1.0:
-			addError(error0,"{"+str(boundThreads[i][0])+"}processor "+boundThreads[i][1]+" workload exceeds 100% bound ")
+			addError(error0,"{"+str(boundThreads[i][0])+"} allProcessorHarmonicBoundSchedulable: processor "+boundThreads[i][1]+" workload exceeds 100% bound ")
 			return False
 	print("allProcessorsHarmonicBoundSchedulable=TRUE")
+	addError(info0,"{"+str(boundThreads[i][0])+"} allProcessorHarmonicBoundSchedulable: processor "+boundThreads[i][1]+" is schedulable")
 	return True
 
 def arePrioritiesRM(boundThreads,error0):
@@ -185,9 +252,10 @@ def allProcessorNonHarmonicBoundSchedulable(boundThreads,error0):
 		for j in range(len(boundThreads[i][2])):
 			util = util + boundThreads[i][2][j][3] / boundThreads[i][2][j][2]
 		if util > 0.69:
-			addError(error0,"processor "+boundThreads[i][1]+" workload exceeds 69% bound ")
+			addError(error0,"{"+str(boundThreads[i][0])+"} allProcessorNonHarmonicBoundSchedulable: processor "+boundThreads[i][1]+" workload exceeds 69% bound ")
 			return False
 	print("allProcessorsNonHarmonicBoundSchedulable=TRUE")
+	addError(info0,"{"+str(boundThreads[i][0])+"} allProcessorNonHarmonicBoundSchedulable: processor "+boundThreads[i][1]+" is schedulable")
 	return True
 
 def allThreadsBoundToSingleProcessor(bindings,error0):
@@ -260,10 +328,10 @@ def meetEndToEndLatencies(flowComponents,error0):
 		flow = flowComponents[i]
 		latency = flow[2]
 		if rts[i] > latency:
-			addError(error0,"{"+str(flow[0])+"}flow["+str(flow[1])+"] real latency ("+str(rts[i])+") is larger than the required latency ("+str(latency)+")")
+			addError(error0,"{"+str(flow[0])+"}flow["+str(flow[1])+"] meetEndToEndLatencies: real latency ("+str(rts[i])+") is larger than the required latency ("+str(latency)+")")
 			return False
 		else:
-			addError(info0,"{"+str(flow[0])+"}flow["+str(flow[1])+"] meets its end-to-end latency")
+			addError(info0,"{"+str(flow[0])+"}flow["+str(flow[1])+"] meetEndToEndLatencies: meets its end-to-end latency")
 	return True
 	
 def areEndToEndLatenciesInputDataComplete(periods, exectimes, deadlines, threadnames):
@@ -327,9 +395,9 @@ def areFlowsInSync1(flowComponents,error0):
 					thread2 = flowComponents[j][3][0]
 					if thread1[0] != thread2[0]:
 						if jitterTolerance < thread1[2]:
-							addError(error0,"{"+str(thread1[0])+"}thread("+str(thread1[0])+").name("+thread1[1]+") and thread("+str(thread2[0])+").name("+thread2[1]+") out of sync by: "+str(thread1[2])+" ms")
+							addError(error0,"{"+str(thread1[0])+"} areFlowsInSync1: thread("+str(thread1[0])+").name("+thread1[1]+") and thread("+str(thread2[0])+").name("+thread2[1]+") out of sync by: "+str(thread1[2])+" ms")
 							return False
-			addError(info0,"{"+str(flowComponents[i][0])+"} end to end flow in sync with replicas")
+			addError(info0,"{"+str(flowComponents[i][0])+"} areFlowsInSync1: end to end flow in sync with replicas")
 	return True
 						
 
@@ -517,10 +585,10 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 			print("reliability:",(1-probcutsets))
 			print("target reliability:",replicatede2eflows[i][1])
 			if replicatede2eflows[i][1] > (1-probcutsets):
-				addError(error0,"{"+str(replicatede2eflows[i][0])+"}Reliability of replicated flow :"+str(1-probcutsets)+" lower than target: "+str(replicatede2eflows[i][1]))
+				addError(error0,"{"+str(replicatede2eflows[i][0])+"} isE2EFlowProbabilityOfFailureMet: Reliability of replicated flow :"+str(1-probcutsets)+" lower than target: "+str(replicatede2eflows[i][1]))
 				return False
 			else:
-				addError(info0,"{"+str(replicatede2eflows[i][0])+"}Reliability of replicated flow :"+str(1-probcutsets)+" meet or exceeds its target: "+str(replicatede2eflows[i][1]))
+				addError(info0,"{"+str(replicatede2eflows[i][0])+"} isE2EFlowProbabilityOfFailureMet: Reliability of replicated flow :"+str(1-probcutsets)+" meet or exceeds its target: "+str(replicatede2eflows[i][1]))
 	return True
 
 `}
@@ -606,7 +674,8 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 											val deadline = t#Deadline.map { v -> v.scaledTo(ms)};
 											(t, t.name, period, wcet, prio, deadline)
 									};
-							(p, p.name, ts)
+							val schedProtocol = p#Scheduling_Protocol;
+							(p, p.name, ts, schedProtocol)
 					};
 			
 		declarations 
@@ -704,6 +773,20 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 			'''isResponseTimeSchedulable(${boundThreads$},error0)''';
 	}
 	
+	contract edfSchedulability {
+		domains
+			schedulability;
+		queries
+		input assumptions
+		assumptions
+			'''areAllProcessorsEdfScheduled(${boundThreads$},error0)''';
+		guarantee
+			<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+		invocation
+			'''isEdfDBFSchedulable(${boundThreads$},error0)''';
+		
+	}
+	
 	contract RMPrioritiesContract {
 		domains
 			schedulability;
@@ -748,18 +831,19 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 		domains
 			schedulability;
 		guarantee
-			--<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
-			<=> `RESPONSETIME_SHORTER_DEADLINES`;
+			<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+			--<=> `RESPONSETIME_SHORTER_DEADLINES`;
 		argument
 			and(
 				contract RMPrioritiesContract
 				or(
-				contract RMAHarmonicBoundContract
-				contract RMANonHarmonicBoundContract
+					contract RMAHarmonicBoundContract
+					contract RMANonHarmonicBoundContract
 				)
 				--contract fpResponseTimeContract
 			);
 	}
+	
 	
 	contract EndToEndDelayedCommunicationContract {
 		domains
@@ -839,13 +923,24 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 	
 	verification plan verifyEndToEndLatency {
 		component
-			s: Aircraft330::FlightSystem.externalCommonSensor;
+			s: EndToEndTimingExample::mysystem.i;
 		domains
 			schedulability;
 		claims
 			`And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
 		contracts
 			EndToEndDelayedCommunicationContract;
+	}
+
+	verification plan EDFSchedulabilityPlan {
+		component
+			s: SimpleEDFExample::mysystem.i;
+		domains
+			schedulability;
+		claims
+			`And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+		contracts
+			edfSchedulability;
 	}
 
 **};

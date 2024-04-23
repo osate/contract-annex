@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg classes="gsndiagram" viewBox="0 0 1239 635" xmlns="http://www.w3.org/2000/svg">
+<symbol id="module_icon">
+<rect fill="lightgrey" height="5" stroke="black" stroke-width="1" width="10" x="0" y="0"/>
+<rect fill="lightgrey" height="10" stroke="black" stroke-width="1" width="20" x="0" y="5"/>
+</symbol>
+<marker id="composite_arrow" markerHeight="9" markerUnits="userSpaceOnUse" markerWidth="10" orient="auto-start-reverse" refX="0" refY="4.5">
+<polyline fill="none" points="0 0, 6 4.5, 0 9" stroke="black" stroke-width="1"/>
+<polyline fill="none" points="4 0, 10 4.5, 4 9" stroke="black" stroke-width="1"/>
+<polyline fill="none" points="0 4.5, 10 4.5" stroke="black" stroke-width="1"/>
+</marker>
+<marker id="supportedby_arrow" markerHeight="9" markerUnits="userSpaceOnUse" markerWidth="10" orient="auto-start-reverse" refX="0" refY="4.5">
+<polyline fill="black" points="0 0, 10 4.5, 0 9"/>
+</marker>
+<marker id="incontextof_arrow" markerHeight="9" markerUnits="userSpaceOnUse" markerWidth="10" orient="auto-start-reverse" refX="0" refY="4.5">
+<polyline fill="none" points="0 0, 10 4.5, 0 9, 0 0" stroke="black" stroke-width="1"/>
+</marker>
+<a href="./a330-sub2.gsn.svg#node_S4">
+<g class="gsn_module_Sub2 gsnelem gsnstgy" id="node_S4">
+<title>
+S4
+</title>
+<path class="border" d="M324,20 L602,20 L588,66 L310,66 z" fill="transparent" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="332" y="39">
+S4
+</text>
+<text font-family="DejaVuSans" font-size="12" x="332" y="58">
+Select Schedulability For Given Thread Data
+</text>
+</g>
+</a>
+<g class="gsn_module_Sub3 gsnelem gsnasmp" id="node_A4">
+<title>
+A4
+</title>
+<path class="border" d="M47,139 a97,33,0,1,0,194,0 a97,33,0,1,0,-194,0 z" fill="none" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="82" y="130">
+A4
+</text>
+<text font-family="DejaVuSans" font-size="12" x="82" y="149">
+Periods are Harmonic
+</text>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="236" y="167">
+A
+</text>
+</g>
+<g class="gsn_module_Sub3 gsnelem gsnasmp" id="node_A6">
+<title>
+A6
+</title>
+<path class="border" d="M20,246 a124,33,0,1,0,249,0 a124,33,0,1,0,-249,0 z" fill="none" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="63" y="237">
+A6
+</text>
+<text font-family="DejaVuSans" font-size="12" x="63" y="256">
+Thread periods = deadlines
+</text>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="263" y="274">
+A
+</text>
+</g>
+<g class="gsn_module_Sub3 gsnelem gsngoal" id="node_G7">
+<title>
+G7
+</title>
+<path class="border" d="M308,170 L604,170 L604,216 L308,216 z" fill="transparent" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="315" y="189">
+G7
+</text>
+<text font-family="DejaVuSans" font-size="12" x="315" y="208">
+Rate-Monotonic Harmonic Bound Schedulability
+</text>
+</g>
+<g class="gsn_module_Sub3 gsnelem gsnasmp" id="node_A3">
+<title>
+A3
+</title>
+<path class="border" d="M644,139 a198,33,0,1,0,397,0 a198,33,0,1,0,-397,0 z" fill="none" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="708" y="130">
+A3
+</text>
+<text font-family="DejaVuSans" font-size="12" x="708" y="149">
+Thread Shorter Period implies Higher Priority
+</text>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="1035" y="167">
+A
+</text>
+</g>
+<g class="gsn_module_Sub3 gsnelem gsnasmp" id="node_A5">
+<title>
+A5
+</title>
+<path class="border" d="M709,246 a133,33,0,1,0,266,0 a133,33,0,1,0,-266,0 z" fill="none" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="755" y="237">
+A5
+</text>
+<text font-family="DejaVuSans" font-size="12" x="755" y="256">
+Threads bound one processor
+</text>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="970" y="274">
+A
+</text>
+</g>
+<a href="eclipse+command://org.osate.contract.uriHandler.GSNURIMarker?org.osate.contract.uriHandler.GSNURIMarker.analysisName=allProcessorHarmonicBoundSchedulable">
+<g class="gsn_notetype gsn_module_Sub3 gsnelem gsnsltn" id="node_Sn5">
+<title>
+Sn5
+</title>
+<path class="border" d="M343,433 a113,113,0,1,0,226,0 a113,113,0,1,0,-226,0 z" fill="none" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="358" y="424">
+Sn5
+</text>
+<text font-family="DejaVuSans" font-size="12" x="358" y="443">
+Sum of Thread Utilization &lt;= 1.0
+</text>
+</g>
+</a>
+<path class="gsnedge gsninctxt" d="M604,193 C634,193,614,139,634,139" fill="none" marker-end="url(#incontextof_arrow)" stroke="black" stroke-width="1"/>
+<path class="gsnedge gsninctxt" d="M308,193 C278,193,271,139,251,139" fill="none" marker-end="url(#incontextof_arrow)" stroke="black" stroke-width="1"/>
+<path class="gsnedge gsninctxt" d="M604,193 C634,193,679,246,699,246" fill="none" marker-end="url(#incontextof_arrow)" stroke="black" stroke-width="1"/>
+<path class="gsnedge gsninctxt" d="M308,193 C278,193,298,246,278,246" fill="none" marker-end="url(#incontextof_arrow)" stroke="black" stroke-width="1"/>
+<path class="gsnedge gsninspby" d="M456,216 C456,246,456,290,456,310" fill="none" marker-end="url(#supportedby_arrow)" stroke="black" stroke-width="1"/>
+<path class="gsnedge gsninspby" d="M456,66 C456,96,456,140,456,160" fill="none" marker-end="url(#supportedby_arrow)" stroke="black" stroke-width="1"/>
+<g class="gsnmodule" id="node_gsn_module">
+<title>
+Module Information
+</title>
+<text font-family="DejaVuSans" font-size="12" x="907" y="601">
+Module: Sub3
+</text>
+<text font-family="DejaVuSans" font-size="12" x="907" y="615">
+Generated on: 2024-02-20 13:54:28.601324522 UTC
+</text>
+</g>
+</svg>

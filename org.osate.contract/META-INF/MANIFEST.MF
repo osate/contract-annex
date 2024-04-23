@@ -7,6 +7,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: org.osate.contract; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
+ org.eclipse.ui.ide;bundle-version="[3.16.0,4.0.0)";visibility:=reexport,
  org.eclipse.equinox.common,
  org.eclipse.emf.ecore,
  org.eclipse.xtext.util,

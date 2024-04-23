@@ -1,0 +1,71 @@
+package MultiSchedulerExample
+public
+	
+	process myprocess
+	end myprocess;	
+	
+	process implementation myprocess.i
+		subcomponents
+			thread1: thread;
+			thread2: thread;
+	end myprocess.i;
+
+	system mysystem	
+	end mysystem;
+	
+	system implementation mysystem.i
+		subcomponents
+			processor1: processor;
+			processor2: processor;
+			processor3: processor;
+			process1: process myprocess.i;
+			process2: process myprocess.i;
+			process3: process myprocess.i;
+		properties
+			Actual_Processor_Binding => (reference (processor1)) applies to process1.thread1;
+			Actual_Processor_Binding => (reference (processor1)) applies to process1.thread2;
+			Actual_Processor_Binding => (reference (processor2)) applies to process2.thread1;
+			Actual_Processor_Binding => (reference (processor2)) applies to process2.thread2;
+			Actual_Processor_Binding => (reference (processor3)) applies to process3.thread1;
+			Actual_Processor_Binding => (reference (processor3)) applies to process3.thread2;
+			
+			Scheduling_Protocol => (EDF) applies to processor1;
+			Scheduling_Protocol => (RMS) applies to processor2;
+			Scheduling_Protocol => (DMS) applies to processor3;
+			
+			Period => 100 ms applies to process1.thread1;
+			Deadline => 100 ms applies to process1.thread1;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to process1.thread1;
+			
+			Period => 200 ms applies to process1.thread2;
+			Deadline => 200 ms applies to process1.thread2;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to process1.thread2;
+			
+			Period => 100 ms applies to process2.thread1;
+			Deadline => 100 ms applies to process2.thread1;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to process2.thread1;
+			Priority => 2 applies to process2.thread1;
+
+			Period => 200 ms applies to process2.thread2;
+			Deadline => 200 ms applies to process2.thread2;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to process2.thread2;
+			Priority => 1 applies to process2.thread2;
+			
+			Period => 100 ms applies to process3.thread1;
+			Deadline => 100 ms applies to process3.thread1;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to process3.thread1;
+			Priority => 2 applies to process3.thread1;
+
+			Period => 200 ms applies to process3.thread2;
+			Deadline => 200 ms applies to process3.thread2;
+			Compute_Execution_Time => 10 ms .. 10 ms applies to process3.thread2;
+			Priority => 1 applies to process3.thread2;
+			
+			
+			annex contract {** 
+				verify MultiSchedulerContract::schedulablePlan;
+			**};
+			
+	end mysystem.i;
+	
+end MultiSchedulerExample;

@@ -77,6 +77,11 @@ public
 				val v19 = self.subcomponents
 					.map { subcomponent -> subcomponent.features }
 					.flatten;
+				
+				val v20 = self.subcomponents
+					.allMatch { subcomponent -> subcomponent.isProcess };
+				val v21 = self.subcomponents
+					.allMatch { subcomponent -> subcomponent.features.empty };
 		}
 	**};
 	

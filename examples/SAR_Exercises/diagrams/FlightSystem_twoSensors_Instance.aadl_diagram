@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="ASCII"?>
+<diagram:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:diagram="http://osate.org/diagram" formatVersion="7">
+  <element uuid="1073e4b4-5b1d-46cd-8a56-21e6f55429f1" manual="true">
+    <element uuid="143688f8-c78b-422f-bbee-ba781f5d4f00" manual="true">
+      <element uuid="4dff52ea-6021-4d35-a761-94d41c140e54" manual="true" dockArea="left">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>rudderPosition</seg>
+        </bo>
+        <position y="38.0"/>
+      </element>
+      <element uuid="02d9ef11-3c70-4a81-aff8-ec96fc57c07e" manual="true">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>flow_specification_instance</seg>
+          <seg>positionFlowSink</seg>
+        </bo>
+        <position x="295.9297103881836" y="70.0"/>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>component_instance</seg>
+        <seg>act1</seg>
+      </bo>
+      <position x="1038.1666831970215" y="88.0"/>
+      <size width="405.9062805175781" height="90.0"/>
+    </element>
+    <element uuid="6138e80f-434b-4565-b2c8-4ea58eeb2402" manual="true">
+      <element uuid="fd59f3c7-6359-48a9-8149-e7e9ad7762d3" manual="true">
+        <element uuid="39ebd269-a065-4bcf-af3c-e8b8ed56124e" manual="true" dockArea="left">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>feature_instance</seg>
+            <seg>backRudderPosition</seg>
+          </bo>
+          <position y="126.0"/>
+        </element>
+        <element uuid="0de80555-a630-4ae8-a216-53433967d0d6" manual="true" dockArea="right">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>feature_instance</seg>
+            <seg>failed</seg>
+          </bo>
+          <position x="613.4193000793457" y="126.0"/>
+        </element>
+        <element uuid="3d1399c3-6e3f-4418-8b17-871b2f8bdf3f" manual="true" dockArea="left">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>feature_instance</seg>
+            <seg>flightMode</seg>
+          </bo>
+          <position y="171.0"/>
+        </element>
+        <element uuid="411b37b7-c598-4698-a835-8b174bc78abc" manual="true" dockArea="left">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>feature_instance</seg>
+            <seg>inFailed</seg>
+          </bo>
+          <position y="76.0"/>
+        </element>
+        <element uuid="318dd689-b6bb-410a-9c30-fbbb17de4311" manual="true" dockArea="left">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>feature_instance</seg>
+            <seg>pedalPosition</seg>
+          </bo>
+          <position y="26.0"/>
+        </element>
+        <element uuid="9876867c-9fbc-4052-9e84-94a2c1256a86" manual="true" dockArea="right">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>feature_instance</seg>
+            <seg>rudderPosition</seg>
+          </bo>
+          <position x="559.3177261352539" y="76.0"/>
+        </element>
+        <element uuid="0c11f87e-382d-4e0b-8335-129866942f74" manual="true">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>flow_specification_instance</seg>
+            <seg>backPedalFailedFlowPath</seg>
+          </bo>
+        </element>
+        <element uuid="a79dc3db-9201-4aee-978f-bc8c5a4df916" manual="true">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>flow_specification_instance</seg>
+            <seg>backPedalFlowPath</seg>
+          </bo>
+          <bendpoints>
+            <point x="935.63671875" y="468.0"/>
+            <point x="935.63671875" y="418.0"/>
+          </bendpoints>
+        </element>
+        <element uuid="a50462ac-78ce-459d-aede-e0692188e28b" manual="true">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>flow_specification_instance</seg>
+            <seg>failedFailedFlowPath</seg>
+          </bo>
+          <bendpoints>
+            <point x="935.63671875" y="418.0"/>
+            <point x="935.63671875" y="468.0"/>
+          </bendpoints>
+        </element>
+        <element uuid="ebd4829b-2b03-49e2-8c19-e91daa09e723" manual="true">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>flow_specification_instance</seg>
+            <seg>failedOverFlowPath</seg>
+          </bo>
+        </element>
+        <element uuid="54cd2d99-4e4d-4a45-bff9-c91bb1500703" manual="true">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>flow_specification_instance</seg>
+            <seg>pedalFlowPath</seg>
+          </bo>
+          <bendpoints>
+            <point x="935.63671875" y="368.0"/>
+            <point x="935.63671875" y="418.0"/>
+          </bendpoints>
+        </element>
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>component_instance</seg>
+          <seg>com</seg>
+        </bo>
+        <position x="140.0" y="272.0"/>
+        <size width="657.2942962646484" height="226.0"/>
+      </element>
+      <element uuid="66dbb08b-ec44-4883-81f0-c6cc37be2f4f" manual="true">
+        <element uuid="e89f42e8-4d62-4cc9-bb31-ab3f7ef0b24d" manual="true" dockArea="left">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>feature_instance</seg>
+            <seg>backRudderPosition</seg>
+          </bo>
+          <position y="126.0"/>
+        </element>
+        <element uuid="becb5ec7-0d07-4f40-9227-4da48e0773ad" manual="true" dockArea="right">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>feature_instance</seg>
+            <seg>failed</seg>
+          </bo>
+          <position x="613.4193000793457" y="126.0"/>
+        </element>
+        <element uuid="7bc13a1b-3583-452b-ba34-4dcf44c8fedc" manual="true" dockArea="left">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>feature_instance</seg>
+            <seg>flightMode</seg>
+          </bo>
+          <position y="171.0"/>
+        </element>
+        <element uuid="7cfedb56-a8d1-4750-a9e5-45e2ccd400c2" manual="true" dockArea="left">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>feature_instance</seg>
+            <seg>inFailed</seg>
+          </bo>
+          <position y="76.0"/>
+        </element>
+        <element uuid="613b1ae2-9337-4dd4-98e2-43bbffcfae06" manual="true" dockArea="left">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>feature_instance</seg>
+            <seg>pedalPosition</seg>
+          </bo>
+          <position y="26.0"/>
+        </element>
+        <element uuid="2a02656b-0d1e-4b2e-8845-252e45a54ea2" manual="true" dockArea="right">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>feature_instance</seg>
+            <seg>rudderPosition</seg>
+          </bo>
+          <position x="559.3177261352539" y="76.0"/>
+        </element>
+        <element uuid="d2b79dc5-caeb-435c-bf00-fe3d9b15efd3" manual="true">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>flow_specification_instance</seg>
+            <seg>backPedalFailedFlowPath</seg>
+          </bo>
+        </element>
+        <element uuid="73c1bd56-6c33-45be-9139-863e60aa2340" manual="true">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>flow_specification_instance</seg>
+            <seg>backPedalFlowPath</seg>
+          </bo>
+          <bendpoints>
+            <point x="935.63671875" y="748.0"/>
+            <point x="935.63671875" y="698.0"/>
+          </bendpoints>
+        </element>
+        <element uuid="50e14dbb-21a2-4bf8-970f-ae04df3a0176" manual="true">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>flow_specification_instance</seg>
+            <seg>failedFailedFlowPath</seg>
+          </bo>
+          <bendpoints>
+            <point x="935.63671875" y="698.0"/>
+            <point x="935.63671875" y="748.0"/>
+          </bendpoints>
+        </element>
+        <element uuid="6865667f-2176-455b-a0fb-c1831bbc9d13" manual="true">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>flow_specification_instance</seg>
+            <seg>failedOverFlowPath</seg>
+          </bo>
+        </element>
+        <element uuid="79eb0e23-f229-486c-b868-821b9010eb0b" manual="true">
+          <bo>
+            <seg>org.osate.ge.diagrams.instance</seg>
+            <seg>flow_specification_instance</seg>
+            <seg>pedalFlowPath</seg>
+          </bo>
+          <bendpoints>
+            <point x="935.63671875" y="648.0"/>
+            <point x="935.63671875" y="698.0"/>
+          </bendpoints>
+        </element>
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>component_instance</seg>
+          <seg>mon</seg>
+        </bo>
+        <position x="140.0" y="552.0"/>
+        <size width="657.2942962646484" height="226.0"/>
+      </element>
+      <element uuid="1726336e-bb54-4ef7-92fb-85c1f2bb3907" manual="true">
+        <element uuid="b3cbd038-a1eb-48dd-9360-3220b47ebbbc" manual="true">
+          <bo>
+            <seg>pvg</seg>
+            <seg>Communication_Properties::Timing</seg>
+          </bo>
+        </element>
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>connection_reference</seg>
+          <seg>c5 : FlightSystem_twoSensors_Instance.rep1.mon.rudderPosition -> FlightSystem_twoSensors_Instance.rep1.com.backRudderPosition</seg>
+        </bo>
+        <bendpoints>
+          <point x="1262.0" y="696.0"/>
+          <point x="1257.0" y="572.0"/>
+          <point x="514.0" y="548.0"/>
+          <point x="501.0" y="471.0"/>
+        </bendpoints>
+      </element>
+      <element uuid="11063ed4-00cc-44ea-932e-70a65bd5665a" manual="true" dockArea="right">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>failed</seg>
+        </bo>
+        <position x="896.1250038146973" y="138.0"/>
+      </element>
+      <element uuid="904510f3-cedf-4d5b-b393-8178c2b42093" manual="true" dockArea="left">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>flightModeCom</seg>
+        </bo>
+        <position y="198.0"/>
+      </element>
+      <element uuid="67be99c2-c868-4a5f-ac0f-e79083bb8c60" manual="true" dockArea="left">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>flightModeMon</seg>
+        </bo>
+        <position y="258.0"/>
+      </element>
+      <element uuid="1441d84b-57d9-4f78-905c-863873fb0cc0" manual="true" dockArea="left">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>inFailed</seg>
+        </bo>
+        <position y="88.0"/>
+      </element>
+      <element uuid="ec59fa35-a6b2-4d4e-abd4-21f42c18e188" manual="true" dockArea="left">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>pedalPositionCom</seg>
+        </bo>
+        <position y="38.0"/>
+      </element>
+      <element uuid="30c93ba9-6d4f-4dcd-84ca-5b600ca33aa3" manual="true" dockArea="left">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>pedalPositionMon</seg>
+        </bo>
+        <position y="138.0"/>
+      </element>
+      <element uuid="68279142-d4be-49cc-8e7a-81c43e25e394" manual="true" dockArea="right">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>rudderPosition</seg>
+        </bo>
+        <position x="842.0234298706055" y="88.0"/>
+      </element>
+      <element uuid="614000ee-4183-427d-acca-a57c7fab8568" manual="true">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>flow_specification_instance</seg>
+          <seg>failedFailedFlowPath</seg>
+        </bo>
+        <bendpoints>
+          <point x="777.98046875" y="158.0"/>
+          <point x="777.98046875" y="208.0"/>
+        </bendpoints>
+      </element>
+      <element uuid="c389317a-3c6c-4cd0-a21a-7cd8af2e6c05" manual="true">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>flow_specification_instance</seg>
+          <seg>failedFlowPath</seg>
+        </bo>
+      </element>
+      <element uuid="61d2a9a0-7c0c-423e-8f7e-235f704fef11" manual="true">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>flow_specification_instance</seg>
+          <seg>failedOverFlowPath</seg>
+        </bo>
+      </element>
+      <element uuid="6a007e96-1222-4507-a92c-a36e52dd6faf" manual="true">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>flow_specification_instance</seg>
+          <seg>rudderFlowPathCom</seg>
+        </bo>
+        <bendpoints>
+          <point x="777.98046875" y="108.0"/>
+          <point x="777.98046875" y="158.0"/>
+        </bendpoints>
+      </element>
+      <element uuid="dee89c6c-1f30-4b92-bab3-27b86f72512e" manual="true">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>flow_specification_instance</seg>
+          <seg>rudderFlowPathMon</seg>
+        </bo>
+        <bendpoints>
+          <point x="777.98046875" y="208.0"/>
+          <point x="777.98046875" y="158.0"/>
+        </bendpoints>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>component_instance</seg>
+        <seg>rep1</seg>
+      </bo>
+      <position x="390.0" y="38.0"/>
+      <size width="940.0" height="782.0"/>
+    </element>
+    <element uuid="91d1ca3b-b96c-4d3b-94d3-867c60e9fa68" manual="true">
+      <element uuid="ba6a1658-a3f1-4e76-bd59-99bc3d273ded" manual="true" dockArea="right">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>flightMode</seg>
+        </bo>
+        <position x="235.9596405029297" y="38.0"/>
+      </element>
+      <element uuid="b3636389-f3c0-463c-a525-b7045cbafcc1" manual="true" dockArea="right">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>pedalPosition</seg>
+        </bo>
+        <position x="217.41796875" y="98.0"/>
+      </element>
+      <element uuid="d47842e5-672d-4381-8395-8741fef3bc34" manual="true">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>flow_specification_instance</seg>
+          <seg>modeFlowSource</seg>
+        </bo>
+        <position x="104.05859375" y="70.0"/>
+      </element>
+      <element uuid="cca24d9c-8629-4f41-b846-06ba8048378f" manual="true">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>flow_specification_instance</seg>
+          <seg>pedalFlowSource</seg>
+        </bo>
+        <position x="104.05859375" y="130.0"/>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>component_instance</seg>
+        <seg>sensorCom</seg>
+      </bo>
+      <position x="55.874996185302734" y="88.0"/>
+      <size width="309.4765625" height="150.0"/>
+    </element>
+    <element uuid="efb46836-2b5d-488b-b940-f469770ae075" manual="true">
+      <element uuid="d68d0dc6-4144-443d-ba09-0ef5bb4ce99d" manual="true" dockArea="right">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>flightMode</seg>
+        </bo>
+        <position x="233.74610137939453" y="38.0"/>
+      </element>
+      <element uuid="7717c08c-42a0-4967-91d7-bf2e9cfe86e3" manual="true" dockArea="right">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>pedalPosition</seg>
+        </bo>
+        <position x="215.20442962646484" y="98.0"/>
+      </element>
+      <element uuid="a6aa2405-619b-4076-bc69-a6918036004d" manual="true">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>flow_specification_instance</seg>
+          <seg>modeFlowSource</seg>
+        </bo>
+        <position x="104.05859375" y="70.0"/>
+      </element>
+      <element uuid="0f651f51-e8cf-4d65-995e-b956df8a233c" manual="true">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>flow_specification_instance</seg>
+          <seg>pedalFlowSource</seg>
+        </bo>
+        <position x="104.05859375" y="130.0"/>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>component_instance</seg>
+        <seg>sensorMon</seg>
+      </bo>
+      <position x="58.08853530883789" y="258.0"/>
+      <size width="307.26302337646484" height="150.0"/>
+    </element>
+    <element uuid="7aa3e574-a85a-4ea0-b453-e4a5f2d8dca0" manual="true">
+      <element uuid="478d5fc2-957a-4d23-86e0-1e75f2ac7352" manual="true">
+        <bo>
+          <seg>pvg</seg>
+          <seg>Communication_Properties::Timing</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>c1 : FlightSystem_twoSensors_Instance.rep1.flightModeCom -> FlightSystem_twoSensors_Instance.rep1.com.flightMode</seg>
+      </bo>
+    </element>
+    <element uuid="7e66b3e3-406d-4c5d-a10e-c682c61c1d95" manual="true">
+      <element uuid="065b9bc4-d2fa-47c0-a9ad-59b3f032774b" manual="true">
+        <bo>
+          <seg>pvg</seg>
+          <seg>Communication_Properties::Timing</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>c1 : FlightSystem_twoSensors_Instance.sensorCom.flightMode -> FlightSystem_twoSensors_Instance.rep1.flightModeCom</seg>
+      </bo>
+      <bendpoints>
+        <point x="395.3515625" y="158.0"/>
+        <point x="395.3515625" y="268.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="bd129082-c427-4bad-82c3-6a35e42220b3" manual="true">
+      <element uuid="22271915-a06f-49c9-b20c-701a6098d6d6" manual="true">
+        <bo>
+          <seg>pvg</seg>
+          <seg>Communication_Properties::Timing</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>c2 : FlightSystem_twoSensors_Instance.rep1.pedalPositionCom -> FlightSystem_twoSensors_Instance.rep1.com.pedalPosition</seg>
+      </bo>
+    </element>
+    <element uuid="1ad52e62-5e7b-4d83-b538-2aca6ab90823" manual="true">
+      <element uuid="d809497e-5703-47dc-87b1-b77d4de60b19" manual="true">
+        <bo>
+          <seg>pvg</seg>
+          <seg>Communication_Properties::Timing</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>c2 : FlightSystem_twoSensors_Instance.sensorMon.flightMode -> FlightSystem_twoSensors_Instance.rep1.flightModeMon</seg>
+      </bo>
+    </element>
+    <element uuid="92458697-b7a7-4149-b767-4d00bf422d02" manual="true">
+      <element uuid="837e3df6-6ff8-4733-bd09-c60a0ca9bdab" manual="true">
+        <bo>
+          <seg>pvg</seg>
+          <seg>Communication_Properties::Timing</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>c3 : FlightSystem_twoSensors_Instance.rep1.flightModeMon -> FlightSystem_twoSensors_Instance.rep1.mon.flightMode</seg>
+      </bo>
+    </element>
+    <element uuid="913c53ea-6ed7-49b2-8467-c7aabbd994a1" manual="true">
+      <element uuid="0e3e99a5-2271-4351-8b08-16b422bec214" manual="true">
+        <bo>
+          <seg>pvg</seg>
+          <seg>Communication_Properties::Timing</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>c3 : FlightSystem_twoSensors_Instance.sensorCom.pedalPosition -> FlightSystem_twoSensors_Instance.rep1.pedalPositionCom</seg>
+      </bo>
+      <bendpoints>
+        <point x="375.3515625" y="218.0"/>
+        <point x="375.3515625" y="108.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="3794aac8-8443-4999-8fc2-4d7561c3e97c" manual="true">
+      <element uuid="a43ef854-e399-4f94-b00a-b68953e02d4c" manual="true">
+        <bo>
+          <seg>pvg</seg>
+          <seg>Communication_Properties::Timing</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>c4 : FlightSystem_twoSensors_Instance.rep1.pedalPositionMon -> FlightSystem_twoSensors_Instance.rep1.mon.pedalPosition</seg>
+      </bo>
+    </element>
+    <element uuid="9d8aa660-e8ac-49f8-ada7-105c61d11273" manual="true">
+      <element uuid="3c112b9a-9332-4c38-8d04-dd2ec7f6c147" manual="true">
+        <bo>
+          <seg>pvg</seg>
+          <seg>Communication_Properties::Timing</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>c4 : FlightSystem_twoSensors_Instance.sensorMon.pedalPosition -> FlightSystem_twoSensors_Instance.rep1.pedalPositionMon</seg>
+      </bo>
+      <bendpoints>
+        <point x="385.3515625" y="388.0"/>
+        <point x="385.3515625" y="208.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="66676cbd-fff5-4a91-8bfa-26f040ad77eb" manual="true">
+      <element uuid="717ff609-08e9-455d-89f3-d7590f03f20e" manual="true">
+        <bo>
+          <seg>pvg</seg>
+          <seg>Communication_Properties::Timing</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>c5 : FlightSystem_twoSensors_Instance.rep1.failed -> FlightSystem_twoSensors_Instance.failed</seg>
+      </bo>
+      <bendpoints>
+        <point x="1454.072998046875" y="208.0"/>
+        <point x="1454.072998046875" y="219.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="8197ae32-f493-4909-8242-f74b35b496a0" manual="true">
+      <element uuid="bc77c244-2327-4fe4-8ac4-3417744ed2d9" manual="true">
+        <bo>
+          <seg>pvg</seg>
+          <seg>Communication_Properties::Timing</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>c7 : FlightSystem_twoSensors_Instance.rep1.com.failed -> FlightSystem_twoSensors_Instance.rep1.failed</seg>
+      </bo>
+    </element>
+    <element uuid="42bfe3b4-bd88-47fc-badf-306332342a9d" manual="true">
+      <element uuid="c76a48f8-4e67-4563-b1d4-c35b18e4f4ca" manual="true">
+        <bo>
+          <seg>pvg</seg>
+          <seg>Communication_Properties::Timing</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>c8 : FlightSystem_twoSensors_Instance.rep1.com.rudderPosition -> FlightSystem_twoSensors_Instance.rep1.rudderPosition</seg>
+      </bo>
+    </element>
+    <element uuid="d0aea1a2-8f4a-4c69-ab35-f7cbeced2c31" manual="true">
+      <element uuid="0a01ab98-2536-4240-8b98-511970b098e1" manual="true">
+        <bo>
+          <seg>pvg</seg>
+          <seg>Communication_Properties::Timing</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>c8 : FlightSystem_twoSensors_Instance.rep1.rudderPosition -> FlightSystem_twoSensors_Instance.act1.rudderPosition</seg>
+      </bo>
+    </element>
+    <element uuid="4e21e3c9-669f-442e-b562-b05e3779048a" manual="true" dockArea="right">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>feature_instance</seg>
+        <seg>failed</seg>
+      </bo>
+      <position x="1519.9479942321777" y="187.0"/>
+    </element>
+    <element uuid="5cf58eb9-ab67-4292-a0bf-b266ed57c0a8" manual="true">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>flow_specification_instance</seg>
+        <seg>failedFlowSource</seg>
+      </bo>
+      <position x="1444.0729637145996" y="219.0"/>
+    </element>
+    <bo>
+      <seg>org.osate.ge.diagrams.instance</seg>
+      <seg>system_instance</seg>
+      <seg>/sar_exercises/instances/airbus330_flightsystem_twosensors_instance.aaxl2</seg>
+    </bo>
+    <position/>
+    <size width="1563.8229904174805" height="820.0"/>
+  </element>
+  <config type="structure" connectionPrimaryLabelsVisible="false">
+    <enabledAadlProperties/>
+    <context>
+      <seg>org.osate.ge.diagrams.instance</seg>
+      <seg>system_instance</seg>
+      <seg>/sar_exercises/instances/airbus330_flightsystem_twosensors_instance.aaxl2</seg>
+    </context>
+  </config>
+</diagram:Diagram>

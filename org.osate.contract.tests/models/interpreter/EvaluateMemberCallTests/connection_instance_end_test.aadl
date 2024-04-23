@@ -5,6 +5,7 @@ public
 			queries
 				val v1 = self.connections.map { connection -> connection.source.name };
 				val v2 = self.connections.map { connection -> connection.source.parent };
+				val v3 = self.connections.map { connection -> connection.source.isDataPort };
 		}
 	**};
 	
@@ -20,6 +21,7 @@ public
 		connections
 			conn1: bus access b -> m.ba;
 			conn2: feature left_process.process_out -> right_process.process_in;
+			conn3: port left_process.out_port -> right_process.in_port;
 	end s.i;
 	
 	memory m
@@ -30,10 +32,12 @@ public
 	process left_process
 		features
 			process_out: out feature;
+			out_port: out data port;
 	end left_process;
 	
 	process right_process
 		features
 			process_in: in feature;
+			in_port: in data port;
 	end right_process;
 end connection_instance_end_test;

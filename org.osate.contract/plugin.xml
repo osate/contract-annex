@@ -33,4 +33,30 @@
 			class = "org.osate.contract.contract.ContractPackage"
 			genModel = "model/generated/Contract.genmodel" />
 	</extension>
+	<extension
+         point="org.eclipse.urischeme.uriSchemeHandlers">
+      <uriSchemeHandler
+            class="org.osate.contract.uriHandler.gsnURIMarkerHandler"
+            uriSchemeDescription="uri marker handler"
+            uriScheme="eclipse+com">
+      </uriSchemeHandler>
+   </extension>
+   	<extension
+		point="org.eclipse.ui.commands">
+		<command
+			description="Sample Marker Handler"
+			id="org.osate.contract.uriHandler.GSNURIMarker"
+			name="MarkerHandler">
+			<commandParameter
+        	id="org.osate.contract.uriHandler.GSNURIMarker.analysisName"
+        	name="par1"/>
+		</command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+   		class="org.osate.contract.uriHandler.GSNURIMarkerCommandHandler"
+			commandId="org.osate.contract.uriHandler.GSNURIMarker">
+		</handler>
+	</extension>
 </plugin>

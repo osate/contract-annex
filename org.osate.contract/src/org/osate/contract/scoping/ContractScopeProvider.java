@@ -59,6 +59,7 @@ import org.osate.contract.contract.TupleParameter;
 import org.osate.contract.contract.VerificationPlan;
 import org.osate.contract.naming.ContractQualifiedNameProvider;
 import org.osate.contract.typing.ContractTypeSystem;
+import org.osate.contract.typing.EnumerationType;
 import org.osate.contract.typing.LongWithUnitsType;
 import org.osate.contract.typing.RecordType;
 
@@ -131,6 +132,13 @@ public class ContractScopeProvider extends AbstractContractScopeProvider {
 					.getValue() instanceof LongWithUnitsType leftType) {
 				var descriptions = new ArrayList<IEObjectDescription>();
 				for (var literal : leftType.getUnitsType().getOwnedLiterals()) {
+					descriptions.add(EObjectDescription.create(literal.getName(), literal));
+				}
+				return new SimpleScope(descriptions, true);
+			} else if (memberCall.getRight().equals("is")
+					&& typeSystem.expressionType(memberCall.getLeft()).getValue() instanceof EnumerationType leftType) {
+				var descriptions = new ArrayList<IEObjectDescription>();
+				for (var literal : leftType.getEnumerationType().getOwnedLiterals()) {
 					descriptions.add(EObjectDescription.create(literal.getName(), literal));
 				}
 				return new SimpleScope(descriptions, true);

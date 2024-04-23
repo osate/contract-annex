@@ -1,0 +1,649 @@
+package TSNSchedulingContract
+public
+
+annex contract {**
+		contract implementation TSNSchedulingOld {`
+# This program considers a computer network that fits the framework of Time Sensitive Networking (TSN).
+# There are different variants of TSN. Here, we consider switched Ethernet with time-triggered arbitration on outgoing link.
+#
+# Assumptions:
+#   We make the following assumptions:
+#   * Time-triggered arbitration (as specified above)
+#   * The traffic is specified as message streams where each message stream is characterized by
+#     its period, deadline, and data payload.
+#   * Routes of message streams are given (i.e., we do not compute routes).
+#   * Frame preemption is not allowed.
+#   * Frame duplication is not used.
+#   * We generate a time-triggered schedule of duration lcm of periods of message streams.
+#   * Each message stream has one message arriving at time 0.
+#
+# How the schedule is generated:
+#   We compute the static schedule by solving a constraint satisfaction instance. Specifically, we introduce
+#   a variable for each message stream, for each message of this stream, for each hop of this message; this variable
+#   indicates the starting time for transmission on the link given by the hop. Analogously, we introduce
+#   a finishing time. We formulate constraints that must be satisfied by these start times and finishing times and find
+#   a solution that satisfies these constraints. We use z3---an SMT solver.
+#
+# How the lcm is computed:
+#   Part of generating the static schedule is computing the lcm of periods. The tool supports two ways of doing this:
+#   (i) computing lcm directly, and (ii) computing lcm using z3. The former is the default and it is recommended to be used
+#   if periods are integers. To use the latter, you need to call tsn_sched_gen_internal with
+#   directly_flag=False. This is useful if periods are real numbers.
+#    
+#   Computing lcm directly:
+#     We use the standard technique for computing lcm here.
+#
+#   Computing lcm using z3:
+#     Consider the case that periods are real numbers; this can be problematic. Actually, periods are
+#     floating-points numbers but this can still be problematic. For example, consider two
+#     periods 0.00010 and 0.00045. If these were real numbers that could be represented perfectly,
+#     then the lcm would be 0.00090. However, in our tool these are represented by floating-point numbers;
+#     the computed lcm of these numbers represented as float point can be very large---so large that
+#     the corresponding constraint satisfaction instance that is used for schedule generation becomes
+#     so large we can't fit it in memory. Therefore, we compute the lcm in another way using z3.
+#     We introduce a variable in z3 that is a real number that should be an approximation for 0.00010
+#     and we introduce another real number that should be an approximation for 0.00045. We introduce a
+#     constraint stating that the first number should deviate from 0.00010 by an amount that is at most
+#     the resolution of double-precision floating point numbers. Note that by default, python
+#     interprets any number that includes a decimal point as a double precision floating point number.
+#     Then, we ask: find the lcm of these two z3 variables. We do it as follows:
+#       Find H such
+#         H = k_1*p_1
+#         H = k_2*p_2
+#         p_1 differs from period of 1 by at most small amount
+#         p_2 differs from period of 2 by at most small amount
+#       k_1 is a positive integer
+#       k_2 is a positive integer
+#     Of course, our tool works also for the case that there are more than two periods. 
+
+from z3 import *
+#import matplotlib.pyplot as plt
+#import ast
+
+frameheader_overhead_in_bytes = 14
+Gbps = 1000000000.0
+floating_point_tolerance = 0.000000000000001
+
+time_unit_is_s  = 0 # seconds (floating point)
+time_unit_is_ms = 1 # milliseconds (integer)
+time_unit_is_us = 2 # microseconds (integer)
+time_unit_is_ns = 3 # nanoseconds (integer)
+
+def get_time_unit_string(timeunit):
+  if timeunit==time_unit_is_s:
+    return "seconds"  
+  elif timeunit==time_unit_is_ms:
+    return "milliseconds"  
+  elif timeunit==time_unit_is_us:
+    return "microseconds"  
+  elif timeunit==time_unit_is_ns:
+    return "nanoseconds"  
+  else: 
+    print("Error in get_time_unit_string.")  
+    exit(-1)
+
+# Code for computing lcm directly
+
+def compute_gcd_directly(a,b):
+  if b==0:
+    return a
+  return compute_gcd_directly(b,a%b)
+
+def compute_lcm_directly(periods):
+  ret = periods[0]
+  for index in range(1,len(periods)):
+    ret = periods[index] * ret//compute_gcd_directly(periods[index],ret)
+  return ret
+
+def compute_lcm_nmessages_directly(periods):
+  H = compute_lcm_directly(periods)
+  message_stream_index_range = range(0,len(periods))
+  nmessages = [None] * len(message_stream_index_range)
+  for message_stream_index in message_stream_index_range:
+    nmessages[message_stream_index] = H//periods[message_stream_index]
+  return H,nmessages
+
+# Code for computing lcm indirectly
+    
+def get_float_from_z3_model(the_var):
+  ret = float(the_var.numerator_as_long())/float(the_var.denominator_as_long())
+  return ret
+
+def get_int_from_z3_model(the_var):
+  ret = the_var.as_long()
+  return ret
+
+def compute_lcm_nmessages_z3(periods):  
+  maxH = max(periods)
+  success = False
+  while (not success):
+    message_stream_index_range = range(0,len(periods))
+    selected_multiples = [None] * len(message_stream_index_range) 
+    selected_periods   = [None] * len(message_stream_index_range) 
+    for message_stream_index in message_stream_index_range:
+      selected_multiples[message_stream_index] = Int("selected_multiples_"+str(message_stream_index))
+      selected_periods[message_stream_index] = Real("selected_periods_"+str(message_stream_index))
+    selected_H = Real("selected_H")
+    sol = Solver()
+    for message_stream_index in message_stream_index_range:
+      sol.add(1<=selected_multiples[message_stream_index])
+      sol.add(periods[message_stream_index]*(1-floating_point_tolerance)<=selected_periods[message_stream_index])
+      sol.add(periods[message_stream_index]*(1+floating_point_tolerance)>=selected_periods[message_stream_index])
+      sol.add(selected_multiples[message_stream_index]*selected_periods[message_stream_index]==selected_H)
+    sol.add(selected_H<=maxH)
+    if sol.check()==sat:
+      success = True
+      m = sol.model()
+      H = get_float_from_z3_model(m[selected_H])
+      nmessages = [None] * len(message_stream_index_range)
+      for message_stream_index in message_stream_index_range:
+        nmessages[message_stream_index] = get_int_from_z3_model(m[selected_multiples[message_stream_index]])
+    else:
+      maxH = maxH * 2
+  return H,nmessages
+
+def compute_lcm_nmessages(periods,timeunit):  
+  if timeunit==time_unit_is_s:
+    return compute_lcm_nmessages_z3(periods)  
+  elif timeunit==time_unit_is_ms:
+    return compute_lcm_nmessages_directly(periods)
+  elif timeunit==time_unit_is_us:
+    return compute_lcm_nmessages_directly(periods)
+  elif timeunit==time_unit_is_ns:
+    return compute_lcm_nmessages_directly(periods)
+  else: 
+    print("Error in compute_lcm_nmessages.")  
+    exit(-1)
+
+# Code for extracting a solution
+
+def fill_start_time_finish_time(message_streams,periods,routes,H,nmessages,s,f,sol):
+  m = sol.model()
+  start_time  = create_empty_3D(message_streams,periods,routes,H,nmessages)
+  finish_time = create_empty_3D(message_streams,periods,routes,H,nmessages)  
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    message_index_range = range(0,nmessages[message_stream_index])
+    for message_index in message_index_range:
+      hop_index_range = range(0,len(routes[message_stream_index]))
+      for hop_index in hop_index_range:
+        start_time[message_stream_index][message_index][hop_index]  = get_float_from_z3_model(m[s[message_stream_index][message_index][hop_index]])
+        finish_time[message_stream_index][message_index][hop_index] = get_float_from_z3_model(m[f[message_stream_index][message_index][hop_index]])
+  return start_time,finish_time
+
+# Code for setting up z3 instance: data structures, variables, constraints
+  
+def create_empty_3D(message_streams,periods,routes,H,nmessages):
+  message_stream_index_range = range(0,len(message_streams))
+  var = [None] * len(message_stream_index_range) 
+  for message_stream_index in message_stream_index_range:
+    message_index_range = range(0,nmessages[message_stream_index])
+    var[message_stream_index] = [None] * len(message_index_range) 
+    for message_index in message_index_range:
+      hop_index_range = range(0,len(routes[message_stream_index]))
+      for hop_index in hop_index_range:
+        var[message_stream_index][message_index] = [None] * len(hop_index_range) 
+  return var
+
+def tsn_sched_gen_add_var_per_message_per_hop(message_streams,periods,routes,H,nmessages,vn):
+  v = create_empty_3D(message_streams,periods,routes,H,nmessages)
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    message_index_range = range(0,nmessages[message_stream_index])
+    for message_index in message_index_range:
+      hop_index_range = range(0,len(routes[message_stream_index]))
+      for hop_index in hop_index_range:
+        v[message_stream_index][message_index][hop_index] = Real(vn+"_"+str(message_stream_index)+'_'+str(message_index)+'_'+str(hop_index))
+  return v
+
+def tsn_sched_gen_add_s(message_streams,periods,routes,H,nmessages):
+  return tsn_sched_gen_add_var_per_message_per_hop(message_streams,periods,routes,H,nmessages,"s")
+
+def tsn_sched_gen_add_f(message_streams,periods,routes,H,nmessages):
+  return tsn_sched_gen_add_var_per_message_per_hop(message_streams,periods,routes,H,nmessages,"f")
+
+def tsn_sched_gen_add_lb_and_ub_constraint_on_var(message_streams,periods,routes,H,nmessages,var,sol):
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    message_index_range = range(0,nmessages[message_stream_index])
+    for message_index in message_index_range:
+      hop_index_range = range(0,len(routes[message_stream_index]))
+      for hop_index in hop_index_range:
+        sol.add(0<=var[message_stream_index][message_index][hop_index])
+        sol.add(var[message_stream_index][message_index][hop_index]<H)
+
+def tsn_sched_gen_add_lb_and_ub_constraint_on_s(message_streams,periods,routes,H,nmessages,s,sol):
+  tsn_sched_gen_add_lb_and_ub_constraint_on_var(message_streams,periods,routes,H,nmessages,s,sol)
+
+def tsn_sched_gen_add_lb_and_ub_constraint_on_f(message_streams,periods,routes,H,nmessages,f,sol):
+  tsn_sched_gen_add_lb_and_ub_constraint_on_var(message_streams,periods,routes,H,nmessages,f,sol)
+
+def compute_tx_time(message_stream_index,message_index,hop_index,routes,linkspeeds,data_payload,timeunit):
+  link_index = routes[message_stream_index][hop_index]
+  linkspeed = linkspeeds[link_index]
+  txtime = (data_payload[message_stream_index]+frameheader_overhead_in_bytes)*8/linkspeed
+  if timeunit==time_unit_is_s:
+    return txtime
+  elif timeunit==time_unit_is_ms:
+    return txtime*1000.0
+  elif timeunit==time_unit_is_us:
+    return txtime*1000000.0  
+  elif timeunit==time_unit_is_ns:
+    return txtime*1000000000.0  
+  else: 
+    print("Error in compute_tx_time. Bad time unit.")  
+    exit(-1)    
+  
+def tsn_sched_gen_add_f_equals_s_plus_txtime_constraint(linkspeeds,message_streams,periods,data_payload,routes,H,nmessages,s,f,sol,timeunit):
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    message_index_range = range(0,nmessages[message_stream_index])
+    for message_index in message_index_range:
+      hop_index_range = range(0,len(routes[message_stream_index]))
+      for hop_index in hop_index_range:
+        txtime = compute_tx_time(message_stream_index,message_index,hop_index,routes,linkspeeds,data_payload,timeunit)
+        sol.add(f[message_stream_index][message_index][hop_index] == s[message_stream_index][message_index][hop_index] + txtime)
+
+def is_link_in_contention_domain(a_link_index,a_contention_domain):
+  for index in range(0,len(a_contention_domain)):
+    if a_contention_domain[index]==a_link_index:
+      return True
+  return False
+
+def are_links_in_same_contention_domain(a_link_index,a_link_index2,contention_domains):
+  for index in range(0,len(contention_domains)):
+    a_contention_domain = contention_domains[index]
+    found  = is_link_in_contention_domain(a_link_index, a_contention_domain)
+    found2 = is_link_in_contention_domain(a_link_index2,a_contention_domain)
+    if found and found2:
+      return True    
+  return False
+        
+def tsn_sched_gen_add_nooverlap_constraint(contention_domains,message_streams,periods,routes,H,nmessages,s,f,sol):
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    message_index_range = range(0,nmessages[message_stream_index])
+    for message_index in message_index_range:
+      hop_index_range = range(0,len(routes[message_stream_index]))
+      for hop_index in hop_index_range:
+        for message_stream_index2 in message_stream_index_range:
+          message_index_range2 = range(0,nmessages[message_stream_index2])
+          for message_index2 in message_index_range2:
+            hop_index_range2 = range(0,len(routes[message_stream_index2]))
+            for hop_index2 in hop_index_range2:
+              if ((message_stream_index!=message_stream_index2) or (message_index!=message_index2)):
+                a_link_index  = routes[message_stream_index][hop_index]
+                a_link_index2 = routes[message_stream_index2][hop_index2]
+                there_is_contention = False
+                if (a_link_index==a_link_index2): 
+                  there_is_contention = True
+                else:
+                  if (are_links_in_same_contention_domain(a_link_index,a_link_index2,contention_domains)):
+                    there_is_contention = True                  
+                # if (a_link_index==a_link_index2): 
+                if there_is_contention: 
+                  sol.add(Or(f[message_stream_index][message_index][hop_index]<=s[message_stream_index2][message_index2][hop_index2],f[message_stream_index2][message_index2][hop_index2]<=s[message_stream_index][message_index][hop_index]))
+                  
+def tsn_sched_gen_add_mustfinishbeforesuccessorhop_constraint(message_streams,periods,routes,H,nmessages,s,f,sol):
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    message_index_range = range(0,nmessages[message_stream_index])
+    for message_index in message_index_range:
+      hop_index_range = range(0,len(routes[message_stream_index])-1)
+      for hop_index in hop_index_range:
+        sol.add(f[message_stream_index][message_index][hop_index] <= s[message_stream_index][message_index][hop_index+1])
+
+def tsn_sched_gen_add_muststartatorlaterthanarrival_constraint(message_streams,periods,H,nmessages,s,sol):
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    message_index_range = range(0,nmessages[message_stream_index])
+    for message_index in message_index_range:
+      hop_index = 0
+      sol.add(s[message_stream_index][message_index][hop_index] >= message_index*periods[message_stream_index])
+
+def tsn_sched_gen_add_mustmeetdeadline_constraint(message_streams,periods,deadlines,routes,H,nmessages,f,sol):
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    message_index_range = range(0,nmessages[message_stream_index])
+    for message_index in message_index_range:
+      hop_index = len(routes[message_stream_index])-1
+      sol.add(f[message_stream_index][message_index][hop_index] <= message_index*periods[message_stream_index]+deadlines[message_stream_index])
+
+def fill_start_time_finish_time(message_streams,periods,routes,H,nmessages,s,f,sol):
+  m = sol.model()
+  start_time  = create_empty_3D(message_streams,periods,routes,H,nmessages)
+  finish_time = create_empty_3D(message_streams,periods,routes,H,nmessages)  
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    message_index_range = range(0,nmessages[message_stream_index])
+    for message_index in message_index_range:
+      hop_index_range = range(0,len(routes[message_stream_index]))
+      for hop_index in hop_index_range:
+        start_time[message_stream_index][message_index][hop_index]  = get_float_from_z3_model(m[s[message_stream_index][message_index][hop_index]])
+        finish_time[message_stream_index][message_index][hop_index] = get_float_from_z3_model(m[f[message_stream_index][message_index][hop_index]])
+  return start_time,finish_time
+
+def tsn_sched_gen(network_nodes,network_links,contention_domains,linkspeeds,message_streams,periods,deadlines,data_payload,routes,timeunit):
+  H,nmessages = compute_lcm_nmessages(periods,timeunit)
+  s = tsn_sched_gen_add_s(message_streams,periods,routes,H,nmessages)
+  f = tsn_sched_gen_add_f(message_streams,periods,routes,H,nmessages)     
+  sol = Solver()
+  tsn_sched_gen_add_lb_and_ub_constraint_on_s(message_streams,periods,routes,H,nmessages,s,sol)
+  tsn_sched_gen_add_lb_and_ub_constraint_on_f(message_streams,periods,routes,H,nmessages,f,sol)
+  tsn_sched_gen_add_f_equals_s_plus_txtime_constraint(linkspeeds,message_streams,periods,data_payload,routes,H,nmessages,s,f,sol,timeunit)
+  tsn_sched_gen_add_nooverlap_constraint(contention_domains,message_streams,periods,routes,H,nmessages,s,f,sol)
+  tsn_sched_gen_add_mustfinishbeforesuccessorhop_constraint(message_streams,periods,routes,H,nmessages,s,f,sol)
+  tsn_sched_gen_add_muststartatorlaterthanarrival_constraint(message_streams,periods,H,nmessages,s,sol)
+  tsn_sched_gen_add_mustmeetdeadline_constraint(message_streams,periods,deadlines,routes,H,nmessages,f,sol)
+  if sol.check()==sat:
+    start_time,finish_time = fill_start_time_finish_time(message_streams,periods,routes,H,nmessages,s,f,sol)
+    return True,H,nmessages,start_time,finish_time 
+  else:
+    return False,H,nmessages,[],[] 
+
+# Code for plotting the schedule. To use this, you need to actually have a schedule first (i.e., you need
+#   to call tsn_sched_gen first)
+
+def plot_it(H,nmessages,start_time,finish_time,network_nodes,network_links,linkspeeds,message_streams,periods,deadlines,data_payload,routes,set_x_min_and_max,x_min,x_max,output_fn,timeunit):
+  count = 0
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    hop_index_range = range(0,len(routes[message_stream_index]))
+    for hop_index in hop_index_range:
+      count = count + 1
+  list_of_rectangles_per_row = [None] * count
+  list_of_y_pos_per_row      = [None] * count
+  list_of_yticks_pos_per_row = [None] * count
+  list_of_height_per_row     = [None] * count
+  list_of_labels_per_row     = [None] * count
+  tempindex = 0
+  y_pos = 10
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    hop_index_range = range(0,len(routes[message_stream_index]))
+    for hop_index in hop_index_range:
+      list_of_y_pos_per_row[tempindex] = y_pos
+      list_of_yticks_pos_per_row[tempindex] = y_pos+5
+      list_of_height_per_row[tempindex] = 9
+      label_str = str(message_stream_index)+"_"+str(routes[message_stream_index][hop_index])
+      list_of_labels_per_row[tempindex] = label_str
+      message_index_range = range(0,nmessages[message_stream_index])
+      templist = []
+      for message_index in message_index_range:
+        st = start_time[message_stream_index][message_index][hop_index]
+        du = finish_time[message_stream_index][message_index][hop_index]-start_time[message_stream_index][message_index][hop_index]
+        templist.append((st,du))
+      list_of_rectangles_per_row[tempindex] = templist
+      tempindex = tempindex + 1
+      y_pos = y_pos + 10 
+  list_of_y_pos_per_row.reverse()
+  list_of_yticks_pos_per_row.reverse()
+  fig, ax = plt.subplots()
+  tempindex = count-1
+  while (tempindex>=0):
+    ax.broken_barh(list_of_rectangles_per_row[tempindex], (list_of_y_pos_per_row[tempindex], list_of_height_per_row[tempindex]),facecolors='black')
+    tempindex = tempindex - 1
+  low_y  = min(list_of_yticks_pos_per_row)-10
+  high_y = max(list_of_yticks_pos_per_row)+10
+  ax.set_ylim(low_y, high_y)
+  if set_x_min_and_max:
+    ax.set_xlim(x_min,x_max)
+  else:
+    ax.set_xlim(-0.005*H,H)
+  time_unit_string = get_time_unit_string(timeunit)
+  ax.set_xlabel(time_unit_string)
+  list_of_labels_per_row.reverse()
+  list_of_yticks_pos_per_row.reverse()
+  ax.set_yticks(list_of_yticks_pos_per_row, labels=list_of_labels_per_row)     # Modify y-axis tick labels
+  ax.grid(False)                                       # Make grid lines visible
+  if timeunit==time_unit_is_s:
+    s = "TSN schedule generated for major frame " + '{0:.9f}'.format(H) + " "+str(time_unit_string)+".\n x_y means message stream x on link y."  
+  else:
+    s = "TSN schedule generated for major frame " + str(H) + " "+str(time_unit_string)+".\n x_y means message stream x on link y."
+  plt.title(s)
+  plt.show(block=False)
+  if output_fn!="":
+    fig.savefig(output_fn+".png")
+    fig.savefig(output_fn+".eps")
+    fig.savefig(output_fn+".pdf")
+    
+def print_failure_to_console(f,H,nmessages,start_time,finish_time):
+  print("Did not find a schedule")
+
+# Code that shows an example on how to use this software.
+
+#   The network below is derived from the example in Figure 3 in
+#     Yuanbin Zhou, Soheil Samii, Petru Eles, and Zebo Peng,
+#     "Time-Triggered Scheduling for Time-Sensitive Networking with Preemption"
+#   but with two changes (i) the 2nd link has slower speed, and (ii) there are 3 message streams.
+#   We consider a network with 6 nodes. These nodes are given indices 0,1,2,3,4,5.
+#   There are links between nodes. Specifically, there is
+#     * a link with index 0 and it goes from the node with index 0 to the node with index 1
+#     * a link with index 1 and it goes from the node with index 1 to the node with index 2
+#     ...
+#   There are three message streams. One message stream has index 0,
+#   another message stream has index 1, and yet another message stream has index 2.
+
+# Example where time is represented as integers.
+# Time is measured in microseconds
+
+# timeunit_hidden = time_unit_is_us
+# network_nodes      = [0,1,2,3,4,5]
+# network_links      = [      [0,1],      [1,2],      [2,3],      [3,4],      [3,5],      [0,2],       [1,0],       [2,0],       [2,1] ]
+# contention_domains_hidden = [ [0,1,5,6,7,8] ] # This means that links 0,1,5,6,7,8 contend for the same resource.
+#                                        # By looking at network_links, we obtain that this means that the
+#                                        # links [0,1], [1,2], [0,2], [1,0], [2,0], [2,1]
+#                                        # contend for the same resource
+#                                        # that is, there is a bus that connects node 0, 1, and 2
+# linkspeeds         = [ 0.19*Gbps, 0.19*Gbps,    10*Gbps,   10*Gbps,   10*Gbps]
+# message_streams    = [          0,          1,          2]
+# periods            = [        200,        300,        500]
+# deadlines          = [         15,         16,         26]
+# data_payload_hidden       = [         50,        100,        100] # bytes
+# routes             = [[0,1,2,3]  ,[0,1,2,4]  ,[0,1,2,4]  ] # these are links
+
+# f,H,nmessages,start_time,finish_time = tsn_sched_gen(network_nodes,network_links,contention_domains_hidden,linkspeeds,message_streams,periods,deadlines,data_payload_hidden,routes,timeunit_hidden)
+# if f:
+#   fh = open("schedule.txt","w")
+#   fh.write(str([H,nmessages,start_time,finish_time]))
+#   fh.close()
+#   fh = open("schedule.txt","r")
+#   [H,nmessages,start_time,finish_time] = ast.literal_eval(fh.read())
+#   fh.close()
+#   set_x_min_and_max = False
+#   x_min = 0
+#   x_max = 50
+#   plot_it(H,nmessages,start_time,finish_time,network_nodes,network_links,linkspeeds,message_streams,periods,deadlines,data_payload_hidden,routes,set_x_min_and_max,x_min,x_max,"figure",timeunit_hidden)
+#   for temp in range(0,10):
+#     set_x_min_and_max = True
+#     x_min = ( temp   *0.1)*H
+#     x_max = ((temp+1)*0.1)*H
+#     plot_it(H,nmessages,start_time,finish_time,network_nodes,network_links,linkspeeds,message_streams,periods,deadlines,data_payload_hidden,routes,set_x_min_and_max,x_min,x_max,"figure"+str(temp),timeunit_hidden)
+# else:   
+#   print_failure_to_console(f,H,nmessages,start_time,finish_time)
+
+def getConnectedProcessors(bus,connectedPairs):
+	procs = []
+	for i in range(len(connectedPairs)):
+		if connectedPairs[i][2] == bus:
+			procs.append(connectedPairs[i][1])
+	return procs
+
+def isTSNSchedulable(flowComponents,buses,processors,connectedPairs):
+	# flowComponents is [(f, f.name, f.latency, [(th, th.name, th.period, th.wcet, th.deadline)], [(conn, cnn.src, cnn.dst)])]
+	network_nodes=[]
+	proc2index={}
+	for i in range(len(processors)):
+		# print("processor(",processors[i],")")
+		proc2index[processors[i]] = i
+		network_nodes.append(i)
+	# for i in range(len(connectedPairs)):
+	#	print("connection(",connectedPairs[i][0],") src(",connectedPairs[i][1],") dst(",connectedPairs[i][2],")")
+	network_links=[]
+	contention_domains=[]
+	linkIndex = 0
+	link_speeds=[]
+	bus2index={}
+	for i in range(len(buses)):
+		procs = getConnectedProcessors(buses[i][0],connectedPairs)
+		#print("bus : ",buses[i][0])
+		bus2index[buses[i][0]]=i
+		#print("bus(",buses[i][0],") name(",buses[i][1],") transmission time(",buses[i][2],") procs(",procs,")")
+		procPair=[]
+		for j in range(len(procs)):
+			procPair.append(proc2index[procs[j]])
+		network_links.append(procPair)
+		contention_domains.append([linkIndex])
+		linkIndex += 1
+		# in Gbps: Translate from Transmission Time Per Byte == (8 * 1000,000,000) / X
+		link_speeds.append((8 * 1000000000)/buses[i][2])
+	message_streams = []
+	message_periods = []
+	message_deadlines = []
+	message_datasizes = []
+	message_routes = []
+	for i in range(len(flowComponents)):
+		#print("flow: name("+flowComponents[i][1]+"): ")
+		# just a sequential number for stream identifier?
+		message_streams.append(i)
+		threads = flowComponents[i][3]
+		connections = flowComponents[i][4]
+		#for j in range(len(threads)):
+		#	print("Thread[",threads[j][0],"]: name(",threads[j][1],") period(",threads[j][2],")")
+		route = []
+		addedPeriod = False		
+		for j in range(len(connections)):
+			if not addedPeriod:
+				addedPeriod = True
+				message_periods.append(int(connections[j][6]))
+				message_deadlines.append(int(connections[j][8]))
+				message_datasizes.append(int(connections[j][7]))
+			#print("Connection[",connections[j][0],"] name(",connections[j][3],") src(",connections[j][1],") dst(",connections[j][2],") latency (",connections[j][4],") link(",connections[j][5],") period(",connections[j][6],") datasize(",connections[j][7],")")
+			route.append(bus2index[connections[j][5][0]])
+		# add the route to all routes
+		message_routes.append(route)
+	# print all we have
+	# network_nodes   = [0,1,2,3,4,5]
+	# network_links   = [      [0,1],      [1,2],      [2,3],      [3,4],      [3,5]]
+	# link_speeds      = [       Gbps,   0.1*Gbps,       Gbps,       Gbps,       Gbps]
+	# message_streams = [          0,          1,          2]
+	# message_periods         = [        200,        300,        500]
+	# message_deadlines       = [         30,         30,         30]
+	# message_datasizes    = [         50,        100,        100] # bytes
+	# routes  
+	print("network_nodes: ",network_nodes)
+	print("network_links: ",network_links)
+	print("contention_domains: ",contention_domains)
+	print("link_speeds:", link_speeds)
+	print("message_streams: ",message_streams)
+	print("message_periods: ", message_periods)
+	print("message_deadlines: ", message_deadlines)
+	print("message_datasizes:", message_datasizes)
+	print("message routes: ", message_routes)
+	f,H,nmessages,start_time,finish_time = tsn_sched_gen(
+		network_nodes,
+		network_links,
+		contention_domains,
+		link_speeds,
+		message_streams,
+		message_periods,
+		message_deadlines,
+		message_datasizes,
+		message_routes,
+		time_unit_is_ns
+	)
+	return f
+`}
+
+	domain latency {
+		queries
+			val e2es = root.allEndToEndFlows;
+			val e2eCount = e2es.size;
+			val connections = root.allConnections;
+			val connectionTiming = connections.map { c -> c#Timing };
+			val connectionNames = connections.map { c -> c.name };
+			val connectedPairs = connections.filter{ c-> c.source.parent.isProcessor}.map{c->
+																							val src = c.source.parent;
+																							val dst = c.destination;
+																							(c,src,dst)
+																						};
+																						
+			val connCount = connections.size;
+			val processors = root.allComponents.filter{c->c.isProcessor}
+													.map{p-> 
+														p
+													};
+			val buses = root.allComponents.filter{b-> b.isBus}
+											.map{
+												b ->
+												val n = b.name;
+												val transtime = b#TSNProperties::BitsPerSecond;
+												val fixedMaxTransTime = b#Transmission_Time.flatMap{ b1 ->
+														b1.get(Fixed).map{ b2 -> b2.maximum.scaledTo(ns)} 
+													};
+												val perByteMaxTransTime = b#Transmission_time.flatMap {b1->
+														b1.get(PerByte).map{ b2 -> b2.maximum.scaledTo(ns)}
+													};
+												(b,n,perByteMaxTransTime)
+											};
+			
+			val flowComponents = e2es
+				.map { f -> 
+						val latency = f#Latency.map { l -> l.maximum }.map { l -> l.scaledTo(ns) };
+						val ts = f.components
+									.filter { c -> c.isThread }
+										.map { t -> 
+											val period = t#Period.map { v -> v.scaledTo(ns)};
+											val wcet = t#Compute_Execution_Time.map {cet -> cet.maximum.scaledTo(ns)};
+											val deadline = t#Deadline.map { v -> v.scaledTo(ns)};
+											(t, t.name, period, wcet, deadline)
+										};
+						val cs = f.connections.map { c ->
+														val src = c.source.parent; --.name;
+														val srcNode = src#Actual_Processor_Binding.map{v->v};
+														val dst = c.destination.parent; --.name;
+														val dstNode = dst#Actual_Processor_Binding.map{v->v};
+														val period = c.source.parent#Period.map {v -> v.scaledTo(ns)};
+														val deadline = c.source.parent#Deadline.map {v -> v.scaledTo(ns)};
+														val datasize = c.source#Data_Size.map{v->v.scaledTo(bytes)};
+														val n = c.name;
+														val lat = c#Latency.map{ l -> l.maximum}.map{l -> l.scaledTo(ns)};
+														val bus = c#Actual_Connection_Binding;
+													(c,srcNode,dstNode,n,lat,bus,period,datasize,deadline)
+													};
+						(f, f.name, latency, ts, cs)
+				};
+		declarations 
+			'''
+			E2EResponses = IntVector('e2eresponse', ${e2eCount$})
+			E2ELatencies = IntVector('e2elantency', ${e2eCount$})
+			DelayedConnections = BoolVector('delayconnection', ${connCount$})
+			'''
+	}
+	
+	contract TSNSchedulability{
+		domains
+			latency;
+		assumptions
+		guarantee
+			<=> `And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+		analysis
+			'''isTSNSchedulable(${latency::flowComponents$},${latency::buses$},${processors$},${connectedPairs$})''';
+	}
+		
+	verification plan verifyTSNSchedule{
+		component
+			s: SimpleTNSSchedulingExample::mysystem.i;
+		domains
+			latency;
+		claims
+			`And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+		contracts
+			TSNSchedulability;
+	} 
+	
+
+**};
+
+
+end TSNSchedulingContract;
