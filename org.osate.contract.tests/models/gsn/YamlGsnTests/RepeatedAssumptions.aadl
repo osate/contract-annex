@@ -1,0 +1,26 @@
+package RepeatedAssumptions
+public
+	annex contract {**
+		verification plan RepeatedAssumptions {
+			component
+				s: pkg1::s.i;
+			contracts
+				Contract1;
+				Contract2;
+		}
+		
+		contract Contract1 {
+			assumptions
+				`assumption1`;
+				`assumption2`;
+				`assumption3`;
+		}
+		
+		contract Contract2 {
+			assumptions
+				`assumption3()`;
+				`assumption4`;
+				`assumption4()`;
+		}
+	**};
+end RepeatedAssumptions;

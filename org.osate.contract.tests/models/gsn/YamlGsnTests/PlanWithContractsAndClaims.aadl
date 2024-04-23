@@ -1,0 +1,26 @@
+package PlanWithContractsAndClaims
+public
+	annex contract {**
+		verification plan PlanWithContractsAndClaims {
+			component
+				s: pkg1::s.i;
+			claims
+				`And([E2ESamplingJitter[i] <= E2ESamplingJitterTolerance[i] for i in range(len(E2ESamplingJitter))])`;
+				`And([Reliability[i]>=ReliabiiltyTarget[i] for i in range(len(Reliability))])`;
+				`And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+			contracts
+				Contract1;
+				Contract2;
+				Contract3;
+		}
+		
+		contract Contract1 {
+		}
+		
+		contract Contract2 {
+		}
+		
+		contract Contract3 {
+		}
+	**};
+end PlanWithContractsAndClaims;
