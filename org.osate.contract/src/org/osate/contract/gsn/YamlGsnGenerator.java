@@ -110,11 +110,14 @@ public final class YamlGsnGenerator {
 				  %inContextOf%
 				  %undeveloped%""", '%', '%');
 		template.add("name", contract.getName());
-		if (contract.getGuarantee() == null) {
+		var guarantee = contract.getGuarantee();
+		if (guarantee == null) {
 			template.add("text", contract.getName());
 		} else {
 			var symbol = contract.isExact() ? "<=>" : "=>";
-			template.add("text", symbol + ' ' + contract.getGuarantee().getCode().getSource());
+			var source = guarantee.getCode().getSource() != null ? guarantee.getCode().getSource()
+					: "TODO: Handle interpolated strings";
+			template.add("text", symbol + ' ' + source);
 		}
 
 		var supportedBy = new ArrayList<String>();
@@ -162,7 +165,7 @@ public final class YamlGsnGenerator {
 				  text: %text%
 				  nodeType: Assumption""", '%', '%');
 		template.add("name", getClaimName(claim, verificationPlan));
-		template.add("text", claim.getSource());
+		template.add("text", claim.getSource() != null ? claim.getSource() : "TODO: Handle interpolated strings");
 		return template.render();
 	}
 
@@ -180,7 +183,11 @@ public final class YamlGsnGenerator {
 	}
 
 	private static String getAssumptionName(CodeAssumption assumption) {
-		return trimParens(assumption.getCode().getSource());
+		if (assumption.getCode().getSource() != null) {
+			return trimParens(assumption.getCode().getSource());
+		} else {
+			return "TODO: Handle interpolated strings";
+		}
 	}
 
 	private static String generateAnalysis(String name) {
@@ -193,7 +200,11 @@ public final class YamlGsnGenerator {
 	}
 
 	private static String getAnalysisName(Analysis analysis) {
-		return trimParens(analysis.getCode().getSource());
+		if (analysis.getCode().getSource() != null) {
+			return trimParens(analysis.getCode().getSource());
+		} else {
+			return "TODO: Handle interpolated strings";
+		}
 	}
 
 	private static String trimParens(String s) {
