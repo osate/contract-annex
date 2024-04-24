@@ -801,20 +801,5 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 		analysis
 			'''areFlowsInSync1(${synchronization::flowComponents$},error0)''';
 	}
-
---	verification plan verifySynchronization {
---		component
---			s: EndToEndTimingExample::mysystem.i;
---		domains
---			synchronization;
---			reliability;
---		claims
---			`And([E2ESamplingJitter[i] <= E2ESamplingJitterTolerance[i] for i in range(len(E2ESamplingJitter))])`;
---			`And([Reliability[i]>=ReliabiiltyTarget[i] for i in range(len(Reliability))])`;
---		contracts
---			SamplingSynchronizationContract;
---			EndToEndDelayedCommunicationContract;
---			ReliabilityContract;
---	} 
 **};
 end FlowSynchronizationContract;
