@@ -10,6 +10,8 @@ import org.osate.contract.contract.Analysis;
 import org.osate.contract.contract.CodeAssumption;
 import org.osate.contract.contract.Contract;
 import org.osate.contract.contract.ContractAssumption;
+import org.osate.contract.contract.IStringLiteral;
+import org.osate.contract.contract.IStringVar;
 import org.osate.contract.contract.Source;
 import org.osate.contract.contract.VerificationPlan;
 import org.stringtemplate.v4.ST;
@@ -115,8 +117,7 @@ public final class YamlGsnGenerator {
 			template.add("text", contract.getName());
 		} else {
 			var symbol = contract.isExact() ? "<=>" : "=>";
-			var source = guarantee.getCode().getSource() != null ? guarantee.getCode().getSource()
-					: "TODO: Handle interpolated strings";
+			var source = toString(guarantee.getCode());
 			template.add("text", symbol + ' ' + source);
 		}
 
@@ -165,7 +166,7 @@ public final class YamlGsnGenerator {
 				  text: %text%
 				  nodeType: Assumption""", '%', '%');
 		template.add("name", getClaimName(claim, verificationPlan));
-		template.add("text", claim.getSource() != null ? claim.getSource() : "TODO: Handle interpolated strings");
+		template.add("text", toString(claim));
 		return template.render();
 	}
 
@@ -183,11 +184,7 @@ public final class YamlGsnGenerator {
 	}
 
 	private static String getAssumptionName(CodeAssumption assumption) {
-		if (assumption.getCode().getSource() != null) {
-			return trimParens(assumption.getCode().getSource());
-		} else {
-			return "TODO: Handle interpolated strings";
-		}
+		return trimParens(toString(assumption.getCode()));
 	}
 
 	private static String generateAnalysis(String name) {
@@ -200,10 +197,39 @@ public final class YamlGsnGenerator {
 	}
 
 	private static String getAnalysisName(Analysis analysis) {
-		if (analysis.getCode().getSource() != null) {
-			return trimParens(analysis.getCode().getSource());
+		return trimParens(toString(analysis.getCode()));
+	}
+
+	private static String toString(Source source) {
+		if (source.getSource() != null) {
+			return source.getSource();
+		} else if (source.getInter() != null) {
+			var result = new StringBuilder();
+			for (var part : source.getInter().getParts()) {
+				if (part instanceof IStringLiteral stringLiteral) {
+					result.append(stringLiteral.getValue());
+				} else if (part instanceof IStringVar stringVar) {
+					result.append("${");
+					if (stringVar.isDirect()) {
+						result.append(':');
+					}
+					if (stringVar.getQuery() != null) {
+						if (stringVar.getDomain() != null) {
+							result.append(stringVar.getDomain().getName());
+							result.append("::");
+						}
+						result.append(stringVar.getQuery().getName());
+					} else {
+						result.append(stringVar.getPredefined());
+					}
+					result.append("$}");
+				} else {
+					throw new AssertionError("Unexpected class: " + part.getClass());
+				}
+			}
+			return result.toString();
 		} else {
-			return "TODO: Handle interpolated strings";
+			throw new AssertionError("Unexpected condition: source and inter are both null for " + source);
 		}
 	}
 

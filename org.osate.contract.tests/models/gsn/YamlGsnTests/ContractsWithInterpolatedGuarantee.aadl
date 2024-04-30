@@ -1,0 +1,29 @@
+package ContractsWithInterpolatedGuarantee
+public
+	annex contract {**
+		verification plan ContractsWithInterpolatedGuarantee {
+			component
+				s: pkg1::s.i;
+			contracts
+				Contract1;
+				Contract2;
+		}
+		
+		contract Contract1 {
+			guarantee
+				<=> '''channelsAreImplementedCorrectly''';
+		}
+		
+		contract Contract2 {
+			domains
+				Counts;
+			guarantee
+				<=> '''And([actualCounts[i] >= requiredCounts[i] for i in range(${numFlatReqs$})])''';
+		}
+		
+		domain Counts {
+			queries
+				val numFlatReqs = self;
+		}
+	**};
+end ContractsWithInterpolatedGuarantee;

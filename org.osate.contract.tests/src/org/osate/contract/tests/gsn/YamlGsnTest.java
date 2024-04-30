@@ -521,4 +521,148 @@ public class YamlGsnTest {
 				  nodeType: Solution""";
 		assertEquals(expected, actual);
 	}
+
+	@Test
+	public void testAnalysisWithInterpolatedName() {
+		var pkg = testHelper.parseFile(PATH + "AnalysisWithInterpolatedName.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				AnalysisWithInterpolatedName:
+				  text: AnalysisWithInterpolatedName
+				  nodeType: Goal
+				  supportedBy: [Contract1]
+
+				Contract1:
+				  text: Contract1
+				  nodeType: Goal
+				  supportedBy: [isEdfDBFSchedulable]
+
+				isEdfDBFSchedulable:
+				  text: isEdfDBFSchedulable
+				  nodeType: Solution""";
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testAssumptionWithInterpolatedName() {
+		var pkg = testHelper.parseFile(PATH + "AssumptionWithInterpolatedName.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				AssumptionWithInterpolatedName:
+				  text: AssumptionWithInterpolatedName
+				  nodeType: Goal
+				  supportedBy: [Contract1]
+
+				Contract1:
+				  text: Contract1
+				  nodeType: Goal
+				  inContextOf: [areAllPrioritiesSet]
+
+				areAllPrioritiesSet:
+				  text: areAllPrioritiesSet
+				  nodeType: Assumption""";
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testContractsWithInterpolatedGuarantee() {
+		var pkg = testHelper.parseFile(PATH + "ContractsWithInterpolatedGuarantee.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				ContractsWithInterpolatedGuarantee:
+				  text: ContractsWithInterpolatedGuarantee
+				  nodeType: Goal
+				  supportedBy: [Contract1, Contract2]
+
+				Contract1:
+				  text: <=> channelsAreImplementedCorrectly
+				  nodeType: Goal
+				  undeveloped: true
+
+				Contract2:
+				  text: <=> And([actualCounts[i] >= requiredCounts[i] for i in range(${numFlatReqs$})])
+				  nodeType: Goal
+				  undeveloped: true""";
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testClaimWithInterpolatedName() {
+		var pkg = testHelper.parseFile(PATH + "ClaimWithInterpolatedName.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				ClaimWithInterpolatedName:
+				  text: ClaimWithInterpolatedName
+				  nodeType: Goal
+				  inContextOf: [ClaimWithInterpolatedName_claim_1]
+
+				ClaimWithInterpolatedName_claim_1:
+				  text: And([blpOkay, channelsAreImplementedCorrectly, connectionsAreBound])
+				  nodeType: Assumption""";
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testExhaustiveIStringVar() {
+		var pkg = testHelper.parseFile(PATH + "ExhaustiveIStringVar.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				ExhaustiveIStringVar:
+				  text: ExhaustiveIStringVar
+				  nodeType: Goal
+				  inContextOf: [ExhaustiveIStringVar_claim_1, ExhaustiveIStringVar_claim_2, ExhaustiveIStringVar_claim_3, ExhaustiveIStringVar_claim_4, ExhaustiveIStringVar_claim_5, ExhaustiveIStringVar_claim_6, ExhaustiveIStringVar_claim_7, ExhaustiveIStringVar_claim_8]
+
+				ExhaustiveIStringVar_claim_1:
+				  text: query(${query1$})
+				  nodeType: Assumption
+
+				ExhaustiveIStringVar_claim_2:
+				  text: directQuery(${:query1$})
+				  nodeType: Assumption
+
+				ExhaustiveIStringVar_claim_3:
+				  text: qualifiedQuery(${domain2::query2$})
+				  nodeType: Assumption
+
+				ExhaustiveIStringVar_claim_4:
+				  text: directQualifiedQuery(${:domain2::query2$})
+				  nodeType: Assumption
+
+				ExhaustiveIStringVar_claim_5:
+				  text: error(${error0$})
+				  nodeType: Assumption
+
+				ExhaustiveIStringVar_claim_6:
+				  text: directError(${:error0$})
+				  nodeType: Assumption
+
+				ExhaustiveIStringVar_claim_7:
+				  text: info(${info0$})
+				  nodeType: Assumption
+
+				ExhaustiveIStringVar_claim_8:
+				  text: directInfo(${:info0$})
+				  nodeType: Assumption""";
+		assertEquals(expected, actual);
+	}
 }

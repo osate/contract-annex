@@ -1,0 +1,30 @@
+package ExhaustiveIStringVar
+public
+	annex contract {**
+		verification plan ExhaustiveIStringVar {
+			component
+				s: pkg1::s.i;
+			domains
+				domain1;
+			claims
+				'''query(${query1$})''';
+				'''directQuery(${:query1$})''';
+				'''qualifiedQuery(${domain2::query2$})''';
+				'''directQualifiedQuery(${:domain2::query2$})''';
+				'''error(${error0$})''';
+				'''directError(${:error0$})''';
+				'''info(${info0$})''';
+				'''directInfo(${:info0$})''';
+		}
+		
+		domain domain1 {
+			queries
+				val query1 = self;
+		}
+		
+		domain domain2 {
+			queries
+				val query2 = self;
+		}
+	**};
+end ExhaustiveIStringVar;
