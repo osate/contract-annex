@@ -665,4 +665,61 @@ public class YamlGsnTest {
 				  nodeType: Assumption""";
 		assertEquals(expected, actual);
 	}
+
+	@Test
+	public void testContractWithOneArgument() {
+		var pkg = testHelper.parseFile(PATH + "ContractWithOneArgument.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				ContractWithOneArgument:
+				  text: ContractWithOneArgument
+				  nodeType: Goal
+				  supportedBy: [Contract1]
+
+				Contract1:
+				  text: Contract1
+				  nodeType: Goal
+				  supportedBy: [Argument1]
+
+				Argument1:
+				  text: Argument1
+				  nodeType: Goal
+				  undeveloped: true""";
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testArgumentWithGuarantee() {
+		var pkg = testHelper.parseFile(PATH + "ArgumentWithGuarantee.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				ArgumentWithGuarantee:
+				  text: ArgumentWithGuarantee
+				  nodeType: Goal
+				  supportedBy: [Contract1]
+
+				Contract1:
+				  text: Contract1
+				  nodeType: Goal
+				  supportedBy: [Argument1, Argument2]
+
+				Argument1:
+				  text: => And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument2:
+				  text: <=> And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])
+				  nodeType: Goal
+				  undeveloped: true""";
+		assertEquals(expected, actual);
+	}
 }

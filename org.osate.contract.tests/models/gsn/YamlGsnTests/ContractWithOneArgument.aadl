@@ -1,0 +1,19 @@
+package ContractWithOneArgument
+public
+	annex contract {**
+		verification plan ContractWithOneArgument {
+			component
+				s: pkg1::s.i;
+			contracts
+				Contract1;
+		}
+		
+		contract Contract1 {
+			assumptions
+				argument Argument1;
+		}
+		
+		argument Argument1 {
+		}
+	**};
+end ContractWithOneArgument;

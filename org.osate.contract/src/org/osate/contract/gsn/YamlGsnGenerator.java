@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import org.osate.aadl2.NamedElement;
 import org.osate.contract.contract.Analysis;
+import org.osate.contract.contract.Argument;
+import org.osate.contract.contract.ArgumentAssumption;
 import org.osate.contract.contract.CodeAssumption;
 import org.osate.contract.contract.Contract;
 import org.osate.contract.contract.ContractAssumption;
@@ -22,10 +24,11 @@ public final class YamlGsnGenerator {
 
 	public static String generateYamlGsn(VerificationPlan verificationPlan) {
 		var contracts = new LinkedHashSet<Contract>();
+		var arguments = new LinkedHashSet<Argument>();
 		var assumptions = new LinkedHashSet<String>();
 		var analyses = new LinkedHashSet<String>();
 		for (var contract : verificationPlan.getContracts()) {
-			collectNodes(contract, contracts, assumptions, analyses);
+			collectNodes(contract, contracts, arguments, assumptions, analyses);
 		}
 
 		var nodes = new ArrayList<String>();
@@ -35,6 +38,9 @@ public final class YamlGsnGenerator {
 		}
 		for (var contract : contracts) {
 			nodes.add(generateContract(contract));
+		}
+		for (var argument : arguments) {
+			nodes.add(generateArgument(argument));
 		}
 		for (var assumption : assumptions) {
 			nodes.add(generateAssumption(assumption));
@@ -46,13 +52,16 @@ public final class YamlGsnGenerator {
 		return nodes.stream().collect(Collectors.joining("\n\n"));
 	}
 
-	private static void collectNodes(Contract contract, Collection<Contract> contracts, Collection<String> assumptions,
-			Collection<String> analyses) {
+	private static void collectNodes(Contract contract, Collection<Contract> contracts, Collection<Argument> arguments,
+			Collection<String> assumptions, Collection<String> analyses) {
 		contracts.add(contract);
 		for (var assumption : contract.getAssumptions()) {
 			if (assumption instanceof ContractAssumption contractAssumption
 					&& contractAssumption.getContract() instanceof Contract referencedContract) {
-				collectNodes(referencedContract, contracts, assumptions, analyses);
+				collectNodes(referencedContract, contracts, arguments, assumptions, analyses);
+			} else if (assumption instanceof ArgumentAssumption argumentAssumption
+					&& argumentAssumption.getArgument() instanceof Argument referencedArgument) {
+				arguments.add(referencedArgument);
 			} else if (assumption instanceof CodeAssumption codeAssumption) {
 				assumptions.add(getAssumptionName(codeAssumption));
 			}
@@ -128,6 +137,9 @@ public final class YamlGsnGenerator {
 			if (assumption instanceof ContractAssumption contractAssumption
 					&& contractAssumption.getContract() instanceof Contract referencedContract) {
 				supportedBy.add(referencedContract.getName());
+			} else if (assumption instanceof ArgumentAssumption argumentAssumption
+					&& argumentAssumption.getArgument() instanceof Argument referencedArgument) {
+				supportedBy.add(referencedArgument.getName());
 			} else if (assumption instanceof CodeAssumption codeAssumption) {
 				inContextOf.add(getAssumptionName(codeAssumption));
 			}
@@ -158,6 +170,24 @@ public final class YamlGsnGenerator {
 
 		// The result is trimmed because there could be an extra line ending at the end if %undeveloped% is blank.
 		return template.render().trim();
+	}
+
+	private static String generateArgument(Argument argument) {
+		var template = new ST("""
+				%name%:
+				  text: %text%
+				  nodeType: Goal
+				  undeveloped: true""", '%', '%');
+		template.add("name", argument.getName());
+		var guarantee = argument.getGuarantee();
+		if (guarantee == null) {
+			template.add("text", argument.getName());
+		} else {
+			var symbol = argument.isExact() ? "<=>" : "=>";
+			var source = toString(guarantee.getCode());
+			template.add("text", symbol + ' ' + source);
+		}
+		return template.render();
 	}
 
 	private static String generateClaim(Source claim, VerificationPlan verificationPlan) {

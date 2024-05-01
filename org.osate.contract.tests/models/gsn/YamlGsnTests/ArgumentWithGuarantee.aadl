@@ -1,0 +1,27 @@
+package ArgumentWithGuarantee
+public
+	annex contract {**
+		verification plan ArgumentWithGuarantee {
+			component
+				s: pkg1::s.i;
+			contracts
+				Contract1;
+		}
+		
+		contract Contract1 {
+			assumptions
+				argument Argument1;
+				argument Argument2;
+		}
+		
+		argument Argument1 {
+			guarantee
+				=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+		}
+		
+		argument Argument2 {
+			guarantee
+				<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+		}
+	**};
+end ArgumentWithGuarantee;
