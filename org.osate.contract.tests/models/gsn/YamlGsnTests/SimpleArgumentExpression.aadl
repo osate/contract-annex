@@ -1,0 +1,32 @@
+package SimpleArgumentExpression
+public
+	annex contract {**
+		verification plan SimpleArgumentExpression {
+			component
+				s: pkg1::s.i;
+			contracts Contract1;
+		}
+		
+		contract Contract1 {
+			assumptions
+				argument Argument1;
+				argument Argument2;
+		}
+		
+		argument Argument1 {
+			argument
+				(contract Contract2);
+		}
+		
+		argument Argument2 {
+			argument
+				(argument Argument3);
+		}
+		
+		contract Contract2 {
+		}
+		
+		argument Argument3 {
+		}
+	**};
+end SimpleArgumentExpression;

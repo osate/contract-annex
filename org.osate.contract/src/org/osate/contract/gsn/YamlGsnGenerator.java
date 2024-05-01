@@ -8,7 +8,11 @@ import java.util.stream.Collectors;
 import org.osate.aadl2.NamedElement;
 import org.osate.contract.contract.Analysis;
 import org.osate.contract.contract.Argument;
+import org.osate.contract.contract.ArgumentAnd;
 import org.osate.contract.contract.ArgumentAssumption;
+import org.osate.contract.contract.ArgumentExpression;
+import org.osate.contract.contract.ArgumentNot;
+import org.osate.contract.contract.ArgumentOr;
 import org.osate.contract.contract.CodeAssumption;
 import org.osate.contract.contract.Contract;
 import org.osate.contract.contract.ContractAssumption;
@@ -61,13 +65,46 @@ public final class YamlGsnGenerator {
 				collectNodes(referencedContract, contracts, arguments, assumptions, analyses);
 			} else if (assumption instanceof ArgumentAssumption argumentAssumption
 					&& argumentAssumption.getArgument() instanceof Argument referencedArgument) {
-				arguments.add(referencedArgument);
+				collectNodes(referencedArgument, contracts, arguments, assumptions, analyses);
 			} else if (assumption instanceof CodeAssumption codeAssumption) {
 				assumptions.add(getAssumptionName(codeAssumption));
 			}
 		}
 		for (var analysis : contract.getAnalyses()) {
 			analyses.add(getAnalysisName(analysis));
+		}
+	}
+
+	private static void collectNodes(Argument argument, Collection<Contract> contracts,
+			Collection<Argument> arguments, Collection<String> assumptions, Collection<String> analyses) {
+		arguments.add(argument);
+		if (argument.getArgumentExpression() != null) {
+			collectNodes(argument.getArgumentExpression(), contracts, arguments, assumptions, analyses);
+		}
+	}
+
+	private static void collectNodes(ArgumentExpression expression, Collection<Contract> contracts,
+			Collection<Argument> arguments, Collection<String> assumptions, Collection<String> analyses) {
+		if (expression instanceof ArgumentAnd) {
+			// TODO
+		} else if (expression instanceof ArgumentOr) {
+			// TODO
+		} else if (expression instanceof ArgumentNot) {
+			// TODO
+		} else {
+			for (var element : expression.getContracts()) {
+				if (element instanceof Contract contract) {
+					collectNodes(contract, contracts, arguments, assumptions, analyses);
+				}
+			}
+			for (var element : expression.getArguments()) {
+				if (element instanceof Argument argument) {
+					collectNodes(argument, contracts, arguments, assumptions, analyses);
+				}
+			}
+			for (var nested : expression.getNested()) {
+				collectNodes(nested, contracts, arguments, assumptions, analyses);
+			}
 		}
 	}
 
@@ -120,7 +157,9 @@ public final class YamlGsnGenerator {
 				  %supportedBy%
 				  %inContextOf%
 				  %undeveloped%""", '%', '%');
+
 		template.add("name", contract.getName());
+
 		var guarantee = contract.getGuarantee();
 		if (guarantee == null) {
 			template.add("text", contract.getName());
@@ -177,8 +216,11 @@ public final class YamlGsnGenerator {
 				%name%:
 				  text: %text%
 				  nodeType: Goal
-				  undeveloped: true""", '%', '%');
+				  %supportedBy%
+				  %undeveloped%""", '%', '%');
+
 		template.add("name", argument.getName());
+
 		var guarantee = argument.getGuarantee();
 		if (guarantee == null) {
 			template.add("text", argument.getName());
@@ -187,7 +229,48 @@ public final class YamlGsnGenerator {
 			var source = toString(guarantee.getCode());
 			template.add("text", symbol + ' ' + source);
 		}
-		return template.render();
+
+		var supportedBy = new ArrayList<String>();
+
+		if (argument.getArgumentExpression() != null) {
+			collectSupportedBy(argument.getArgumentExpression(), supportedBy);
+		}
+
+		if (supportedBy.isEmpty()) {
+			template.add("supportedBy", "");
+			template.add("undeveloped", "undeveloped: true");
+		} else {
+			template.add("supportedBy",
+					supportedBy.stream().distinct().collect(Collectors.joining(", ", "supportedBy: [", "]")));
+			template.add("undeveloped", "");
+		}
+
+		// The result is trimmed because there could be an extra line ending at the end if %undeveloped% is blank.
+		return template.render().trim();
+	}
+
+	private static void collectSupportedBy(ArgumentExpression expression, Collection<String> supportedBy) {
+		if (expression instanceof ArgumentAnd) {
+			supportedBy.add("TODO: and");
+		} else if (expression instanceof ArgumentOr) {
+			supportedBy.add("TODO: or");
+		} else if (expression instanceof ArgumentNot) {
+			supportedBy.add("TODO: not");
+		} else {
+			for (var element : expression.getContracts()) {
+				if (element instanceof Contract contract) {
+					supportedBy.add(contract.getName());
+				}
+			}
+			for (var element : expression.getArguments()) {
+				if (element instanceof Argument argument) {
+					supportedBy.add(argument.getName());
+				}
+			}
+			for (var nested : expression.getNested()) {
+				collectSupportedBy(nested, supportedBy);
+			}
+		}
 	}
 
 	private static String generateClaim(Source claim, VerificationPlan verificationPlan) {
