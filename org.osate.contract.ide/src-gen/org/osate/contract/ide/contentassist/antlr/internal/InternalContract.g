@@ -548,9 +548,9 @@ ruleArgumentNot
 	}
 	:
 	(
-		{ before(grammarAccess.getArgumentNotAccess().getAlternatives()); }
-		(rule__ArgumentNot__Alternatives)
-		{ after(grammarAccess.getArgumentNotAccess().getAlternatives()); }
+		{ before(grammarAccess.getArgumentNotAccess().getGroup()); }
+		(rule__ArgumentNot__Group__0)
+		{ after(grammarAccess.getArgumentNotAccess().getGroup()); }
 	)
 ;
 finally {
@@ -2079,21 +2079,21 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ArgumentNot__Alternatives
+rule__ArgumentNot__Alternatives_2
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getArgumentNotAccess().getGroup_0()); }
-		(rule__ArgumentNot__Group_0__0)
-		{ after(grammarAccess.getArgumentNotAccess().getGroup_0()); }
+		{ before(grammarAccess.getArgumentNotAccess().getArgumentTermParserRuleCall_2_0()); }
+		ruleArgumentTerm
+		{ after(grammarAccess.getArgumentNotAccess().getArgumentTermParserRuleCall_2_0()); }
 	)
 	|
 	(
-		{ before(grammarAccess.getArgumentNotAccess().getGroup_1()); }
-		(rule__ArgumentNot__Group_1__0)
-		{ after(grammarAccess.getArgumentNotAccess().getGroup_1()); }
+		{ before(grammarAccess.getArgumentNotAccess().getGroup_2_1()); }
+		(rule__ArgumentNot__Group_2_1__0)
+		{ after(grammarAccess.getArgumentNotAccess().getGroup_2_1()); }
 	)
 ;
 finally {
@@ -5226,80 +5226,80 @@ finally {
 }
 
 
-rule__ArgumentNot__Group_0__0
+rule__ArgumentNot__Group__0
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ArgumentNot__Group_0__0__Impl
-	rule__ArgumentNot__Group_0__1
+	rule__ArgumentNot__Group__0__Impl
+	rule__ArgumentNot__Group__1
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ArgumentNot__Group_0__0__Impl
+rule__ArgumentNot__Group__0__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getArgumentNotAccess().getArgumentNotAction_0_0()); }
+	{ before(grammarAccess.getArgumentNotAccess().getArgumentNotAction_0()); }
 	()
-	{ after(grammarAccess.getArgumentNotAccess().getArgumentNotAction_0_0()); }
+	{ after(grammarAccess.getArgumentNotAccess().getArgumentNotAction_0()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ArgumentNot__Group_0__1
+rule__ArgumentNot__Group__1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ArgumentNot__Group_0__1__Impl
-	rule__ArgumentNot__Group_0__2
+	rule__ArgumentNot__Group__1__Impl
+	rule__ArgumentNot__Group__2
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ArgumentNot__Group_0__1__Impl
+rule__ArgumentNot__Group__1__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getArgumentNotAccess().getNotKeyword_0_1()); }
+	{ before(grammarAccess.getArgumentNotAccess().getNotKeyword_1()); }
 	'not'
-	{ after(grammarAccess.getArgumentNotAccess().getNotKeyword_0_1()); }
+	{ after(grammarAccess.getArgumentNotAccess().getNotKeyword_1()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ArgumentNot__Group_0__2
+rule__ArgumentNot__Group__2
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ArgumentNot__Group_0__2__Impl
+	rule__ArgumentNot__Group__2__Impl
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ArgumentNot__Group_0__2__Impl
+rule__ArgumentNot__Group__2__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getArgumentNotAccess().getArgumentTermParserRuleCall_0_2()); }
-	ruleArgumentTerm
-	{ after(grammarAccess.getArgumentNotAccess().getArgumentTermParserRuleCall_0_2()); }
+	{ before(grammarAccess.getArgumentNotAccess().getAlternatives_2()); }
+	(rule__ArgumentNot__Alternatives_2)
+	{ after(grammarAccess.getArgumentNotAccess().getAlternatives_2()); }
 )
 ;
 finally {
@@ -5307,80 +5307,80 @@ finally {
 }
 
 
-rule__ArgumentNot__Group_1__0
+rule__ArgumentNot__Group_2_1__0
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ArgumentNot__Group_1__0__Impl
-	rule__ArgumentNot__Group_1__1
+	rule__ArgumentNot__Group_2_1__0__Impl
+	rule__ArgumentNot__Group_2_1__1
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ArgumentNot__Group_1__0__Impl
+rule__ArgumentNot__Group_2_1__0__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getArgumentNotAccess().getLeftParenthesisKeyword_1_0()); }
+	{ before(grammarAccess.getArgumentNotAccess().getLeftParenthesisKeyword_2_1_0()); }
 	'('
-	{ after(grammarAccess.getArgumentNotAccess().getLeftParenthesisKeyword_1_0()); }
+	{ after(grammarAccess.getArgumentNotAccess().getLeftParenthesisKeyword_2_1_0()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ArgumentNot__Group_1__1
+rule__ArgumentNot__Group_2_1__1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ArgumentNot__Group_1__1__Impl
-	rule__ArgumentNot__Group_1__2
+	rule__ArgumentNot__Group_2_1__1__Impl
+	rule__ArgumentNot__Group_2_1__2
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ArgumentNot__Group_1__1__Impl
+rule__ArgumentNot__Group_2_1__1__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getArgumentNotAccess().getArgumentTermParserRuleCall_1_1()); }
+	{ before(grammarAccess.getArgumentNotAccess().getArgumentTermParserRuleCall_2_1_1()); }
 	ruleArgumentTerm
-	{ after(grammarAccess.getArgumentNotAccess().getArgumentTermParserRuleCall_1_1()); }
+	{ after(grammarAccess.getArgumentNotAccess().getArgumentTermParserRuleCall_2_1_1()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ArgumentNot__Group_1__2
+rule__ArgumentNot__Group_2_1__2
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__ArgumentNot__Group_1__2__Impl
+	rule__ArgumentNot__Group_2_1__2__Impl
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ArgumentNot__Group_1__2__Impl
+rule__ArgumentNot__Group_2_1__2__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getArgumentNotAccess().getRightParenthesisKeyword_1_2()); }
+	{ before(grammarAccess.getArgumentNotAccess().getRightParenthesisKeyword_2_1_2()); }
 	')'
-	{ after(grammarAccess.getArgumentNotAccess().getRightParenthesisKeyword_1_2()); }
+	{ after(grammarAccess.getArgumentNotAccess().getRightParenthesisKeyword_2_1_2()); }
 )
 ;
 finally {

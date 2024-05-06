@@ -48,6 +48,7 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected AbstractElementAlias match_Analyses_SemicolonKeyword_1_a;
 	protected AbstractElementAlias match_Analyses_SemicolonKeyword_1_p;
 	protected AbstractElementAlias match_ArgumentAnd_CommaKeyword_4_0_q;
+	protected AbstractElementAlias match_ArgumentNot_LeftParenthesisKeyword_2_1_0_q;
 	protected AbstractElementAlias match_ArgumentOr_CommaKeyword_4_0_q;
 	protected AbstractElementAlias match_Assumptions_SemicolonKeyword_1_a;
 	protected AbstractElementAlias match_Assumptions_SemicolonKeyword_1_p;
@@ -71,6 +72,7 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 		match_Analyses_SemicolonKeyword_1_a = new TokenAlias(true, true, grammarAccess.getAnalysesAccess().getSemicolonKeyword_1());
 		match_Analyses_SemicolonKeyword_1_p = new TokenAlias(true, false, grammarAccess.getAnalysesAccess().getSemicolonKeyword_1());
 		match_ArgumentAnd_CommaKeyword_4_0_q = new TokenAlias(false, true, grammarAccess.getArgumentAndAccess().getCommaKeyword_4_0());
+		match_ArgumentNot_LeftParenthesisKeyword_2_1_0_q = new TokenAlias(false, true, grammarAccess.getArgumentNotAccess().getLeftParenthesisKeyword_2_1_0());
 		match_ArgumentOr_CommaKeyword_4_0_q = new TokenAlias(false, true, grammarAccess.getArgumentOrAccess().getCommaKeyword_4_0());
 		match_Assumptions_SemicolonKeyword_1_a = new TokenAlias(true, true, grammarAccess.getAssumptionsAccess().getSemicolonKeyword_1());
 		match_Assumptions_SemicolonKeyword_1_p = new TokenAlias(true, false, grammarAccess.getAssumptionsAccess().getSemicolonKeyword_1());
@@ -160,6 +162,8 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_Analyses_SemicolonKeyword_1_p(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_ArgumentAnd_CommaKeyword_4_0_q.equals(syntax))
 				emit_ArgumentAnd_CommaKeyword_4_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_ArgumentNot_LeftParenthesisKeyword_2_1_0_q.equals(syntax))
+				emit_ArgumentNot_LeftParenthesisKeyword_2_1_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_ArgumentOr_CommaKeyword_4_0_q.equals(syntax))
 				emit_ArgumentOr_CommaKeyword_4_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_Assumptions_SemicolonKeyword_1_a.equals(syntax))
@@ -249,6 +253,22 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * </pre>
 	 */
 	protected void emit_ArgumentAnd_CommaKeyword_4_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * <pre>
+	 * Ambiguous syntax:
+	 *     '('?
+	 *
+	 * This ambiguous syntax occurs at:
+	 *     (rule start) 'not' (ambiguity) 'argument' arguments+=[ContractElement|QPREF]
+	 *     (rule start) 'not' (ambiguity) 'contract' contracts+=[ContractElement|QPREF]
+	 *     (rule start) 'not' (ambiguity) nested+=ArgumentExpression
+	 
+	 * </pre>
+	 */
+	protected void emit_ArgumentNot_LeftParenthesisKeyword_2_1_0_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

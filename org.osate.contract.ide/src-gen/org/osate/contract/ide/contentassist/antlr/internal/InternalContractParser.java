@@ -1658,31 +1658,31 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "ruleArgumentNot"
-    // InternalContract.g:545:1: ruleArgumentNot : ( ( rule__ArgumentNot__Alternatives ) ) ;
+    // InternalContract.g:545:1: ruleArgumentNot : ( ( rule__ArgumentNot__Group__0 ) ) ;
     public final void ruleArgumentNot() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:549:2: ( ( ( rule__ArgumentNot__Alternatives ) ) )
-            // InternalContract.g:550:2: ( ( rule__ArgumentNot__Alternatives ) )
+            // InternalContract.g:549:2: ( ( ( rule__ArgumentNot__Group__0 ) ) )
+            // InternalContract.g:550:2: ( ( rule__ArgumentNot__Group__0 ) )
             {
-            // InternalContract.g:550:2: ( ( rule__ArgumentNot__Alternatives ) )
-            // InternalContract.g:551:3: ( rule__ArgumentNot__Alternatives )
+            // InternalContract.g:550:2: ( ( rule__ArgumentNot__Group__0 ) )
+            // InternalContract.g:551:3: ( rule__ArgumentNot__Group__0 )
             {
-             before(grammarAccess.getArgumentNotAccess().getAlternatives()); 
-            // InternalContract.g:552:3: ( rule__ArgumentNot__Alternatives )
-            // InternalContract.g:552:4: rule__ArgumentNot__Alternatives
+             before(grammarAccess.getArgumentNotAccess().getGroup()); 
+            // InternalContract.g:552:3: ( rule__ArgumentNot__Group__0 )
+            // InternalContract.g:552:4: rule__ArgumentNot__Group__0
             {
             pushFollow(FOLLOW_2);
-            rule__ArgumentNot__Alternatives();
+            rule__ArgumentNot__Group__0();
 
             state._fsp--;
 
 
             }
 
-             after(grammarAccess.getArgumentNotAccess().getAlternatives()); 
+             after(grammarAccess.getArgumentNotAccess().getGroup()); 
 
             }
 
@@ -6440,7 +6440,6 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
                 alt11=2;
                 }
                 break;
-            case 47:
             case 51:
                 {
                 alt11=3;
@@ -6528,18 +6527,18 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
     // $ANTLR end "rule__ArgumentExpression__Alternatives"
 
 
-    // $ANTLR start "rule__ArgumentNot__Alternatives"
-    // InternalContract.g:2082:1: rule__ArgumentNot__Alternatives : ( ( ( rule__ArgumentNot__Group_0__0 ) ) | ( ( rule__ArgumentNot__Group_1__0 ) ) );
-    public final void rule__ArgumentNot__Alternatives() throws RecognitionException {
+    // $ANTLR start "rule__ArgumentNot__Alternatives_2"
+    // InternalContract.g:2082:1: rule__ArgumentNot__Alternatives_2 : ( ( ruleArgumentTerm ) | ( ( rule__ArgumentNot__Group_2_1__0 ) ) );
+    public final void rule__ArgumentNot__Alternatives_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:2086:1: ( ( ( rule__ArgumentNot__Group_0__0 ) ) | ( ( rule__ArgumentNot__Group_1__0 ) ) )
+            // InternalContract.g:2086:1: ( ( ruleArgumentTerm ) | ( ( rule__ArgumentNot__Group_2_1__0 ) ) )
             int alt12=2;
             int LA12_0 = input.LA(1);
 
-            if ( (LA12_0==51) ) {
+            if ( (LA12_0==33||LA12_0==42||LA12_0==46||(LA12_0>=50 && LA12_0<=51)) ) {
                 alt12=1;
             }
             else if ( (LA12_0==47) ) {
@@ -6553,24 +6552,18 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
             }
             switch (alt12) {
                 case 1 :
-                    // InternalContract.g:2087:2: ( ( rule__ArgumentNot__Group_0__0 ) )
+                    // InternalContract.g:2087:2: ( ruleArgumentTerm )
                     {
-                    // InternalContract.g:2087:2: ( ( rule__ArgumentNot__Group_0__0 ) )
-                    // InternalContract.g:2088:3: ( rule__ArgumentNot__Group_0__0 )
+                    // InternalContract.g:2087:2: ( ruleArgumentTerm )
+                    // InternalContract.g:2088:3: ruleArgumentTerm
                     {
-                     before(grammarAccess.getArgumentNotAccess().getGroup_0()); 
-                    // InternalContract.g:2089:3: ( rule__ArgumentNot__Group_0__0 )
-                    // InternalContract.g:2089:4: rule__ArgumentNot__Group_0__0
-                    {
+                     before(grammarAccess.getArgumentNotAccess().getArgumentTermParserRuleCall_2_0()); 
                     pushFollow(FOLLOW_2);
-                    rule__ArgumentNot__Group_0__0();
+                    ruleArgumentTerm();
 
                     state._fsp--;
 
-
-                    }
-
-                     after(grammarAccess.getArgumentNotAccess().getGroup_0()); 
+                     after(grammarAccess.getArgumentNotAccess().getArgumentTermParserRuleCall_2_0()); 
 
                     }
 
@@ -6578,24 +6571,24 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
                     }
                     break;
                 case 2 :
-                    // InternalContract.g:2093:2: ( ( rule__ArgumentNot__Group_1__0 ) )
+                    // InternalContract.g:2093:2: ( ( rule__ArgumentNot__Group_2_1__0 ) )
                     {
-                    // InternalContract.g:2093:2: ( ( rule__ArgumentNot__Group_1__0 ) )
-                    // InternalContract.g:2094:3: ( rule__ArgumentNot__Group_1__0 )
+                    // InternalContract.g:2093:2: ( ( rule__ArgumentNot__Group_2_1__0 ) )
+                    // InternalContract.g:2094:3: ( rule__ArgumentNot__Group_2_1__0 )
                     {
-                     before(grammarAccess.getArgumentNotAccess().getGroup_1()); 
-                    // InternalContract.g:2095:3: ( rule__ArgumentNot__Group_1__0 )
-                    // InternalContract.g:2095:4: rule__ArgumentNot__Group_1__0
+                     before(grammarAccess.getArgumentNotAccess().getGroup_2_1()); 
+                    // InternalContract.g:2095:3: ( rule__ArgumentNot__Group_2_1__0 )
+                    // InternalContract.g:2095:4: rule__ArgumentNot__Group_2_1__0
                     {
                     pushFollow(FOLLOW_2);
-                    rule__ArgumentNot__Group_1__0();
+                    rule__ArgumentNot__Group_2_1__0();
 
                     state._fsp--;
 
 
                     }
 
-                     after(grammarAccess.getArgumentNotAccess().getGroup_1()); 
+                     after(grammarAccess.getArgumentNotAccess().getGroup_2_1()); 
 
                     }
 
@@ -6616,7 +6609,7 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
         }
         return ;
     }
-    // $ANTLR end "rule__ArgumentNot__Alternatives"
+    // $ANTLR end "rule__ArgumentNot__Alternatives_2"
 
 
     // $ANTLR start "rule__ArgumentTerm__Alternatives"
@@ -6640,7 +6633,6 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
                 }
                 break;
             case 46:
-            case 47:
             case 50:
             case 51:
                 {
@@ -15535,7 +15527,7 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
                 int alt50=2;
                 int LA50_0 = input.LA(1);
 
-                if ( (LA50_0==33||LA50_0==42||(LA50_0>=46 && LA50_0<=47)||(LA50_0>=49 && LA50_0<=51)) ) {
+                if ( (LA50_0==33||LA50_0==42||LA50_0==46||(LA50_0>=49 && LA50_0<=51)) ) {
                     alt50=1;
                 }
 
@@ -16178,7 +16170,7 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
                 int alt52=2;
                 int LA52_0 = input.LA(1);
 
-                if ( (LA52_0==33||LA52_0==42||(LA52_0>=46 && LA52_0<=47)||(LA52_0>=49 && LA52_0<=51)) ) {
+                if ( (LA52_0==33||LA52_0==42||LA52_0==46||(LA52_0>=49 && LA52_0<=51)) ) {
                     alt52=1;
                 }
 
@@ -16459,23 +16451,23 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
     // $ANTLR end "rule__ArgumentOr__Group_4__1__Impl"
 
 
-    // $ANTLR start "rule__ArgumentNot__Group_0__0"
-    // InternalContract.g:5229:1: rule__ArgumentNot__Group_0__0 : rule__ArgumentNot__Group_0__0__Impl rule__ArgumentNot__Group_0__1 ;
-    public final void rule__ArgumentNot__Group_0__0() throws RecognitionException {
+    // $ANTLR start "rule__ArgumentNot__Group__0"
+    // InternalContract.g:5229:1: rule__ArgumentNot__Group__0 : rule__ArgumentNot__Group__0__Impl rule__ArgumentNot__Group__1 ;
+    public final void rule__ArgumentNot__Group__0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:5233:1: ( rule__ArgumentNot__Group_0__0__Impl rule__ArgumentNot__Group_0__1 )
-            // InternalContract.g:5234:2: rule__ArgumentNot__Group_0__0__Impl rule__ArgumentNot__Group_0__1
+            // InternalContract.g:5233:1: ( rule__ArgumentNot__Group__0__Impl rule__ArgumentNot__Group__1 )
+            // InternalContract.g:5234:2: rule__ArgumentNot__Group__0__Impl rule__ArgumentNot__Group__1
             {
-            pushFollow(FOLLOW_32);
-            rule__ArgumentNot__Group_0__0__Impl();
+            pushFollow(FOLLOW_24);
+            rule__ArgumentNot__Group__0__Impl();
 
             state._fsp--;
 
             pushFollow(FOLLOW_2);
-            rule__ArgumentNot__Group_0__1();
+            rule__ArgumentNot__Group__1();
 
             state._fsp--;
 
@@ -16494,12 +16486,12 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
         }
         return ;
     }
-    // $ANTLR end "rule__ArgumentNot__Group_0__0"
+    // $ANTLR end "rule__ArgumentNot__Group__0"
 
 
-    // $ANTLR start "rule__ArgumentNot__Group_0__0__Impl"
-    // InternalContract.g:5241:1: rule__ArgumentNot__Group_0__0__Impl : ( () ) ;
-    public final void rule__ArgumentNot__Group_0__0__Impl() throws RecognitionException {
+    // $ANTLR start "rule__ArgumentNot__Group__0__Impl"
+    // InternalContract.g:5241:1: rule__ArgumentNot__Group__0__Impl : ( () ) ;
+    public final void rule__ArgumentNot__Group__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -16510,13 +16502,13 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
             // InternalContract.g:5246:1: ( () )
             // InternalContract.g:5247:2: ()
             {
-             before(grammarAccess.getArgumentNotAccess().getArgumentNotAction_0_0()); 
+             before(grammarAccess.getArgumentNotAccess().getArgumentNotAction_0()); 
             // InternalContract.g:5248:2: ()
             // InternalContract.g:5248:3: 
             {
             }
 
-             after(grammarAccess.getArgumentNotAccess().getArgumentNotAction_0_0()); 
+             after(grammarAccess.getArgumentNotAccess().getArgumentNotAction_0()); 
 
             }
 
@@ -16531,26 +16523,26 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
         }
         return ;
     }
-    // $ANTLR end "rule__ArgumentNot__Group_0__0__Impl"
+    // $ANTLR end "rule__ArgumentNot__Group__0__Impl"
 
 
-    // $ANTLR start "rule__ArgumentNot__Group_0__1"
-    // InternalContract.g:5256:1: rule__ArgumentNot__Group_0__1 : rule__ArgumentNot__Group_0__1__Impl rule__ArgumentNot__Group_0__2 ;
-    public final void rule__ArgumentNot__Group_0__1() throws RecognitionException {
+    // $ANTLR start "rule__ArgumentNot__Group__1"
+    // InternalContract.g:5256:1: rule__ArgumentNot__Group__1 : rule__ArgumentNot__Group__1__Impl rule__ArgumentNot__Group__2 ;
+    public final void rule__ArgumentNot__Group__1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:5260:1: ( rule__ArgumentNot__Group_0__1__Impl rule__ArgumentNot__Group_0__2 )
-            // InternalContract.g:5261:2: rule__ArgumentNot__Group_0__1__Impl rule__ArgumentNot__Group_0__2
+            // InternalContract.g:5260:1: ( rule__ArgumentNot__Group__1__Impl rule__ArgumentNot__Group__2 )
+            // InternalContract.g:5261:2: rule__ArgumentNot__Group__1__Impl rule__ArgumentNot__Group__2
             {
-            pushFollow(FOLLOW_27);
-            rule__ArgumentNot__Group_0__1__Impl();
+            pushFollow(FOLLOW_32);
+            rule__ArgumentNot__Group__1__Impl();
 
             state._fsp--;
 
             pushFollow(FOLLOW_2);
-            rule__ArgumentNot__Group_0__2();
+            rule__ArgumentNot__Group__2();
 
             state._fsp--;
 
@@ -16569,12 +16561,12 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
         }
         return ;
     }
-    // $ANTLR end "rule__ArgumentNot__Group_0__1"
+    // $ANTLR end "rule__ArgumentNot__Group__1"
 
 
-    // $ANTLR start "rule__ArgumentNot__Group_0__1__Impl"
-    // InternalContract.g:5268:1: rule__ArgumentNot__Group_0__1__Impl : ( 'not' ) ;
-    public final void rule__ArgumentNot__Group_0__1__Impl() throws RecognitionException {
+    // $ANTLR start "rule__ArgumentNot__Group__1__Impl"
+    // InternalContract.g:5268:1: rule__ArgumentNot__Group__1__Impl : ( 'not' ) ;
+    public final void rule__ArgumentNot__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -16585,9 +16577,9 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
             // InternalContract.g:5273:1: ( 'not' )
             // InternalContract.g:5274:2: 'not'
             {
-             before(grammarAccess.getArgumentNotAccess().getNotKeyword_0_1()); 
+             before(grammarAccess.getArgumentNotAccess().getNotKeyword_1()); 
             match(input,51,FOLLOW_2); 
-             after(grammarAccess.getArgumentNotAccess().getNotKeyword_0_1()); 
+             after(grammarAccess.getArgumentNotAccess().getNotKeyword_1()); 
 
             }
 
@@ -16606,21 +16598,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
         }
         return ;
     }
-    // $ANTLR end "rule__ArgumentNot__Group_0__1__Impl"
+    // $ANTLR end "rule__ArgumentNot__Group__1__Impl"
 
 
-    // $ANTLR start "rule__ArgumentNot__Group_0__2"
-    // InternalContract.g:5283:1: rule__ArgumentNot__Group_0__2 : rule__ArgumentNot__Group_0__2__Impl ;
-    public final void rule__ArgumentNot__Group_0__2() throws RecognitionException {
+    // $ANTLR start "rule__ArgumentNot__Group__2"
+    // InternalContract.g:5283:1: rule__ArgumentNot__Group__2 : rule__ArgumentNot__Group__2__Impl ;
+    public final void rule__ArgumentNot__Group__2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:5287:1: ( rule__ArgumentNot__Group_0__2__Impl )
-            // InternalContract.g:5288:2: rule__ArgumentNot__Group_0__2__Impl
+            // InternalContract.g:5287:1: ( rule__ArgumentNot__Group__2__Impl )
+            // InternalContract.g:5288:2: rule__ArgumentNot__Group__2__Impl
             {
             pushFollow(FOLLOW_2);
-            rule__ArgumentNot__Group_0__2__Impl();
+            rule__ArgumentNot__Group__2__Impl();
 
             state._fsp--;
 
@@ -16639,29 +16631,35 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
         }
         return ;
     }
-    // $ANTLR end "rule__ArgumentNot__Group_0__2"
+    // $ANTLR end "rule__ArgumentNot__Group__2"
 
 
-    // $ANTLR start "rule__ArgumentNot__Group_0__2__Impl"
-    // InternalContract.g:5294:1: rule__ArgumentNot__Group_0__2__Impl : ( ruleArgumentTerm ) ;
-    public final void rule__ArgumentNot__Group_0__2__Impl() throws RecognitionException {
+    // $ANTLR start "rule__ArgumentNot__Group__2__Impl"
+    // InternalContract.g:5294:1: rule__ArgumentNot__Group__2__Impl : ( ( rule__ArgumentNot__Alternatives_2 ) ) ;
+    public final void rule__ArgumentNot__Group__2__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:5298:1: ( ( ruleArgumentTerm ) )
-            // InternalContract.g:5299:1: ( ruleArgumentTerm )
+            // InternalContract.g:5298:1: ( ( ( rule__ArgumentNot__Alternatives_2 ) ) )
+            // InternalContract.g:5299:1: ( ( rule__ArgumentNot__Alternatives_2 ) )
             {
-            // InternalContract.g:5299:1: ( ruleArgumentTerm )
-            // InternalContract.g:5300:2: ruleArgumentTerm
+            // InternalContract.g:5299:1: ( ( rule__ArgumentNot__Alternatives_2 ) )
+            // InternalContract.g:5300:2: ( rule__ArgumentNot__Alternatives_2 )
             {
-             before(grammarAccess.getArgumentNotAccess().getArgumentTermParserRuleCall_0_2()); 
+             before(grammarAccess.getArgumentNotAccess().getAlternatives_2()); 
+            // InternalContract.g:5301:2: ( rule__ArgumentNot__Alternatives_2 )
+            // InternalContract.g:5301:3: rule__ArgumentNot__Alternatives_2
+            {
             pushFollow(FOLLOW_2);
-            ruleArgumentTerm();
+            rule__ArgumentNot__Alternatives_2();
 
             state._fsp--;
 
-             after(grammarAccess.getArgumentNotAccess().getArgumentTermParserRuleCall_0_2()); 
+
+            }
+
+             after(grammarAccess.getArgumentNotAccess().getAlternatives_2()); 
 
             }
 
@@ -16680,26 +16678,26 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
         }
         return ;
     }
-    // $ANTLR end "rule__ArgumentNot__Group_0__2__Impl"
+    // $ANTLR end "rule__ArgumentNot__Group__2__Impl"
 
 
-    // $ANTLR start "rule__ArgumentNot__Group_1__0"
-    // InternalContract.g:5310:1: rule__ArgumentNot__Group_1__0 : rule__ArgumentNot__Group_1__0__Impl rule__ArgumentNot__Group_1__1 ;
-    public final void rule__ArgumentNot__Group_1__0() throws RecognitionException {
+    // $ANTLR start "rule__ArgumentNot__Group_2_1__0"
+    // InternalContract.g:5310:1: rule__ArgumentNot__Group_2_1__0 : rule__ArgumentNot__Group_2_1__0__Impl rule__ArgumentNot__Group_2_1__1 ;
+    public final void rule__ArgumentNot__Group_2_1__0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:5314:1: ( rule__ArgumentNot__Group_1__0__Impl rule__ArgumentNot__Group_1__1 )
-            // InternalContract.g:5315:2: rule__ArgumentNot__Group_1__0__Impl rule__ArgumentNot__Group_1__1
+            // InternalContract.g:5314:1: ( rule__ArgumentNot__Group_2_1__0__Impl rule__ArgumentNot__Group_2_1__1 )
+            // InternalContract.g:5315:2: rule__ArgumentNot__Group_2_1__0__Impl rule__ArgumentNot__Group_2_1__1
             {
             pushFollow(FOLLOW_27);
-            rule__ArgumentNot__Group_1__0__Impl();
+            rule__ArgumentNot__Group_2_1__0__Impl();
 
             state._fsp--;
 
             pushFollow(FOLLOW_2);
-            rule__ArgumentNot__Group_1__1();
+            rule__ArgumentNot__Group_2_1__1();
 
             state._fsp--;
 
@@ -16718,12 +16716,12 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
         }
         return ;
     }
-    // $ANTLR end "rule__ArgumentNot__Group_1__0"
+    // $ANTLR end "rule__ArgumentNot__Group_2_1__0"
 
 
-    // $ANTLR start "rule__ArgumentNot__Group_1__0__Impl"
-    // InternalContract.g:5322:1: rule__ArgumentNot__Group_1__0__Impl : ( '(' ) ;
-    public final void rule__ArgumentNot__Group_1__0__Impl() throws RecognitionException {
+    // $ANTLR start "rule__ArgumentNot__Group_2_1__0__Impl"
+    // InternalContract.g:5322:1: rule__ArgumentNot__Group_2_1__0__Impl : ( '(' ) ;
+    public final void rule__ArgumentNot__Group_2_1__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -16734,9 +16732,9 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
             // InternalContract.g:5327:1: ( '(' )
             // InternalContract.g:5328:2: '('
             {
-             before(grammarAccess.getArgumentNotAccess().getLeftParenthesisKeyword_1_0()); 
+             before(grammarAccess.getArgumentNotAccess().getLeftParenthesisKeyword_2_1_0()); 
             match(input,47,FOLLOW_2); 
-             after(grammarAccess.getArgumentNotAccess().getLeftParenthesisKeyword_1_0()); 
+             after(grammarAccess.getArgumentNotAccess().getLeftParenthesisKeyword_2_1_0()); 
 
             }
 
@@ -16755,26 +16753,26 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
         }
         return ;
     }
-    // $ANTLR end "rule__ArgumentNot__Group_1__0__Impl"
+    // $ANTLR end "rule__ArgumentNot__Group_2_1__0__Impl"
 
 
-    // $ANTLR start "rule__ArgumentNot__Group_1__1"
-    // InternalContract.g:5337:1: rule__ArgumentNot__Group_1__1 : rule__ArgumentNot__Group_1__1__Impl rule__ArgumentNot__Group_1__2 ;
-    public final void rule__ArgumentNot__Group_1__1() throws RecognitionException {
+    // $ANTLR start "rule__ArgumentNot__Group_2_1__1"
+    // InternalContract.g:5337:1: rule__ArgumentNot__Group_2_1__1 : rule__ArgumentNot__Group_2_1__1__Impl rule__ArgumentNot__Group_2_1__2 ;
+    public final void rule__ArgumentNot__Group_2_1__1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:5341:1: ( rule__ArgumentNot__Group_1__1__Impl rule__ArgumentNot__Group_1__2 )
-            // InternalContract.g:5342:2: rule__ArgumentNot__Group_1__1__Impl rule__ArgumentNot__Group_1__2
+            // InternalContract.g:5341:1: ( rule__ArgumentNot__Group_2_1__1__Impl rule__ArgumentNot__Group_2_1__2 )
+            // InternalContract.g:5342:2: rule__ArgumentNot__Group_2_1__1__Impl rule__ArgumentNot__Group_2_1__2
             {
             pushFollow(FOLLOW_33);
-            rule__ArgumentNot__Group_1__1__Impl();
+            rule__ArgumentNot__Group_2_1__1__Impl();
 
             state._fsp--;
 
             pushFollow(FOLLOW_2);
-            rule__ArgumentNot__Group_1__2();
+            rule__ArgumentNot__Group_2_1__2();
 
             state._fsp--;
 
@@ -16793,12 +16791,12 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
         }
         return ;
     }
-    // $ANTLR end "rule__ArgumentNot__Group_1__1"
+    // $ANTLR end "rule__ArgumentNot__Group_2_1__1"
 
 
-    // $ANTLR start "rule__ArgumentNot__Group_1__1__Impl"
-    // InternalContract.g:5349:1: rule__ArgumentNot__Group_1__1__Impl : ( ruleArgumentTerm ) ;
-    public final void rule__ArgumentNot__Group_1__1__Impl() throws RecognitionException {
+    // $ANTLR start "rule__ArgumentNot__Group_2_1__1__Impl"
+    // InternalContract.g:5349:1: rule__ArgumentNot__Group_2_1__1__Impl : ( ruleArgumentTerm ) ;
+    public final void rule__ArgumentNot__Group_2_1__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -16809,13 +16807,13 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
             // InternalContract.g:5354:1: ( ruleArgumentTerm )
             // InternalContract.g:5355:2: ruleArgumentTerm
             {
-             before(grammarAccess.getArgumentNotAccess().getArgumentTermParserRuleCall_1_1()); 
+             before(grammarAccess.getArgumentNotAccess().getArgumentTermParserRuleCall_2_1_1()); 
             pushFollow(FOLLOW_2);
             ruleArgumentTerm();
 
             state._fsp--;
 
-             after(grammarAccess.getArgumentNotAccess().getArgumentTermParserRuleCall_1_1()); 
+             after(grammarAccess.getArgumentNotAccess().getArgumentTermParserRuleCall_2_1_1()); 
 
             }
 
@@ -16834,21 +16832,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
         }
         return ;
     }
-    // $ANTLR end "rule__ArgumentNot__Group_1__1__Impl"
+    // $ANTLR end "rule__ArgumentNot__Group_2_1__1__Impl"
 
 
-    // $ANTLR start "rule__ArgumentNot__Group_1__2"
-    // InternalContract.g:5364:1: rule__ArgumentNot__Group_1__2 : rule__ArgumentNot__Group_1__2__Impl ;
-    public final void rule__ArgumentNot__Group_1__2() throws RecognitionException {
+    // $ANTLR start "rule__ArgumentNot__Group_2_1__2"
+    // InternalContract.g:5364:1: rule__ArgumentNot__Group_2_1__2 : rule__ArgumentNot__Group_2_1__2__Impl ;
+    public final void rule__ArgumentNot__Group_2_1__2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:5368:1: ( rule__ArgumentNot__Group_1__2__Impl )
-            // InternalContract.g:5369:2: rule__ArgumentNot__Group_1__2__Impl
+            // InternalContract.g:5368:1: ( rule__ArgumentNot__Group_2_1__2__Impl )
+            // InternalContract.g:5369:2: rule__ArgumentNot__Group_2_1__2__Impl
             {
             pushFollow(FOLLOW_2);
-            rule__ArgumentNot__Group_1__2__Impl();
+            rule__ArgumentNot__Group_2_1__2__Impl();
 
             state._fsp--;
 
@@ -16867,12 +16865,12 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
         }
         return ;
     }
-    // $ANTLR end "rule__ArgumentNot__Group_1__2"
+    // $ANTLR end "rule__ArgumentNot__Group_2_1__2"
 
 
-    // $ANTLR start "rule__ArgumentNot__Group_1__2__Impl"
-    // InternalContract.g:5375:1: rule__ArgumentNot__Group_1__2__Impl : ( ')' ) ;
-    public final void rule__ArgumentNot__Group_1__2__Impl() throws RecognitionException {
+    // $ANTLR start "rule__ArgumentNot__Group_2_1__2__Impl"
+    // InternalContract.g:5375:1: rule__ArgumentNot__Group_2_1__2__Impl : ( ')' ) ;
+    public final void rule__ArgumentNot__Group_2_1__2__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -16883,9 +16881,9 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
             // InternalContract.g:5380:1: ( ')' )
             // InternalContract.g:5381:2: ')'
             {
-             before(grammarAccess.getArgumentNotAccess().getRightParenthesisKeyword_1_2()); 
+             before(grammarAccess.getArgumentNotAccess().getRightParenthesisKeyword_2_1_2()); 
             match(input,48,FOLLOW_2); 
-             after(grammarAccess.getArgumentNotAccess().getRightParenthesisKeyword_1_2()); 
+             after(grammarAccess.getArgumentNotAccess().getRightParenthesisKeyword_2_1_2()); 
 
             }
 
@@ -16904,7 +16902,7 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
         }
         return ;
     }
-    // $ANTLR end "rule__ArgumentNot__Group_1__2__Impl"
+    // $ANTLR end "rule__ArgumentNot__Group_2_1__2__Impl"
 
 
     // $ANTLR start "rule__ArgumentTerm__Group_0__0"
@@ -39840,15 +39838,15 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
     public static final BitSet FOLLOW_21 = new BitSet(new long[]{0x0000000800000000L});
     public static final BitSet FOLLOW_22 = new BitSet(new long[]{0x0000202800000000L});
     public static final BitSet FOLLOW_23 = new BitSet(new long[]{0x0000051800000000L});
-    public static final BitSet FOLLOW_24 = new BitSet(new long[]{0x000CC00000000000L});
+    public static final BitSet FOLLOW_24 = new BitSet(new long[]{0x000C400000000000L});
     public static final BitSet FOLLOW_25 = new BitSet(new long[]{0x0000400000000000L});
     public static final BitSet FOLLOW_26 = new BitSet(new long[]{0x0000800000000000L});
-    public static final BitSet FOLLOW_27 = new BitSet(new long[]{0x000CC40200000000L});
-    public static final BitSet FOLLOW_28 = new BitSet(new long[]{0x000FC40200000000L});
-    public static final BitSet FOLLOW_29 = new BitSet(new long[]{0x000EC40200000002L});
-    public static final BitSet FOLLOW_30 = new BitSet(new long[]{0x000EC40200000000L});
+    public static final BitSet FOLLOW_27 = new BitSet(new long[]{0x000C440200000000L});
+    public static final BitSet FOLLOW_28 = new BitSet(new long[]{0x000F440200000000L});
+    public static final BitSet FOLLOW_29 = new BitSet(new long[]{0x000E440200000002L});
+    public static final BitSet FOLLOW_30 = new BitSet(new long[]{0x000E440200000000L});
     public static final BitSet FOLLOW_31 = new BitSet(new long[]{0x0004000000000000L});
-    public static final BitSet FOLLOW_32 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_32 = new BitSet(new long[]{0x000CC40200000000L});
     public static final BitSet FOLLOW_33 = new BitSet(new long[]{0x0001000000000000L});
     public static final BitSet FOLLOW_34 = new BitSet(new long[]{0x0020000000000000L});
     public static final BitSet FOLLOW_35 = new BitSet(new long[]{0x0040000000000000L});
