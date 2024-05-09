@@ -722,4 +722,60 @@ public class YamlGsnTest {
 				  undeveloped: true""";
 		assertEquals(expected, actual);
 	}
+
+	@Test
+	public void testSimpleAnd() {
+		var pkg = testHelper.parseFile(PATH + "SimpleAnd.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				SimpleAnd:
+				  text: SimpleAnd
+				  nodeType: Goal
+				  supportedBy: [Contract1, Contract3]
+
+				Contract1:
+				  text: Contract1
+				  nodeType: Goal
+				  supportedBy: [Argument1]
+
+				Contract2:
+				  text: Contract2
+				  nodeType: Goal
+				  undeveloped: true
+
+				Contract3:
+				  text: Contract3
+				  nodeType: Goal
+				  supportedBy: [Argument2]
+
+				Argument1:
+				  text: Argument1
+				  nodeType: Goal
+				  supportedBy: [Argument1_and_1]
+
+				Argument2:
+				  text: Argument2
+				  nodeType: Goal
+				  supportedBy: [Argument2_and_1]
+
+				Argument3:
+				  text: Argument3
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument1_and_1:
+				  text: Argument1_and_1
+				  nodeType: Goal
+				  supportedBy: [Contract2]
+
+				Argument2_and_1:
+				  text: Argument2_and_1
+				  nodeType: Goal
+				  supportedBy: [Argument3]""";
+		assertEquals(expected, actual);
+	}
 }
