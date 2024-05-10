@@ -839,4 +839,90 @@ public class YamlGsnTest {
 				  supportedBy: [Argument2, Argument3, Argument4, Contract2, Contract3, Contract4]""";
 		assertEquals(expected, actual);
 	}
+
+	@Test
+	public void testNestedAnd() {
+		var pkg = testHelper.parseFile(PATH + "NestedAnd.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				NestedAnd:
+				  text: NestedAnd
+				  nodeType: Goal
+				  supportedBy: [Contract1]
+
+				Contract1:
+				  text: Contract1
+				  nodeType: Goal
+				  supportedBy: [Argument1]
+
+				Argument1:
+				  text: Argument1
+				  nodeType: Goal
+				  supportedBy: [Argument1_and_1]
+
+				Argument2:
+				  text: Argument2
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument3:
+				  text: Argument3
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument4:
+				  text: Argument4
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument5:
+				  text: Argument5
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument6:
+				  text: Argument6
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument7:
+				  text: Argument7
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument8:
+				  text: Argument8
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument1_and_1:
+				  text: Argument1_and_1
+				  nodeType: Goal
+				  supportedBy: [Argument1_and_2, Argument1_and_3]
+
+				Argument1_and_2:
+				  text: Argument1_and_2
+				  nodeType: Goal
+				  supportedBy: [Argument2, Argument3]
+
+				Argument1_and_3:
+				  text: Argument1_and_3
+				  nodeType: Goal
+				  supportedBy: [Argument4, Argument1_and_4]
+
+				Argument1_and_4:
+				  text: Argument1_and_4
+				  nodeType: Goal
+				  supportedBy: [Argument5, Argument1_and_5]
+
+				Argument1_and_5:
+				  text: Argument1_and_5
+				  nodeType: Goal
+				  supportedBy: [Argument6, Argument7, Argument8]""";
+		assertEquals(expected, actual);
+	}
 }

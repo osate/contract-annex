@@ -1,0 +1,51 @@
+package NestedAnd
+public
+	annex contract {**
+		verification plan NestedAnd {
+			component
+				s: pkg1::s.i;
+			contracts
+				Contract1;
+		}
+		
+		contract Contract1 {
+			assumptions
+				argument Argument1;
+		}
+		
+		argument Argument1 {
+			argument
+				and(
+					and(argument Argument2, argument Argument3),
+					and(
+						argument Argument4,
+						and(
+							argument Argument5,
+							and(argument Argument6, argument Argument7, argument Argument8)
+						)
+					)
+				);
+		}
+		
+		argument Argument2 {
+		}
+		
+		argument Argument3 {
+		}
+		
+		argument Argument4 {
+		}
+		
+		argument Argument5 {
+		}
+		
+		argument Argument6 {
+		}
+		
+		argument Argument7 {
+		}
+		
+		argument Argument8 {
+		}
+	**};
+end NestedAnd;

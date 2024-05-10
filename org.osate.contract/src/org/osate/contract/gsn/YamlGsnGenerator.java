@@ -11,6 +11,7 @@ import org.osate.contract.contract.Analysis;
 import org.osate.contract.contract.Argument;
 import org.osate.contract.contract.ArgumentAnd;
 import org.osate.contract.contract.ArgumentAssumption;
+import org.osate.contract.contract.ArgumentExpression;
 import org.osate.contract.contract.ArgumentNot;
 import org.osate.contract.contract.ArgumentOr;
 import org.osate.contract.contract.CodeAssumption;
@@ -82,7 +83,15 @@ public final class YamlGsnGenerator {
 	private static void collectNodes(Argument argument, Collection<Contract> contracts, Collection<Argument> arguments,
 			Collection<ArgumentAnd> ands, Collection<String> assumptions, Collection<String> analyses) {
 		arguments.add(argument);
-		if (argument.getArgumentExpression() instanceof ArgumentAnd and) {
+		if (argument.getArgumentExpression() != null) {
+			collectNodes(argument.getArgumentExpression(), contracts, arguments, ands, assumptions, analyses);
+		}
+	}
+
+	private static void collectNodes(ArgumentExpression expression, Collection<Contract> contracts,
+			Collection<Argument> arguments, Collection<ArgumentAnd> ands, Collection<String> assumptions,
+			Collection<String> analyses) {
+		if (expression instanceof ArgumentAnd and) {
 			ands.add(and);
 			for (var referencedArgument : and.getArguments()) {
 				if (referencedArgument instanceof Argument castedArgument) {
@@ -93,6 +102,9 @@ public final class YamlGsnGenerator {
 				if (referencedContract instanceof Contract castedContract) {
 					collectNodes(castedContract, contracts, arguments, ands, assumptions, analyses);
 				}
+			}
+			for (var nested : and.getNested()) {
+				collectNodes(nested, contracts, arguments, ands, assumptions, analyses);
 			}
 		}
 	}
@@ -248,7 +260,10 @@ public final class YamlGsnGenerator {
 				  text: %name%
 				  nodeType: Goal
 				  supportedBy: [%supportedBy%]""", '%', '%');
-		template.add("name", getAndName(EcoreUtil2.getContainerOfType(and, Argument.class), and));
+
+		var containingArgument = EcoreUtil2.getContainerOfType(and, Argument.class);
+
+		template.add("name", getAndName(containingArgument, and));
 
 		var supportedBy = new ArrayList<String>();
 		for (var argument : and.getArguments()) {
@@ -256,6 +271,15 @@ public final class YamlGsnGenerator {
 		}
 		for (var contract : and.getContracts()) {
 			supportedBy.add(contract.getName());
+		}
+		for (var nested : and.getNested()) {
+			if (nested instanceof ArgumentAnd nestedAnd) {
+				supportedBy.add(getAndName(containingArgument, nestedAnd));
+			} else if (nested instanceof ArgumentOr) {
+				supportedBy.add("TODO: or");
+			} else if (nested instanceof ArgumentNot) {
+				supportedBy.add("TODO: not");
+			}
 		}
 		template.add("supportedBy", supportedBy.stream().collect(Collectors.joining(", ")));
 
