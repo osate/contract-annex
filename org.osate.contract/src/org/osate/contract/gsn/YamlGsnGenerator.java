@@ -30,11 +30,11 @@ public final class YamlGsnGenerator {
 	public static String generateYamlGsn(VerificationPlan verificationPlan) {
 		var contracts = new LinkedHashSet<Contract>();
 		var arguments = new LinkedHashSet<Argument>();
-		var ands = new LinkedHashSet<ArgumentAnd>();
+		var argumentExpressions = new LinkedHashSet<ArgumentExpression>();
 		var assumptions = new LinkedHashSet<String>();
 		var analyses = new LinkedHashSet<String>();
 		for (var contract : verificationPlan.getContracts()) {
-			collectNodes(contract, contracts, arguments, ands, assumptions, analyses);
+			collectNodes(contract, contracts, arguments, argumentExpressions, assumptions, analyses);
 		}
 
 		var nodes = new ArrayList<String>();
@@ -48,8 +48,8 @@ public final class YamlGsnGenerator {
 		for (var argument : arguments) {
 			nodes.add(generateArgument(argument));
 		}
-		for (var and : ands) {
-			nodes.add(generateAnd(and));
+		for (var expression : argumentExpressions) {
+			nodes.add(generateArgumentExpression(expression));
 		}
 		for (var assumption : assumptions) {
 			nodes.add(generateAssumption(assumption));
@@ -62,15 +62,16 @@ public final class YamlGsnGenerator {
 	}
 
 	private static void collectNodes(Contract contract, Collection<Contract> contracts, Collection<Argument> arguments,
-			Collection<ArgumentAnd> ands, Collection<String> assumptions, Collection<String> analyses) {
+			Collection<ArgumentExpression> argumentExpressions, Collection<String> assumptions,
+			Collection<String> analyses) {
 		contracts.add(contract);
 		for (var assumption : contract.getAssumptions()) {
 			if (assumption instanceof ContractAssumption contractAssumption
 					&& contractAssumption.getContract() instanceof Contract referencedContract) {
-				collectNodes(referencedContract, contracts, arguments, ands, assumptions, analyses);
+				collectNodes(referencedContract, contracts, arguments, argumentExpressions, assumptions, analyses);
 			} else if (assumption instanceof ArgumentAssumption argumentAssumption
 					&& argumentAssumption.getArgument() instanceof Argument referencedArgument) {
-				collectNodes(referencedArgument, contracts, arguments, ands, assumptions, analyses);
+				collectNodes(referencedArgument, contracts, arguments, argumentExpressions, assumptions, analyses);
 			} else if (assumption instanceof CodeAssumption codeAssumption) {
 				assumptions.add(getAssumptionName(codeAssumption));
 			}
@@ -81,31 +82,31 @@ public final class YamlGsnGenerator {
 	}
 
 	private static void collectNodes(Argument argument, Collection<Contract> contracts, Collection<Argument> arguments,
-			Collection<ArgumentAnd> ands, Collection<String> assumptions, Collection<String> analyses) {
+			Collection<ArgumentExpression> argumentExpressions, Collection<String> assumptions,
+			Collection<String> analyses) {
 		arguments.add(argument);
 		if (argument.getArgumentExpression() != null) {
-			collectNodes(argument.getArgumentExpression(), contracts, arguments, ands, assumptions, analyses);
+			collectNodes(argument.getArgumentExpression(), contracts, arguments, argumentExpressions, assumptions,
+					analyses);
 		}
 	}
 
 	private static void collectNodes(ArgumentExpression expression, Collection<Contract> contracts,
-			Collection<Argument> arguments, Collection<ArgumentAnd> ands, Collection<String> assumptions,
-			Collection<String> analyses) {
-		if (expression instanceof ArgumentAnd and) {
-			ands.add(and);
-			for (var referencedArgument : and.getArguments()) {
-				if (referencedArgument instanceof Argument castedArgument) {
-					collectNodes(castedArgument, contracts, arguments, ands, assumptions, analyses);
-				}
+			Collection<Argument> arguments, Collection<ArgumentExpression> argumentExpressions,
+			Collection<String> assumptions, Collection<String> analyses) {
+		argumentExpressions.add(expression);
+		for (var referencedArgument : expression.getArguments()) {
+			if (referencedArgument instanceof Argument castedArgument) {
+				collectNodes(castedArgument, contracts, arguments, argumentExpressions, assumptions, analyses);
 			}
-			for (var referencedContract : and.getContracts()) {
-				if (referencedContract instanceof Contract castedContract) {
-					collectNodes(castedContract, contracts, arguments, ands, assumptions, analyses);
-				}
+		}
+		for (var referencedContract : expression.getContracts()) {
+			if (referencedContract instanceof Contract castedContract) {
+				collectNodes(castedContract, contracts, arguments, argumentExpressions, assumptions, analyses);
 			}
-			for (var nested : and.getNested()) {
-				collectNodes(nested, contracts, arguments, ands, assumptions, analyses);
-			}
+		}
+		for (var nested : expression.getNested()) {
+			collectNodes(nested, contracts, arguments, argumentExpressions, assumptions, analyses);
 		}
 	}
 
@@ -233,12 +234,8 @@ public final class YamlGsnGenerator {
 
 		var supportedBy = new ArrayList<String>();
 
-		if (argument.getArgumentExpression() instanceof ArgumentAnd and) {
-			supportedBy.add(getAndName(argument, and));
-		} else if (argument.getArgumentExpression() instanceof ArgumentOr or) {
-			supportedBy.add("TODO: or");
-		} else if (argument.getArgumentExpression() instanceof ArgumentNot not) {
-			supportedBy.add("TODO: not");
+		if (argument.getArgumentExpression() != null) {
+			supportedBy.add(getArgumentExpressionName(argument, argument.getArgumentExpression()));
 		}
 
 		if (supportedBy.isEmpty()) {
@@ -254,42 +251,48 @@ public final class YamlGsnGenerator {
 		return template.render().trim();
 	}
 
-	private static String generateAnd(ArgumentAnd and) {
+	private static String generateArgumentExpression(ArgumentExpression expression) {
 		var template = new ST("""
 				%name%:
 				  text: %name%
 				  nodeType: Goal
 				  supportedBy: [%supportedBy%]""", '%', '%');
 
-		var containingArgument = EcoreUtil2.getContainerOfType(and, Argument.class);
+		var containingArgument = EcoreUtil2.getContainerOfType(expression, Argument.class);
 
-		template.add("name", getAndName(containingArgument, and));
+		template.add("name", getArgumentExpressionName(containingArgument, expression));
 
 		var supportedBy = new ArrayList<String>();
-		for (var argument : and.getArguments()) {
+		for (var argument : expression.getArguments()) {
 			supportedBy.add(argument.getName());
 		}
-		for (var contract : and.getContracts()) {
+		for (var contract : expression.getContracts()) {
 			supportedBy.add(contract.getName());
 		}
-		for (var nested : and.getNested()) {
-			if (nested instanceof ArgumentAnd nestedAnd) {
-				supportedBy.add(getAndName(containingArgument, nestedAnd));
-			} else if (nested instanceof ArgumentOr) {
-				supportedBy.add("TODO: or");
-			} else if (nested instanceof ArgumentNot) {
-				supportedBy.add("TODO: not");
-			}
+		for (var nested : expression.getNested()) {
+			supportedBy.add(getArgumentExpressionName(containingArgument, nested));
 		}
 		template.add("supportedBy", supportedBy.stream().collect(Collectors.joining(", ")));
 
 		return template.render();
 	}
 
-	private static String getAndName(Argument argument, ArgumentAnd and) {
-		var allAnds = EcoreUtil2.getAllContentsOfType(argument, ArgumentAnd.class);
-		var index = allAnds.indexOf(and);
-		return argument.getName() + "_and_" + (index + 1);
+	private static String getArgumentExpressionName(Argument argument, ArgumentExpression expression) {
+		String expressionType;
+		if (expression instanceof ArgumentAnd) {
+			expressionType = "and";
+		} else if (expression instanceof ArgumentOr) {
+			return "TODO: or";
+		} else if (expression instanceof ArgumentNot) {
+			return "TODO: not";
+		} else {
+			throw new AssertionError("Unexpected class: " + expression.getClass());
+		}
+
+		var allExpressionsOfType = EcoreUtil2.getAllContentsOfType(argument, expression.getClass());
+		var index = allExpressionsOfType.indexOf(expression);
+
+		return argument.getName() + '_' + expressionType + '_' + (index + 1);
 	}
 
 	private static String generateClaim(Source claim, VerificationPlan verificationPlan) {
