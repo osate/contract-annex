@@ -778,4 +778,65 @@ public class YamlGsnTest {
 				  supportedBy: [Argument3]""";
 		assertEquals(expected, actual);
 	}
+
+	@Test
+	public void testAndWithMultipleTerms() {
+		var pkg = testHelper.parseFile(PATH + "AndWithMultipleTerms.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				AndWithMultipleTerms:
+				  text: AndWithMultipleTerms
+				  nodeType: Goal
+				  supportedBy: [Contract1]
+
+				Contract1:
+				  text: Contract1
+				  nodeType: Goal
+				  supportedBy: [Argument1]
+
+				Contract2:
+				  text: Contract2
+				  nodeType: Goal
+				  undeveloped: true
+
+				Contract3:
+				  text: Contract3
+				  nodeType: Goal
+				  undeveloped: true
+
+				Contract4:
+				  text: Contract4
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument1:
+				  text: Argument1
+				  nodeType: Goal
+				  supportedBy: [Argument1_and_1]
+
+				Argument2:
+				  text: Argument2
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument3:
+				  text: Argument3
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument4:
+				  text: Argument4
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument1_and_1:
+				  text: Argument1_and_1
+				  nodeType: Goal
+				  supportedBy: [Argument2, Argument3, Argument4, Contract2, Contract3, Contract4]""";
+		assertEquals(expected, actual);
+	}
 }
