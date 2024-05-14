@@ -1,8 +1,8 @@
 package org.osate.contract.gsn;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.xtext.EcoreUtil2;
@@ -28,86 +28,30 @@ public final class YamlGsnGenerator {
 	}
 
 	public static String generateYamlGsn(VerificationPlan verificationPlan) {
-		var contracts = new LinkedHashSet<Contract>();
-		var arguments = new LinkedHashSet<Argument>();
-		var argumentExpressions = new LinkedHashSet<ArgumentExpression>();
-		var assumptions = new LinkedHashSet<String>();
-		var analyses = new LinkedHashSet<String>();
-		for (var contract : verificationPlan.getContracts()) {
-			collectNodes(contract, contracts, arguments, argumentExpressions, assumptions, analyses);
-		}
+		var collector = new NodeCollector(verificationPlan);
 
 		var nodes = new ArrayList<String>();
 		nodes.add(generateVerificationPlan(verificationPlan));
 		for (var claim : verificationPlan.getClaims()) {
 			nodes.add(generateClaim(claim, verificationPlan));
 		}
-		for (var contract : contracts) {
+		for (var contract : collector.contracts) {
 			nodes.add(generateContract(contract));
 		}
-		for (var argument : arguments) {
+		for (var argument : collector.arguments) {
 			nodes.add(generateArgument(argument));
 		}
-		for (var expression : argumentExpressions) {
+		for (var expression : collector.argumentExpressions) {
 			nodes.add(generateArgumentExpression(expression));
 		}
-		for (var assumption : assumptions) {
+		for (var assumption : collector.assumptions) {
 			nodes.add(generateAssumption(assumption));
 		}
-		for (var analysis : analyses) {
+		for (var analysis : collector.analyses) {
 			nodes.add(generateAnalysis(analysis));
 		}
 
 		return nodes.stream().collect(Collectors.joining("\n\n"));
-	}
-
-	private static void collectNodes(Contract contract, Collection<Contract> contracts, Collection<Argument> arguments,
-			Collection<ArgumentExpression> argumentExpressions, Collection<String> assumptions,
-			Collection<String> analyses) {
-		contracts.add(contract);
-		for (var assumption : contract.getAssumptions()) {
-			if (assumption instanceof ContractAssumption contractAssumption
-					&& contractAssumption.getContract() instanceof Contract referencedContract) {
-				collectNodes(referencedContract, contracts, arguments, argumentExpressions, assumptions, analyses);
-			} else if (assumption instanceof ArgumentAssumption argumentAssumption
-					&& argumentAssumption.getArgument() instanceof Argument referencedArgument) {
-				collectNodes(referencedArgument, contracts, arguments, argumentExpressions, assumptions, analyses);
-			} else if (assumption instanceof CodeAssumption codeAssumption) {
-				assumptions.add(getAssumptionName(codeAssumption));
-			}
-		}
-		for (var analysis : contract.getAnalyses()) {
-			analyses.add(getAnalysisName(analysis));
-		}
-	}
-
-	private static void collectNodes(Argument argument, Collection<Contract> contracts, Collection<Argument> arguments,
-			Collection<ArgumentExpression> argumentExpressions, Collection<String> assumptions,
-			Collection<String> analyses) {
-		arguments.add(argument);
-		if (argument.getArgumentExpression() != null) {
-			collectNodes(argument.getArgumentExpression(), contracts, arguments, argumentExpressions, assumptions,
-					analyses);
-		}
-	}
-
-	private static void collectNodes(ArgumentExpression expression, Collection<Contract> contracts,
-			Collection<Argument> arguments, Collection<ArgumentExpression> argumentExpressions,
-			Collection<String> assumptions, Collection<String> analyses) {
-		argumentExpressions.add(expression);
-		for (var referencedArgument : expression.getArguments()) {
-			if (referencedArgument instanceof Argument castedArgument) {
-				collectNodes(castedArgument, contracts, arguments, argumentExpressions, assumptions, analyses);
-			}
-		}
-		for (var referencedContract : expression.getContracts()) {
-			if (referencedContract instanceof Contract castedContract) {
-				collectNodes(castedContract, contracts, arguments, argumentExpressions, assumptions, analyses);
-			}
-		}
-		for (var nested : expression.getNested()) {
-			collectNodes(nested, contracts, arguments, argumentExpressions, assumptions, analyses);
-		}
 	}
 
 	private static String generateVerificationPlan(VerificationPlan verificationPlan) {
@@ -374,6 +318,62 @@ public final class YamlGsnGenerator {
 			return s;
 		} else {
 			return s.substring(0, paren);
+		}
+	}
+
+	private static class NodeCollector {
+		public final Set<Contract> contracts = new LinkedHashSet<>();
+		public final Set<Argument> arguments = new LinkedHashSet<>();
+		public final Set<ArgumentExpression> argumentExpressions = new LinkedHashSet<>();
+		public final Set<String> assumptions = new LinkedHashSet<>();
+		public final Set<String> analyses = new LinkedHashSet<>();
+
+		public NodeCollector(VerificationPlan verificationPlan) {
+			for (var contract : verificationPlan.getContracts()) {
+				collect(contract);
+			}
+		}
+
+		private void collect(Contract contract) {
+			contracts.add(contract);
+			for (var assumption : contract.getAssumptions()) {
+				if (assumption instanceof ContractAssumption contractAssumption
+						&& contractAssumption.getContract() instanceof Contract referencedContract) {
+					collect(referencedContract);
+				} else if (assumption instanceof ArgumentAssumption argumentAssumption
+						&& argumentAssumption.getArgument() instanceof Argument referencedArgument) {
+					collect(referencedArgument);
+				} else if (assumption instanceof CodeAssumption codeAssumption) {
+					assumptions.add(getAssumptionName(codeAssumption));
+				}
+			}
+			for (var analysis : contract.getAnalyses()) {
+				analyses.add(getAnalysisName(analysis));
+			}
+		}
+
+		private void collect(Argument argument) {
+			arguments.add(argument);
+			if (argument.getArgumentExpression() != null) {
+				collect(argument.getArgumentExpression());
+			}
+		}
+
+		private void collect(ArgumentExpression expression) {
+			argumentExpressions.add(expression);
+			for (var referencedArgument : expression.getArguments()) {
+				if (referencedArgument instanceof Argument castedArgument) {
+					collect(castedArgument);
+				}
+			}
+			for (var referencedContract : expression.getContracts()) {
+				if (referencedContract instanceof Contract castedContract) {
+					collect(castedContract);
+				}
+			}
+			for (var nested : expression.getNested()) {
+				collect(nested);
+			}
 		}
 	}
 }
