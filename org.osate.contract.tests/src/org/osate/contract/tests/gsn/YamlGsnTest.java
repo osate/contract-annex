@@ -1002,4 +1002,140 @@ public class YamlGsnTest {
 				  supportedBy: [Argument2]""";
 		assertEquals(expected, actual);
 	}
+
+	@Test
+	public void testAllExpressionCombinations() {
+		var pkg = testHelper.parseFile(PATH + "AllExpressionCombinations.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				AllExpressionCombinations:
+				  text: AllExpressionCombinations
+				  nodeType: Goal
+				  supportedBy: [Contract1]
+
+				Contract1:
+				  text: Contract1
+				  nodeType: Goal
+				  supportedBy: [Argument1]
+
+				Contract2:
+				  text: Contract2
+				  nodeType: Goal
+				  undeveloped: true
+
+				Contract3:
+				  text: Contract3
+				  nodeType: Goal
+				  undeveloped: true
+
+				Contract4:
+				  text: Contract4
+				  nodeType: Goal
+				  undeveloped: true
+
+				Contract5:
+				  text: Contract5
+				  nodeType: Goal
+				  undeveloped: true
+
+				Contract6:
+				  text: Contract6
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument1:
+				  text: Argument1
+				  nodeType: Goal
+				  supportedBy: [Argument1_and_1]
+
+				Argument2:
+				  text: Argument2
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument3:
+				  text: Argument3
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument4:
+				  text: Argument4
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument5:
+				  text: Argument5
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument6:
+				  text: Argument6
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument1_and_1:
+				  text: Argument1_and_1
+				  nodeType: Goal
+				  supportedBy: [Argument1_and_2, Argument1_or_1, Argument1_not_2]
+
+				Argument1_and_2:
+				  text: Argument1_and_2
+				  nodeType: Goal
+				  supportedBy: [Argument2, Contract2]
+
+				Argument1_or_1:
+				  text: Argument1_or_1
+				  nodeType: Goal
+				  supportedBy: [Argument1_and_3, Argument1_or_2, Argument1_not_1]
+
+				Argument1_and_3:
+				  text: Argument1_and_3
+				  nodeType: Goal
+				  supportedBy: [Argument3, Contract3]
+
+				Argument1_or_2:
+				  text: Argument1_or_2
+				  nodeType: Goal
+				  supportedBy: [Argument4, Contract4]
+
+				Argument1_not_1:
+				  text: Argument1_not_1
+				  nodeType: Goal
+				  supportedBy: [Argument1_or_3]
+
+				Argument1_or_3:
+				  text: Argument1_or_3
+				  nodeType: Goal
+				  supportedBy: [Argument5, Contract5]
+
+				Argument1_not_2:
+				  text: Argument1_not_2
+				  nodeType: Goal
+				  supportedBy: [Argument1_and_4]
+
+				Argument1_and_4:
+				  text: Argument1_and_4
+				  nodeType: Goal
+				  supportedBy: [Argument1_not_3, Argument1_not_5]
+
+				Argument1_not_3:
+				  text: Argument1_not_3
+				  nodeType: Goal
+				  supportedBy: [Argument1_not_4]
+
+				Argument1_not_4:
+				  text: Argument1_not_4
+				  nodeType: Goal
+				  supportedBy: [Contract6]
+
+				Argument1_not_5:
+				  text: Argument1_not_5
+				  nodeType: Goal
+				  supportedBy: [Argument6]""";
+		assertEquals(expected, actual);
+	}
 }

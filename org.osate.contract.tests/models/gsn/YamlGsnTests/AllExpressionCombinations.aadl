@@ -1,0 +1,59 @@
+package AllExpressionCombinations
+public
+	annex contract {**
+		verification plan AllExpressionCombinations {
+			component
+				s: pkg1::s.i;
+			contracts
+				Contract1;
+		}
+		
+		contract Contract1 {
+			assumptions
+				argument Argument1;
+		}
+		
+		argument Argument1 {
+			argument
+				and(
+					and(contract Contract2, argument Argument2),
+					or(
+						and(contract Contract3, argument Argument3),
+						or(contract Contract4, argument Argument4),
+						not or(contract Contract5, argument Argument5)
+					),
+					not and(not not contract Contract6, not argument Argument6)
+				);
+		}
+		
+		contract Contract2 {
+		}
+		
+		argument Argument2 {
+		}
+		
+		contract Contract3 {
+		}
+		
+		argument Argument3 {
+		}
+		
+		contract Contract4 {
+		}
+		
+		argument Argument4 {
+		}
+		
+		contract Contract5 {
+		}
+		
+		argument Argument5 {
+		}
+		
+		contract Contract6 {
+		}
+		
+		argument Argument6 {
+		}
+	**};
+end AllExpressionCombinations;
