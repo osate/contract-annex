@@ -925,4 +925,45 @@ public class YamlGsnTest {
 				  supportedBy: [Argument6, Argument7, Argument8]""";
 		assertEquals(expected, actual);
 	}
+
+	@Test
+	public void testSimpleOr() {
+		var pkg = testHelper.parseFile(PATH + "SimpleOr.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				SimpleOr:
+				  text: SimpleOr
+				  nodeType: Goal
+				  supportedBy: [Contract1]
+
+				Contract1:
+				  text: Contract1
+				  nodeType: Goal
+				  supportedBy: [Argument1]
+
+				Contract2:
+				  text: Contract2
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument1:
+				  text: Argument1
+				  nodeType: Goal
+				  supportedBy: [Argument1_or_1]
+
+				Argument2:
+				  text: Argument2
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument1_or_1:
+				  text: Argument1_or_1
+				  nodeType: Goal
+				  supportedBy: [Argument2, Contract2]""";
+		assertEquals(expected, actual);
+	}
 }

@@ -282,7 +282,7 @@ public final class YamlGsnGenerator {
 		if (expression instanceof ArgumentAnd) {
 			expressionType = "and";
 		} else if (expression instanceof ArgumentOr) {
-			return "TODO: or";
+			expressionType = "or";
 		} else if (expression instanceof ArgumentNot) {
 			return "TODO: not";
 		} else {
