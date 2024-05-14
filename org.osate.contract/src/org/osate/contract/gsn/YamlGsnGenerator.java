@@ -284,7 +284,7 @@ public final class YamlGsnGenerator {
 		} else if (expression instanceof ArgumentOr) {
 			expressionType = "or";
 		} else if (expression instanceof ArgumentNot) {
-			return "TODO: not";
+			expressionType = "not";
 		} else {
 			throw new AssertionError("Unexpected class: " + expression.getClass());
 		}

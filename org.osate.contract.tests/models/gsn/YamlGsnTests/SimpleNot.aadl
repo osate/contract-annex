@@ -1,0 +1,24 @@
+package SimpleNot
+public
+	annex contract {**
+		verification plan SimpleNot {
+			component
+				s: pkg1::s.i;
+			contracts
+				Contract1;
+		}
+		
+		contract Contract1 {
+			assumptions
+				argument Argument1;
+		}
+		
+		argument Argument1 {
+			argument
+				not argument Argument2;
+		}
+		
+		argument Argument2 {
+		}
+	**};
+end SimpleNot;

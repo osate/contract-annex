@@ -966,4 +966,40 @@ public class YamlGsnTest {
 				  supportedBy: [Argument2, Contract2]""";
 		assertEquals(expected, actual);
 	}
+
+	@Test
+	public void testSimpleNot() {
+		var pkg = testHelper.parseFile(PATH + "SimpleNot.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var actual = YamlGsnGenerator.generateYamlGsn(plan);
+		var expected = """
+				SimpleNot:
+				  text: SimpleNot
+				  nodeType: Goal
+				  supportedBy: [Contract1]
+
+				Contract1:
+				  text: Contract1
+				  nodeType: Goal
+				  supportedBy: [Argument1]
+
+				Argument1:
+				  text: Argument1
+				  nodeType: Goal
+				  supportedBy: [Argument1_not_1]
+
+				Argument2:
+				  text: Argument2
+				  nodeType: Goal
+				  undeveloped: true
+
+				Argument1_not_1:
+				  text: Argument1_not_1
+				  nodeType: Goal
+				  supportedBy: [Argument2]""";
+		assertEquals(expected, actual);
+	}
 }
