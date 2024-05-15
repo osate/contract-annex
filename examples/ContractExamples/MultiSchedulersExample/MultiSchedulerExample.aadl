@@ -63,7 +63,7 @@ public
 			
 			
 			annex contract {** 
-				verify MultiSchedulerContract::schedulablePlan;
+				verify ACVIPAnalysisContracts::MultiSchedulerPlan;
 			**};
 			
 	end mysystem.i;

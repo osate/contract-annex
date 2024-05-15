@@ -1,4 +1,4 @@
-package TSNSchedulingContract
+package TSNSchedulingContractOld2
 public
 
 annex contract {**
@@ -11,7 +11,6 @@ annex contract {**
 #   * Time-triggered arbitration (as specified above)
 #   * The traffic is specified as message streams where each message stream is characterized by
 #     its period, deadline, and data payload.
-#   * It is assumed that for each message stream, its deadline is less than or equal to its period.
 #   * Routes of message streams are given (i.e., we do not compute routes).
 #   * Frame preemption is not allowed.
 #   * Frame duplication is not used.
@@ -56,11 +55,10 @@ annex contract {**
 #       k_1 is a positive integer
 #       k_2 is a positive integer
 #     Of course, our tool works also for the case that there are more than two periods. 
-#
 
 from z3 import *
 #import matplotlib.pyplot as plt
-import ast
+#import ast
 
 frameheader_overhead_in_bytes = 14
 Gbps = 1000000000.0
@@ -144,7 +142,7 @@ def compute_lcm_nmessages_z3(periods):
       maxH = maxH * 2
   return H,nmessages
 
-def compute_lcm_nmessages(timeunit,periods):  
+def compute_lcm_nmessages(periods,timeunit):  
   if timeunit==time_unit_is_s:
     return compute_lcm_nmessages_z3(periods)  
   elif timeunit==time_unit_is_ms:
@@ -204,7 +202,23 @@ def tsn_sched_gen_add_s(message_streams,periods,routes,H,nmessages):
 def tsn_sched_gen_add_f(message_streams,periods,routes,H,nmessages):
   return tsn_sched_gen_add_var_per_message_per_hop(message_streams,periods,routes,H,nmessages,"f")
 
-def compute_tx_time(timeunit,message_stream_index,message_index,hop_index,routes,linkspeeds,data_payload):
+def tsn_sched_gen_add_lb_and_ub_constraint_on_var(message_streams,periods,routes,H,nmessages,var,sol):
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    message_index_range = range(0,nmessages[message_stream_index])
+    for message_index in message_index_range:
+      hop_index_range = range(0,len(routes[message_stream_index]))
+      for hop_index in hop_index_range:
+        sol.add(0<=var[message_stream_index][message_index][hop_index])
+        sol.add(var[message_stream_index][message_index][hop_index]<H)
+
+def tsn_sched_gen_add_lb_and_ub_constraint_on_s(message_streams,periods,routes,H,nmessages,s,sol):
+  tsn_sched_gen_add_lb_and_ub_constraint_on_var(message_streams,periods,routes,H,nmessages,s,sol)
+
+def tsn_sched_gen_add_lb_and_ub_constraint_on_f(message_streams,periods,routes,H,nmessages,f,sol):
+  tsn_sched_gen_add_lb_and_ub_constraint_on_var(message_streams,periods,routes,H,nmessages,f,sol)
+
+def compute_tx_time(message_stream_index,message_index,hop_index,routes,linkspeeds,data_payload,timeunit):
   link_index = routes[message_stream_index][hop_index]
   linkspeed = linkspeeds[link_index]
   txtime = (data_payload[message_stream_index]+frameheader_overhead_in_bytes)*8/linkspeed
@@ -220,14 +234,14 @@ def compute_tx_time(timeunit,message_stream_index,message_index,hop_index,routes
     print("Error in compute_tx_time. Bad time unit.")  
     exit(-1)    
   
-def tsn_sched_gen_add_f_equals_s_plus_txtime_constraint(timeunit,linkspeeds,message_streams,periods,data_payload,routes,H,nmessages,s,f,sol):
+def tsn_sched_gen_add_f_equals_s_plus_txtime_constraint(linkspeeds,message_streams,periods,data_payload,routes,H,nmessages,s,f,sol,timeunit):
   message_stream_index_range = range(0,len(message_streams))
   for message_stream_index in message_stream_index_range:
     message_index_range = range(0,nmessages[message_stream_index])
     for message_index in message_index_range:
       hop_index_range = range(0,len(routes[message_stream_index]))
       for hop_index in hop_index_range:
-        txtime = compute_tx_time(timeunit,message_stream_index,message_index,hop_index,routes,linkspeeds,data_payload)
+        txtime = compute_tx_time(message_stream_index,message_index,hop_index,routes,linkspeeds,data_payload,timeunit)
         sol.add(f[message_stream_index][message_index][hop_index] == s[message_stream_index][message_index][hop_index] + txtime)
 
 def is_link_in_contention_domain(a_link_index,a_contention_domain):
@@ -279,21 +293,21 @@ def tsn_sched_gen_add_mustfinishbeforesuccessorhop_constraint(message_streams,pe
       for hop_index in hop_index_range:
         sol.add(f[message_stream_index][message_index][hop_index] <= s[message_stream_index][message_index][hop_index+1])
 
-def tsn_sched_gen_add_muststartatorlaterthanarrival_constraint(message_streams,offsets,periods,H,nmessages,s,sol):
+def tsn_sched_gen_add_muststartatorlaterthanarrival_constraint(message_streams,periods,H,nmessages,s,sol):
   message_stream_index_range = range(0,len(message_streams))
   for message_stream_index in message_stream_index_range:
     message_index_range = range(0,nmessages[message_stream_index])
     for message_index in message_index_range:
       hop_index = 0
-      sol.add(s[message_stream_index][message_index][hop_index] >= offsets[message_stream_index]+message_index*periods[message_stream_index])
+      sol.add(s[message_stream_index][message_index][hop_index] >= message_index*periods[message_stream_index])
 
-def tsn_sched_gen_add_mustmeetdeadline_constraint(message_streams,offsets,periods,deadlines,routes,H,nmessages,f,sol):
+def tsn_sched_gen_add_mustmeetdeadline_constraint(message_streams,periods,deadlines,routes,H,nmessages,f,sol):
   message_stream_index_range = range(0,len(message_streams))
   for message_stream_index in message_stream_index_range:
     message_index_range = range(0,nmessages[message_stream_index])
     for message_index in message_index_range:
       hop_index = len(routes[message_stream_index])-1
-      sol.add(f[message_stream_index][message_index][hop_index] <= offsets[message_stream_index]+message_index*periods[message_stream_index]+deadlines[message_stream_index])
+      sol.add(f[message_stream_index][message_index][hop_index] <= message_index*periods[message_stream_index]+deadlines[message_stream_index])
 
 def fill_start_time_finish_time(message_streams,periods,routes,H,nmessages,s,f,sol):
   m = sol.model()
@@ -309,25 +323,18 @@ def fill_start_time_finish_time(message_streams,periods,routes,H,nmessages,s,f,s
         finish_time[message_stream_index][message_index][hop_index] = get_float_from_z3_model(m[f[message_stream_index][message_index][hop_index]])
   return start_time,finish_time
 
-def adjust_nmessages(offsets,periods,H,nmessages):
-  new_nmessages = [None] * len(nmessages)
-  for index in range(0,len(nmessages)):
-    new_nmessages[index] = math.ceil(max(offsets)/periods[index])+nmessages[index]
-  return new_nmessages
-  
-def tsn_sched_gen(timeunit,network_nodes,network_links,contention_domains,linkspeeds,message_streams,offsets,periods,deadlines,data_payload,routes):
-  # this computes the lcm and for each message stream, the number of messages within the lcm
-  H,nmessages = compute_lcm_nmessages(timeunit,periods)
-  # this considers the offsets and computes for each message stream, the number of messages within the max(offset)+lcm
-  nmessages = adjust_nmessages(offsets,periods,H,nmessages)
+def tsn_sched_gen(network_nodes,network_links,contention_domains,linkspeeds,message_streams,periods,deadlines,data_payload,routes,timeunit):
+  H,nmessages = compute_lcm_nmessages(periods,timeunit)
   s = tsn_sched_gen_add_s(message_streams,periods,routes,H,nmessages)
   f = tsn_sched_gen_add_f(message_streams,periods,routes,H,nmessages)     
   sol = Solver()
-  tsn_sched_gen_add_f_equals_s_plus_txtime_constraint(timeunit,linkspeeds,message_streams,periods,data_payload,routes,H,nmessages,s,f,sol)
+  tsn_sched_gen_add_lb_and_ub_constraint_on_s(message_streams,periods,routes,H,nmessages,s,sol)
+  tsn_sched_gen_add_lb_and_ub_constraint_on_f(message_streams,periods,routes,H,nmessages,f,sol)
+  tsn_sched_gen_add_f_equals_s_plus_txtime_constraint(linkspeeds,message_streams,periods,data_payload,routes,H,nmessages,s,f,sol,timeunit)
   tsn_sched_gen_add_nooverlap_constraint(contention_domains,message_streams,periods,routes,H,nmessages,s,f,sol)
   tsn_sched_gen_add_mustfinishbeforesuccessorhop_constraint(message_streams,periods,routes,H,nmessages,s,f,sol)
-  tsn_sched_gen_add_muststartatorlaterthanarrival_constraint(message_streams,offsets,periods,H,nmessages,s,sol)
-  tsn_sched_gen_add_mustmeetdeadline_constraint(message_streams,offsets,periods,deadlines,routes,H,nmessages,f,sol)
+  tsn_sched_gen_add_muststartatorlaterthanarrival_constraint(message_streams,periods,H,nmessages,s,sol)
+  tsn_sched_gen_add_mustmeetdeadline_constraint(message_streams,periods,deadlines,routes,H,nmessages,f,sol)
   if sol.check()==sat:
     start_time,finish_time = fill_start_time_finish_time(message_streams,periods,routes,H,nmessages,s,f,sol)
     return True,H,nmessages,start_time,finish_time 
@@ -337,18 +344,18 @@ def tsn_sched_gen(timeunit,network_nodes,network_links,contention_domains,linksp
 # Code for plotting the schedule. To use this, you need to actually have a schedule first (i.e., you need
 #   to call tsn_sched_gen first)
 
-def plot_it(timeunit,H,nmessages,start_time,finish_time,network_nodes,network_links,linkspeeds,message_streams,offsets,periods,deadlines,data_payload,routes,set_x_min_and_max,x_min,x_max,output_fn,onlyHflag):
-  row_count = 0
+def plot_it(H,nmessages,start_time,finish_time,network_nodes,network_links,linkspeeds,message_streams,periods,deadlines,data_payload,routes,set_x_min_and_max,x_min,x_max,output_fn,timeunit):
+  count = 0
   message_stream_index_range = range(0,len(message_streams))
   for message_stream_index in message_stream_index_range:
     hop_index_range = range(0,len(routes[message_stream_index]))
     for hop_index in hop_index_range:
-      row_count = row_count + 1
-  list_of_rectangles_per_row = [None] * row_count
-  list_of_y_pos_per_row      = [None] * row_count
-  list_of_yticks_pos_per_row = [None] * row_count
-  list_of_height_per_row     = [None] * row_count
-  list_of_labels_per_row     = [None] * row_count
+      count = count + 1
+  list_of_rectangles_per_row = [None] * count
+  list_of_y_pos_per_row      = [None] * count
+  list_of_yticks_pos_per_row = [None] * count
+  list_of_height_per_row     = [None] * count
+  list_of_labels_per_row     = [None] * count
   tempindex = 0
   y_pos = 10
   message_stream_index_range = range(0,len(message_streams))
@@ -363,35 +370,16 @@ def plot_it(timeunit,H,nmessages,start_time,finish_time,network_nodes,network_li
       message_index_range = range(0,nmessages[message_stream_index])
       templist = []
       for message_index in message_index_range:
-        if onlyHflag:
-          if finish_time[message_stream_index][message_index][hop_index]<=H:
-            st = start_time[message_stream_index][message_index][hop_index]
-            du = finish_time[message_stream_index][message_index][hop_index]-start_time[message_stream_index][message_index][hop_index]
-            templist.append((st,du))
-          else:
-            if start_time[message_stream_index][message_index][hop_index]<=H:
-              st = start_time[message_stream_index][message_index][hop_index]
-              du = H-start_time[message_stream_index][message_index][hop_index]
-              templist.append((st,du))
-              st = 0
-              du = finish_time[message_stream_index][message_index][hop_index]-H
-              templist.append((st,du))
-            else:
-              st = start_time[message_stream_index][message_index][hop_index]
-              du = finish_time[message_stream_index][message_index][hop_index]-start_time[message_stream_index][message_index][hop_index]
-              st = st - H
-              templist.append((st,du))
-        else:
-          st = start_time[message_stream_index][message_index][hop_index]
-          du = finish_time[message_stream_index][message_index][hop_index]-start_time[message_stream_index][message_index][hop_index]
-          templist.append((st,du))       
+        st = start_time[message_stream_index][message_index][hop_index]
+        du = finish_time[message_stream_index][message_index][hop_index]-start_time[message_stream_index][message_index][hop_index]
+        templist.append((st,du))
       list_of_rectangles_per_row[tempindex] = templist
       tempindex = tempindex + 1
       y_pos = y_pos + 10 
   list_of_y_pos_per_row.reverse()
   list_of_yticks_pos_per_row.reverse()
   fig, ax = plt.subplots()
-  tempindex = row_count-1
+  tempindex = count-1
   while (tempindex>=0):
     ax.broken_barh(list_of_rectangles_per_row[tempindex], (list_of_y_pos_per_row[tempindex], list_of_height_per_row[tempindex]),facecolors='black')
     tempindex = tempindex - 1
@@ -401,10 +389,7 @@ def plot_it(timeunit,H,nmessages,start_time,finish_time,network_nodes,network_li
   if set_x_min_and_max:
     ax.set_xlim(x_min,x_max)
   else:
-    if onlyHflag:
-      ax.set_xlim(max(offsets),H+max(offsets))
-    else:
-      ax.set_xlim(0,H+max(offsets))
+    ax.set_xlim(-0.005*H,H)
   time_unit_string = get_time_unit_string(timeunit)
   ax.set_xlabel(time_unit_string)
   list_of_labels_per_row.reverse()
@@ -441,29 +426,23 @@ def print_failure_to_console(f,H,nmessages,start_time,finish_time):
 
 # Example where time is represented as integers.
 # Time is measured in microseconds
-#
-# In the example below, you might want to try to change
-#   offsets            = [          0,          0,          0]
-# to
-#   offsets            = [          0,          0,        490]
-# in order to see a schedule where the last message in a message stream is transmitted after H
-# hidden_timeunit = time_unit_is_us
+
+# timeunit_hidden = time_unit_is_us
 # network_nodes      = [0,1,2,3,4,5]
 # network_links      = [      [0,1],      [1,2],      [2,3],      [3,4],      [3,5],      [0,2],       [1,0],       [2,0],       [2,1] ]
-# contention_domains = [ [0,1,5,6,7,8] ] # This means that links 0,1,5,6,7,8 contend for the same resource.
+# contention_domains_hidden = [ [0,1,5,6,7,8] ] # This means that links 0,1,5,6,7,8 contend for the same resource.
 #                                        # By looking at network_links, we obtain that this means that the
 #                                        # links [0,1], [1,2], [0,2], [1,0], [2,0], [2,1]
 #                                        # contend for the same resource
 #                                        # that is, there is a bus that connects node 0, 1, and 2
-# hidden_linkspeeds         = [ 0.19*Gbps, 0.19*Gbps,    10*Gbps,   10*Gbps,   10*Gbps]
+# linkspeeds         = [ 0.19*Gbps, 0.19*Gbps,    10*Gbps,   10*Gbps,   10*Gbps]
 # message_streams    = [          0,          1,          2]
-# offsets            = [          0,          0,          0]
 # periods            = [        200,        300,        500]
 # deadlines          = [         15,         16,         26]
-# data_payload       = [         50,        100,        100] # bytes
+# data_payload_hidden       = [         50,        100,        100] # bytes
 # routes             = [[0,1,2,3]  ,[0,1,2,4]  ,[0,1,2,4]  ] # these are links
 
-# f,H,nmessages,start_time,finish_time = tsn_sched_gen(hidden_timeunit,network_nodes,network_links,contention_domains,hidden_linkspeeds,message_streams,offsets,periods,deadlines,data_payload,routes)
+# f,H,nmessages,start_time,finish_time = tsn_sched_gen(network_nodes,network_links,contention_domains_hidden,linkspeeds,message_streams,periods,deadlines,data_payload_hidden,routes,timeunit_hidden)
 # if f:
 #   fh = open("schedule.txt","w")
 #   fh.write(str([H,nmessages,start_time,finish_time]))
@@ -474,15 +453,14 @@ def print_failure_to_console(f,H,nmessages,start_time,finish_time):
 #   set_x_min_and_max = False
 #   x_min = 0
 #   x_max = 50
-#   plot_it(hidden_timeunit,H,nmessages,start_time,finish_time,network_nodes,network_links,hidden_linkspeeds,message_streams,offsets,periods,deadlines,data_payload,routes,set_x_min_and_max,x_min,x_max,"figure",False)
+#   plot_it(H,nmessages,start_time,finish_time,network_nodes,network_links,linkspeeds,message_streams,periods,deadlines,data_payload_hidden,routes,set_x_min_and_max,x_min,x_max,"figure",timeunit_hidden)
 #   for temp in range(0,10):
 #     set_x_min_and_max = True
 #     x_min = ( temp   *0.1)*H
 #     x_max = ((temp+1)*0.1)*H
-#     plot_it(hidden_timeunit,H,nmessages,start_time,finish_time,network_nodes,network_links,hidden_linkspeeds,message_streams,offsets,periods,deadlines,data_payload,routes,set_x_min_and_max,x_min,x_max,"figure"+str(temp),False)
+#     plot_it(H,nmessages,start_time,finish_time,network_nodes,network_links,linkspeeds,message_streams,periods,deadlines,data_payload_hidden,routes,set_x_min_and_max,x_min,x_max,"figure"+str(temp),timeunit_hidden)
 # else:   
 #   print_failure_to_console(f,H,nmessages,start_time,finish_time)
-
 
 def getConnectedProcessors(bus,connectedPairs):
 	procs = []
@@ -520,20 +498,14 @@ def isTSNSchedulable(flowComponents,buses,processors,connectedPairs):
 		# in Gbps: Translate from Transmission Time Per Byte == (8 * 1000,000,000) / X
 		link_speeds.append((8 * 1000000000)/buses[i][2])
 	message_streams = []
-	message_offsets = []
 	message_periods = []
 	message_deadlines = []
 	message_datasizes = []
 	message_routes = []
 	for i in range(len(flowComponents)):
 		#print("flow: name("+flowComponents[i][1]+"): ")
-		
-		# just a sequential number for stream identifier?		
+		# just a sequential number for stream identifier?
 		message_streams.append(i)
-		
-		# test with offset zero
-		message_offsets.append(0)
-		
 		threads = flowComponents[i][3]
 		connections = flowComponents[i][4]
 		#for j in range(len(threads)):
@@ -569,17 +541,16 @@ def isTSNSchedulable(flowComponents,buses,processors,connectedPairs):
 	print("message_datasizes:", message_datasizes)
 	print("message routes: ", message_routes)
 	f,H,nmessages,start_time,finish_time = tsn_sched_gen(
-		time_unit_is_ns,
 		network_nodes,
 		network_links,
 		contention_domains,
 		link_speeds,
 		message_streams,
-		message_offsets,
 		message_periods,
 		message_deadlines,
 		message_datasizes,
-		message_routes
+		message_routes,
+		time_unit_is_ns
 	)
 	return f
 `}
@@ -675,4 +646,4 @@ def isTSNSchedulable(flowComponents,buses,processors,connectedPairs):
 **};
 
 
-end TSNSchedulingContract;
+end TSNSchedulingContractOld2;

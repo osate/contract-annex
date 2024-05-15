@@ -1,0 +1,1855 @@
+package ACVIPAnalysisContracts
+public
+	annex contract {**
+
+	contract implementation E2ELatency {`
+import math
+import ast
+
+def addError(error,msg):
+	error[0]+="|"+msg
+
+def arePrioritiesRM(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.priom th.deadline)])]
+	#  (t, t.name, period, wcet, prio, deadline)
+	for i in range(len(boundThreads)):
+		util=0.0
+		for j in range(len(boundThreads[i][2])):
+			for k in range(j+1, len(boundThreads[i][2])):
+				periodj = boundThreads[i][2][j][2]
+				priorityj = boundThreads[i][2][j][4]
+				namej = boundThreads[i][2][j][1]
+				periodk = boundThreads[i][2][k][2]
+				priorityk = boundThreads[i][2][k][4]
+				namek = boundThreads[i][2][k][1]
+				if (periodj < periodk and priorityj<=priorityk):
+					addError(error0,"{"+str(boundThreads[i][2][j][0])+"}arePrioritiesRM:thread "+namej+" has shorter period than thread "+namek+" but lower or equal priority")
+					print(" **NOT RMPRIORITIES thread "+namej+" has shorter period than "+namek+" but lower priority")
+					return False
+		addError(info0,"{"+str(boundThreads[i][0])+"}arePrioritiesRM: all thread in this processor have rate-monotonic priorities")					
+	print(" **RMPRIORITIES ")
+	return True
+
+def arePrioritiesDM(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.priom th.deadline)])]
+	#  (t, t.name, period, wcet, prio, deadline)
+	for i in range(len(boundThreads)):
+		util=0.0
+		for j in range(len(boundThreads[i][2])):
+			for k in range(j+1, len(boundThreads[i][2])):
+				periodj = boundThreads[i][2][j][2]
+				deadlinej = boundThreads[i][2][j][5]
+				priorityj = boundThreads[i][2][j][4]
+				namej = boundThreads[i][2][j][1]
+				periodk = boundThreads[i][2][k][2]
+				priorityk = boundThreads[i][2][k][4]
+				deadlinek = boundThreads[i][2][k][5]
+				namek = boundThreads[i][2][k][1]
+				if (deadlinej < deadlinek and priorityj<=priorityk):
+					addError(error0,"{"+str(boundThreads[i][2][j][0])+"} arePrioritiesDM: thread "+namej+" has shorter deadline than thread "+namek+" but lower or equal priority")
+					print(" **NOT DMPRIORITIES thread "+namej+" has shorter deadline than "+namek+" but lower priority")
+					return False
+		addError(info0,"{"+str(boundThreads[i][0])+"}arePrioritiesDM: all thread in this processor have deadline-monotonic priorities")					
+	print(" **DMPRIORITIES ")
+	return True
+
+def areAllThreadsWithSchedulingParameters(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	for p in range(len(boundThreads)):
+		for i in range(len(boundThreads[p][2])):
+			if boundThreads[p][2][i][2] is None:
+				addError(error0,"{"+str(boundThreads[p][2][i][0])+"} thread "+boundThreads[p][2][i][1]+" is missing the Period Property")
+				return False
+			if boundThreads[p][2][i][3] is None:
+				addError(error0,"{"+str(boundThreads[p][2][i][0])+"} thread "+boundThreads[p][2][i][1]+" is missing the Compute Execution Time Property")
+				return False			
+			if boundThreads[p][2][i][5] is None:
+				addError(error0,"{"+str(boundThreads[p][2][i][0])+"} thread "+boundThreads[p][2][i][1]+" is missing the Deadline Property")
+				return False
+		addError(info0,"{"+str(boundThreads[p][0])+"}:areAllThreadsWithSchedulingParameters: all threads in the processor have proper scheduling parameters")
+	return True						
+
+def areAllProcessorsWithSchedulingProtocol(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	for p in range(len(boundThreads)):
+		if boundThreads[p][3] is None:
+			print("Processor (",boundThreads[p][1],") does not have a scheduling protocol set")
+			addError(error0,"{"+str(boundThreads[p][0])+"} processor: does not have the Scheduling Protocol set")
+			return False
+	return True
+	
+def areAllProcessorsEdfScheduled(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	for p in range(len(boundThreads)):
+		if boundThreads[p][3] is None:
+			addError(error0,"{"+str(boundThreads[p][0])+"} processor: does not have the Scheduling Protocol set")
+			return False
+		if boundThreads[p][3][0] != "EDF":
+			addError(error0,"{"+str(boundThreads[p][0])+"} processor: does not have an EDF scheduling protocol set")		
+			return False
+	return True
+
+def getResponseTimes(threads):
+	# threads is [(th, th.name, th.period, th.wcet, th.prio, th.deadline)]
+	# in increasing priority order
+	respTimes = [0] * len(threads)
+	for i in range(len(threads)):
+		r = 0
+		r1 = threads[i][3]
+		print("response Time: thread T=",threads[i][2]," D=",threads[i][5]," C=",threads[i][3])
+		while r < r1 and r1 <= int(threads[i][5]):
+			r = r1
+			r1 = int(threads[i][3])
+			for j in range(0, i):
+				wcetj = int(threads[j][3])
+				tj = int(threads[j][2])
+				#r1 = r1 + math.ceil(r / threads[j][2]) * threads[j][3]
+				r1 = r1 + math.ceil(r / tj) * wcetj
+		respTimes[i] = r1
+	return respTimes
+
+def isResponseTimeSchedulable(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	for p in range(len(boundThreads)):
+		threads = boundThreads[p][2]
+		for i in range(len(threads)):
+			if threads[i][4] is None:
+				return False
+		inc = sorted(threads, reverse = True, key = lambda td: td[4])
+		rt = getResponseTimes(inc)
+		for i in range(len(rt)):
+			deadline = inc[i][5]
+			if rt[i] > deadline:
+				addError(error0,"{"+str(inc[i][0])+"} isResponseTimeSchedulable: thread:"+inc[i][1]+" response time:"+str(rt[i])+" > deadline:"+str(deadline))
+				return False
+		addError(info0,"{"+str(boundThreads[p][0])+"} isResponseTimeSchedulable: processor("+boundThreads[p][1]+") is schedulable with Worst-Case Response Time Analysis")
+	print("ReponseTimeSchedulable=TRUE")
+	return True
+
+def areAllPrioritiesSet(boundThreads,priorities,names,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	print("checking if all threads have priorities")
+	for p in range(len(boundThreads)):
+		threads = boundThreads[p][2]
+		for i in range(len(threads)):
+			if threads[i][4] is None:
+				addError(error0,"{"+str(threads[i][0])+"}:areAllPrioritiesSet:thread " + threads[i][1] + " does not have priority ")
+				print("Thread "+threads[i][1]+" does not have a priority assigned")
+				return False
+		addError(info0,"{"+str(boundThreads[p][0])+"}:areAllPrioritiesSet:All threads in processor have priorities ")			
+	return True
+	#if len(priorities) == len(names):
+	#	for i in range(len(priorities)):
+	#		if priorities[i] is None:
+	#			return False
+	#	return True
+	#return False
+
+def areAllPrioritiesForFixedPrioritySet(boundThreads,priorities,names,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	print("checking if all threads have priorities")
+	for p in range(len(boundThreads)):
+		if not(boundThreads[p][3] is None):
+			if boundThreads[p][3][0] == 'RMS' or boundThreads[p][3][0] == 'DMS':
+				threads = boundThreads[p][2]
+				for i in range(len(threads)):
+					if threads[i][4] is None:
+						addError(error0,"{"+str(threads[i][0])+"}:areAllPrioritiesForFixedPrioritySet:thread " + threads[i][1] + " does not have priority ")
+						print("Thread "+threads[i][1]+" does not have a priority assigned")
+						return False
+				addError(info0,"{"+str(boundThreads[p][0])+"}:areAllPrioritiesForFixedPrioritySet: All Threads in processor have priorities assigned")						
+	return True
+	#if len(priorities) == len(names):
+	#	for i in range(len(priorities)):
+	#		if priorities[i] is None:
+	#			return False
+	#	return True
+	#return False
+	
+def areAllThreadsPeriodic(threads, threadActivations, names,error0):
+	for i in range(len(threads)):
+		if threadActivations[i].lower() != 'periodic':
+			addError(error0,"{"+str(threads[i])+"}thread " + names[i] + " activation is "+threadActivations[i]+" only periodic activations are allowed")
+			return False
+	return True	
+		
+def arePeriodsHarmonic(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet)])]
+	for p in range(len(boundThreads)):
+		incPeriods = sorted(boundThreads[p][2], key=lambda td: td[2])
+		for i in range(len(incPeriods)-1):
+			if incPeriods[i+1][2] % incPeriods[i][2] != 0:
+				addError(error0,"{"+str(incPeriods[i][0])+"} arePeriodsHarmonic: period "+str(incPeriods[i+1][2])+" is not a multiple of period "+str(incPeriods[i][2]))
+				return False
+		addError(info0,"{"+str(boundThreads[p][0])+"} arePeriodsHarmonic: threads in processor have harmonic periods")
+	return True
+
+def allThreadsBoundToSingleProcessor(bindings,error0):
+	for i in range(len(bindings)):
+		if bindings[i][2] is None or len(bindings[i][2]) == 0:
+			addError(error0,"{"+str(bindings[i][0])+"}thread " + bindings[i][1] + " is not assigned to run to any processor")
+			return False
+		if len(bindings[i][2]) > 1:
+			addError(error0,"{"+str(bindings[i][0])+"}thread " + bindings[i][1] + " is assigned to run in more than one processor")
+			return False
+	return True
+	
+	
+def allProcessorHarmonicBoundSchedulable(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet)])]
+	for i in range(len(boundThreads)):
+		util=0.0
+		for j in range(len(boundThreads[i][2])):
+			util = util + boundThreads[i][2][j][3] / boundThreads[i][2][j][2]
+		if util > 1.0:
+			addError(error0,"{"+str(boundThreads[i][0])+"} allProcessorHarmonicBoundSchedulable: processor "+boundThreads[i][1]+" workload exceeds 100% bound ")
+			return False
+	print("allProcessorsHarmonicBoundSchedulable=TRUE")
+	addError(info0,"{"+str(boundThreads[i][0])+"} allProcessorHarmonicBoundSchedulable: processor "+boundThreads[i][1]+" is schedulable")
+	return True
+	
+def allProcessorNonHarmonicBoundSchedulable(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet)])]
+	for i in range(len(boundThreads)):
+		util=0.0
+		for j in range(len(boundThreads[i][2])):
+			util = util + boundThreads[i][2][j][3] / boundThreads[i][2][j][2]
+		if util > 0.69:
+			addError(error0,"{"+str(boundThreads[i][0])+"} allProcessorNonHarmonicBoundSchedulable: processor "+boundThreads[i][1]+" workload exceeds 69% bound ")
+			return False
+	print("allProcessorsNonHarmonicBoundSchedulable=TRUE")
+	addError(info0,"{"+str(boundThreads[i][0])+"} allProcessorNonHarmonicBoundSchedulable: processor "+boundThreads[i][1]+" is schedulable")
+	return True
+	
+	
+#def arePeriodsNonHarmonic(threads,processors,periods,error0):
+#	return not arePeriodsHarmonic(threads,processors,periods,error0)	
+
+def areAllDeadlinesImplicit(threads, periods,deadlines,names,error0):
+	for i in range(len(periods)):
+		if periods[i] != deadlines[i]:
+			addError(error0,"{"+str(threads[i])+"}thread "+names[i]+" period is not equal to its deadline (not implicit)")
+			return False
+	return True
+	
+def areAllThreadDeadlinesImplicit(boundThreads):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	for p in range(len(boundThreads)):
+		threads = boundThreads[p][2]
+		for i in range(len(threads)):
+			if threads[i][2] != threads[i][5]:
+				addError(error0,"{"+str(threads[i][0])+"} areAllThreadDeadlinesImplicit: thread("+threads[i][1]+") period and deadlines are not equal")
+				return False
+		addError(info0,"{"+str(boundThreads[p][0])+"} areAllThreadDeadlinesImplicit: all threads in processor(""boundThreads[p][1]"+") have implicit deadlines")
+	print("areAllThreadDeadlinesImplicit: TRUE")
+	return True
+
+def areAllThreadDeadlinesConstrained(boundThreads):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	for p in range(len(boundThreads)):
+		threads = boundThreads[p][2]
+		for i in range(len(threads)):
+			if threads[i][2] < threads[i][5]:
+				addError(error0,"{"+str(threads[i][0])+"} areAllThreadDeadlinesConstrained: thread("+threads[i][1]+") deadline larger than the period")
+				return False
+		addError(info0,"{"+str(boundThreads[p][0])+"} areAllThreadDeadlinesConstrained: all threads in processor(""boundThreads[p][1]"+") have constrained deadlines")
+	return True
+
+def areAllDeadlinesConstrained(threads,periods,deadlines,names,error0):
+	for i in range(len(periods)):
+		if periods[i] < deadlines[i]:
+			#addError(error0,"{"+str(threads[i][0])+"}thread "+names[i]+" period is smaller than its deadline (not constrained)")
+			addError(error0,"{"+str(threads[i])+"}thread "+names[i]+" period is smaller than its deadline (not constrained)")
+			return False
+	return True
+
+#tasks =[ [T,D,C] ]
+def utilization(tasks):
+	u=0.0
+	for i in range(len(tasks)):
+		u += tasks[i][2]/tasks[i][0]
+	return u
+
+
+#tasks =[ [T,D,C] ]
+def allTasksDeadlineLargerThanPeriod(tasks):
+	for i in range(len(tasks)):
+		if tasks[i][0] >= tasks[i][1]:
+			return False
+	return True
+	
+# Demand bound function sched test 
+# S.K.Baruah, A.K. Mok and L.E. Rossier, "Preemptively Scheduling Hard Real-Time Tasks on One Processor"
+# Proceedings of the 11th Real-Time Systems Symposium. 1990.
+#tasks =[ [T,D,C] ]
+def EdfDBFSchedulable(tasks):
+	u = utilization(tasks)
+	if u>1.0 :
+		return False
+	if allTasksDeadlineLargerThanPeriod(tasks):
+		return True
+	periods = [tasks[i][0] for i in range(len(tasks))]
+	deadlines = [tasks[i][1] for i in range(len(tasks))]
+	P = math.lcm(*periods)
+	D = max(deadlines)
+	M = P + D
+	if u == 1:
+		T=M
+	else:
+		T= min(M,math.ceil(u/(1-u)*max([periods[i]-deadlines[i] for i in range(len(periods))])))
+	H=0
+	for t in range(1,T):
+		for i in range(len(tasks)):
+			if t>= tasks[i][1] and (t % tasks[i][0]) == tasks[i][1]:
+				H += tasks[i][2]
+		if H>t:
+			return False
+	return True	
+	
+def isEdfDBFSchedulable(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	for p in range(len(boundThreads)):
+		#tasks =[ [T,D,C] ]
+		tasks=[]
+		for i in range(len(boundThreads[p][2])):
+			tasks.append([round(boundThreads[p][2][i][2]),round(boundThreads[p][2][i][5]),round(boundThreads[p][2][i][3])])
+		if not EdfDBFSchedulable(tasks):
+			addError(error0,"{"+str(boundThreads[p][0])+"} isEdfDBFSchedulable: processor:"+boundThreads[p][1]+" has taskset that is not EDF schedulable")
+			return False
+		addError(info0,"{"+str(boundThreads[p][0])+"} isEdfDBFSchedulable: processor:"+boundThreads[p][1]+" has taskset that is EDF schedulable")
+	return True
+
+def getThreadDeadline(threadid,threadTimingParametersInNs):
+	# threadTimingParametersInNs = (t,period,deadline,wcet)
+	for i in range(len(threadTimingParametersInNs)):
+		if threadTimingParametersInNs[i][0] == threadid:
+			return threadTimingParametersInNs[i][2] 
+	return 0
+#([fid,f.name,latency,
+#	[(threadid,t.name,period,wcet,deadline)],
+#   [(c,srcNode,dstNode,n,lat,bus,period,datasize,deadline,srcThread,dstThread)]])
+def areAllMessageOffsetsBeforeDeadlines(threadTimingParametersInNs,flowComponents,message_offsets_mapping,thread_offsets):
+	print("--- CALCULATING OFFSETS ---")
+	for i in range(len(flowComponents)):
+		print("f(",flowComponents[i][0],").name(",flowComponents[i][1],")")
+		threads = flowComponents[i][3]
+		connections = flowComponents[i][4]
+		#(c,srcNode,dstNode,n,lat,bus,period,datasize,deadline,srcThread,dstThread)
+		current_offset = 0
+		for j in range(len(connections)):
+			thread_offsets[connections[j][9]] = current_offset
+			print("sourceThread().offset(",current_offset,")")
+			srcThreadDeadline = getThreadDeadline(connections[j][9],threadTimingParametersInNs)
+			print("sourceThread().deadline(",srcThreadDeadline,")")
+			current_offset += srcThreadDeadline
+			message_offsets_mapping[connections[j][0]] = current_offset
+			print("connection(",connections[j][3],").offset(",current_offset,")")
+			print("connection(",connections[j][3],").deadline(",connections[j][8],")")
+			current_offset += connections[j][8]
+		# last destination offset
+		thread_offsets[connections[len(connections)-1][10]] = current_offset
+	print("--- END OF OFFSET CALCULATION ---")
+	return True
+
+# This program considers a computer network that fits the framework of Time Sensitive Networking (TSN).
+# There are different variants of TSN. Here, we consider switched Ethernet with time-triggered arbitration on outgoing link.
+#
+# Assumptions:
+#   We make the following assumptions:
+#   * Time-triggered arbitration (as specified above)
+#   * The traffic is specified as message streams where each message stream is characterized by
+#     its period, deadline, and data payload.
+#   * It is assumed that for each message stream, its deadline is less than or equal to its period.
+#   * Routes of message streams are given (i.e., we do not compute routes).
+#   * Frame preemption is not allowed.
+#   * Frame duplication is not used.
+#   * We generate a time-triggered schedule of duration lcm of periods of message streams.
+#   * Each message stream has one message arriving at time 0.
+#
+# How the schedule is generated:
+#   We compute the static schedule by solving a constraint satisfaction instance. Specifically, we introduce
+#   a variable for each message stream, for each message of this stream, for each hop of this message; this variable
+#   indicates the starting time for transmission on the link given by the hop. Analogously, we introduce
+#   a finishing time. We formulate constraints that must be satisfied by these start times and finishing times and find
+#   a solution that satisfies these constraints. We use z3---an SMT solver.
+#
+# How the lcm is computed:
+#   Part of generating the static schedule is computing the lcm of periods. The tool supports two ways of doing this:
+#   (i) computing lcm directly, and (ii) computing lcm using z3. The former is the default and it is recommended to be used
+#   if periods are integers. To use the latter, you need to call tsn_sched_gen_internal with
+#   directly_flag=False. This is useful if periods are real numbers.
+#    
+#   Computing lcm directly:
+#     We use the standard technique for computing lcm here.
+#
+#   Computing lcm using z3:
+#     Consider the case that periods are real numbers; this can be problematic. Actually, periods are
+#     floating-points numbers but this can still be problematic. For example, consider two
+#     periods 0.00010 and 0.00045. If these were real numbers that could be represented perfectly,
+#     then the lcm would be 0.00090. However, in our tool these are represented by floating-point numbers;
+#     the computed lcm of these numbers represented as float point can be very large---so large that
+#     the corresponding constraint satisfaction instance that is used for schedule generation becomes
+#     so large we can't fit it in memory. Therefore, we compute the lcm in another way using z3.
+#     We introduce a variable in z3 that is a real number that should be an approximation for 0.00010
+#     and we introduce another real number that should be an approximation for 0.00045. We introduce a
+#     constraint stating that the first number should deviate from 0.00010 by an amount that is at most
+#     the resolution of double-precision floating point numbers. Note that by default, python
+#     interprets any number that includes a decimal point as a double precision floating point number.
+#     Then, we ask: find the lcm of these two z3 variables. We do it as follows:
+#       Find H such
+#         H = k_1*p_1
+#         H = k_2*p_2
+#         p_1 differs from period of 1 by at most small amount
+#         p_2 differs from period of 2 by at most small amount
+#       k_1 is a positive integer
+#       k_2 is a positive integer
+#     Of course, our tool works also for the case that there are more than two periods. 
+#
+
+# from z3 import *
+#import matplotlib.pyplot as plt
+
+frameheader_overhead_in_bytes = 14
+Gbps = 1000000000.0
+floating_point_tolerance = 0.000000000000001
+
+time_unit_is_s  = 0 # seconds (floating point)
+time_unit_is_ms = 1 # milliseconds (integer)
+time_unit_is_us = 2 # microseconds (integer)
+time_unit_is_ns = 3 # nanoseconds (integer)
+
+def get_time_unit_string(timeunit):
+  if timeunit==time_unit_is_s:
+    return "seconds"  
+  elif timeunit==time_unit_is_ms:
+    return "milliseconds"  
+  elif timeunit==time_unit_is_us:
+    return "microseconds"  
+  elif timeunit==time_unit_is_ns:
+    return "nanoseconds"  
+  else: 
+    print("Error in get_time_unit_string.")  
+    exit(-1)
+
+# Code for computing lcm directly
+
+def compute_gcd_directly(a,b):
+  if b==0:
+    return a
+  return compute_gcd_directly(b,a%b)
+
+def compute_lcm_directly(periods):
+  ret = periods[0]
+  for index in range(1,len(periods)):
+    ret = periods[index] * ret//compute_gcd_directly(periods[index],ret)
+  return ret
+
+def compute_lcm_nmessages_directly(periods):
+  H = compute_lcm_directly(periods)
+  message_stream_index_range = range(0,len(periods))
+  nmessages = [None] * len(message_stream_index_range)
+  for message_stream_index in message_stream_index_range:
+    nmessages[message_stream_index] = H//periods[message_stream_index]
+  return H,nmessages
+
+# Code for computing lcm indirectly
+    
+def get_float_from_z3_model(the_var):
+  ret = float(the_var.numerator_as_long())/float(the_var.denominator_as_long())
+  return ret
+
+def get_int_from_z3_model(the_var):
+  ret = the_var.as_long()
+  return ret
+
+def compute_lcm_nmessages_z3(periods):  
+  maxH = max(periods)
+  success = False
+  while (not success):
+    message_stream_index_range = range(0,len(periods))
+    selected_multiples = [None] * len(message_stream_index_range) 
+    selected_periods   = [None] * len(message_stream_index_range) 
+    for message_stream_index in message_stream_index_range:
+      selected_multiples[message_stream_index] = Int("selected_multiples_"+str(message_stream_index))
+      selected_periods[message_stream_index] = Real("selected_periods_"+str(message_stream_index))
+    selected_H = Real("selected_H")
+    sol = Solver()
+    for message_stream_index in message_stream_index_range:
+      sol.add(1<=selected_multiples[message_stream_index])
+      sol.add(periods[message_stream_index]*(1-floating_point_tolerance)<=selected_periods[message_stream_index])
+      sol.add(periods[message_stream_index]*(1+floating_point_tolerance)>=selected_periods[message_stream_index])
+      sol.add(selected_multiples[message_stream_index]*selected_periods[message_stream_index]==selected_H)
+    sol.add(selected_H<=maxH)
+    if sol.check()==sat:
+      success = True
+      m = sol.model()
+      H = get_float_from_z3_model(m[selected_H])
+      nmessages = [None] * len(message_stream_index_range)
+      for message_stream_index in message_stream_index_range:
+        nmessages[message_stream_index] = get_int_from_z3_model(m[selected_multiples[message_stream_index]])
+    else:
+      maxH = maxH * 2
+  return H,nmessages
+
+def compute_lcm_nmessages(timeunit,periods):  
+  if timeunit==time_unit_is_s:
+    return compute_lcm_nmessages_z3(periods)  
+  elif timeunit==time_unit_is_ms:
+    return compute_lcm_nmessages_directly(periods)
+  elif timeunit==time_unit_is_us:
+    return compute_lcm_nmessages_directly(periods)
+  elif timeunit==time_unit_is_ns:
+    return compute_lcm_nmessages_directly(periods)
+  else: 
+    print("Error in compute_lcm_nmessages.")  
+    exit(-1)
+
+# Code for extracting a solution
+
+def fill_start_time_finish_time(message_streams,periods,routes,H,nmessages,s,f,sol):
+  m = sol.model()
+  start_time  = create_empty_3D(message_streams,periods,routes,H,nmessages)
+  finish_time = create_empty_3D(message_streams,periods,routes,H,nmessages)  
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    message_index_range = range(0,nmessages[message_stream_index])
+    for message_index in message_index_range:
+      hop_index_range = range(0,len(routes[message_stream_index]))
+      for hop_index in hop_index_range:
+        start_time[message_stream_index][message_index][hop_index]  = get_float_from_z3_model(m[s[message_stream_index][message_index][hop_index]])
+        finish_time[message_stream_index][message_index][hop_index] = get_float_from_z3_model(m[f[message_stream_index][message_index][hop_index]])
+  return start_time,finish_time
+
+# Code for setting up z3 instance: data structures, variables, constraints
+  
+def create_empty_3D(message_streams,periods,routes,H,nmessages):
+  message_stream_index_range = range(0,len(message_streams))
+  var = [None] * len(message_stream_index_range) 
+  for message_stream_index in message_stream_index_range:
+    message_index_range = range(0,nmessages[message_stream_index])
+    var[message_stream_index] = [None] * len(message_index_range) 
+    for message_index in message_index_range:
+      hop_index_range = range(0,len(routes[message_stream_index]))
+      for hop_index in hop_index_range:
+        var[message_stream_index][message_index] = [None] * len(hop_index_range) 
+  return var
+
+def tsn_sched_gen_add_var_per_message_per_hop(message_streams,periods,routes,H,nmessages,vn):
+  v = create_empty_3D(message_streams,periods,routes,H,nmessages)
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    message_index_range = range(0,nmessages[message_stream_index])
+    for message_index in message_index_range:
+      hop_index_range = range(0,len(routes[message_stream_index]))
+      for hop_index in hop_index_range:
+        v[message_stream_index][message_index][hop_index] = Real(vn+"_"+str(message_stream_index)+'_'+str(message_index)+'_'+str(hop_index))
+  return v
+
+def tsn_sched_gen_add_s(message_streams,periods,routes,H,nmessages):
+  return tsn_sched_gen_add_var_per_message_per_hop(message_streams,periods,routes,H,nmessages,"s")
+
+def tsn_sched_gen_add_f(message_streams,periods,routes,H,nmessages):
+  return tsn_sched_gen_add_var_per_message_per_hop(message_streams,periods,routes,H,nmessages,"f")
+
+def compute_tx_time(timeunit,message_stream_index,message_index,hop_index,routes,linkspeeds,data_payload):
+  link_index = routes[message_stream_index][hop_index]
+  linkspeed = linkspeeds[link_index]
+  txtime = (data_payload[message_stream_index]+frameheader_overhead_in_bytes)*8/linkspeed
+  if timeunit==time_unit_is_s:
+    return txtime
+  elif timeunit==time_unit_is_ms:
+    return txtime*1000.0
+  elif timeunit==time_unit_is_us:
+    return txtime*1000000.0  
+  elif timeunit==time_unit_is_ns:
+    return txtime*1000000000.0  
+  else: 
+    print("Error in compute_tx_time. Bad time unit.")  
+    exit(-1)    
+  
+def tsn_sched_gen_add_f_equals_s_plus_txtime_constraint(timeunit,linkspeeds,message_streams,periods,data_payload,routes,H,nmessages,s,f,sol):
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    message_index_range = range(0,nmessages[message_stream_index])
+    for message_index in message_index_range:
+      hop_index_range = range(0,len(routes[message_stream_index]))
+      for hop_index in hop_index_range:
+        txtime = compute_tx_time(timeunit,message_stream_index,message_index,hop_index,routes,linkspeeds,data_payload)
+        sol.add(f[message_stream_index][message_index][hop_index] == s[message_stream_index][message_index][hop_index] + txtime)
+
+def is_link_in_contention_domain(a_link_index,a_contention_domain):
+  for index in range(0,len(a_contention_domain)):
+    if a_contention_domain[index]==a_link_index:
+      return True
+  return False
+
+def are_links_in_same_contention_domain(a_link_index,a_link_index2,contention_domains):
+  for index in range(0,len(contention_domains)):
+    a_contention_domain = contention_domains[index]
+    found  = is_link_in_contention_domain(a_link_index, a_contention_domain)
+    found2 = is_link_in_contention_domain(a_link_index2,a_contention_domain)
+    if found and found2:
+      return True    
+  return False
+        
+def tsn_sched_gen_add_nooverlap_constraint(contention_domains,message_streams,periods,routes,H,nmessages,s,f,sol):
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    message_index_range = range(0,nmessages[message_stream_index])
+    for message_index in message_index_range:
+      hop_index_range = range(0,len(routes[message_stream_index]))
+      for hop_index in hop_index_range:
+        for message_stream_index2 in message_stream_index_range:
+          message_index_range2 = range(0,nmessages[message_stream_index2])
+          for message_index2 in message_index_range2:
+            hop_index_range2 = range(0,len(routes[message_stream_index2]))
+            for hop_index2 in hop_index_range2:
+              if ((message_stream_index!=message_stream_index2) or (message_index!=message_index2)):
+                a_link_index  = routes[message_stream_index][hop_index]
+                a_link_index2 = routes[message_stream_index2][hop_index2]
+                there_is_contention = False
+                if (a_link_index==a_link_index2): 
+                  there_is_contention = True
+                else:
+                  if (are_links_in_same_contention_domain(a_link_index,a_link_index2,contention_domains)):
+                    there_is_contention = True                  
+                # if (a_link_index==a_link_index2): 
+                if there_is_contention: 
+                  sol.add(Or(f[message_stream_index][message_index][hop_index]<=s[message_stream_index2][message_index2][hop_index2],f[message_stream_index2][message_index2][hop_index2]<=s[message_stream_index][message_index][hop_index]))
+                  
+def tsn_sched_gen_add_mustfinishbeforesuccessorhop_constraint(message_streams,periods,routes,H,nmessages,s,f,sol):
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    message_index_range = range(0,nmessages[message_stream_index])
+    for message_index in message_index_range:
+      hop_index_range = range(0,len(routes[message_stream_index])-1)
+      for hop_index in hop_index_range:
+        sol.add(f[message_stream_index][message_index][hop_index] <= s[message_stream_index][message_index][hop_index+1])
+
+def tsn_sched_gen_add_muststartatorlaterthanarrival_constraint(message_streams,offsets,periods,H,nmessages,s,sol):
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    message_index_range = range(0,nmessages[message_stream_index])
+    for message_index in message_index_range:
+      hop_index = 0
+      sol.add(s[message_stream_index][message_index][hop_index] >= offsets[message_stream_index]+message_index*periods[message_stream_index])
+
+def tsn_sched_gen_add_mustmeetdeadline_constraint(message_streams,offsets,periods,deadlines,routes,H,nmessages,f,sol):
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    message_index_range = range(0,nmessages[message_stream_index])
+    for message_index in message_index_range:
+      hop_index = len(routes[message_stream_index])-1
+      sol.add(f[message_stream_index][message_index][hop_index] <= offsets[message_stream_index]+message_index*periods[message_stream_index]+deadlines[message_stream_index])
+
+def fill_start_time_finish_time(message_streams,periods,routes,H,nmessages,s,f,sol):
+  m = sol.model()
+  start_time  = create_empty_3D(message_streams,periods,routes,H,nmessages)
+  finish_time = create_empty_3D(message_streams,periods,routes,H,nmessages)  
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    message_index_range = range(0,nmessages[message_stream_index])
+    for message_index in message_index_range:
+      hop_index_range = range(0,len(routes[message_stream_index]))
+      for hop_index in hop_index_range:
+        start_time[message_stream_index][message_index][hop_index]  = get_float_from_z3_model(m[s[message_stream_index][message_index][hop_index]])
+        finish_time[message_stream_index][message_index][hop_index] = get_float_from_z3_model(m[f[message_stream_index][message_index][hop_index]])
+  return start_time,finish_time
+
+def adjust_nmessages(offsets,periods,H,nmessages):
+  new_nmessages = [None] * len(nmessages)
+  for index in range(0,len(nmessages)):
+    new_nmessages[index] = math.ceil(max(offsets)/periods[index])+nmessages[index]
+  return new_nmessages
+  
+def tsn_sched_gen(timeunit,network_nodes,network_links,contention_domains,linkspeeds,message_streams,offsets,periods,deadlines,data_payload,routes):
+  # this computes the lcm and for each message stream, the number of messages within the lcm
+  H,nmessages = compute_lcm_nmessages(timeunit,periods)
+  # this considers the offsets and computes for each message stream, the number of messages within the max(offset)+lcm
+  nmessages = adjust_nmessages(offsets,periods,H,nmessages)
+  s = tsn_sched_gen_add_s(message_streams,periods,routes,H,nmessages)
+  f = tsn_sched_gen_add_f(message_streams,periods,routes,H,nmessages)     
+  sol = Solver()
+  tsn_sched_gen_add_f_equals_s_plus_txtime_constraint(timeunit,linkspeeds,message_streams,periods,data_payload,routes,H,nmessages,s,f,sol)
+  tsn_sched_gen_add_nooverlap_constraint(contention_domains,message_streams,periods,routes,H,nmessages,s,f,sol)
+  tsn_sched_gen_add_mustfinishbeforesuccessorhop_constraint(message_streams,periods,routes,H,nmessages,s,f,sol)
+  tsn_sched_gen_add_muststartatorlaterthanarrival_constraint(message_streams,offsets,periods,H,nmessages,s,sol)
+  tsn_sched_gen_add_mustmeetdeadline_constraint(message_streams,offsets,periods,deadlines,routes,H,nmessages,f,sol)
+  if sol.check()==sat:
+    start_time,finish_time = fill_start_time_finish_time(message_streams,periods,routes,H,nmessages,s,f,sol)
+    return True,H,nmessages,start_time,finish_time 
+  else:
+    return False,H,nmessages,[],[] 
+
+# Code for plotting the schedule. To use this, you need to actually have a schedule first (i.e., you need
+#   to call tsn_sched_gen first)
+
+def plot_it(timeunit,H,nmessages,start_time,finish_time,network_nodes,network_links,linkspeeds,message_streams,offsets,periods,deadlines,data_payload,routes,set_x_min_and_max,x_min,x_max,output_fn,onlyHflag):
+  row_count = 0
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    hop_index_range = range(0,len(routes[message_stream_index]))
+    for hop_index in hop_index_range:
+      row_count = row_count + 1
+  list_of_rectangles_per_row = [None] * row_count
+  list_of_y_pos_per_row      = [None] * row_count
+  list_of_yticks_pos_per_row = [None] * row_count
+  list_of_height_per_row     = [None] * row_count
+  list_of_labels_per_row     = [None] * row_count
+  tempindex = 0
+  y_pos = 10
+  message_stream_index_range = range(0,len(message_streams))
+  for message_stream_index in message_stream_index_range:
+    hop_index_range = range(0,len(routes[message_stream_index]))
+    for hop_index in hop_index_range:
+      list_of_y_pos_per_row[tempindex] = y_pos
+      list_of_yticks_pos_per_row[tempindex] = y_pos+5
+      list_of_height_per_row[tempindex] = 9
+      label_str = str(message_stream_index)+"_"+str(routes[message_stream_index][hop_index])
+      list_of_labels_per_row[tempindex] = label_str
+      message_index_range = range(0,nmessages[message_stream_index])
+      templist = []
+      for message_index in message_index_range:
+        if onlyHflag:
+          if finish_time[message_stream_index][message_index][hop_index]<=H:
+            st = start_time[message_stream_index][message_index][hop_index]
+            du = finish_time[message_stream_index][message_index][hop_index]-start_time[message_stream_index][message_index][hop_index]
+            templist.append((st,du))
+          else:
+            if start_time[message_stream_index][message_index][hop_index]<=H:
+              st = start_time[message_stream_index][message_index][hop_index]
+              du = H-start_time[message_stream_index][message_index][hop_index]
+              templist.append((st,du))
+              st = 0
+              du = finish_time[message_stream_index][message_index][hop_index]-H
+              templist.append((st,du))
+            else:
+              st = start_time[message_stream_index][message_index][hop_index]
+              du = finish_time[message_stream_index][message_index][hop_index]-start_time[message_stream_index][message_index][hop_index]
+              st = st - H
+              templist.append((st,du))
+        else:
+          st = start_time[message_stream_index][message_index][hop_index]
+          du = finish_time[message_stream_index][message_index][hop_index]-start_time[message_stream_index][message_index][hop_index]
+          templist.append((st,du))       
+      list_of_rectangles_per_row[tempindex] = templist
+      tempindex = tempindex + 1
+      y_pos = y_pos + 10 
+  list_of_y_pos_per_row.reverse()
+  list_of_yticks_pos_per_row.reverse()
+  fig, ax = plt.subplots()
+  tempindex = row_count-1
+  while (tempindex>=0):
+    ax.broken_barh(list_of_rectangles_per_row[tempindex], (list_of_y_pos_per_row[tempindex], list_of_height_per_row[tempindex]),facecolors='black')
+    tempindex = tempindex - 1
+  low_y  = min(list_of_yticks_pos_per_row)-10
+  high_y = max(list_of_yticks_pos_per_row)+10
+  ax.set_ylim(low_y, high_y)
+  if set_x_min_and_max:
+    ax.set_xlim(x_min,x_max)
+  else:
+    if onlyHflag:
+      ax.set_xlim(max(offsets),H+max(offsets))
+    else:
+      ax.set_xlim(0,H+max(offsets))
+  time_unit_string = get_time_unit_string(timeunit)
+  ax.set_xlabel(time_unit_string)
+  list_of_labels_per_row.reverse()
+  list_of_yticks_pos_per_row.reverse()
+  ax.set_yticks(list_of_yticks_pos_per_row, labels=list_of_labels_per_row)     # Modify y-axis tick labels
+  ax.grid(False)                                       # Make grid lines visible
+  if timeunit==time_unit_is_s:
+    s = "TSN schedule generated for major frame " + '{0:.9f}'.format(H) + " "+str(time_unit_string)+".\n x_y means message stream x on link y."  
+  else:
+    s = "TSN schedule generated for major frame " + str(H) + " "+str(time_unit_string)+".\n x_y means message stream x on link y."
+  plt.title(s)
+  plt.show(block=False)
+  if output_fn!="":
+    fig.savefig(output_fn+".png")
+    fig.savefig(output_fn+".eps")
+    fig.savefig(output_fn+".pdf")
+    
+def print_failure_to_console(f,H,nmessages,start_time,finish_time):
+  print("Did not find a schedule")
+
+# Code that shows an example on how to use this software.
+
+#   The network below is derived from the example in Figure 3 in
+#     Yuanbin Zhou, Soheil Samii, Petru Eles, and Zebo Peng,
+#     "Time-Triggered Scheduling for Time-Sensitive Networking with Preemption"
+#   but with two changes (i) the 2nd link has slower speed, and (ii) there are 3 message streams.
+#   We consider a network with 6 nodes. These nodes are given indices 0,1,2,3,4,5.
+#   There are links between nodes. Specifically, there is
+#     * a link with index 0 and it goes from the node with index 0 to the node with index 1
+#     * a link with index 1 and it goes from the node with index 1 to the node with index 2
+#     ...
+#   There are three message streams. One message stream has index 0,
+#   another message stream has index 1, and yet another message stream has index 2.
+
+# Example where time is represented as integers.
+# Time is measured in microseconds
+#
+# In the example below, you might want to try to change
+#   offsets            = [          0,          0,          0]
+# to
+#   offsets            = [          0,          0,        490]
+# in order to see a schedule where the last message in a message stream is transmitted after H
+# hidden_timeunit = time_unit_is_us
+# network_nodes      = [0,1,2,3,4,5]
+# network_links      = [      [0,1],      [1,2],      [2,3],      [3,4],      [3,5],      [0,2],       [1,0],       [2,0],       [2,1] ]
+# contention_domains = [ [0,1,5,6,7,8] ] # This means that links 0,1,5,6,7,8 contend for the same resource.
+#                                        # By looking at network_links, we obtain that this means that the
+#                                        # links [0,1], [1,2], [0,2], [1,0], [2,0], [2,1]
+#                                        # contend for the same resource
+#                                        # that is, there is a bus that connects node 0, 1, and 2
+# hidden_linkspeeds         = [ 0.19*Gbps, 0.19*Gbps,    10*Gbps,   10*Gbps,   10*Gbps]
+# message_streams    = [          0,          1,          2]
+# offsets            = [          0,          0,          0]
+# periods            = [        200,        300,        500]
+# deadlines          = [         15,         16,         26]
+# data_payload       = [         50,        100,        100] # bytes
+# routes             = [[0,1,2,3]  ,[0,1,2,4]  ,[0,1,2,4]  ] # these are links
+
+# f,H,nmessages,start_time,finish_time = tsn_sched_gen(hidden_timeunit,network_nodes,network_links,contention_domains,hidden_linkspeeds,message_streams,offsets,periods,deadlines,data_payload,routes)
+# if f:
+#   fh = open("schedule.txt","w")
+#   fh.write(str([H,nmessages,start_time,finish_time]))
+#   fh.close()
+#   fh = open("schedule.txt","r")
+#   [H,nmessages,start_time,finish_time] = ast.literal_eval(fh.read())
+#   fh.close()
+#   set_x_min_and_max = False
+#   x_min = 0
+#   x_max = 50
+#   plot_it(hidden_timeunit,H,nmessages,start_time,finish_time,network_nodes,network_links,hidden_linkspeeds,message_streams,offsets,periods,deadlines,data_payload,routes,set_x_min_and_max,x_min,x_max,"figure",False)
+#   for temp in range(0,10):
+#     set_x_min_and_max = True
+#     x_min = ( temp   *0.1)*H
+#     x_max = ((temp+1)*0.1)*H
+#     plot_it(hidden_timeunit,H,nmessages,start_time,finish_time,network_nodes,network_links,hidden_linkspeeds,message_streams,offsets,periods,deadlines,data_payload,routes,set_x_min_and_max,x_min,x_max,"figure"+str(temp),False)
+# else:   
+#   print_failure_to_console(f,H,nmessages,start_time,finish_time)
+
+def isFixedTransmissionSchedulable(network_links,
+	link_speeds,
+	link_fixed_transmissions,
+	message_streams,
+	message_periods,
+	message_deadlines,
+	message_datasizes,
+	message_routes):
+	for i in range(len(message_streams)):
+		route = message_routes[i][0]
+		speed = link_speeds[route]
+		fixed_trans = link_fixed_transmissions[route]
+		datasize = message_datasizes[i]
+		latency = fixed_trans + (datasize * speed)
+		deadline = message_deadlines[i]
+		if latency > deadline:
+			return False
+	return True
+
+# sum periods of all components (assumed to be threads) in all flows
+def getDelayedConnectionsEndToEndResponseTime(flowComponents):
+	responseTimes=[0]*len(flowComponents)
+	for i in range(len(flowComponents)):
+		flow = flowComponents[i]
+		print("flow : ", flow[1])
+		responseTimes[i]=0
+		for j in range(len(flow[3])):
+			thread = flow[3][j];
+			responseTimes[i] += thread[2]
+			print("thread(",thread[1],") period: ",str(thread[2])," exec: ",str(thread[3])," deadline: ",str(thread[4]))
+		print("end-to-end reponse time: ",responseTimes[i])
+	return responseTimes
+
+# sum of all deadlines of threads and connections in the flow
+def getImmediateConnectionsEndToEndResponseTime(threadTimingParametersInNs,flowComponents):
+	print("--- CALCULATING e2eResponseTimes ---")
+	responseTimes=[0]*len(flowComponents)
+	for i in range(len(flowComponents)):
+		print("f(",flowComponents[i][0],").name(",flowComponents[i][1],")")
+		connections = flowComponents[i][4]
+		#(c,srcNode,dstNode,n,lat,bus,period,datasize,deadline,srcThread,dstThread)
+		for j in range(len(connections)):
+			srcThreadDeadline = getThreadDeadline(connections[j][9],threadTimingParametersInNs)
+			print("sourceThread().deadline(",srcThreadDeadline,")")
+			responseTimes[i] += srcThreadDeadline
+			print("connection(",connections[j][3],").deadline(",connections[j][8],")")
+			responseTimes[i] += connections[j][8]
+		# last destination offset
+		responseTimes[i] += getThreadDeadline(connections[len(connections)-1][9],threadTimingParametersInNs)
+	return responseTimes
+
+# sum deadlines of all components (assumed to be threads) in all flows
+#def getImmediateConnectionsEndToEndResponseTime(flowComponents):
+#	responseTimes=[0]*len(flowComponents)
+#	# flowComponents is [(f, f.name, f.latency, [(th, th.name, th.period, th.wcet, th.deadline)])]
+#	for i in range(len(flowComponents)):
+#		flow = flowComponents[i]
+#		print("flow : ", flow[1])
+#		responseTimes[i]=0
+#		for j in range(len(flow[3])):
+#			thread = flow[3][j];
+#			responseTimes[i] += thread[4]
+#			print("thread(",thread[1],") period: ",str(thread[2])," exec: ",str(thread[3])," deadline: ",str(thread[4]))
+#		print("end-to-end reponse time: ",responseTimes[i])
+#	return responseTimes
+
+def meetImmediateConnectionsEndToEndLatencies(flowComponents,threadTimingParametersInNs,error0):
+	# flowComponents is [(f, f.name, f.latency, [(th, th.name, th.period, th.wcet, th.deadline)])]
+	rts = getImmediateConnectionsEndToEndResponseTime(threadTimingParametersInNs,flowComponents)
+	for i in range(len(flowComponents)):
+		flow = flowComponents[i]
+		latency = flow[2]
+		if rts[i] > latency:
+			addError(error0,"{"+str(flow[0])+"}meetImmediateConnectionsEndToEndLatencies: flow["+str(flow[1])+"] real latency ("+str(rts[i])+") is larger than the required latency ("+str(latency)+")")
+			return False
+		else:
+			addError(info0,"{"+str(flow[0])+"}flow["+str(flow[1])+"] meetImmediateConnectionsEndToEndLatencies: worst-case response time("+str(rts[i])+" ns) <= latency("+str(latency)+" ns) as required")
+	return True
+
+# interbusNodes: [[[bus1,bus2],nodeIndex]]
+def getNodeForBusPair(src,dst,interbusNodes,nextNodeIndexPointer):
+	print("getNodeForBusPair(src(",src,"),dst(",dst,"),interbusNodes(",interbusNodes,")")
+	for i in range(len(interbusNodes)):
+		if src in interbusNodes[i][0] and dst in interbusNodes[i][0]:
+			return interbusNodes[i][1]
+		else:
+			print("src:",src," and dst: ",dst," not in: ",interbusNodes[i][0])
+	newNode = [[src,dst],nextNodeIndexPointer[0]]
+	retNodeIndex = nextNodeIndexPointer[0]
+	nextNodeIndexPointer[0] += 1
+	interbusNodes.append(newNode)
+	return retNodeIndex
+
+def getConnectedProcessorsAndInterbus(bus,connectedPairs, processors, network_nodes, proc2index, interbusNodes):
+	# connectedPairs = (c,src,dst,srcName,dstName,cname,srcNode,dstNode, srcFeature,dstFeature,srcFeatureName,dstFeatureName)
+	procs = []
+	nextNodeIndexPointer = [len(processors)]
+	for i in range(len(connectedPairs)):
+		if connectedPairs[i][2] == bus:
+			if connectedPairs[i][1] in processors:
+				procs.append(connectedPairs[i][1])
+				print("Adding Processor as link-connected processor(1): ",connectedPairs[i][3])
+			else: # bus then use the feature instead
+				#nextProcIndex = len(processors)
+				nodeIndex = getNodeForBusPair(connectedPairs[i][0],connectedPairs[i][1],interbusNodes,nextNodeIndexPointer)
+				if not nodeIndex in network_nodes:
+					print("Adding Feature (",nodeIndex,") as link-connected processor(1): src(",connectedPairs[i][0],") dst(",connectedPairs[i][1],")",connectedPairs[i][3])
+					# using featurea as a processor
+					#processors.append(connectedPairs[i][8])
+					processors.append(connectedPairs[i][0])
+					#proc2index[connectedPairs[i][8]] = nodeIndex
+					proc2index[connectedPairs[i][0]] = nodeIndex
+					network_nodes.append(nodeIndex)
+				#procs.append(connectedPairs[i][8])
+				procs.append(connectedPairs[i][0])
+		elif connectedPairs[i][1] == bus:
+			if connectedPairs[i][2] in processors:
+				procs.append(connectedPairs[i][2])
+				print("Adding Processor as link-connected processor(2): ",connectedPairs[i][4])
+			else: # bus then use the feature instead
+				#nextProcIndex = len(processors)
+				nodeIndex = getNodeForBusPair(connectedPairs[i][0],connectedPairs[i][1],interbusNodes,nextNodeIndexPointer)
+				if not nodeIndex in network_nodes:
+					print("Adding Feature (",nodeIndex,") as link-connected processor(2): src(",connectedPairs[i][0],") dst(",connectedPairs[i][1],") ",connectedPairs[i][4])
+					# using featurea as a processor
+					#processors.append(connectedPairs[i][9])
+					processors.append(connectedPairs[i][0])
+					#proc2index[connectedPairs[i][9]] = nodeIndex
+					proc2index[connectedPairs[i][0]] = nodeIndex
+					network_nodes.append(nodeIndex)
+				#procs.append(connectedPairs[i][9])
+				procs.append(connectedPairs[i][0])
+	return procs
+
+def getConnectedProcessors(bus,connectedPairs):
+	procs = []
+	for i in range(len(connectedPairs)):
+		if connectedPairs[i][2] == bus:
+			procs.append(connectedPairs[i][1])
+	return procs
+
+def isNetworkSchedulableWithBusToBusConnections(flowComponents,buses,processors,connectedPairs,message_offsets_mapping,processorNames):
+	# flowComponents is [(f, f.name, f.latency, [(th, th.name, th.period, th.wcet, th.deadline)], [(conn,conn.srcNode,conn.dstNode,name,lat,bus,period,datasize,deadline)])]
+	network_nodes=[]
+	proc2index={}
+	for i in range(len(processors)):
+		print("processor(",processors[i],").name(",processorNames[i],")")
+		proc2index[processors[i]] = i
+		network_nodes.append(i)
+	network_links=[]
+	contention_domains=[]
+	linkIndex = 0
+	link_speeds=[]
+	link_fixed_transmission=[]
+	link_protocol=[]
+	bus2index={}
+	bus2indexReverse={}
+	interbusNodes = [] # array of arrays : [[[bus1,bus2],nodeIndex]]	
+	for i in range(len(buses)):
+		print("bus(",buses[i][0],") name(",buses[i][1],") transmission time(",buses[i][2],")")
+		procs = getConnectedProcessorsAndInterbus(buses[i][0],connectedPairs, processors, network_nodes, proc2index,interbusNodes)
+		if len(procs) == 0:
+			print("BUS(",buses[i][1],") do not have attached processors!")
+		procPair=[]
+		for j in range(len(procs)):
+			procPair.append(proc2index[procs[j]])
+		procPairReversed=[]
+		for j in reversed(procs):
+			procPairReversed.append(proc2index[j])
+		network_links.append(procPair)
+		bus2index[buses[i][0]]=linkIndex;
+		network_links.append(procPairReversed)
+		bus2indexReverse[buses[i][0]]=linkIndex+1;
+		contention_domains.append([linkIndex])
+		contention_domains.append([linkIndex+1])
+		linkIndex += 2
+		# Link in one direction
+		link_speeds.append(buses[i][2])
+		link_fixed_transmission.append(buses[i][3])
+		link_protocol.append(buses[i][4])
+		# Link in the reverse direction
+		link_speeds.append(buses[i][2])
+		link_fixed_transmission.append(buses[i][3])
+		link_protocol.append(buses[i][4])
+	# connections (c,src,dst,srcName,dstName,cname,srcNode,dstNode)		
+	for i in range(len(flowComponents)):
+		connections = flowComponents[i][4]
+		for j in range(len(connections)):
+			print("Connection[",connections[j][0],"] name(",connections[j][3],") src(",connections[j][1],") dst(",connections[j][2],") latency (",connections[j][4],") link(",connections[j][5],") period(",connections[j][6],") datasize(",connections[j][7],")")		
+
+	print("network_nodes: ",network_nodes)
+	print("buses[", end="")
+	for i in range(len(buses)):
+		print(buses[i][1],",", end="")
+	print("]")
+	print("network_links: ",network_links)
+	print("contention_domains: ",contention_domains)
+	print("link_speeds:", link_speeds)
+	print("link fixed transmission: ",link_fixed_transmission)
+	print("link_protocols",link_protocol)
+
+	message_streams = []
+	message_offsets = []
+	message_periods = []
+	message_deadlines = []
+	message_datasizes = []
+	message_routes = []
+	message_scheduler = []
+	streamCounter = 0
+	for i in range(len(flowComponents)):
+		#print("flow: name("+flowComponents[i][1]+"): ")
+		# just a sequential number for stream identifier?
+		
+		# Dio: now the message stream should be per connection
+		# message_streams.append(i)
+		
+		threads = flowComponents[i][3]
+		connections = flowComponents[i][4]
+		#for j in range(len(threads)):
+		#	print("Thread[",threads[j][0],"]: name(",threads[j][1],") period(",threads[j][2],")")
+		#route = []
+		addedPeriod = False
+		#(c,srcNode,dstNode,n,lat,bus,period,datasize,deadline)
+		for j in range(len(connections)):
+			route = []
+			# Dio: try message stream per connection
+			message_streams.append(streamCounter)
+			message_offsets.append(message_offsets_mapping[connections[j][0]])
+			
+			streamCounter += 1
+			#if not addedPeriod:
+			addedPeriod = True
+			
+			message_periods.append(int(connections[j][6]))
+			message_deadlines.append(int(connections[j][8]))
+			message_datasizes.append(int(connections[j][7]))
+			print("Connection[",connections[j][0],"] name(",connections[j][3],") src(",connections[j][1],") dst(",connections[j][2],") latency (",connections[j][4],") link(",connections[j][5],") period(",connections[j][6],") datasize(",connections[j][7],")")
+			prevProcessor=connections[j][1][0]
+			# Add the set of connections to the route
+			message_sched=""
+			prevProcessorIndex = proc2index[prevProcessor]
+			for k in range(len(connections[j][5])):
+				# do not add the switches, only buses
+				if not (connections[j][5][k] in processors):
+					print("link in direct direction: ",network_links[bus2index[connections[j][5][k]]]," src: ",network_links[bus2index[connections[j][5][k]]][0]," prevProcessor index: ",prevProcessorIndex)#proc2index[prevProcessor])
+					if network_links[bus2index[connections[j][5][k]]][0] == prevProcessorIndex: #proc2index[prevProcessor]:
+						print("prevProcessor(",proc2index[prevProcessor],") adding direct link(",network_links[bus2index[connections[j][5][k]]],")")
+						route.append(bus2index[connections[j][5][k]])
+						message_sched = link_protocol[bus2index[connections[j][5][k]]]
+						#destination of the link
+						prevProcessorIndex = network_links[bus2index[connections[j][5][k]]][1] 
+					else:
+						print("prevProcessor(",proc2index[prevProcessor],") adding reverse link(",network_links[bus2indexReverse[connections[j][5][k]]],")")
+						route.append(bus2indexReverse[connections[j][5][k]])
+						message_sched = link_protocol[bus2indexReverse[connections[j][5][k]]]
+						# destination of the link
+						prevProcessorIndex = network_links[bus2indexReverse[connections[j][5][k]]][1]
+				else:
+					prevProcessor = connections[j][5][k]
+					prevProcessorIndex = proc2index[prevProcessor]
+			message_scheduler.append(message_sched)
+			# add the route to all routes
+			message_routes.append(route)
+	print("message_streams: ", message_streams)
+	print("message_offsets: ",message_offsets)
+	print("message_periods: ", message_periods)
+	print("message_deadlines: ",message_deadlines)
+	print("message_datasizes: ",message_datasizes)
+	print("message_routes: ",message_routes)
+	print("message_scheduler: ",message_scheduler)
+	
+	# split into ARINC429 and TimeTriggered
+	a429_message_streams = []
+	a429_message_offsets = []
+	a429_message_periods = []
+	a429_message_deadlines = []
+	a429_message_datasizes = []
+	a429_message_routes = []
+	
+	time_triggered_message_streams = []
+	time_triggered_message_offsets = []
+	time_triggered_message_periods = []
+	time_triggered_message_deadlines = []
+	time_triggered_message_datasizes = []
+	time_triggered_message_routes = []
+
+	print("message_offsets_mapping: ",message_offsets_mapping)
+	a429counter=0
+	time_triggered_counter=0
+	for i in range(len(message_streams)):
+		if message_scheduler[i] == 'ARINC429':
+			a429_message_streams.append(a429counter)
+			a429_message_periods.append(message_periods[i])
+			a429_message_deadlines.append(message_deadlines[i])
+			a429_message_datasizes.append(message_datasizes[i])
+			a429_message_routes.append(message_routes[i])
+			a429counter += 1
+		if message_scheduler[i] == 'TimeTriggered':
+			time_triggered_message_streams.append(time_triggered_counter)
+			time_triggered_message_offsets.append(message_offsets[i])
+			
+			time_triggered_message_periods.append(message_periods[i])
+			time_triggered_message_deadlines.append(message_deadlines[i])
+			time_triggered_message_datasizes.append(message_datasizes[i])
+			time_triggered_message_routes.append(message_routes[i])
+			time_triggered_counter += 1
+
+	time_triggered_link_speeds =[]
+	for i in range(len(link_speeds)):
+		# link_speeds.append((8 * 1000000000)/buses[i][2])
+		if link_speeds[i] !=0:
+			time_triggered_link_speeds.append((8.0 * 1000000000.0)/link_speeds[i])
+		else:
+			time_triggered_link_speeds.append(0)
+			
+	print("network_nodes: ",network_nodes)
+	print("network_links: ",network_links)
+	print("contention_domains: ",contention_domains)
+	print("link_speeds:", link_speeds)
+	print("link fixed transmission: ",link_fixed_transmission)
+	print("link_protocols",link_protocol)
+	
+	print("a429_message_streams: ",a429_message_streams)
+	print("a429_message_periods: ", a429_message_periods)
+	print("a429_message_deadlines: ", a429_message_deadlines)
+	print("a429_message_datasizes:", a429_message_datasizes)
+	print("a429_message routes: ", a429_message_routes)
+	
+	print("timer_triggered_link_speeds: ",time_triggered_link_speeds)
+	print("time_triggered_message_streams: ",time_triggered_message_streams)
+	print("time_triggered_message_offsets: ",time_triggered_message_offsets)
+	print("time_triggered_message_periods: ", time_triggered_message_periods)
+	print("time_triggered_message_deadlines: ", time_triggered_message_deadlines)
+	print("time_triggered_message_datasizes:", time_triggered_message_datasizes)
+	print("time_triggered_message routes: ", time_triggered_message_routes)
+
+	print("message_streams: ",message_streams)
+	print("message_offsets: ",message_offsets)
+	print("message_periods: ", message_periods)
+	print("message_deadlines: ", message_deadlines)
+	print("message_datasizes:", message_datasizes)
+	print("message routes: ", message_routes)
+	print("message scheduler: ",message_scheduler)
+	
+	f,H,nmessages,start_time,finish_time = tsn_sched_gen(
+		time_unit_is_ns,	
+		network_nodes,
+		network_links,
+		contention_domains,
+		time_triggered_link_speeds,
+		time_triggered_message_streams,
+		time_triggered_message_offsets,
+		time_triggered_message_periods,
+		time_triggered_message_deadlines,
+		time_triggered_message_datasizes,
+		time_triggered_message_routes
+	)
+	
+	a429sched = isFixedTransmissionSchedulable(network_links,
+		link_speeds,
+		link_fixed_transmission,
+		a429_message_streams,
+		a429_message_periods,
+		a429_message_deadlines,
+		a429_message_datasizes,
+		a429_message_routes)
+	
+	print("TSN Schedulable: ",f)
+	print("A429 Schedulable: ",a429sched)
+	
+	for i in range(len(buses)):
+		if (f and a429sched):
+			addError(info0,"{"+str(buses[i][0])+"} isNetworkSchedulableWithBusToBusConnections: bus("+buses[i][1]+") messages meet latency requirements")
+		else:
+			addError(error0,"{"+str(buses[i][0])+"} isNetworkSchedulableWithBusToBusConnections: bus("+buses[i][1]+") messages do not meet latency requirements")	
+					
+	return (f and a429sched)
+
+def isNetworkSchedulableNoBusToBusConnections(flowComponents,buses,processors,connectedPairs,message_offsets_mapping):
+	# flowComponents is [(f, f.name, f.latency, [(th, th.name, th.period, th.wcet, th.deadline)], [(conn,conn.srcNode,conn.dstNode,name,lat,bus,period,datasize,deadline)])]
+	network_nodes=[]
+	proc2index={}
+	for i in range(len(processors)):
+		print("processor(",processors[i],")")
+		proc2index[processors[i]] = i
+		network_nodes.append(i)
+	for i in range(len(connectedPairs)):
+		print("connectedPairs (",connectedPairs[i][0],").name(",connectedPairs[i][5],") src(",connectedPairs[i][1],").name(",connectedPairs[i][3],") dst(",connectedPairs[i][2],").name(",connectedPairs[i][4],")")
+	network_links=[]
+	contention_domains=[]
+	linkIndex = 0
+	link_speeds=[]
+	link_fixed_transmission=[]
+	link_protocol=[]
+	bus2index={}
+	bus2indexReverse={}
+	for i in range(len(buses)):
+		procs = getConnectedProcessors(buses[i][0],connectedPairs)
+		#print("bus : ",buses[i][0])
+		#bus2index[buses[i][0]]=i
+		print("bus(",buses[i][0],") name(",buses[i][1],") transmission time(",buses[i][2],") procs(",procs,")")
+		procPair=[]
+		for j in range(len(procs)):
+			procPair.append(proc2index[procs[j]])
+		procPairReversed=[]
+		for j in reversed(procs):
+			procPairReversed.append(proc2index[j])
+		network_links.append(procPair)
+		bus2index[buses[i][0]]=linkIndex;
+		network_links.append(procPairReversed)
+		bus2indexReverse[buses[i][0]]=linkIndex+1;
+		contention_domains.append([linkIndex])
+		contention_domains.append([linkIndex+1])
+		linkIndex += 2
+		# Link in one direction
+		link_speeds.append(buses[i][2])
+		link_fixed_transmission.append(buses[i][3])
+		link_protocol.append(buses[i][4])
+		# Link in the reverse direction
+		link_speeds.append(buses[i][2])
+		link_fixed_transmission.append(buses[i][3])
+		link_protocol.append(buses[i][4])
+	message_streams = []
+	message_offsets = []
+	message_periods = []
+	message_deadlines = []
+	message_datasizes = []
+	message_routes = []
+	message_scheduler = []
+	streamCounter = 0
+	for i in range(len(flowComponents)):
+		#print("flow: name("+flowComponents[i][1]+"): ")
+		# just a sequential number for stream identifier?
+		
+		# Dio: now the message stream should be per connection
+		# message_streams.append(i)
+		
+		threads = flowComponents[i][3]
+		connections = flowComponents[i][4]
+		#for j in range(len(threads)):
+		#	print("Thread[",threads[j][0],"]: name(",threads[j][1],") period(",threads[j][2],")")
+		#route = []
+		addedPeriod = False
+		#(c,srcNode,dstNode,n,lat,bus,period,datasize,deadline)
+		for j in range(len(connections)):
+			route = []
+			# Dio: try message stream per connection
+			message_streams.append(streamCounter)
+			message_offsets.append(message_offsets_mapping[connections[j][0]])
+			
+			streamCounter += 1
+			#if not addedPeriod:
+			addedPeriod = True
+			
+			message_periods.append(int(connections[j][6]))
+			message_deadlines.append(int(connections[j][8]))
+			message_datasizes.append(int(connections[j][7]))
+			print("Connection[",connections[j][0],"] name(",connections[j][3],") src(",connections[j][1],") dst(",connections[j][2],") latency (",connections[j][4],") link(",connections[j][5],") period(",connections[j][6],") datasize(",connections[j][7],")")
+			prevProcessor=connections[j][1][0]
+			# Add the set of connections to the route
+			message_sched=""
+			for k in range(len(connections[j][5])):
+				# do not add the switches, only buses
+				if not (connections[j][5][k] in processors):
+					print("LINK: ",network_links[bus2index[connections[j][5][k]]])
+					print("link in direct direction: ",network_links[bus2index[connections[j][5][k]]]," src: ",network_links[bus2index[connections[j][5][k]]][0])
+					if network_links[bus2index[connections[j][5][k]]][0] == proc2index[prevProcessor]:
+						print("prevProcessor(",proc2index[prevProcessor],") adding direct link(",network_links[bus2index[connections[j][5][k]]],")")
+						route.append(bus2index[connections[j][5][k]])
+						message_sched = link_protocol[bus2index[connections[j][5][k]]]
+					else:
+						print("prevProcessor(",proc2index[prevProcessor],") adding reverse link(",network_links[bus2indexReverse[connections[j][5][k]]],")")
+						route.append(bus2indexReverse[connections[j][5][k]])
+						message_sched = link_protocol[bus2indexReverse[connections[j][5][k]]]
+				else:
+					prevProcessor = connections[j][5][k]
+			message_scheduler.append(message_sched)
+			# add the route to all routes
+			message_routes.append(route)
+	# print all we have
+	# network_nodes   = [0,1,2,3,4,5]
+	# network_links   = [      [0,1],      [1,2],      [2,3],      [3,4],      [3,5]]
+	# link_speeds      = [       Gbps,   0.1*Gbps,       Gbps,       Gbps,       Gbps]
+	# message_streams = [          0,          1,          2]
+	# message_periods         = [        200,        300,        500]
+	# message_deadlines       = [         30,         30,         30]
+	# message_datasizes    = [         50,        100,        100] # bytes
+	# routes 
+	
+	# split into ARINC429 and TimeTriggered
+	a429_message_streams = []
+	a429_message_offsets = []
+	a429_message_periods = []
+	a429_message_deadlines = []
+	a429_message_datasizes = []
+	a429_message_routes = []
+	
+	time_triggered_message_streams = []
+	time_triggered_message_offsets = []
+	time_triggered_message_periods = []
+	time_triggered_message_deadlines = []
+	time_triggered_message_datasizes = []
+	time_triggered_message_routes = []
+
+	print("message_offsets_mapping: ",message_offsets_mapping)
+	a429counter=0
+	time_triggered_counter=0
+	for i in range(len(message_streams)):
+		if message_scheduler[i] == 'ARINC429':
+			a429_message_streams.append(a429counter)
+			a429_message_periods.append(message_periods[i])
+			a429_message_deadlines.append(message_deadlines[i])
+			a429_message_datasizes.append(message_datasizes[i])
+			a429_message_routes.append(message_routes[i])
+			a429counter += 1
+		if message_scheduler[i] == 'TimeTriggered':
+			time_triggered_message_streams.append(time_triggered_counter)
+			time_triggered_message_offsets.append(message_offsets[i])
+			
+			time_triggered_message_periods.append(message_periods[i])
+			time_triggered_message_deadlines.append(message_deadlines[i])
+			time_triggered_message_datasizes.append(message_datasizes[i])
+			time_triggered_message_routes.append(message_routes[i])
+			time_triggered_counter += 1
+
+	time_triggered_link_speeds =[]
+	for i in range(len(link_speeds)):
+		# link_speeds.append((8 * 1000000000)/buses[i][2])
+		if link_speeds[i] !=0:
+			time_triggered_link_speeds.append((8.0 * 1000000000.0)/link_speeds[i])
+		else:
+			time_triggered_link_speeds.append(0)
+			
+	print("network_nodes: ",network_nodes)
+	print("network_links: ",network_links)
+	print("contention_domains: ",contention_domains)
+	print("link_speeds:", link_speeds)
+	print("link fixed transmission: ",link_fixed_transmission)
+	print("link_protocols",link_protocol)
+	
+	print("a429_message_streams: ",a429_message_streams)
+	print("a429_message_periods: ", a429_message_periods)
+	print("a429_message_deadlines: ", a429_message_deadlines)
+	print("a429_message_datasizes:", a429_message_datasizes)
+	print("a429_message routes: ", a429_message_routes)
+	
+	print("timer_triggered_link_speeds: ",time_triggered_link_speeds)
+	print("time_triggered_message_streams: ",time_triggered_message_streams)
+	print("time_triggered_message_offsets: ",time_triggered_message_offsets)
+	print("time_triggered_message_periods: ", time_triggered_message_periods)
+	print("time_triggered_message_deadlines: ", time_triggered_message_deadlines)
+	print("time_triggered_message_datasizes:", time_triggered_message_datasizes)
+	print("time_triggered_message routes: ", time_triggered_message_routes)
+
+	print("message_streams: ",message_streams)
+	print("message_offsets: ",message_offsets)
+	print("message_periods: ", message_periods)
+	print("message_deadlines: ", message_deadlines)
+	print("message_datasizes:", message_datasizes)
+	print("message routes: ", message_routes)
+	print("message scheduler: ",message_scheduler)
+	
+	f,H,nmessages,start_time,finish_time = tsn_sched_gen(
+		time_unit_is_ns,	
+		network_nodes,
+		network_links,
+		contention_domains,
+		time_triggered_link_speeds,
+		time_triggered_message_streams,
+		time_triggered_message_offsets,
+		time_triggered_message_periods,
+		time_triggered_message_deadlines,
+		time_triggered_message_datasizes,
+		time_triggered_message_routes
+	)
+	
+	a429sched = isFixedTransmissionSchedulable(network_links,
+		link_speeds,
+		link_fixed_transmission,
+		a429_message_streams,
+		a429_message_periods,
+		a429_message_deadlines,
+		a429_message_datasizes,
+		a429_message_routes)
+	
+	print("TSN Schedulable: ",f)
+	print("A429 Schedulable: ",a429sched)
+	
+	for i in range(len(buses)):
+		if (f and a429sched):
+			addError(info0,"{"+str(buses[i][0])+"} bus("+buses[i][1]+") messages meet latency requirements")
+		else:
+			addError(error0,"{"+str(buses[i][0])+"} bus("+buses[i][1]+") messages do not meet latency requirements")	
+					
+	return (f and a429sched)
+`}
+	domain schedulability {
+		queries
+			val threads = root.allSubcomponents.filter { 
+				s -> s.isThread
+			};
+			
+			val threadTimingParametersInNs = threads.map{
+				t -> 
+				val period = t#Period.map{ p->p.scaledTo(ns)};
+				val deadline = t#Deadline.map{ d->d.scaledTo(ns)};
+				val wcet = t#Compute_Execution_Time.map{c->c.maximum.scaledTo(ns)};
+				(t,period,deadline,wcet)
+			};
+			val threadIds = threads.map{t->t};
+			
+			val names = threads.map {
+				t-> t.name
+			};
+			val periods = threads.map {
+				t -> t#Period.map {
+					p -> p.scaledTo(ms)
+				}
+			};
+			val priorities = threads.map {
+				t -> t#Priority
+			};
+			val deadlines = threads.map {
+				t -> t#Deadline.map {
+					p -> p.scaledTo(ms)
+				}
+			};
+			val wcets = threads.map {
+				t -> t#Compute_Execution_Time.map {
+					cet -> cet.maximum.scaledTo(ms)
+				}
+			};
+			val protocols = threads.map {
+				t -> t#Dispatch_Protocol
+			};
+			val threadToProcessorBindings = threads.map { t -> (t, t.name, t#Actual_Processor_Binding) };
+			
+			val processorCount = root.allSubcomponents.filter{ t-> t.isProcessor}.size;
+			-- only threads in flows?
+			val threadCount = root.allSubcomponents.map{t -> t.isThread}.size;
+			val threadToProcessorBindings = threads.map { t -> (t, t.name, t#Actual_Processor_Binding) };
+			val boundThreads = root.allSubcomponents
+					.filter { s -> s.isProcessor }
+					.map { p -> 
+							val ts = p.processorBindingSources
+									.filter { s -> s.isThread }
+									.map { t ->
+											val period = t#Period.map { v -> v.scaledTo(us)};
+											val wcet = t#Compute_Execution_Time.map {cet -> cet.maximum.scaledTo(us)};
+											val prio = t#Priority;
+											val deadline = t#Deadline.map { v -> v.scaledTo(us)};
+											(t, t.name, period, wcet, prio, deadline)
+									};
+							val schedProtocol = p#Scheduling_Protocol;
+							(p, p.name, ts, schedProtocol)
+					};
+			-- 	[(p, p.name, [(th, th.name, th.period, th.wcet)], schedProtocol)]
+			val rmsBoundThreads = boundThreads
+					.filter { bt ->
+							val (p1, p2, p3, oprotos) = bt;
+							val r = oprotos.map { protos ->
+								protos.filter { proto -> proto.is(RMS)}
+							};
+							!r.filter { l -> !l.empty }.isEmpty 
+					};
+			val dmsBoundThreads = boundThreads
+					.filter { bt ->
+							val (p1, p2, p3, oprotos) = bt;
+							val r = oprotos.map { protos ->
+								protos.filter { proto -> proto.is(DMS)}
+							};
+							!r.filter { l -> !l.empty }.isEmpty
+					};
+			val edfBoundThreads = boundThreads
+					.filter { bt ->
+							val (p1, p2, p3, oprotos) = bt;
+							val r = oprotos.map { protos ->
+								protos.filter { proto -> proto.is(EDF)}
+							};
+							!r.filter { l -> !l.empty }.isEmpty
+					};					
+			val rtBoundThreads = boundThreads
+					.filter { bt ->
+							val (p1, p2, p3, oprotos) = bt;
+							val r = oprotos.map { protos ->
+								protos
+							};
+							r.filter { l -> !l.empty }.isEmpty
+					};								
+		declarations 
+			'''
+			DMS = 1
+			RMS = 2
+			EDF = 3
+			NONE = 0
+			SchedProtocols = [DMS,RMS,EDF] 
+			ProcessorSchedulingProcotol = IntVector('processorSchedulingProtocol',${processorCount$})
+			threadId2Index = {${threadIds$}[i] : i for i in range(len(${threadIds$}))}
+			print('threadid2index: ',threadId2Index)
+			rmsThreadIndex = [k for p in range(len(${rmsBoundThreads$})) for i in range(len(${rmsBoundThreads$}[p][2])) for k in range(len(${threadIds$})) if ${rmsBoundThreads$}[p][2][i][0] == ${threadIds$}[k]]
+			edfThreadIndex = [k for p in range(len(${edfBoundThreads$})) for i in range(len(${edfBoundThreads$}[p][2])) for k in range(len(${threadIds$})) if ${edfBoundThreads$}[p][2][i][0] == ${threadIds$}[k]]
+			dmsThreadIndex = [k for p in range(len(${dmsBoundThreads$})) for i in range(len(${dmsBoundThreads$}[p][2])) for k in range(len(${threadIds$})) if ${dmsBoundThreads$}[p][2][i][0] == ${threadIds$}[k]]
+			rtThreadIndex = [k for p in range(len(${rtBoundThreads$})) for i in range(len(${rtBoundThreads$}[p][2])) for k in range(len(${threadIds$})) if ${rtBoundThreads$}[p][2][i][0] == ${threadIds$}[k]]
+			
+			print("boundThreads: ",${boundThreads$})
+			print("rmsBoundThreads: ",${rmsBoundThreads$})
+			print("edfBoundThreads: ",${edfBoundThreads$})
+			print("dmsBoundThreads: ",${dmsBoundThreads$})
+			print("rtBoundThreads: ",${rtBoundThreads$})
+			
+			rmHarmonicBoundThreads=[]
+			rmHarmonicThreadIndex=[]
+			rmNonHarmonicBoundThreads=[]
+			rmNonHarmonicThreadIndex=[]			
+			Deadlines = IntVector('deadline', ${threadCount$})
+			Responses = IntVector('response', ${threadCount$})
+			Priorities = IntVector('priority', ${threadCount$})
+			SelfSuspendings = BoolVector('selfSuspending', ${threadCount$})
+			Periods = IntVector('period', ${threadCount$})	
+			Periodics = BoolVector('periodic', ${threadCount$})
+			RESPONSETIME_SHORTER_DEADLINES = And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])
+			'''
+	}
+
+	domain latency {
+		queries
+			val e2es = root.allEndToEndFlows;
+			val e2eCount = e2es.size;
+			val connections = root.allConnections;
+			val connectionTiming = connections.map { c -> c#Timing };
+			val connectionNames = connections.map { c -> c.name };
+			val connectedPairs = connections.filter{ c-> c.source.parent.isProcessor || c.source.parent.isDevice || c.source.parent.isBus}.map{c->
+																							val src = c.source.parent;
+																							val dst = c.destination;
+																							val srcName = src.name;
+																							val dstName = dst.name;
+																							val cname = c.name;
+																							val srcNode = src#Actual_Processor_Binding.map{v->v};
+																							val dstNode = dst#Actual_Processor_Binding.map{v->v};
+																							val srcFeature = c.source;
+																							val dstFeature = c.destination;
+																							val srcFeatureName = c.source.name;
+																							val	dstFeatureName = c.destination.name;
+																							(c,src,dst,srcName,dstName,cname,srcNode,dstNode, srcFeature,dstFeature,srcFeatureName,dstFeatureName)
+																						};
+																						
+			val connCount = connections.size;
+			val processors = root.allComponents.filter{c->c.isProcessor || c.isDevice}
+													.map{p-> 
+														p
+													};
+			val processorNames = processors.map{p ->p.name};
+
+			val buses = root.allComponents.filter{b-> b.isBus}
+											.map{
+												b ->
+												val n = b.name;
+												val fixedMaxTransTime = b#Transmission_Time.flatMap{ b1 ->
+														b1.get(Fixed).map{ b2 -> b2.maximum.scaledTo(ns)} 
+													};
+												val perByteMaxTransTime = b#Transmission_time.flatMap {b1->
+														b1.get(PerByte).map{ b2 -> b2.maximum.scaledTo(ns)}
+													};
+												val protocolType = b#NetworkProtocols::Protocol;
+												(b,n,perByteMaxTransTime,fixedMaxTransTime, protocolType)
+											};
+			
+			val flowComponents = e2es
+				.map { f -> 
+						val latency = f#Latency.map { l -> l.maximum }.map { l -> l.scaledTo(ns) };
+						val ts = f.components
+									.filter { c -> c.isThread }
+										.map { t -> 
+											val period = t#Period.map { v -> v.scaledTo(ns)};
+											val wcet = t#Compute_Execution_Time.map {cet -> cet.maximum.scaledTo(ns)};
+											val deadline = t#Deadline.map { v -> v.scaledTo(ns)};
+											(t, t.name, period, wcet, deadline)
+										};
+						val cs = f.connections.map { c ->
+														val srcThread = c.source.parent; --.name;
+														val srcNode = srcThread#Actual_Processor_Binding.map{v->v};
+														val dstThread = c.destination.parent; --.name;
+														val dstNode = dstThread#Actual_Processor_Binding.map{v->v};
+														val period = c.source.parent#Period.map {v -> v.scaledTo(ns)};
+														val deadline = c.source.parent#Deadline.map {v -> v.scaledTo(ns)};
+														val datasize = c.source#Data_Size.map{v->v.scaledTo(bytes)};
+														val n = c.name;
+														val lat = c#Latency.map{ l -> l.maximum}.map{l -> l.scaledTo(ns)};
+														val bus = c#Actual_Connection_Binding;
+													(c,srcNode,dstNode,n,lat,bus,period,datasize,deadline,srcThread,dstThread)
+													};
+						(f, f.name, latency, ts, cs)
+						-- ([f,f.name,latency,[(threadid,t.name,period,wcet,deadline)],[(c,srcNode,dstNode,n,lat,bus,period,datasize,deadline,srcThread,dstThread)]])
+				};
+		declarations 
+			'''
+			E2EResponses = IntVector('e2eresponse', ${e2eCount$})
+			E2ELatencies = IntVector('e2elantency', ${e2eCount$})
+			DelayedConnections = BoolVector('delayconnection', ${connCount$})
+			message_offsets_mapping={}
+			thread_offsets={}
+			'''
+	}
+	
+	contract RMAHarmonicBoundContract {
+		domains
+			schedulability;
+		--assumptions
+			--'''arePrioritiesRM(${boundThreads$},error0)''';
+			-- contract RMPrioritiesContract;
+			--'''areAllDeadlinesImplicit(${threads$}, ${periods$},${deadlines$},${names$},error0)''';
+			
+			--'''areAllThreadDeadlinesImplicit(${rmsBoundThreads$})''';
+			--'''arePeriodsHarmonic(${rmsBoundThreads$},error0)''';
+			--'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
+		guarantee
+			<=> `And([Deadlines[i] >= Responses[i] for i in rmsThreadIndex])`;
+		analysis
+			'''allProcessorHarmonicBoundSchedulable(${rmsBoundThreads$},error0)''';
+	}
+
+	contract RMANonHarmonicBoundContract {
+		domains
+			schedulability;
+		--assumptions
+			--'''arePrioritiesRM(${boundThreads$},error0)''';
+			-- contract RMPrioritiesContract;
+			--'''areAllDeadlinesImplicit(${threads$},${periods$},${deadlines$},${names$},error0)''';
+			
+			--'''areAllThreadDeadlinesImplicit(${rmsBoundThreads$})''';			
+			--'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
+		guarantee
+			<=> `And([Deadlines[i] >= Responses[i] for i in rmsThreadIndex])`;
+		analysis
+			'''allProcessorNonHarmonicBoundSchedulable(${rmsBoundThreads$},error0)''';
+	}
+	
+	
+	argument RMSSchedulabilityArgument {
+		domains
+			schedulability;
+		guarantee
+			<=> `And([Deadlines[i] >= Responses[i] for i in rmsThreadIndex])`;
+		argument
+			and(
+				or(
+					contract RMAHarmonicBoundContract
+					contract RMANonHarmonicBoundContract
+				)
+			);
+	}
+	
+	
+	contract NetworkSchedulable{
+		domains
+			latency;
+		assumptions
+		guarantee
+			<=> `And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+		analysis
+			'''isNetworkSchedulableWithBusToBusConnections(${latency::flowComponents$},${latency::buses$},${processors$},${connectedPairs$},message_offsets_mapping,${processorNames$})''';
+	}
+
+--	verification plan EDFSchedulabilityPlan {
+--		component
+--			s: Vertical_Slice::Aircraft_Architecture::AircraftArchitecture.impl;
+--		domains
+--			schedulability;
+--		claims
+--			`And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+--		contracts
+--			edfSchedulability;
+--	}
+	
+	contract edfSchedulability {
+		domains
+			schedulability;
+		queries
+		input assumptions
+--			'''areAllThreadsWithSchedulingParameters(edfBoundThreads,error0)''';
+		assumptions
+--			'''areAllProcessorsEdfScheduled(${edfBoundThreads$},error0)''';
+		guarantee
+			<=> `And([Deadlines[i] >= Responses[i] for i in edfThreadIndex])`;
+		invocation
+			'''isEdfDBFSchedulable(${edfBoundThreads$},error0)''';
+		
+	}
+	
+	contract RMPrioritiesContract {
+		domains
+			schedulability;
+		input assumptions
+			--'''areAllPrioritiesSet(${rmsBoundThreads$},${priorities$}, ${names$},error0)''';			
+		guarantee
+			<=>`And([(Periods[i]<Periods[j]) == (Priorities[i]>Priorities[j]) for i in rmsThreadIndex for j in rmsThreadIndex])`;
+		analysis
+			'''arePrioritiesRM(${rmsBoundThreads$},error0)''';	
+	}
+	
+	contract DMPrioritiesContract {
+		domains
+			schedulability;
+		input assumptions
+			'''areAllPrioritiesSet(${dmsBoundThreads$},${priorities$}, ${names$},error0)''';			
+		guarantee
+			<=>`And([(Deadlines[i]<Deadlines[j]) == (Priorities[i]>Priorities[j]) for i in dmsThreadIndex for j in dmsThreadIndex])`;
+		analysis
+			'''arePrioritiesDM(${dmsBoundThreads$},error0)''';	
+	}	
+	
+	contract rmsSchedulability {
+		domains
+			schedulability;
+		queries
+		input assumptions
+			'''areAllPrioritiesSet(${rmsBoundThreads$},${priorities$}, ${names$},error0)''';			
+--			'''areAllPrioritiesForFixedPrioritySet(${boundThreads$},${priorities$}${names$},error0)''';
+		assumptions
+			contract RMPrioritiesContract;
+		guarantee
+			<=> `And([Deadlines[i] >= Responses[i] for i in rmsThreadIndex])`;
+		invocation
+			'''isResponseTimeSchedulable(${rmsBoundThreads$},error0)''';
+	}
+
+	contract dmsSchedulability {
+		domains
+			schedulability;
+		queries
+		input assumptions
+--			'''areAllPrioritiesForFixedPrioritySet(${boundThreads$},${priorities$},${names$},error0)''';
+		assumptions
+			contract DMPrioritiesContract;
+		guarantee
+			<=> `And([Deadlines[i] >= Responses[i] for i in dmsThreadIndex])`;
+		invocation
+			'''isResponseTimeSchedulable(${dmsBoundThreads$},error0)''';
+	}
+
+	contract rtSchedulability {
+		domains
+			schedulability;
+		queries
+		input assumptions
+			'''areAllPrioritiesSet(${rtBoundThreads$},${priorities$}, ${names$},error0)''';
+		assumptions
+		guarantee
+			<=> `And([Deadlines[i] >= Responses[i] for i in rtThreadIndex])`;
+		invocation
+			'''isResponseTimeSchedulable(${rtBoundThreads$},error0)''';
+	}
+	
+	contract partitionedSchedulable{
+		domains
+			schedulability;
+		--input assumptions
+			--'''areAllThreadsWithSchedulingParameters(${boundThreads$},error0)''';		
+		assumptions
+			-- contract rmsSchedulability;
+			contract edfSchedulability;
+			contract dmsSchedulability;
+			contract rtSchedulability;
+			argument RMSSchedulabilityArgument;
+		guarantee
+		<=>`And([Deadlines[i]>= Responses[i] for i in range(len(Deadlines))])`;
+	}
+
+	contract meetEndToEndLatency {
+		domains
+			latency;
+			schedulability;
+		input assumptions
+			'''areAllThreadsWithSchedulingParameters(${boundThreads$},error0)''';		
+		assumptions
+			'''areAllMessageOffsetsBeforeDeadlines(${threadTimingParametersInNs$},${latency::flowComponents$},message_offsets_mapping,thread_offsets)''';
+			contract NetworkSchedulable;
+			contract partitionedSchedulable;
+		guarantee
+			<=> `And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+		analysis
+			'''meetImmediateConnectionsEndToEndLatencies(${latency::flowComponents$},${threadTimingParametersInNs$},error0)''';
+	}
+
+	contract intermediateContract {
+		domains
+			latency;
+			schedulability;
+		assumptions
+			contract partitionedSchedulable;
+		guarantee
+			<=>`And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+	}
+
+	verification plan MultiSchedulerPlan {
+		component
+			s: MultiSchedulerExample::mysystem.i;
+		domains
+			schedulability;
+			latency;
+		claims
+			`And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+		contracts
+			partitionedSchedulable;
+			--intermediateContract;
+	}
+
+
+	verification plan LatencyVerificationPlan {
+		component
+			s: MultiSchedulerExample::mysystem.i;
+		domains
+			schedulability;
+			latency;
+		claims
+			`And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+			`And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+		contracts
+			meetEndToEndLatency;
+	}
+
+**};
+end ACVIPAnalysisContracts;

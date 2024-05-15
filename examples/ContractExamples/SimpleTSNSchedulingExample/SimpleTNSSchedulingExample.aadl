@@ -45,7 +45,8 @@ public
 			b6: bus access n4.b1 <-> l3;
 			b7: bus access n4.b2 <-> l4;
 			b8: bus access n5.b1 <-> l4;
-			b9: bus access n5.b1 <-> l5;
+			--b9: bus access n5.b1 <-> l5;
+			b11: bus access n4.b2 <-> l5;
 			b10: bus access n6.b1 <-> l5;
 		properties
 --			TSNProperties::BitsPerSecond => 1000000000 applies to l1; -- 1 Gbps

@@ -255,8 +255,9 @@ def allProcessorHarmonicBoundSchedulable(boundThreads,error0):
 		for j in range(len(boundThreads[i][2])):
 			util = util + boundThreads[i][2][j][3] / boundThreads[i][2][j][2]
 		if util > 1.0:
-			addError(error0,"{"+str(boundThreads[i][0])+"}processor "+boundThreads[i][1]+" workload exceeds 100% bound ")
+			addError(error0,"{"+str(boundThreads[i][0])+"}allProcessorHarmonicBoundSchedulable: processor "+boundThreads[i][1]+" workload exceeds 100% bound ")
 			return False
+		addError(info0,"{"+str(boundThreads[i][0])+"}allProcessorHarmonicBoundSchedulable: processor("+boundThreads[i][1]+") schedulable with workloand <= 100% ")		
 	print("allProcessorsHarmonicBoundSchedulable=TRUE")
 	return True
 
@@ -267,8 +268,9 @@ def allProcessorNonHarmonicBoundSchedulable(boundThreads,error0):
 		for j in range(len(boundThreads[i][2])):
 			util = util + boundThreads[i][2][j][3] / boundThreads[i][2][j][2]
 		if util > 0.69:
-			addError(error0,"processor "+boundThreads[i][1]+" workload exceeds 69% bound ")
+			addError(error0,"{"+str(boundThreads[i][0])+"}allProcessorNonHarmonicBoundSchedulable: processor "+boundThreads[i][1]+" workload exceeds 69% bound ")
 			return False
+		addError(info0,"{"+str(boundThreads[i][0])+"}allProcessorNonHarmonicBoundSchedulable: processor("+boundThreads[i][1]+") schedulable with workloand <= 69% ")
 	print("allProcessorsNonHarmonicBoundSchedulable=TRUE")
 	return True
 
@@ -477,7 +479,8 @@ def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
 			'''areAllThreadsWithSchedulingEDFSchedulingParameters(${boundThreads$},error0)''';		
 		assumptions
 			contract edfSchedulability;
-			contract rmsSchedulability;
+			--contract rmsSchedulability;
+			argument RMSschedulabilityArgument;
 			contract dmsSchedulability;
 			contract rtSchedulability;
 		guarantee
@@ -590,7 +593,7 @@ def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
 		guarantee
 			=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
 		analysis
-			'''allProcessorHarmonicBoundSchedulable(${boundThreads$},error0)''';
+			'''allProcessorHarmonicBoundSchedulable(${rmsBoundThreads$},error0)''';
 	}
 
 	contract RMANonHarmonicBoundContract {
@@ -603,7 +606,7 @@ def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
 		guarantee
 			=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
 		analysis
-			'''allProcessorNonHarmonicBoundSchedulable(${boundThreads$},error0)''';
+			'''allProcessorNonHarmonicBoundSchedulable(${rmsBoundThreads$},error0)''';
 	}
 
 	contract ProcessorsWithSchedulingProtocolContract {
@@ -618,15 +621,15 @@ def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
 			'''allProcessorsHaveSchedulingProtocol(${boundThreads$},error0)''';
 	}
 	
-	argument schedulabilityArgument {
+	argument RMSschedulabilityArgument {
 		domains
 			schedulability;
 		guarantee
-			--<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
-			<=> `RESPONSETIME_SHORTER_DEADLINES`;
+			<=> `And([Deadlines[i] >= Responses[i] for i in rmsThreadIndex])`;
+			--<=> `RESPONSETIME_SHORTER_DEADLINES`;
 		argument
 			and (
-				contract ProcessorsWithSchedulingProtocolContract
+				--contract ProcessorsWithSchedulingProtocolContract
 				or(
 					and(
 						contract RMPrioritiesContract
@@ -634,8 +637,8 @@ def getRTScheduledProcessors(boundThreads,rtBoundThreads,rtThreadIndex):
 								contract RMAHarmonicBoundContract
 								contract RMANonHarmonicBoundContract
 							)
-						),
-					contract fpResponseTimeContract
+						)--,
+					--contract fpResponseTimeContract
 				)
 			);
 	}
