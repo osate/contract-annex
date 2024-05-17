@@ -1833,8 +1833,8 @@ def isNetworkSchedulableNoBusToBusConnections(flowComponents,buses,processors,co
 		claims
 			`And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
 		contracts
-			partitionedSchedulable;
-			--intermediateContract;
+			--partitionedSchedulable;
+			intermediateContract;
 	}
 
 

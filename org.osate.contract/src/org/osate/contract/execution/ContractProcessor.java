@@ -122,17 +122,34 @@ public class ContractProcessor {
 			pyBuilder.addCode("# contract " + contract.getFullName());
 			addCode(expr);
 		}
-		for (int i = 0; i < deferredArguments.size(); i++) {
-			var a = deferredArguments.get(i);
-			pyBuilder.addCode("# argument " + a.getFullName());
-			var expr = smtArgument(a);
-			addCode(expr);
-		}
-		for (int i = 0; i < deferredContracts.size(); i++) {
-			var c = deferredContracts.get(i);
-			pyBuilder.addCode("# contract " + c.getFullName());
-			var expr = smtContract(c);
-			addCode(expr);
+		/**
+		 * Dio: deferredArguments or contracts can be added while processing
+		 * previous arguments or contracts
+		 */
+		while (deferredArguments.size() > 0 || deferredContracts.size() > 0) {
+			List<Argument> processedArguments = new ArrayList<Argument>();
+			for (int i = 0; i < deferredArguments.size(); i++) {
+				var a = deferredArguments.get(i);
+				processedArguments.add(a);
+				pyBuilder.addCode("# argument " + a.getFullName());
+				var expr = smtArgument(a);
+				addCode(expr);
+			}
+			for (Argument a : processedArguments) {
+				deferredArguments.remove(a);
+			}
+
+			List<Contract> processedContracts = new ArrayList<Contract>();
+			for (int i = 0; i < deferredContracts.size(); i++) {
+				var c = deferredContracts.get(i);
+				processedContracts.add(c);
+				pyBuilder.addCode("# contract " + c.getFullName());
+				var expr = smtContract(c);
+				addCode(expr);
+			}
+			for (Contract c : processedContracts) {
+				deferredContracts.remove(c);
+			}
 		}
 		if (!plan.getClaims().isEmpty()) {
 			pyBuilder.addCode("""

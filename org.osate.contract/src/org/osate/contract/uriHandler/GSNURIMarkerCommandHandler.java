@@ -17,6 +17,10 @@ import org.eclipse.ui.views.markers.MarkerViewUtil;
 
 public class GSNURIMarkerCommandHandler extends AbstractHandler {
 
+	/**
+	 * TODO: We should add a second parameter with the instance number of the object to which the marker is
+	 * attached to. This way we can jump to the exact marker
+	 */
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		@SuppressWarnings("unchecked")
