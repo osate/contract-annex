@@ -2,10 +2,12 @@ package org.osate.contract.gsn;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.xtext.EcoreUtil2;
+import org.osate.aadl2.AadlPackage;
 import org.osate.aadl2.NamedElement;
 import org.osate.contract.contract.Analysis;
 import org.osate.contract.contract.Argument;
@@ -27,7 +29,7 @@ public final class YamlGsnGenerator {
 	private YamlGsnGenerator() {
 	}
 
-	public static String generateYamlGsn(VerificationPlan verificationPlan) {
+	public static YamlFolder generateYamlGsn(VerificationPlan verificationPlan) {
 		var collector = new NodeCollector(verificationPlan);
 
 		var nodes = new ArrayList<String>();
@@ -51,7 +53,11 @@ public final class YamlGsnGenerator {
 			nodes.add(generateAnalysis(analysis));
 		}
 
-		return nodes.stream().collect(Collectors.joining("\n\n"));
+		var aadlPackage = EcoreUtil2.getContainerOfType(verificationPlan, AadlPackage.class);
+		var folderName = aadlPackage.getName() + "_" + verificationPlan.getName();
+		var contents = nodes.stream().collect(Collectors.joining("\n\n"));
+		var file = new YamlFile(verificationPlan.getName() + ".gsn.yaml", contents);
+		return new YamlFolder(folderName, List.of(file));
 	}
 
 	private static String generateVerificationPlan(VerificationPlan verificationPlan) {
