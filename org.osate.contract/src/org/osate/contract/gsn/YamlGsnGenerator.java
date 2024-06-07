@@ -1,8 +1,9 @@
 package org.osate.contract.gsn;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,34 +31,43 @@ public final class YamlGsnGenerator {
 	}
 
 	public static YamlFolder generateYamlGsn(VerificationPlan verificationPlan) {
-		var collector = new NodeCollector(verificationPlan);
-
-		var nodes = new ArrayList<String>();
-		nodes.add(generateVerificationPlan(verificationPlan));
+		var planNodes = new ArrayList<String>();
+		planNodes.add(generateVerificationPlan(verificationPlan));
 		for (var claim : verificationPlan.getClaims()) {
-			nodes.add(generateClaim(claim, verificationPlan));
+			planNodes.add(generateClaim(claim, verificationPlan));
 		}
-		for (var contract : collector.contracts) {
+
+		var planContents = planNodes.stream().collect(Collectors.joining("\n\n"));
+		var planFile = new YamlFile(verificationPlan.getName() + ".gsn.yaml", planContents);
+
+		var files = new ArrayList<YamlFile>();
+		files.add(planFile);
+
+		var collector = new NodeCollector(verificationPlan);
+		collector.contractNodes.forEach((contract, contractNodes) -> {
+			var nodes = new ArrayList<String>();
 			nodes.add(generateContract(contract));
-		}
-		for (var argument : collector.arguments) {
-			nodes.add(generateArgument(argument));
-		}
-		for (var expression : collector.argumentExpressions) {
-			nodes.add(generateArgumentExpression(expression));
-		}
-		for (var assumption : collector.assumptions) {
-			nodes.add(generateAssumption(assumption));
-		}
-		for (var analysis : collector.analyses) {
-			nodes.add(generateAnalysis(analysis));
-		}
+			for (var argument : contractNodes.arguments) {
+				nodes.add(generateArgument(argument));
+			}
+			for (var expression : contractNodes.argumentExpressions) {
+				nodes.add(generateArgumentExpression(expression));
+			}
+			for (var assumption : contractNodes.assumptions) {
+				nodes.add(generateAssumption(assumption));
+			}
+			for (var analysis : contractNodes.analyses) {
+				nodes.add(generateAnalysis(analysis));
+			}
+
+			var contents = nodes.stream().collect(Collectors.joining("\n\n"));
+			var file = new YamlFile(contract.getName() + ".gsn.yaml", contents);
+			files.add(file);
+		});
 
 		var aadlPackage = EcoreUtil2.getContainerOfType(verificationPlan, AadlPackage.class);
 		var folderName = aadlPackage.getName() + "_" + verificationPlan.getName();
-		var contents = nodes.stream().collect(Collectors.joining("\n\n"));
-		var file = new YamlFile(verificationPlan.getName() + ".gsn.yaml", contents);
-		return new YamlFolder(folderName, List.of(file));
+		return new YamlFolder(folderName, files);
 	}
 
 	private static String generateVerificationPlan(VerificationPlan verificationPlan) {
@@ -328,11 +338,7 @@ public final class YamlGsnGenerator {
 	}
 
 	private static class NodeCollector {
-		public final Set<Contract> contracts = new LinkedHashSet<>();
-		public final Set<Argument> arguments = new LinkedHashSet<>();
-		public final Set<ArgumentExpression> argumentExpressions = new LinkedHashSet<>();
-		public final Set<String> assumptions = new LinkedHashSet<>();
-		public final Set<String> analyses = new LinkedHashSet<>();
+		public final Map<Contract, ContractNodes> contractNodes = new LinkedHashMap<>();
 
 		public NodeCollector(VerificationPlan verificationPlan) {
 			for (var contract : verificationPlan.getContracts()) {
@@ -341,35 +347,35 @@ public final class YamlGsnGenerator {
 		}
 
 		private void collect(Contract contract) {
-			contracts.add(contract);
+			var nodes = contractNodes.computeIfAbsent(contract, key -> new ContractNodes());
 			for (var assumption : contract.getAssumptions()) {
 				if (assumption instanceof ContractAssumption contractAssumption
 						&& contractAssumption.getContract() instanceof Contract referencedContract) {
 					collect(referencedContract);
 				} else if (assumption instanceof ArgumentAssumption argumentAssumption
 						&& argumentAssumption.getArgument() instanceof Argument referencedArgument) {
-					collect(referencedArgument);
+					collect(referencedArgument, nodes);
 				} else if (assumption instanceof CodeAssumption codeAssumption) {
-					assumptions.add(getAssumptionName(codeAssumption));
+					nodes.assumptions.add(getAssumptionName(codeAssumption));
 				}
 			}
 			for (var analysis : contract.getAnalyses()) {
-				analyses.add(getAnalysisName(analysis));
+				nodes.analyses.add(getAnalysisName(analysis));
 			}
 		}
 
-		private void collect(Argument argument) {
-			arguments.add(argument);
+		private void collect(Argument argument, ContractNodes nodes) {
+			nodes.arguments.add(argument);
 			if (argument.getArgumentExpression() != null) {
-				collect(argument.getArgumentExpression());
+				collect(argument.getArgumentExpression(), nodes);
 			}
 		}
 
-		private void collect(ArgumentExpression expression) {
-			argumentExpressions.add(expression);
+		private void collect(ArgumentExpression expression, ContractNodes nodes) {
+			nodes.argumentExpressions.add(expression);
 			for (var referencedArgument : expression.getArguments()) {
 				if (referencedArgument instanceof Argument castedArgument) {
-					collect(castedArgument);
+					collect(castedArgument, nodes);
 				}
 			}
 			for (var referencedContract : expression.getContracts()) {
@@ -378,8 +384,15 @@ public final class YamlGsnGenerator {
 				}
 			}
 			for (var nested : expression.getNested()) {
-				collect(nested);
+				collect(nested, nodes);
 			}
 		}
+	}
+
+	private static class ContractNodes {
+		public final Set<Argument> arguments = new LinkedHashSet<>();
+		public final Set<ArgumentExpression> argumentExpressions = new LinkedHashSet<>();
+		public final Set<String> assumptions = new LinkedHashSet<>();
+		public final Set<String> analyses = new LinkedHashSet<>();
 	}
 }
