@@ -618,24 +618,23 @@ public class YamlGsnTest {
 		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
 		var folder = YamlGsnGenerator.generateYamlGsn(plan);
 		assertEquals("RepeatedAssumptions_RepeatedAssumptions", folder.name());
-		assertEquals(1, folder.files().size());
+		assertEquals(4, folder.files().size());
 		with(folder.files().get(0), file -> {
 			assertEquals("RepeatedAssumptions.gsn.yaml", file.name());
 			var expected = """
 					RepeatedAssumptions:
 					  text: RepeatedAssumptions
 					  nodeType: Goal
-					  supportedBy: [Contract1, Contract2]
-
+					  supportedBy: [Contract1, Contract2]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(1), file -> {
+			assertEquals("Contract1.gsn.yaml", file.name());
+			var expected = """
 					Contract1:
 					  text: Contract1
 					  nodeType: Goal
 					  inContextOf: [assumption1, assumption2, assumption3]
-
-					Contract2:
-					  text: Contract2
-					  nodeType: Goal
-					  inContextOf: [assumption3, assumption4]
 
 					assumption1:
 					  text: assumption1
@@ -643,14 +642,27 @@ public class YamlGsnTest {
 
 					assumption2:
 					  text: assumption2
-					  nodeType: Assumption
-
-					assumption3:
-					  text: assumption3
-					  nodeType: Assumption
+					  nodeType: Assumption""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(2), file -> {
+			assertEquals("Contract2.gsn.yaml", file.name());
+			var expected = """
+					Contract2:
+					  text: Contract2
+					  nodeType: Goal
+					  inContextOf: [assumption3, assumption4]
 
 					assumption4:
 					  text: assumption4
+					  nodeType: Assumption""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(3), file -> {
+			assertEquals("CommonNodes.gsn.yaml", file.name());
+			var expected = """
+					assumption3:
+					  text: assumption3
 					  nodeType: Assumption""";
 			assertEquals(expected, file.contents());
 		});
