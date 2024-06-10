@@ -1,11 +1,16 @@
 package org.osate.contract.gsn;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.xtext.EcoreUtil2;
+import org.osate.aadl2.AadlPackage;
 import org.osate.aadl2.NamedElement;
 import org.osate.contract.contract.Analysis;
 import org.osate.contract.contract.Argument;
@@ -27,31 +32,55 @@ public final class YamlGsnGenerator {
 	private YamlGsnGenerator() {
 	}
 
-	public static String generateYamlGsn(VerificationPlan verificationPlan) {
-		var collector = new NodeCollector(verificationPlan);
+	public static YamlFolder generateYamlGsn(VerificationPlan verificationPlan) {
+		var files = new ArrayList<YamlFile>();
 
-		var nodes = new ArrayList<String>();
-		nodes.add(generateVerificationPlan(verificationPlan));
+		var planNodes = new ArrayList<String>();
+		planNodes.add(generateVerificationPlan(verificationPlan));
 		for (var claim : verificationPlan.getClaims()) {
-			nodes.add(generateClaim(claim, verificationPlan));
+			planNodes.add(generateClaim(claim, verificationPlan));
 		}
-		for (var contract : collector.contracts) {
+		files.add(new YamlFile(verificationPlan.getName(), planNodes));
+
+		var collector = new NodeCollector(verificationPlan);
+		collector.contractNodes.forEach((contract, contractNodes) -> {
+			var nodes = new ArrayList<String>();
 			nodes.add(generateContract(contract));
+			for (var argument : contractNodes.arguments) {
+				nodes.add(generateArgument(argument));
+			}
+			for (var expression : contractNodes.argumentExpressions) {
+				nodes.add(generateArgumentExpression(expression));
+			}
+			for (var assumption : contractNodes.assumptions) {
+				nodes.add(generateAssumption(assumption));
+			}
+			for (var analysis : contractNodes.analyses) {
+				nodes.add(generateAnalysis(analysis));
+			}
+			files.add(new YamlFile(contract.getName(), nodes));
+		});
+
+		var commonNodes = new ArrayList<String>();
+		for (var argument : collector.commonArguments) {
+			commonNodes.add(generateArgument(argument));
 		}
-		for (var argument : collector.arguments) {
-			nodes.add(generateArgument(argument));
+		for (var expression : collector.commonArgumentExpressions) {
+			commonNodes.add(generateArgumentExpression(expression));
 		}
-		for (var expression : collector.argumentExpressions) {
-			nodes.add(generateArgumentExpression(expression));
+		for (var assumption : collector.commonAssumptions) {
+			commonNodes.add(generateAssumption(assumption));
 		}
-		for (var assumption : collector.assumptions) {
-			nodes.add(generateAssumption(assumption));
+		for (var analysis : collector.commonAnalyses) {
+			commonNodes.add(generateAnalysis(analysis));
 		}
-		for (var analysis : collector.analyses) {
-			nodes.add(generateAnalysis(analysis));
+		if (!commonNodes.isEmpty()) {
+			files.add(new YamlFile("CommonNodes", commonNodes));
 		}
 
-		return nodes.stream().collect(Collectors.joining("\n\n"));
+		var aadlPackage = EcoreUtil2.getContainerOfType(verificationPlan, AadlPackage.class);
+		var folderName = aadlPackage.getName() + "_" + verificationPlan.getName();
+		return new YamlFolder(folderName, files);
 	}
 
 	private static String generateVerificationPlan(VerificationPlan verificationPlan) {
@@ -322,48 +351,96 @@ public final class YamlGsnGenerator {
 	}
 
 	private static class NodeCollector {
-		public final Set<Contract> contracts = new LinkedHashSet<>();
-		public final Set<Argument> arguments = new LinkedHashSet<>();
-		public final Set<ArgumentExpression> argumentExpressions = new LinkedHashSet<>();
-		public final Set<String> assumptions = new LinkedHashSet<>();
-		public final Set<String> analyses = new LinkedHashSet<>();
+		public final Map<Contract, ContractNodes> contractNodes = new LinkedHashMap<>();
+		public final List<Argument> commonArguments = new ArrayList<>();
+		public final List<ArgumentExpression> commonArgumentExpressions = new ArrayList<>();
+		public final List<String> commonAssumptions = new ArrayList<>();
+		public final List<String> commonAnalyses = new ArrayList<>();
 
 		public NodeCollector(VerificationPlan verificationPlan) {
 			for (var contract : verificationPlan.getContracts()) {
 				collect(contract);
 			}
+
+			var argumentOccurrences = new LinkedHashMap<Argument, Integer>();
+			var expressionOccurrences = new LinkedHashMap<ArgumentExpression, Integer>();
+			var assumptionOccurrences = new LinkedHashMap<String, Integer>();
+			var analysisOccurrences = new HashMap<String, Integer>();
+
+			for (var nodes : contractNodes.values()) {
+				for (var argument : nodes.arguments) {
+					argumentOccurrences.merge(argument, 1, Integer::sum);
+				}
+				for (var expression : nodes.argumentExpressions) {
+					expressionOccurrences.merge(expression, 1, Integer::sum);
+				}
+				for (var assumption : nodes.assumptions) {
+					assumptionOccurrences.merge(assumption, 1, Integer::sum);
+				}
+				for (var analysis : nodes.analyses) {
+					analysisOccurrences.merge(analysis, 1, Integer::sum);
+				}
+			}
+
+			for (var entry : argumentOccurrences.entrySet()) {
+				if (entry.getValue() > 1) {
+					commonArguments.add(entry.getKey());
+				}
+			}
+			for (var entry : expressionOccurrences.entrySet()) {
+				if (entry.getValue() > 1) {
+					commonArgumentExpressions.add(entry.getKey());
+				}
+			}
+			for (var entry : assumptionOccurrences.entrySet()) {
+				if (entry.getValue() > 1) {
+					commonAssumptions.add(entry.getKey());
+				}
+			}
+			for (var entry : analysisOccurrences.entrySet()) {
+				if (entry.getValue() > 1) {
+					commonAnalyses.add(entry.getKey());
+				}
+			}
+
+			for (var nodes : contractNodes.values()) {
+				nodes.arguments.removeAll(commonArguments);
+				nodes.argumentExpressions.removeAll(commonArgumentExpressions);
+				nodes.assumptions.removeAll(commonAssumptions);
+				nodes.analyses.removeAll(commonAnalyses);
+			}
 		}
 
 		private void collect(Contract contract) {
-			contracts.add(contract);
+			var nodes = contractNodes.computeIfAbsent(contract, key -> new ContractNodes());
 			for (var assumption : contract.getAssumptions()) {
 				if (assumption instanceof ContractAssumption contractAssumption
 						&& contractAssumption.getContract() instanceof Contract referencedContract) {
 					collect(referencedContract);
 				} else if (assumption instanceof ArgumentAssumption argumentAssumption
 						&& argumentAssumption.getArgument() instanceof Argument referencedArgument) {
-					collect(referencedArgument);
+					collect(referencedArgument, nodes);
 				} else if (assumption instanceof CodeAssumption codeAssumption) {
-					assumptions.add(getAssumptionName(codeAssumption));
+					nodes.assumptions.add(getAssumptionName(codeAssumption));
 				}
 			}
 			for (var analysis : contract.getAnalyses()) {
-				analyses.add(getAnalysisName(analysis));
+				nodes.analyses.add(getAnalysisName(analysis));
 			}
 		}
 
-		private void collect(Argument argument) {
-			arguments.add(argument);
+		private void collect(Argument argument, ContractNodes nodes) {
+			nodes.arguments.add(argument);
 			if (argument.getArgumentExpression() != null) {
-				collect(argument.getArgumentExpression());
+				collect(argument.getArgumentExpression(), nodes);
 			}
 		}
 
-		private void collect(ArgumentExpression expression) {
-			argumentExpressions.add(expression);
+		private void collect(ArgumentExpression expression, ContractNodes nodes) {
+			nodes.argumentExpressions.add(expression);
 			for (var referencedArgument : expression.getArguments()) {
 				if (referencedArgument instanceof Argument castedArgument) {
-					collect(castedArgument);
+					collect(castedArgument, nodes);
 				}
 			}
 			for (var referencedContract : expression.getContracts()) {
@@ -372,8 +449,15 @@ public final class YamlGsnGenerator {
 				}
 			}
 			for (var nested : expression.getNested()) {
-				collect(nested);
+				collect(nested, nodes);
 			}
 		}
+	}
+
+	private static class ContractNodes {
+		public final Set<Argument> arguments = new LinkedHashSet<>();
+		public final Set<ArgumentExpression> argumentExpressions = new LinkedHashSet<>();
+		public final Set<String> assumptions = new LinkedHashSet<>();
+		public final Set<String> analyses = new LinkedHashSet<>();
 	}
 }

@@ -17,11 +17,10 @@ import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.ContainerGenerator;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
-import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode;
-import org.osate.aadl2.AadlPackage;
 import org.osate.aadl2.modelsupport.resources.OsateResourceUtil;
 import org.osate.contract.contract.VerificationPlan;
+import org.osate.contract.gsn.YamlFolder;
 import org.osate.contract.gsn.YamlGsnGenerator;
 
 public class GenerateYamlGsnHandler extends AbstractHandler {
@@ -31,24 +30,25 @@ public class GenerateYamlGsnHandler extends AbstractHandler {
 		var generatedYaml = node.readOnly(state -> {
 			var verificationPlan = (VerificationPlan) state;
 			var project = OsateResourceUtil.toIFile(verificationPlan.eResource().getURI()).getProject();
-			var aadlPackage = EcoreUtil2.getContainerOfType(verificationPlan, AadlPackage.class);
-			var outputFileName = aadlPackage.getName() + "_" + verificationPlan.getName() + ".gsn.yaml";
-			return new GeneratedYAML(project, outputFileName, YamlGsnGenerator.generateYamlGsn(verificationPlan));
+			return new GeneratedYAML(project, YamlGsnGenerator.generateYamlGsn(verificationPlan));
 		});
-		var folderPath = generatedYaml.project().getFullPath().append("yaml-gen");
-		var stream = new ByteArrayInputStream(generatedYaml.contents().getBytes());
+		var yamlFolder = generatedYaml.folder();
+		var folderPath = generatedYaml.project().getFullPath().append("yaml-gen").append(yamlFolder.name());
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).run(true, true, new WorkspaceModifyOperation() {
 				@Override
 				protected void execute(IProgressMonitor monitor)
 						throws CoreException, InvocationTargetException, InterruptedException {
-					var subMonitor = SubMonitor.convert(monitor, "Generating YAML-GSN", 2);
+					var subMonitor = SubMonitor.convert(monitor, "Generating YAML-GSN", yamlFolder.files().size() + 1);
 					var folder = new ContainerGenerator(folderPath).generateContainer(subMonitor.split(1));
-					var file = folder.getFile(new Path(generatedYaml.fileName()));
-					if (file.exists()) {
-						file.setContents(stream, false, true, subMonitor.split(1));
-					} else {
-						file.create(stream, false, subMonitor.split(1));
+					for (var yamlFile : yamlFolder.files()) {
+						var file = folder.getFile(new Path(yamlFile.name()));
+						var stream = new ByteArrayInputStream(yamlFile.contents().getBytes());
+						if (file.exists()) {
+							file.setContents(stream, false, true, subMonitor.split(1));
+						} else {
+							file.create(stream, false, subMonitor.split(1));
+						}
 					}
 				}
 			});
@@ -61,6 +61,6 @@ public class GenerateYamlGsnHandler extends AbstractHandler {
 		return null;
 	}
 
-	private record GeneratedYAML(IProject project, String fileName, String contents) {
+	private record GeneratedYAML(IProject project, YamlFolder folder) {
 	}
 }
