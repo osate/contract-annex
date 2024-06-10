@@ -68,6 +68,9 @@ public final class YamlGsnGenerator {
 		});
 
 		var commonNodes = new ArrayList<String>();
+		for (var argument : collector.commonArguments) {
+			commonNodes.add(generateArgument(argument));
+		}
 		for (var assumption : collector.commonAssumptions) {
 			commonNodes.add(generateAssumption(assumption));
 		}
@@ -354,12 +357,28 @@ public final class YamlGsnGenerator {
 
 	private static class NodeCollector {
 		public final Map<Contract, ContractNodes> contractNodes = new LinkedHashMap<>();
+		public final List<Argument> commonArguments = new ArrayList<>();
 		public final List<String> commonAssumptions = new ArrayList<>();
 		public final List<String> commonAnalyses = new ArrayList<>();
 
 		public NodeCollector(VerificationPlan verificationPlan) {
 			for (var contract : verificationPlan.getContracts()) {
 				collect(contract);
+			}
+
+			var argumentOccurrences = new HashMap<Argument, Integer>();
+			for (var nodes : contractNodes.values()) {
+				for (var argument : nodes.arguments) {
+					argumentOccurrences.merge(argument, 1, Integer::sum);
+				}
+			}
+			for (var entry : argumentOccurrences.entrySet()) {
+				if (entry.getValue() > 1) {
+					commonArguments.add(entry.getKey());
+				}
+			}
+			for (var nodes : contractNodes.values()) {
+				nodes.arguments.removeAll(commonArguments);
 			}
 
 			var assumptionOccurrences = new HashMap<String, Integer>();
