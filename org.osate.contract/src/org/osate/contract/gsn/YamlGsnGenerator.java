@@ -1,8 +1,10 @@
 package org.osate.contract.gsn;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -64,6 +66,16 @@ public final class YamlGsnGenerator {
 			var file = new YamlFile(contract.getName() + ".gsn.yaml", contents);
 			files.add(file);
 		});
+
+		var commonNodes = new ArrayList<String>();
+		for (var analysis : collector.commonAnalyses) {
+			commonNodes.add(generateAnalysis(analysis));
+		}
+		if (!commonNodes.isEmpty()) {
+			var contents = commonNodes.stream().collect(Collectors.joining("\n\n"));
+			var commonFile = new YamlFile("CommonNodes.gsn.yaml", contents);
+			files.add(commonFile);
+		}
 
 		var aadlPackage = EcoreUtil2.getContainerOfType(verificationPlan, AadlPackage.class);
 		var folderName = aadlPackage.getName() + "_" + verificationPlan.getName();
@@ -339,10 +351,26 @@ public final class YamlGsnGenerator {
 
 	private static class NodeCollector {
 		public final Map<Contract, ContractNodes> contractNodes = new LinkedHashMap<>();
+		public final List<String> commonAnalyses = new ArrayList<>();
 
 		public NodeCollector(VerificationPlan verificationPlan) {
 			for (var contract : verificationPlan.getContracts()) {
 				collect(contract);
+			}
+
+			var analysisOccurrences = new HashMap<String, Integer>();
+			for (var nodes : contractNodes.values()) {
+				for (var analysis : nodes.analyses) {
+					analysisOccurrences.merge(analysis, 1, Integer::sum);
+				}
+			}
+			for (var entry : analysisOccurrences.entrySet()) {
+				if (entry.getValue() > 1) {
+					commonAnalyses.add(entry.getKey());
+				}
+			}
+			for (var nodes : contractNodes.values()) {
+				nodes.analyses.removeAll(commonAnalyses);
 			}
 		}
 
