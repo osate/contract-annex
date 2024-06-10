@@ -33,17 +33,14 @@ public final class YamlGsnGenerator {
 	}
 
 	public static YamlFolder generateYamlGsn(VerificationPlan verificationPlan) {
+		var files = new ArrayList<YamlFile>();
+
 		var planNodes = new ArrayList<String>();
 		planNodes.add(generateVerificationPlan(verificationPlan));
 		for (var claim : verificationPlan.getClaims()) {
 			planNodes.add(generateClaim(claim, verificationPlan));
 		}
-
-		var planContents = planNodes.stream().collect(Collectors.joining("\n\n"));
-		var planFile = new YamlFile(verificationPlan.getName() + ".gsn.yaml", planContents);
-
-		var files = new ArrayList<YamlFile>();
-		files.add(planFile);
+		files.add(new YamlFile(verificationPlan.getName(), planNodes));
 
 		var collector = new NodeCollector(verificationPlan);
 		collector.contractNodes.forEach((contract, contractNodes) -> {
@@ -61,10 +58,7 @@ public final class YamlGsnGenerator {
 			for (var analysis : contractNodes.analyses) {
 				nodes.add(generateAnalysis(analysis));
 			}
-
-			var contents = nodes.stream().collect(Collectors.joining("\n\n"));
-			var file = new YamlFile(contract.getName() + ".gsn.yaml", contents);
-			files.add(file);
+			files.add(new YamlFile(contract.getName(), nodes));
 		});
 
 		var commonNodes = new ArrayList<String>();
@@ -81,9 +75,7 @@ public final class YamlGsnGenerator {
 			commonNodes.add(generateAnalysis(analysis));
 		}
 		if (!commonNodes.isEmpty()) {
-			var contents = commonNodes.stream().collect(Collectors.joining("\n\n"));
-			var commonFile = new YamlFile("CommonNodes.gsn.yaml", contents);
-			files.add(commonFile);
+			files.add(new YamlFile("CommonNodes", commonNodes));
 		}
 
 		var aadlPackage = EcoreUtil2.getContainerOfType(verificationPlan, AadlPackage.class);
@@ -371,24 +363,28 @@ public final class YamlGsnGenerator {
 			}
 
 			var argumentOccurrences = new LinkedHashMap<Argument, Integer>();
+			var expressionOccurrences = new LinkedHashMap<ArgumentExpression, Integer>();
+			var assumptionOccurrences = new LinkedHashMap<String, Integer>();
+			var analysisOccurrences = new HashMap<String, Integer>();
+
 			for (var nodes : contractNodes.values()) {
 				for (var argument : nodes.arguments) {
 					argumentOccurrences.merge(argument, 1, Integer::sum);
 				}
+				for (var expression : nodes.argumentExpressions) {
+					expressionOccurrences.merge(expression, 1, Integer::sum);
+				}
+				for (var assumption : nodes.assumptions) {
+					assumptionOccurrences.merge(assumption, 1, Integer::sum);
+				}
+				for (var analysis : nodes.analyses) {
+					analysisOccurrences.merge(analysis, 1, Integer::sum);
+				}
 			}
+
 			for (var entry : argumentOccurrences.entrySet()) {
 				if (entry.getValue() > 1) {
 					commonArguments.add(entry.getKey());
-				}
-			}
-			for (var nodes : contractNodes.values()) {
-				nodes.arguments.removeAll(commonArguments);
-			}
-
-			var expressionOccurrences = new LinkedHashMap<ArgumentExpression, Integer>();
-			for (var nodes : contractNodes.values()) {
-				for (var expression : nodes.argumentExpressions) {
-					expressionOccurrences.merge(expression, 1, Integer::sum);
 				}
 			}
 			for (var entry : expressionOccurrences.entrySet()) {
@@ -396,29 +392,9 @@ public final class YamlGsnGenerator {
 					commonArgumentExpressions.add(entry.getKey());
 				}
 			}
-			for (var nodes : contractNodes.values()) {
-				nodes.argumentExpressions.removeAll(commonArgumentExpressions);
-			}
-
-			var assumptionOccurrences = new LinkedHashMap<String, Integer>();
-			for (var nodes : contractNodes.values()) {
-				for (var assumption : nodes.assumptions) {
-					assumptionOccurrences.merge(assumption, 1, Integer::sum);
-				}
-			}
 			for (var entry : assumptionOccurrences.entrySet()) {
 				if (entry.getValue() > 1) {
 					commonAssumptions.add(entry.getKey());
-				}
-			}
-			for (var nodes : contractNodes.values()) {
-				nodes.assumptions.removeAll(commonAssumptions);
-			}
-
-			var analysisOccurrences = new HashMap<String, Integer>();
-			for (var nodes : contractNodes.values()) {
-				for (var analysis : nodes.analyses) {
-					analysisOccurrences.merge(analysis, 1, Integer::sum);
 				}
 			}
 			for (var entry : analysisOccurrences.entrySet()) {
@@ -426,7 +402,11 @@ public final class YamlGsnGenerator {
 					commonAnalyses.add(entry.getKey());
 				}
 			}
+
 			for (var nodes : contractNodes.values()) {
+				nodes.arguments.removeAll(commonArguments);
+				nodes.argumentExpressions.removeAll(commonArgumentExpressions);
+				nodes.assumptions.removeAll(commonAssumptions);
 				nodes.analyses.removeAll(commonAnalyses);
 			}
 		}
