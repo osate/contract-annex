@@ -71,6 +71,9 @@ public final class YamlGsnGenerator {
 		for (var argument : collector.commonArguments) {
 			commonNodes.add(generateArgument(argument));
 		}
+		for (var expression : collector.commonArgumentExpressions) {
+			commonNodes.add(generateArgumentExpression(expression));
+		}
 		for (var assumption : collector.commonAssumptions) {
 			commonNodes.add(generateAssumption(assumption));
 		}
@@ -358,6 +361,7 @@ public final class YamlGsnGenerator {
 	private static class NodeCollector {
 		public final Map<Contract, ContractNodes> contractNodes = new LinkedHashMap<>();
 		public final List<Argument> commonArguments = new ArrayList<>();
+		public final List<ArgumentExpression> commonArgumentExpressions = new ArrayList<>();
 		public final List<String> commonAssumptions = new ArrayList<>();
 		public final List<String> commonAnalyses = new ArrayList<>();
 
@@ -366,7 +370,7 @@ public final class YamlGsnGenerator {
 				collect(contract);
 			}
 
-			var argumentOccurrences = new HashMap<Argument, Integer>();
+			var argumentOccurrences = new LinkedHashMap<Argument, Integer>();
 			for (var nodes : contractNodes.values()) {
 				for (var argument : nodes.arguments) {
 					argumentOccurrences.merge(argument, 1, Integer::sum);
@@ -381,7 +385,22 @@ public final class YamlGsnGenerator {
 				nodes.arguments.removeAll(commonArguments);
 			}
 
-			var assumptionOccurrences = new HashMap<String, Integer>();
+			var expressionOccurrences = new LinkedHashMap<ArgumentExpression, Integer>();
+			for (var nodes : contractNodes.values()) {
+				for (var expression : nodes.argumentExpressions) {
+					expressionOccurrences.merge(expression, 1, Integer::sum);
+				}
+			}
+			for (var entry : expressionOccurrences.entrySet()) {
+				if (entry.getValue() > 1) {
+					commonArgumentExpressions.add(entry.getKey());
+				}
+			}
+			for (var nodes : contractNodes.values()) {
+				nodes.argumentExpressions.removeAll(commonArgumentExpressions);
+			}
+
+			var assumptionOccurrences = new LinkedHashMap<String, Integer>();
 			for (var nodes : contractNodes.values()) {
 				for (var assumption : nodes.assumptions) {
 					assumptionOccurrences.merge(assumption, 1, Integer::sum);

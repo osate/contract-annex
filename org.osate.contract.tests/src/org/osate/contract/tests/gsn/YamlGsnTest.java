@@ -1558,4 +1558,87 @@ public class YamlGsnTest {
 			assertEquals(expected, file.contents());
 		});
 	}
+
+	@Test
+	public void testCommonExpressions() {
+		var pkg = testHelper.parseFile(PATH + "CommonExpressions.aadl", PATH + "pkg1.aadl");
+		validationHelper.assertNoIssues(pkg);
+		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
+		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
+		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
+		var folder = YamlGsnGenerator.generateYamlGsn(plan);
+		assertEquals("CommonExpressions_CommonExpressions", folder.name());
+		assertEquals(4, folder.files().size());
+		with(folder.files().get(0), file -> {
+			assertEquals("CommonExpressions.gsn.yaml", file.name());
+			var expected = """
+					CommonExpressions:
+					  text: CommonExpressions
+					  nodeType: Goal
+					  supportedBy: [Contract1, Contract2]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(1), file -> {
+			assertEquals("Contract1.gsn.yaml", file.name());
+			var expected = """
+					Contract1:
+					  text: Contract1
+					  nodeType: Goal
+					  supportedBy: [Argument1, Argument2]
+
+					Argument1:
+					  text: Argument1
+					  nodeType: Goal
+					  supportedBy: [Argument1_and_1]
+
+					Argument1_and_1:
+					  text: Argument1_and_1
+					  nodeType: Goal
+					  supportedBy: [Argument4, Argument5]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(2), file -> {
+			assertEquals("Contract2.gsn.yaml", file.name());
+			var expected = """
+					Contract2:
+					  text: Contract2
+					  nodeType: Goal
+					  supportedBy: [Argument2, Argument3]
+
+					Argument3:
+					  text: Argument3
+					  nodeType: Goal
+					  supportedBy: [Argument3_not_1]
+
+					Argument3_not_1:
+					  text: Argument3_not_1
+					  nodeType: Goal
+					  supportedBy: [Argument4]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(3), file -> {
+			assertEquals("CommonNodes.gsn.yaml", file.name());
+			var expected = """
+					Argument4:
+					  text: Argument4
+					  nodeType: Goal
+					  undeveloped: true
+
+					Argument5:
+					  text: Argument5
+					  nodeType: Goal
+					  undeveloped: true
+
+					Argument2:
+					  text: Argument2
+					  nodeType: Goal
+					  supportedBy: [Argument2_or_1]
+
+					Argument2_or_1:
+					  text: Argument2_or_1
+					  nodeType: Goal
+					  supportedBy: [Argument4, Argument5]""";
+			assertEquals(expected, file.contents());
+		});
+	}
 }

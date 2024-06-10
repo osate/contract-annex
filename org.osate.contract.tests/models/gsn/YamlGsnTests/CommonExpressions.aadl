@@ -1,0 +1,45 @@
+package CommonExpressions
+public
+	annex contract {**
+		verification plan CommonExpressions {
+			component
+				s: pkg1::s.i;
+			contracts
+				Contract1;
+				Contract2;
+		}
+		
+		contract Contract1 {
+			assumptions
+				argument Argument1;
+				argument Argument2;
+		}
+		
+		contract Contract2 {
+			assumptions
+				argument Argument2;
+				argument Argument3;
+		}
+		
+		argument Argument1 {
+			argument
+				and(argument Argument4, argument Argument5);
+		}
+		
+		argument Argument2 {
+			argument
+				or(argument Argument4, argument Argument5);
+		}
+		
+		argument Argument3 {
+			argument
+				not argument Argument4;
+		}
+		
+		argument Argument4 {
+		}
+		
+		argument Argument5 {
+		}
+	**};
+end CommonExpressions;
