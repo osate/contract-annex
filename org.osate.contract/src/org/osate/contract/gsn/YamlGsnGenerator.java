@@ -46,12 +46,6 @@ public final class YamlGsnGenerator {
 		collector.contractNodes.forEach((contract, contractNodes) -> {
 			var nodes = new ArrayList<String>();
 			nodes.add(generateContract(contract));
-			for (var argument : contractNodes.arguments) {
-				nodes.add(generateArgument(argument));
-			}
-			for (var expression : contractNodes.argumentExpressions) {
-				nodes.add(generateArgumentExpression(expression));
-			}
 			for (var assumption : contractNodes.assumptions) {
 				nodes.add(generateAssumption(assumption));
 			}
@@ -60,14 +54,16 @@ public final class YamlGsnGenerator {
 			}
 			files.add(new YamlFile(contract.getName(), nodes));
 		});
+		collector.argumentNodes.forEach((argument, argumentNodes) -> {
+			var nodes = new ArrayList<String>();
+			nodes.add(generateArgument(argument));
+			for (var expression : argumentNodes.argumentExpressions) {
+				nodes.add(generateArgumentExpression(expression));
+			}
+			files.add(new YamlFile(argument.getName(), nodes));
+		});
 
 		var commonNodes = new ArrayList<String>();
-		for (var argument : collector.commonArguments) {
-			commonNodes.add(generateArgument(argument));
-		}
-		for (var expression : collector.commonArgumentExpressions) {
-			commonNodes.add(generateArgumentExpression(expression));
-		}
 		for (var assumption : collector.commonAssumptions) {
 			commonNodes.add(generateAssumption(assumption));
 		}
@@ -352,8 +348,7 @@ public final class YamlGsnGenerator {
 
 	private static class NodeCollector {
 		public final Map<Contract, ContractNodes> contractNodes = new LinkedHashMap<>();
-		public final List<Argument> commonArguments = new ArrayList<>();
-		public final List<ArgumentExpression> commonArgumentExpressions = new ArrayList<>();
+		public final Map<Argument, ArgumentNodes> argumentNodes = new LinkedHashMap<>();
 		public final List<String> commonAssumptions = new ArrayList<>();
 		public final List<String> commonAnalyses = new ArrayList<>();
 
@@ -362,18 +357,10 @@ public final class YamlGsnGenerator {
 				collect(contract);
 			}
 
-			var argumentOccurrences = new LinkedHashMap<Argument, Integer>();
-			var expressionOccurrences = new LinkedHashMap<ArgumentExpression, Integer>();
 			var assumptionOccurrences = new LinkedHashMap<String, Integer>();
 			var analysisOccurrences = new HashMap<String, Integer>();
 
 			for (var nodes : contractNodes.values()) {
-				for (var argument : nodes.arguments) {
-					argumentOccurrences.merge(argument, 1, Integer::sum);
-				}
-				for (var expression : nodes.argumentExpressions) {
-					expressionOccurrences.merge(expression, 1, Integer::sum);
-				}
 				for (var assumption : nodes.assumptions) {
 					assumptionOccurrences.merge(assumption, 1, Integer::sum);
 				}
@@ -382,16 +369,6 @@ public final class YamlGsnGenerator {
 				}
 			}
 
-			for (var entry : argumentOccurrences.entrySet()) {
-				if (entry.getValue() > 1) {
-					commonArguments.add(entry.getKey());
-				}
-			}
-			for (var entry : expressionOccurrences.entrySet()) {
-				if (entry.getValue() > 1) {
-					commonArgumentExpressions.add(entry.getKey());
-				}
-			}
 			for (var entry : assumptionOccurrences.entrySet()) {
 				if (entry.getValue() > 1) {
 					commonAssumptions.add(entry.getKey());
@@ -404,8 +381,6 @@ public final class YamlGsnGenerator {
 			}
 
 			for (var nodes : contractNodes.values()) {
-				nodes.arguments.removeAll(commonArguments);
-				nodes.argumentExpressions.removeAll(commonArgumentExpressions);
 				nodes.assumptions.removeAll(commonAssumptions);
 				nodes.analyses.removeAll(commonAnalyses);
 			}
@@ -419,7 +394,7 @@ public final class YamlGsnGenerator {
 					collect(referencedContract);
 				} else if (assumption instanceof ArgumentAssumption argumentAssumption
 						&& argumentAssumption.getArgument() instanceof Argument referencedArgument) {
-					collect(referencedArgument, nodes);
+					collect(referencedArgument);
 				} else if (assumption instanceof CodeAssumption codeAssumption) {
 					nodes.assumptions.add(getAssumptionName(codeAssumption));
 				}
@@ -429,18 +404,18 @@ public final class YamlGsnGenerator {
 			}
 		}
 
-		private void collect(Argument argument, ContractNodes nodes) {
-			nodes.arguments.add(argument);
+		private void collect(Argument argument) {
+			var nodes = argumentNodes.computeIfAbsent(argument, key -> new ArgumentNodes());
 			if (argument.getArgumentExpression() != null) {
 				collect(argument.getArgumentExpression(), nodes);
 			}
 		}
 
-		private void collect(ArgumentExpression expression, ContractNodes nodes) {
+		private void collect(ArgumentExpression expression, ArgumentNodes nodes) {
 			nodes.argumentExpressions.add(expression);
 			for (var referencedArgument : expression.getArguments()) {
 				if (referencedArgument instanceof Argument castedArgument) {
-					collect(castedArgument, nodes);
+					collect(castedArgument);
 				}
 			}
 			for (var referencedContract : expression.getContracts()) {
@@ -455,9 +430,11 @@ public final class YamlGsnGenerator {
 	}
 
 	private static class ContractNodes {
-		public final Set<Argument> arguments = new LinkedHashSet<>();
-		public final Set<ArgumentExpression> argumentExpressions = new LinkedHashSet<>();
 		public final Set<String> assumptions = new LinkedHashSet<>();
 		public final Set<String> analyses = new LinkedHashSet<>();
+	}
+
+	private static class ArgumentNodes {
+		public final Set<ArgumentExpression> argumentExpressions = new LinkedHashSet<>();
 	}
 }

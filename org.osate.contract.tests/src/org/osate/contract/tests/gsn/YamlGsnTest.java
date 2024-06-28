@@ -921,7 +921,7 @@ public class YamlGsnTest {
 		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
 		var folder = YamlGsnGenerator.generateYamlGsn(plan);
 		assertEquals("ContractWithOneArgument_ContractWithOneArgument", folder.name());
-		assertEquals(2, folder.files().size());
+		assertEquals(3, folder.files().size());
 		with(folder.files().get(0), file -> {
 			assertEquals("ContractWithOneArgument.gsn.yaml", file.name());
 			var expected = """
@@ -937,8 +937,12 @@ public class YamlGsnTest {
 					Contract1:
 					  text: Contract1
 					  nodeType: Goal
-					  supportedBy: [Argument1]
-
+					  supportedBy: [Argument1]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(2), file -> {
+			assertEquals("Argument1.gsn.yaml", file.name());
+			var expected = """
 					Argument1:
 					  text: Argument1
 					  nodeType: Goal
@@ -956,7 +960,7 @@ public class YamlGsnTest {
 		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
 		var folder = YamlGsnGenerator.generateYamlGsn(plan);
 		assertEquals("ArgumentWithGuarantee_ArgumentWithGuarantee", folder.name());
-		assertEquals(2, folder.files().size());
+		assertEquals(4, folder.files().size());
 		with(folder.files().get(0), file -> {
 			assertEquals("ArgumentWithGuarantee.gsn.yaml", file.name());
 			var expected = """
@@ -972,13 +976,21 @@ public class YamlGsnTest {
 					Contract1:
 					  text: Contract1
 					  nodeType: Goal
-					  supportedBy: [Argument1, Argument2]
-
+					  supportedBy: [Argument1, Argument2]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(2), file -> {
+			assertEquals("Argument1.gsn.yaml", file.name());
+			var expected = """
 					Argument1:
 					  text: => And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])
 					  nodeType: Goal
-					  undeveloped: true
-
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(3), file -> {
+			assertEquals("Argument2.gsn.yaml", file.name());
+			var expected = """
 					Argument2:
 					  text: <=> And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])
 					  nodeType: Goal
@@ -996,7 +1008,7 @@ public class YamlGsnTest {
 		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
 		var folder = YamlGsnGenerator.generateYamlGsn(plan);
 		assertEquals("SimpleAnd_SimpleAnd", folder.name());
-		assertEquals(4, folder.files().size());
+		assertEquals(7, folder.files().size());
 		with(folder.files().get(0), file -> {
 			assertEquals("SimpleAnd.gsn.yaml", file.name());
 			var expected = """
@@ -1012,17 +1024,7 @@ public class YamlGsnTest {
 					Contract1:
 					  text: Contract1
 					  nodeType: Goal
-					  supportedBy: [Argument1]
-
-					Argument1:
-					  text: Argument1
-					  nodeType: Goal
-					  supportedBy: [Argument1_and_1]
-
-					Argument1_and_1:
-					  text: Argument1_and_1
-					  nodeType: Goal
-					  supportedBy: [Contract2]""";
+					  supportedBy: [Argument1]""";
 			assertEquals(expected, file.contents());
 		});
 		with(folder.files().get(2), file -> {
@@ -1040,22 +1042,44 @@ public class YamlGsnTest {
 					Contract3:
 					  text: Contract3
 					  nodeType: Goal
-					  supportedBy: [Argument2]
+					  supportedBy: [Argument2]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(4), file -> {
+			assertEquals("Argument1.gsn.yaml", file.name());
+			var expected = """
+					Argument1:
+					  text: Argument1
+					  nodeType: Goal
+					  supportedBy: [Argument1_and_1]
 
+					Argument1_and_1:
+					  text: Argument1_and_1
+					  nodeType: Goal
+					  supportedBy: [Contract2]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(5), file -> {
+			assertEquals("Argument2.gsn.yaml", file.name());
+			var expected = """
 					Argument2:
 					  text: Argument2
 					  nodeType: Goal
 					  supportedBy: [Argument2_and_1]
 
-					Argument3:
-					  text: Argument3
-					  nodeType: Goal
-					  undeveloped: true
-
 					Argument2_and_1:
 					  text: Argument2_and_1
 					  nodeType: Goal
 					  supportedBy: [Argument3]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(6), file -> {
+			assertEquals("Argument3.gsn.yaml", file.name());
+			var expected = """
+					Argument3:
+					  text: Argument3
+					  nodeType: Goal
+					  undeveloped: true""";
 			assertEquals(expected, file.contents());
 		});
 	}
@@ -1069,7 +1093,7 @@ public class YamlGsnTest {
 		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
 		var folder = YamlGsnGenerator.generateYamlGsn(plan);
 		assertEquals("AndWithMultipleTerms_AndWithMultipleTerms", folder.name());
-		assertEquals(5, folder.files().size());
+		assertEquals(9, folder.files().size());
 		with(folder.files().get(0), file -> {
 			assertEquals("AndWithMultipleTerms.gsn.yaml", file.name());
 			var expected = """
@@ -1085,32 +1109,7 @@ public class YamlGsnTest {
 					Contract1:
 					  text: Contract1
 					  nodeType: Goal
-					  supportedBy: [Argument1]
-
-					Argument1:
-					  text: Argument1
-					  nodeType: Goal
-					  supportedBy: [Argument1_and_1]
-
-					Argument2:
-					  text: Argument2
-					  nodeType: Goal
-					  undeveloped: true
-
-					Argument3:
-					  text: Argument3
-					  nodeType: Goal
-					  undeveloped: true
-
-					Argument4:
-					  text: Argument4
-					  nodeType: Goal
-					  undeveloped: true
-
-					Argument1_and_1:
-					  text: Argument1_and_1
-					  nodeType: Goal
-					  supportedBy: [Argument2, Argument3, Argument4, Contract2, Contract3, Contract4]""";
+					  supportedBy: [Argument1]""";
 			assertEquals(expected, file.contents());
 		});
 		with(folder.files().get(2), file -> {
@@ -1140,6 +1139,47 @@ public class YamlGsnTest {
 					  undeveloped: true""";
 			assertEquals(expected, file.contents());
 		});
+		with(folder.files().get(5), file -> {
+			assertEquals("Argument1.gsn.yaml", file.name());
+			var expected = """
+					Argument1:
+					  text: Argument1
+					  nodeType: Goal
+					  supportedBy: [Argument1_and_1]
+
+					Argument1_and_1:
+					  text: Argument1_and_1
+					  nodeType: Goal
+					  supportedBy: [Argument2, Argument3, Argument4, Contract2, Contract3, Contract4]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(6), file -> {
+			assertEquals("Argument2.gsn.yaml", file.name());
+			var expected = """
+					Argument2:
+					  text: Argument2
+					  nodeType: Goal
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(7), file -> {
+			assertEquals("Argument3.gsn.yaml", file.name());
+			var expected = """
+					Argument3:
+					  text: Argument3
+					  nodeType: Goal
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(8), file -> {
+			assertEquals("Argument4.gsn.yaml", file.name());
+			var expected = """
+					Argument4:
+					  text: Argument4
+					  nodeType: Goal
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
 	}
 
 	@Test
@@ -1151,7 +1191,7 @@ public class YamlGsnTest {
 		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
 		var folder = YamlGsnGenerator.generateYamlGsn(plan);
 		assertEquals("NestedAnd_NestedAnd", folder.name());
-		assertEquals(2, folder.files().size());
+		assertEquals(10, folder.files().size());
 		with(folder.files().get(0), file -> {
 			assertEquals("NestedAnd.gsn.yaml", file.name());
 			var expected = """
@@ -1167,47 +1207,16 @@ public class YamlGsnTest {
 					Contract1:
 					  text: Contract1
 					  nodeType: Goal
-					  supportedBy: [Argument1]
-
+					  supportedBy: [Argument1]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(2), file -> {
+			assertEquals("Argument1.gsn.yaml", file.name());
+			var expected = """
 					Argument1:
 					  text: Argument1
 					  nodeType: Goal
 					  supportedBy: [Argument1_and_1]
-
-					Argument2:
-					  text: Argument2
-					  nodeType: Goal
-					  undeveloped: true
-
-					Argument3:
-					  text: Argument3
-					  nodeType: Goal
-					  undeveloped: true
-
-					Argument4:
-					  text: Argument4
-					  nodeType: Goal
-					  undeveloped: true
-
-					Argument5:
-					  text: Argument5
-					  nodeType: Goal
-					  undeveloped: true
-
-					Argument6:
-					  text: Argument6
-					  nodeType: Goal
-					  undeveloped: true
-
-					Argument7:
-					  text: Argument7
-					  nodeType: Goal
-					  undeveloped: true
-
-					Argument8:
-					  text: Argument8
-					  nodeType: Goal
-					  undeveloped: true
 
 					Argument1_and_1:
 					  text: Argument1_and_1
@@ -1235,6 +1244,69 @@ public class YamlGsnTest {
 					  supportedBy: [Argument6, Argument7, Argument8]""";
 			assertEquals(expected, file.contents());
 		});
+		with(folder.files().get(3), file -> {
+			assertEquals("Argument2.gsn.yaml", file.name());
+			var expected = """
+					Argument2:
+					  text: Argument2
+					  nodeType: Goal
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(4), file -> {
+			assertEquals("Argument3.gsn.yaml", file.name());
+			var expected = """
+					Argument3:
+					  text: Argument3
+					  nodeType: Goal
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(5), file -> {
+			assertEquals("Argument4.gsn.yaml", file.name());
+			var expected = """
+					Argument4:
+					  text: Argument4
+					  nodeType: Goal
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(6), file -> {
+			assertEquals("Argument5.gsn.yaml", file.name());
+			var expected = """
+					Argument5:
+					  text: Argument5
+					  nodeType: Goal
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(7), file -> {
+			assertEquals("Argument6.gsn.yaml", file.name());
+			var expected = """
+					Argument6:
+					  text: Argument6
+					  nodeType: Goal
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(8), file -> {
+			assertEquals("Argument7.gsn.yaml", file.name());
+			var expected = """
+					Argument7:
+					  text: Argument7
+					  nodeType: Goal
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(9), file -> {
+			assertEquals("Argument8.gsn.yaml", file.name());
+			var expected = """
+					Argument8:
+					  text: Argument8
+					  nodeType: Goal
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
 	}
 
 	@Test
@@ -1246,7 +1318,7 @@ public class YamlGsnTest {
 		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
 		var folder = YamlGsnGenerator.generateYamlGsn(plan);
 		assertEquals("SimpleOr_SimpleOr", folder.name());
-		assertEquals(3, folder.files().size());
+		assertEquals(5, folder.files().size());
 		with(folder.files().get(0), file -> {
 			assertEquals("SimpleOr.gsn.yaml", file.name());
 			var expected = """
@@ -1262,22 +1334,7 @@ public class YamlGsnTest {
 					Contract1:
 					  text: Contract1
 					  nodeType: Goal
-					  supportedBy: [Argument1]
-
-					Argument1:
-					  text: Argument1
-					  nodeType: Goal
-					  supportedBy: [Argument1_or_1]
-
-					Argument2:
-					  text: Argument2
-					  nodeType: Goal
-					  undeveloped: true
-
-					Argument1_or_1:
-					  text: Argument1_or_1
-					  nodeType: Goal
-					  supportedBy: [Argument2, Contract2]""";
+					  supportedBy: [Argument1]""";
 			assertEquals(expected, file.contents());
 		});
 		with(folder.files().get(2), file -> {
@@ -1285,6 +1342,29 @@ public class YamlGsnTest {
 			var expected = """
 					Contract2:
 					  text: Contract2
+					  nodeType: Goal
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(3), file -> {
+			assertEquals("Argument1.gsn.yaml", file.name());
+			var expected = """
+					Argument1:
+					  text: Argument1
+					  nodeType: Goal
+					  supportedBy: [Argument1_or_1]
+
+					Argument1_or_1:
+					  text: Argument1_or_1
+					  nodeType: Goal
+					  supportedBy: [Argument2, Contract2]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(4), file -> {
+			assertEquals("Argument2.gsn.yaml", file.name());
+			var expected = """
+					Argument2:
+					  text: Argument2
 					  nodeType: Goal
 					  undeveloped: true""";
 			assertEquals(expected, file.contents());
@@ -1300,7 +1380,7 @@ public class YamlGsnTest {
 		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
 		var folder = YamlGsnGenerator.generateYamlGsn(plan);
 		assertEquals("SimpleNot_SimpleNot", folder.name());
-		assertEquals(2, folder.files().size());
+		assertEquals(4, folder.files().size());
 		with(folder.files().get(0), file -> {
 			assertEquals("SimpleNot.gsn.yaml", file.name());
 			var expected = """
@@ -1316,22 +1396,30 @@ public class YamlGsnTest {
 					Contract1:
 					  text: Contract1
 					  nodeType: Goal
-					  supportedBy: [Argument1]
-
+					  supportedBy: [Argument1]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(2), file -> {
+			assertEquals("Argument1.gsn.yaml", file.name());
+			var expected = """
 					Argument1:
 					  text: Argument1
 					  nodeType: Goal
 					  supportedBy: [Argument1_not_1]
 
-					Argument2:
-					  text: Argument2
-					  nodeType: Goal
-					  undeveloped: true
-
 					Argument1_not_1:
 					  text: Argument1_not_1
 					  nodeType: Goal
 					  supportedBy: [Argument2]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(3), file -> {
+			assertEquals("Argument2.gsn.yaml", file.name());
+			var expected = """
+					Argument2:
+					  text: Argument2
+					  nodeType: Goal
+					  undeveloped: true""";
 			assertEquals(expected, file.contents());
 		});
 	}
@@ -1345,7 +1433,7 @@ public class YamlGsnTest {
 		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
 		var folder = YamlGsnGenerator.generateYamlGsn(plan);
 		assertEquals("AllExpressionCombinations_AllExpressionCombinations", folder.name());
-		assertEquals(7, folder.files().size());
+		assertEquals(13, folder.files().size());
 		with(folder.files().get(0), file -> {
 			assertEquals("AllExpressionCombinations.gsn.yaml", file.name());
 			var expected = """
@@ -1361,37 +1449,61 @@ public class YamlGsnTest {
 					Contract1:
 					  text: Contract1
 					  nodeType: Goal
-					  supportedBy: [Argument1]
-
+					  supportedBy: [Argument1]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(2), file -> {
+			assertEquals("Contract2.gsn.yaml", file.name());
+			var expected = """
+					Contract2:
+					  text: Contract2
+					  nodeType: Goal
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(3), file -> {
+			assertEquals("Contract3.gsn.yaml", file.name());
+			var expected = """
+					Contract3:
+					  text: Contract3
+					  nodeType: Goal
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(4), file -> {
+			assertEquals("Contract4.gsn.yaml", file.name());
+			var expected = """
+					Contract4:
+					  text: Contract4
+					  nodeType: Goal
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(5), file -> {
+			assertEquals("Contract5.gsn.yaml", file.name());
+			var expected = """
+					Contract5:
+					  text: Contract5
+					  nodeType: Goal
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(6), file -> {
+			assertEquals("Contract6.gsn.yaml", file.name());
+			var expected = """
+					Contract6:
+					  text: Contract6
+					  nodeType: Goal
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(7), file -> {
+			assertEquals("Argument1.gsn.yaml", file.name());
+			var expected = """
 					Argument1:
 					  text: Argument1
 					  nodeType: Goal
 					  supportedBy: [Argument1_and_1]
-
-					Argument2:
-					  text: Argument2
-					  nodeType: Goal
-					  undeveloped: true
-
-					Argument3:
-					  text: Argument3
-					  nodeType: Goal
-					  undeveloped: true
-
-					Argument4:
-					  text: Argument4
-					  nodeType: Goal
-					  undeveloped: true
-
-					Argument5:
-					  text: Argument5
-					  nodeType: Goal
-					  undeveloped: true
-
-					Argument6:
-					  text: Argument6
-					  nodeType: Goal
-					  undeveloped: true
 
 					Argument1_and_1:
 					  text: Argument1_and_1
@@ -1454,47 +1566,47 @@ public class YamlGsnTest {
 					  supportedBy: [Argument6]""";
 			assertEquals(expected, file.contents());
 		});
-		with(folder.files().get(2), file -> {
-			assertEquals("Contract2.gsn.yaml", file.name());
+		with(folder.files().get(8), file -> {
+			assertEquals("Argument2.gsn.yaml", file.name());
 			var expected = """
-					Contract2:
-					  text: Contract2
+					Argument2:
+					  text: Argument2
 					  nodeType: Goal
 					  undeveloped: true""";
 			assertEquals(expected, file.contents());
 		});
-		with(folder.files().get(3), file -> {
-			assertEquals("Contract3.gsn.yaml", file.name());
+		with(folder.files().get(9), file -> {
+			assertEquals("Argument3.gsn.yaml", file.name());
 			var expected = """
-					Contract3:
-					  text: Contract3
+					Argument3:
+					  text: Argument3
 					  nodeType: Goal
 					  undeveloped: true""";
 			assertEquals(expected, file.contents());
 		});
-		with(folder.files().get(4), file -> {
-			assertEquals("Contract4.gsn.yaml", file.name());
+		with(folder.files().get(10), file -> {
+			assertEquals("Argument4.gsn.yaml", file.name());
 			var expected = """
-					Contract4:
-					  text: Contract4
+					Argument4:
+					  text: Argument4
 					  nodeType: Goal
 					  undeveloped: true""";
 			assertEquals(expected, file.contents());
 		});
-		with(folder.files().get(5), file -> {
-			assertEquals("Contract5.gsn.yaml", file.name());
+		with(folder.files().get(11), file -> {
+			assertEquals("Argument5.gsn.yaml", file.name());
 			var expected = """
-					Contract5:
-					  text: Contract5
+					Argument5:
+					  text: Argument5
 					  nodeType: Goal
 					  undeveloped: true""";
 			assertEquals(expected, file.contents());
 		});
-		with(folder.files().get(6), file -> {
-			assertEquals("Contract6.gsn.yaml", file.name());
+		with(folder.files().get(12), file -> {
+			assertEquals("Argument6.gsn.yaml", file.name());
 			var expected = """
-					Contract6:
-					  text: Contract6
+					Argument6:
+					  text: Argument6
 					  nodeType: Goal
 					  undeveloped: true""";
 			assertEquals(expected, file.contents());
@@ -1510,7 +1622,7 @@ public class YamlGsnTest {
 		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
 		var folder = YamlGsnGenerator.generateYamlGsn(plan);
 		assertEquals("CommonArguments_CommonArguments", folder.name());
-		assertEquals(4, folder.files().size());
+		assertEquals(6, folder.files().size());
 		with(folder.files().get(0), file -> {
 			assertEquals("CommonArguments.gsn.yaml", file.name());
 			var expected = """
@@ -1526,12 +1638,7 @@ public class YamlGsnTest {
 					Contract1:
 					  text: Contract1
 					  nodeType: Goal
-					  supportedBy: [Argument1, Argument2]
-
-					Argument1:
-					  text: Argument1
-					  nodeType: Goal
-					  undeveloped: true""";
+					  supportedBy: [Argument1, Argument2]""";
 			assertEquals(expected, file.contents());
 		});
 		with(folder.files().get(2), file -> {
@@ -1540,19 +1647,32 @@ public class YamlGsnTest {
 					Contract2:
 					  text: Contract2
 					  nodeType: Goal
-					  supportedBy: [Argument2, Argument3]
-
-					Argument3:
-					  text: Argument3
+					  supportedBy: [Argument2, Argument3]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(3), file -> {
+			assertEquals("Argument1.gsn.yaml", file.name());
+			var expected = """
+					Argument1:
+					  text: Argument1
 					  nodeType: Goal
 					  undeveloped: true""";
 			assertEquals(expected, file.contents());
 		});
-		with(folder.files().get(3), file -> {
-			assertEquals("CommonNodes.gsn.yaml", file.name());
+		with(folder.files().get(4), file -> {
+			assertEquals("Argument2.gsn.yaml", file.name());
 			var expected = """
 					Argument2:
 					  text: Argument2
+					  nodeType: Goal
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(5), file -> {
+			assertEquals("Argument3.gsn.yaml", file.name());
+			var expected = """
+					Argument3:
+					  text: Argument3
 					  nodeType: Goal
 					  undeveloped: true""";
 			assertEquals(expected, file.contents());
@@ -1568,7 +1688,7 @@ public class YamlGsnTest {
 		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
 		var folder = YamlGsnGenerator.generateYamlGsn(plan);
 		assertEquals("CommonExpressions_CommonExpressions", folder.name());
-		assertEquals(4, folder.files().size());
+		assertEquals(8, folder.files().size());
 		with(folder.files().get(0), file -> {
 			assertEquals("CommonExpressions.gsn.yaml", file.name());
 			var expected = """
@@ -1584,8 +1704,21 @@ public class YamlGsnTest {
 					Contract1:
 					  text: Contract1
 					  nodeType: Goal
-					  supportedBy: [Argument1, Argument2]
-
+					  supportedBy: [Argument1, Argument2]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(2), file -> {
+			assertEquals("Contract2.gsn.yaml", file.name());
+			var expected = """
+					Contract2:
+					  text: Contract2
+					  nodeType: Goal
+					  supportedBy: [Argument2, Argument3]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(3), file -> {
+			assertEquals("Argument1.gsn.yaml", file.name());
+			var expected = """
 					Argument1:
 					  text: Argument1
 					  nodeType: Goal
@@ -1597,38 +1730,27 @@ public class YamlGsnTest {
 					  supportedBy: [Argument4, Argument5]""";
 			assertEquals(expected, file.contents());
 		});
-		with(folder.files().get(2), file -> {
-			assertEquals("Contract2.gsn.yaml", file.name());
-			var expected = """
-					Contract2:
-					  text: Contract2
-					  nodeType: Goal
-					  supportedBy: [Argument2, Argument3]
-
-					Argument3:
-					  text: Argument3
-					  nodeType: Goal
-					  supportedBy: [Argument3_not_1]
-
-					Argument3_not_1:
-					  text: Argument3_not_1
-					  nodeType: Goal
-					  supportedBy: [Argument4]""";
-			assertEquals(expected, file.contents());
-		});
-		with(folder.files().get(3), file -> {
-			assertEquals("CommonNodes.gsn.yaml", file.name());
+		with(folder.files().get(4), file -> {
+			assertEquals("Argument4.gsn.yaml", file.name());
 			var expected = """
 					Argument4:
 					  text: Argument4
 					  nodeType: Goal
-					  undeveloped: true
-
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(5), file -> {
+			assertEquals("Argument5.gsn.yaml", file.name());
+			var expected = """
 					Argument5:
 					  text: Argument5
 					  nodeType: Goal
-					  undeveloped: true
-
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(6), file -> {
+			assertEquals("Argument2.gsn.yaml", file.name());
+			var expected = """
 					Argument2:
 					  text: Argument2
 					  nodeType: Goal
@@ -1638,6 +1760,20 @@ public class YamlGsnTest {
 					  text: Argument2_or_1
 					  nodeType: Goal
 					  supportedBy: [Argument4, Argument5]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(7), file -> {
+			assertEquals("Argument3.gsn.yaml", file.name());
+			var expected = """
+					Argument3:
+					  text: Argument3
+					  nodeType: Goal
+					  supportedBy: [Argument3_not_1]
+
+					Argument3_not_1:
+					  text: Argument3_not_1
+					  nodeType: Goal
+					  supportedBy: [Argument4]""";
 			assertEquals(expected, file.contents());
 		});
 	}
