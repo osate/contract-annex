@@ -1,6 +1,7 @@
 package Airbus330
 public
-	with ReplicationProperties;
+-- User will add this	
+--	with ReplicationProperties;
 	
 	device LandingGearSensor
 		features
@@ -305,111 +306,113 @@ public
 			failedFlowSource: flow source failed;
 	end FlightSystem;			
 
-	system implementation FlightSystem.oneSensor
-		subcomponents
-			sensor1: system CommonSensor.commonThread;
-			rep1: system CrossCheckingPairNoSensor.impl;
-			act1: system FlightSurfaceActuator.impl;			
-		connections
-			c1: port sensor1.flightMode->rep1.flightModeCom;
-			c2: port sensor1.flightMode->rep1.flightModeMon;
-			c3: port sensor1.pedalPosition->rep1.pedalPositionCom;
-			c4: port sensor1.pedalPosition->rep1.pedalPositionMon;
-			c5: port rep1.failed->failed;
-			c8: port rep1.rudderPosition->act1.rudderPosition;
-		flows
-			pedalToActuationComRep1: end to end flow sensor1.pedalFlowSource->c3->rep1.rudderFlowPathCom->c8->act1.positionFlowSink;
-			pedalToActuationMonRep1: end to end flow sensor1.pedalFlowSource->c4->rep1.rudderFlowPathMon->c8->act1.positionFlowSink;
-			
-			-- FailedOver flows
-			failedFlowSource: flow source sensor1.pedalFlowSource->c4->rep1.failedFlowPath->c5->failed;
-		properties
-			Timing => Delayed applies to c1;
-			Timing => Delayed applies to c2;
-			Timing => Delayed applies to c3;
-			Timing => Delayed applies to c4;
-			Timing => Delayed applies to c5;
-			Timing => Delayed applies to c8;
-			
-			Dispatch_Protocol => Periodic applies to sensor1.sensingProc.samplerThread;
-			Period => 100 ms applies to sensor1.sensingProc.samplerThread;
-			Priority => 1 applies to sensor1.sensingProc.samplerThread;
-			Deadline => 100 ms applies to sensor1.sensingProc.samplerThread;
-			Compute_Execution_Time => 10 ms .. 10 ms applies to sensor1.sensingProc.samplerThread;
-			Actual_Processor_Binding => (reference (sensor1.proc)) applies to sensor1.sensingProc.samplerThread;			
-
-			Dispatch_Protocol => Periodic applies to act1.actuatingProc.actuatingThread;
-			Period => 100 ms applies to act1.actuatingProc.actuatingThread;
-			Priority => 1 applies to act1.actuatingProc.actuatingThread;
-			Deadline => 100 ms applies to act1.actuatingProc.actuatingThread;
-			Compute_Execution_Time => 10 ms .. 10 ms applies to act1.actuatingProc.actuatingThread;
-			Actual_Processor_Binding => (reference (act1.proc)) applies to act1.actuatingProc.actuatingThread;			
-
-			Dispatch_Protocol => Periodic applies to rep1.com.compProc.compThread;
-			Dispatch_Protocol => Periodic applies to rep1.com.validatorProc.validatorThread;
-			Dispatch_Protocol => Periodic applies to rep1.mon.compProc.compThread;
-			Dispatch_Protocol => Periodic applies to rep1.mon.validatorProc.validatorThread;
-
-			Period => 100 ms applies to rep1.com.compProc.compThread;
-			Period => 100 ms applies to rep1.com.validatorProc.validatorThread;
-			Period => 100 ms applies to rep1.mon.compProc.compThread;
-			Period => 100 ms applies to rep1.mon.validatorProc.validatorThread;
-
-			Priority => 1 applies to rep1.com.compProc.compThread;
-			Priority => 1 applies to rep1.com.validatorProc.validatorThread;
-			Priority => 1 applies to rep1.mon.compProc.compThread;
-			Priority => 1 applies to rep1.mon.validatorProc.validatorThread;
-
-			Deadline => 100 ms applies to rep1.com.compProc.compThread;
-			Deadline => 100 ms applies to rep1.com.validatorProc.validatorThread;
-			Deadline => 100 ms applies to rep1.mon.compProc.compThread;
-			Deadline => 100 ms applies to rep1.mon.validatorProc.validatorThread;
-
-			Compute_Execution_Time => 10 ms .. 10 ms applies to rep1.com.compProc.compThread;
-			Compute_Execution_Time => 10 ms .. 10 ms applies to rep1.com.validatorProc.validatorThread;
-			Compute_Execution_Time => 10 ms .. 10 ms applies to rep1.mon.compProc.compThread;
-			Compute_Execution_Time => 10 ms .. 10 ms applies to rep1.mon.validatorProc.validatorThread;
-																	
-			Actual_Processor_Binding => (reference (rep1.com.proc)) applies to rep1.com.compProc.compThread;
-			Actual_Processor_Binding => (reference (rep1.com.proc)) applies to rep1.com.validatorProc.validatorThread;
-			Actual_Processor_Binding => (reference (rep1.mon.proc)) applies to rep1.mon.compProc.compThread;
-			Actual_Processor_Binding => (reference (rep1.mon.proc)) applies to rep1.mon.validatorProc.validatorThread;
-
-			-- ****************
-			-- * Normal Flows *
-			-- ****************
-			Latency =>100 ms..400 ms applies to pedalToActuationComRep1;
-			Latency =>100 ms..500 ms applies to pedalToActuationMonRep1;
-
-			-- *******************
-			-- * Fail over flows *
-			-- *******************
-			Latency =>100 ms..300 ms applies to failedFlowSource;
-			
-			-- *************************
-			-- * Hierarchical subflows *
-			-- *************************
-			Latency => 10 ms .. 100 ms applies to sensor1.sensingProc.samplerThread.pedalFlowSource;
-			Latency => 10 ms .. 100 ms applies to sensor1.sensingProc.pedalFlowSource;
-			Latency => 10 ms .. 100 ms applies to sensor1.pedalFlowSource;
-			Latency => 10 ms .. 100 ms applies to sensor1.sensingProc.samplerThread.modeFlowSource;
-			Latency => 10 ms .. 100 ms applies to sensor1.sensingProc.modeFlowSource;
-			Latency => 10 ms .. 100 ms applies to sensor1.modeFlowSource;
-			
-			Latency => 10 ms .. 100 ms applies to rep1.rudderFlowPathCom;
-			Latency => 10 ms .. 100 ms applies to rep1.rudderFlowPathMon;
-			Latency => 10 ms .. 100 ms applies to rep1.failedFlowPath;
-
-			ReplicationProperties::ValueReplicas => (reference (pedalToActuationComRep1)) applies to pedalToActuationMonRep1;
-	
-			ReplicationProperties::ReplicaStartJitterTolerance => 0 ms applies to pedalToActuationComRep1;
-			ReplicationProperties::ReplicaStartJitterTolerance => 0 ms applies to pedalToActuationMonRep1;
-			ReplicationProperties::ReplicaStartJitterTolerance => 100 ms applies to failedFlowSource;
-			
-		annex contract {**
-			verify VerificationPlans::verifySynchronizationCommon;
-		**};			
-	end FlightSystem.oneSensor;
+-- User will add this
+--
+--	system implementation FlightSystem.oneSensor
+--		subcomponents
+--			sensor1: system CommonSensor.commonThread;
+--			rep1: system CrossCheckingPairNoSensor.impl;
+--			act1: system FlightSurfaceActuator.impl;			
+--		connections
+--			c1: port sensor1.flightMode->rep1.flightModeCom;
+--			c2: port sensor1.flightMode->rep1.flightModeMon;
+--			c3: port sensor1.pedalPosition->rep1.pedalPositionCom;
+--			c4: port sensor1.pedalPosition->rep1.pedalPositionMon;
+--			c5: port rep1.failed->failed;
+--			c8: port rep1.rudderPosition->act1.rudderPosition;
+--		flows
+--			pedalToActuationComRep1: end to end flow sensor1.pedalFlowSource->c3->rep1.rudderFlowPathCom->c8->act1.positionFlowSink;
+--			pedalToActuationMonRep1: end to end flow sensor1.pedalFlowSource->c4->rep1.rudderFlowPathMon->c8->act1.positionFlowSink;
+--			
+--			-- FailedOver flows
+--			failedFlowSource: flow source sensor1.pedalFlowSource->c4->rep1.failedFlowPath->c5->failed;
+--		properties
+--			Timing => Delayed applies to c1;
+--			Timing => Delayed applies to c2;
+--			Timing => Delayed applies to c3;
+--			Timing => Delayed applies to c4;
+--			Timing => Delayed applies to c5;
+--			Timing => Delayed applies to c8;
+--			
+--			Dispatch_Protocol => Periodic applies to sensor1.sensingProc.samplerThread;
+--			Period => 100 ms applies to sensor1.sensingProc.samplerThread;
+--			Priority => 1 applies to sensor1.sensingProc.samplerThread;
+--			Deadline => 100 ms applies to sensor1.sensingProc.samplerThread;
+--			Compute_Execution_Time => 10 ms .. 10 ms applies to sensor1.sensingProc.samplerThread;
+--			Actual_Processor_Binding => (reference (sensor1.proc)) applies to sensor1.sensingProc.samplerThread;			
+--
+--			Dispatch_Protocol => Periodic applies to act1.actuatingProc.actuatingThread;
+--			Period => 100 ms applies to act1.actuatingProc.actuatingThread;
+--			Priority => 1 applies to act1.actuatingProc.actuatingThread;
+--			Deadline => 100 ms applies to act1.actuatingProc.actuatingThread;
+--			Compute_Execution_Time => 10 ms .. 10 ms applies to act1.actuatingProc.actuatingThread;
+--			Actual_Processor_Binding => (reference (act1.proc)) applies to act1.actuatingProc.actuatingThread;			
+--
+--			Dispatch_Protocol => Periodic applies to rep1.com.compProc.compThread;
+--			Dispatch_Protocol => Periodic applies to rep1.com.validatorProc.validatorThread;
+--			Dispatch_Protocol => Periodic applies to rep1.mon.compProc.compThread;
+--			Dispatch_Protocol => Periodic applies to rep1.mon.validatorProc.validatorThread;
+--
+--			Period => 100 ms applies to rep1.com.compProc.compThread;
+--			Period => 100 ms applies to rep1.com.validatorProc.validatorThread;
+--			Period => 100 ms applies to rep1.mon.compProc.compThread;
+--			Period => 100 ms applies to rep1.mon.validatorProc.validatorThread;
+--
+--			Priority => 1 applies to rep1.com.compProc.compThread;
+--			Priority => 1 applies to rep1.com.validatorProc.validatorThread;
+--			Priority => 1 applies to rep1.mon.compProc.compThread;
+--			Priority => 1 applies to rep1.mon.validatorProc.validatorThread;
+--
+--			Deadline => 100 ms applies to rep1.com.compProc.compThread;
+--			Deadline => 100 ms applies to rep1.com.validatorProc.validatorThread;
+--			Deadline => 100 ms applies to rep1.mon.compProc.compThread;
+--			Deadline => 100 ms applies to rep1.mon.validatorProc.validatorThread;
+--
+--			Compute_Execution_Time => 10 ms .. 10 ms applies to rep1.com.compProc.compThread;
+--			Compute_Execution_Time => 10 ms .. 10 ms applies to rep1.com.validatorProc.validatorThread;
+--			Compute_Execution_Time => 10 ms .. 10 ms applies to rep1.mon.compProc.compThread;
+--			Compute_Execution_Time => 10 ms .. 10 ms applies to rep1.mon.validatorProc.validatorThread;
+--																	
+--			Actual_Processor_Binding => (reference (rep1.com.proc)) applies to rep1.com.compProc.compThread;
+--			Actual_Processor_Binding => (reference (rep1.com.proc)) applies to rep1.com.validatorProc.validatorThread;
+--			Actual_Processor_Binding => (reference (rep1.mon.proc)) applies to rep1.mon.compProc.compThread;
+--			Actual_Processor_Binding => (reference (rep1.mon.proc)) applies to rep1.mon.validatorProc.validatorThread;
+--
+--			-- ****************
+--			-- * Normal Flows *
+--			-- ****************
+--			Latency =>100 ms..400 ms applies to pedalToActuationComRep1;
+--			Latency =>100 ms..500 ms applies to pedalToActuationMonRep1;
+--
+--			-- *******************
+--			-- * Fail over flows *
+--			-- *******************
+--			Latency =>100 ms..300 ms applies to failedFlowSource;
+--			
+--			-- *************************
+--			-- * Hierarchical subflows *
+--			-- *************************
+--			Latency => 10 ms .. 100 ms applies to sensor1.sensingProc.samplerThread.pedalFlowSource;
+--			Latency => 10 ms .. 100 ms applies to sensor1.sensingProc.pedalFlowSource;
+--			Latency => 10 ms .. 100 ms applies to sensor1.pedalFlowSource;
+--			Latency => 10 ms .. 100 ms applies to sensor1.sensingProc.samplerThread.modeFlowSource;
+--			Latency => 10 ms .. 100 ms applies to sensor1.sensingProc.modeFlowSource;
+--			Latency => 10 ms .. 100 ms applies to sensor1.modeFlowSource;
+--			
+--			Latency => 10 ms .. 100 ms applies to rep1.rudderFlowPathCom;
+--			Latency => 10 ms .. 100 ms applies to rep1.rudderFlowPathMon;
+--			Latency => 10 ms .. 100 ms applies to rep1.failedFlowPath;
+--
+--			ReplicationProperties::ValueReplicas => (reference (pedalToActuationComRep1)) applies to pedalToActuationMonRep1;
+--	
+--			ReplicationProperties::ReplicaStartJitterTolerance => 0 ms applies to pedalToActuationComRep1;
+--			ReplicationProperties::ReplicaStartJitterTolerance => 0 ms applies to pedalToActuationMonRep1;
+--			ReplicationProperties::ReplicaStartJitterTolerance => 100 ms applies to failedFlowSource;
+--			
+--		annex contract {**
+--			verify VerificationPlans::verifySynchronizationCommon;
+--		**};			
+--	end FlightSystem.oneSensor;
 
 	system implementation FlightSystem.twoSensors
 		subcomponents
@@ -425,8 +428,9 @@ public
 			c5: port rep1.failed->failed;
 			c8: port rep1.rudderPosition->act1.rudderPosition;
 		flows
-			pedalToActuationComRep1: end to end flow sensorCom.pedalFlowSource->c3->rep1.rudderFlowPathCom->c8->act1.positionFlowSink;
-			pedalToActuationMonRep1: end to end flow sensorMon.pedalFlowSource->c4->rep1.rudderFlowPathMon->c8->act1.positionFlowSink;
+-- User will add these
+--			pedalToActuationComRep1: end to end flow sensorCom.pedalFlowSource->c3->rep1.rudderFlowPathCom->c8->act1.positionFlowSink;
+--			pedalToActuationMonRep1: end to end flow sensorMon.pedalFlowSource->c4->rep1.rudderFlowPathMon->c8->act1.positionFlowSink;
 			
 			-- FailedOver flows
 			failedFlowSource: flow source sensorMon.pedalFlowSource->c4->rep1.failedFlowPath->c5->failed;
@@ -492,8 +496,9 @@ public
 			-- ****************
 			-- * Normal Flows *
 			-- ****************
-			Latency =>100 ms..400 ms applies to pedalToActuationComRep1;
-			Latency =>100 ms..500 ms applies to pedalToActuationMonRep1;
+-- User will add these
+--			Latency =>100 ms..400 ms applies to pedalToActuationComRep1;
+--			Latency =>100 ms..500 ms applies to pedalToActuationMonRep1;
 
 			-- *******************
 			-- * Fail over flows *
@@ -521,15 +526,17 @@ public
 			Latency => 10 ms .. 100 ms applies to rep1.rudderFlowPathMon;
 			Latency => 10 ms .. 100 ms applies to rep1.failedFlowPath;
 
-			ReplicationProperties::ValueReplicas => (reference (pedalToActuationComRep1)) applies to pedalToActuationMonRep1;
-	
-			ReplicationProperties::ReplicaStartJitterTolerance => 0 ms applies to pedalToActuationComRep1;
-			ReplicationProperties::ReplicaStartJitterTolerance => 0 ms applies to pedalToActuationMonRep1;
-			ReplicationProperties::ReplicaStartJitterTolerance => 100 ms applies to failedFlowSource;
-			
-		annex contract {**
-			verify VerificationPlans::verifySynchronizationSeparate;
-		**};
+-- User will add these
+--			ReplicationProperties::ValueReplicas => (reference (pedalToActuationComRep1)) applies to pedalToActuationMonRep1;
+--	
+--			ReplicationProperties::ReplicaStartJitterTolerance => 0 ms applies to pedalToActuationComRep1;
+--			ReplicationProperties::ReplicaStartJitterTolerance => 0 ms applies to pedalToActuationMonRep1;
+--			ReplicationProperties::ReplicaStartJitterTolerance => 100 ms applies to failedFlowSource;
+
+-- User will add this			
+--		annex contract {**
+--			verify VerificationPlans::verifySynchronizationSeparate;
+--		**};
 			
 	end FlightSystem.twoSensors;
 end Airbus330;

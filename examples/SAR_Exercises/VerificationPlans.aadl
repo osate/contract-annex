@@ -1,31 +1,33 @@
 package VerificationPlans
 public
-	annex contract {**
-		verification plan verifySynchronizationCommon {
-			component
-				s: Airbus330::FlightSystem.oneSensor;
-			domains
-				FlowSynchronizationContract::synchronization;
-			claims
-				`And([E2ESamplingJitter[i] <= E2ESamplingJitterTolerance[i] for i in range(len(E2ESamplingJitter))])`;
-				`And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
-			contracts
-				FlowSynchronizationContract::EndToEndDelayedCommunicationContract;
-				FlowSynchronizationContract::SamplingSynchronizationContract;
-		} 
-
-
-		verification plan verifySynchronizationSeparate {
-			component
-				s: Airbus330::FlightSystem.twoSensors;
-			domains
-				FlowSynchronizationContract::synchronization;
-			claims
-				`And([E2ESamplingJitter[i] <= E2ESamplingJitterTolerance[i] for i in range(len(E2ESamplingJitter))])`;
-				`And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
-			contracts
-				FlowSynchronizationContract::SamplingSynchronizationContract;
-				FlowSynchronizationContract::EndToEndDelayedCommunicationContract;
-		} 
-	**};
+-- User will create this file and fill it in
+--	
+--	annex contract {**
+--		verification plan verifySynchronizationCommon {
+--			component
+--				s: Airbus330::FlightSystem.oneSensor;
+--			domains
+--				FlowSynchronizationContract::synchronization;
+--			claims
+--				`And([E2ESamplingJitter[i] <= E2ESamplingJitterTolerance[i] for i in range(len(E2ESamplingJitter))])`;
+--				`And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+--			contracts
+--				FlowSynchronizationContract::EndToEndDelayedCommunicationContract;
+--				FlowSynchronizationContract::SamplingSynchronizationContract;
+--		} 
+--
+--
+--		verification plan verifySynchronizationSeparate {
+--			component
+--				s: Airbus330::FlightSystem.twoSensors;
+--			domains
+--				FlowSynchronizationContract::schedulability;
+--			claims
+--				`And([E2ESamplingJitter[i] <= E2ESamplingJitterTolerance[i] for i in range(len(E2ESamplingJitter))])`;
+--				`And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+--			contracts
+--				FlowSynchronizationContract::SamplingSynchronizationContract;
+--				FlowSynchronizationContract::EndToEndDelayedCommunicationContract;
+--		} 
+--	**};
 end VerificationPlans;
