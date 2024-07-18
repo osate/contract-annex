@@ -1,0 +1,38 @@
+package fta_plan
+public
+	annex contract {**
+
+	contract implementation i {
+	`
+	def fta(instance):
+		ftmodel = org.osate.aadl2.errormodel.faulttree.generation.CreateFTAModel.createFaultTree(instance, "state AnnunciatedBrakingLoss")
+		handler = org.osate.aadl2.errormodel.faulttree.handler.FTAHandler()
+		handler.saveFaultTree(ftmodel)
+		ui = org.osate.contract.ui.UiUtil()
+		answer = ui.showQuestionDialog("Is the result acceptable?", "Check Fault Tree")
+		print("the answer is " + str(answer))
+		return answer
+	`	
+	}
+	
+	contract fta_contract {
+		queries
+			val top = root;
+		guarantee
+			<=> `True`;
+		analysis
+			'''fta(${:top$})''';
+	}
+
+	verification plan legacy_fta {
+		component
+			s: wbs::wbs.ima;
+		claims
+			`True`;
+		contracts
+			fta_contract;
+	}
+	
+	**};
+	
+end fta_plan;

@@ -64,6 +64,8 @@ public
 				val v16 = self.subcomponents
 					.map { subcomponent -> subcomponent.features }
 					.flatten;
+				
+				val v17 = self.subcomponents.allMatch { subcomponent -> subcomponent.isMemory };
 		}
 	**};
 end list_test;

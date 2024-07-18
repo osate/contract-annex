@@ -1,0 +1,46 @@
+package AndWithMultipleTerms
+public
+	annex contract {**
+		verification plan AndWithMultipleTerms {
+			component
+				s: pkg1::s.i;
+			contracts
+				Contract1;
+		}
+		
+		contract Contract1 {
+			assumptions
+				argument Argument1;
+		}
+		
+		argument Argument1 {
+			argument
+				and(
+					contract Contract2,
+					argument Argument2,
+					contract Contract3,
+					argument Argument3,
+					contract Contract4,
+					argument Argument4
+				);
+		}
+		
+		contract Contract2 {
+		}
+		
+		argument Argument2 {
+		}
+		
+		contract Contract3 {
+		}
+		
+		argument Argument3 {
+		}
+		
+		contract Contract4 {
+		}
+		
+		argument Argument4 {
+		}
+	**};
+end AndWithMultipleTerms;

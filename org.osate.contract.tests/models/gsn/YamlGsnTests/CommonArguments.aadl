@@ -1,0 +1,33 @@
+package CommonArguments
+public
+	annex contract {**
+		verification plan CommonArguments {
+			component
+				s: pkg1::s.i;
+			contracts
+				Contract1;
+				Contract2;
+		}
+		
+		contract Contract1 {
+			assumptions
+				argument Argument1;
+				argument Argument2;
+		}
+		
+		contract Contract2 {
+			assumptions
+				argument Argument2;
+				argument Argument3;
+		}
+		
+		argument Argument1 {
+		}
+		
+		argument Argument2 {
+		}
+		
+		argument Argument3 {
+		}
+	**};
+end CommonArguments;

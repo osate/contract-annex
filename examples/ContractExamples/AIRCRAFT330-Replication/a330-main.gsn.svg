@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg classes="gsndiagram" viewBox="0 0 796 510" xmlns="http://www.w3.org/2000/svg">
+<symbol id="module_icon">
+<rect fill="lightgrey" height="5" stroke="black" stroke-width="1" width="10" x="0" y="0"/>
+<rect fill="lightgrey" height="10" stroke="black" stroke-width="1" width="20" x="0" y="5"/>
+</symbol>
+<marker id="composite_arrow" markerHeight="9" markerUnits="userSpaceOnUse" markerWidth="10" orient="auto-start-reverse" refX="0" refY="4.5">
+<polyline fill="none" points="0 0, 6 4.5, 0 9" stroke="black" stroke-width="1"/>
+<polyline fill="none" points="4 0, 10 4.5, 4 9" stroke="black" stroke-width="1"/>
+<polyline fill="none" points="0 4.5, 10 4.5" stroke="black" stroke-width="1"/>
+</marker>
+<marker id="supportedby_arrow" markerHeight="9" markerUnits="userSpaceOnUse" markerWidth="10" orient="auto-start-reverse" refX="0" refY="4.5">
+<polyline fill="black" points="0 0, 10 4.5, 0 9"/>
+</marker>
+<marker id="incontextof_arrow" markerHeight="9" markerUnits="userSpaceOnUse" markerWidth="10" orient="auto-start-reverse" refX="0" refY="4.5">
+<polyline fill="none" points="0 0, 10 4.5, 0 9, 0 0" stroke="black" stroke-width="1"/>
+</marker>
+<g class="gsn_module_Main gsnelem gsngoal" id="node_G1">
+<title>
+G1
+</title>
+<path class="border" d="M315,20 L419,20 L419,66 L315,66 z" fill="transparent" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="322" y="39">
+G1
+</text>
+<text font-family="DejaVuSans" font-size="12" x="322" y="58">
+Airworthy
+</text>
+</g>
+<g class="gsn_module_Main gsnelem gsngoal" id="node_G2">
+<title>
+G2
+</title>
+<path class="border" d="M46,106 L200,106 L200,152 L46,152 z" fill="transparent" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="53" y="125">
+G2
+</text>
+<text font-family="DejaVuSans" font-size="12" x="53" y="144">
+End-to-End Latency Met
+</text>
+</g>
+<g class="gsn_module_Main gsnelem gsngoal" id="node_G3">
+<title>
+G3
+</title>
+<path class="border" d="M306,106 L454,106 L454,152 L306,152 z" fill="transparent" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="313" y="125">
+G3
+</text>
+<text font-family="DejaVuSans" font-size="12" x="313" y="144">
+Sampling Synchronized
+</text>
+</g>
+<g class="gsn_module_Main gsnelem gsngoal" id="node_G4">
+<title>
+G4
+</title>
+<path class="border" d="M519,106 L703,106 L703,152 L519,152 z" fill="transparent" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="526" y="125">
+G4
+</text>
+<text font-family="DejaVuSans" font-size="12" x="526" y="144">
+Reliability Requirements Met
+</text>
+</g>
+<a href="./a330-sub1.gsn.svg#node_G5">
+<g class="gsn_module_Sub1 gsnelem gsnawaygoal" id="node_G5">
+<title>
+G5
+</title>
+<path class="border" d="M20,318 V266 H226 V318" fill="transparent" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="27" y="285">
+G5
+</text>
+<text font-family="DejaVuSans" font-size="12" x="27" y="304">
+E2E Response Time &lt;= Required
+</text>
+<a href="./a330-sub1.gsn.svg#node_G5">
+<path class="border" d="M20,318 h207 v28 h-207 z" fill="transparent" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="54" y="339">
+Sub1
+</text>
+</a>
+<use href="#module_icon" x="27" y="325"/>
+</g>
+</a>
+<a href="eclipse+command://org.osate.contract.uriHandler.GSNURIMarker?org.osate.contract.uriHandler.GSNURIMarker.analysisName=areFlowsInSync1">
+<g class="gsn_module_Main gsnelem gsnsltn" id="node_Sn1">
+<title>
+Sn1
+</title>
+<path class="border" d="M266,306 a114,114,0,1,0,228,0 a114,114,0,1,0,-228,0 z" fill="none" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="281" y="297">
+Sn1
+</text>
+<text font-family="DejaVuSans" font-size="12" x="281" y="316">
+End-to-End Input Jitter &lt;= Target
+</text>
+</g>
+</a>
+<a href="eclipse+command://org.osate.contract.uriHandler.GSNURIMarker?org.osate.contract.uriHandler.GSNURIMarker.analysisName=isE2EFlowProbabilityOfFailureMet">
+<g class="gsn_module_Main gsnelem gsnsltn" id="node_Sn2">
+<title>
+Sn2
+</title>
+<path class="border" d="M534,306 a77,77,0,1,0,154,0 a77,77,0,1,0,-154,0 z" fill="none" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="550" y="297">
+Sn2
+</text>
+<text font-family="DejaVuSans" font-size="12" x="550" y="316">
+Reliability &gt;= Target
+</text>
+</g>
+</a>
+<path class="gsnedge gsninspby" d="M367,66 C367,96,123,76,123,96" fill="none" marker-end="url(#supportedby_arrow)" stroke="black" stroke-width="1"/>
+<path class="gsnedge gsninspby" d="M367,66 C367,96,380,76,380,96" fill="none" marker-end="url(#supportedby_arrow)" stroke="black" stroke-width="1"/>
+<path class="gsnedge gsninspby" d="M367,66 C367,96,611,76,611,96" fill="none" marker-end="url(#supportedby_arrow)" stroke="black" stroke-width="1"/>
+<path class="gsnedge gsninspby" d="M123,152 C123,182,123,236,123,256" fill="none" marker-end="url(#supportedby_arrow)" stroke="black" stroke-width="1"/>
+<path class="gsnedge gsninspby" d="M380,152 C380,182,380,162,380,182" fill="none" marker-end="url(#supportedby_arrow)" stroke="black" stroke-width="1"/>
+<path class="gsnedge gsninspby" d="M611,152 C611,182,611,199,611,219" fill="none" marker-end="url(#supportedby_arrow)" stroke="black" stroke-width="1"/>
+<g class="gsnmodule" id="node_gsn_module">
+<title>
+Module Information
+</title>
+<text font-family="DejaVuSans" font-size="12" x="464" y="476">
+Module: Main
+</text>
+<text font-family="DejaVuSans" font-size="12" x="464" y="490">
+Generated on: 2024-02-20 13:54:28.591333845 UTC
+</text>
+</g>
+</svg>

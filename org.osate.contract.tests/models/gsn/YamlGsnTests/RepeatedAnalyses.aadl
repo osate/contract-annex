@@ -1,0 +1,26 @@
+package RepeatedAnalyses
+public
+	annex contract {**
+		verification plan RepeatedAnalyses {
+			component
+				s: pkg1::s.i;
+			contracts
+				Contract1;
+				Contract2;
+		}
+		
+		contract Contract1 {
+			analysis
+				`analysis1`;
+				`analysis2`;
+				`analysis3`;
+		}
+		
+		contract Contract2 {
+			analysis
+				`analysis3()`;
+				`analysis4`;
+				`analysis4()`;
+		}
+	**};
+end RepeatedAnalyses;

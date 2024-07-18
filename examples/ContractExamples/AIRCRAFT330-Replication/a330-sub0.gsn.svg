@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg classes="gsndiagram" viewBox="0 0 550 457" xmlns="http://www.w3.org/2000/svg">
+<symbol id="module_icon">
+<rect fill="lightgrey" height="5" stroke="black" stroke-width="1" width="10" x="0" y="0"/>
+<rect fill="lightgrey" height="10" stroke="black" stroke-width="1" width="20" x="0" y="5"/>
+</symbol>
+<marker id="composite_arrow" markerHeight="9" markerUnits="userSpaceOnUse" markerWidth="10" orient="auto-start-reverse" refX="0" refY="4.5">
+<polyline fill="none" points="0 0, 6 4.5, 0 9" stroke="black" stroke-width="1"/>
+<polyline fill="none" points="4 0, 10 4.5, 4 9" stroke="black" stroke-width="1"/>
+<polyline fill="none" points="0 4.5, 10 4.5" stroke="black" stroke-width="1"/>
+</marker>
+<marker id="supportedby_arrow" markerHeight="9" markerUnits="userSpaceOnUse" markerWidth="10" orient="auto-start-reverse" refX="0" refY="4.5">
+<polyline fill="black" points="0 0, 10 4.5, 0 9"/>
+</marker>
+<marker id="incontextof_arrow" markerHeight="9" markerUnits="userSpaceOnUse" markerWidth="10" orient="auto-start-reverse" refX="0" refY="4.5">
+<polyline fill="none" points="0 0, 10 4.5, 0 9, 0 0" stroke="black" stroke-width="1"/>
+</marker>
+<a href="./a330-main.gsn.svg#node_G2">
+<g class="gsn_module_Main gsnelem gsnawaygoal" id="node_G2">
+<title>
+G2
+</title>
+<path class="border" d="M60,72 V20 H208 V72" fill="transparent" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="67" y="39">
+G2
+</text>
+<text font-family="DejaVuSans" font-size="12" x="67" y="58">
+Sampling Synchronized
+</text>
+<a href="./a330-main.gsn.svg#node_G2">
+<path class="border" d="M60,72 h149 v28 h-149 z" fill="transparent" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="94" y="93">
+Main
+</text>
+</a>
+<use href="#module_icon" x="67" y="79"/>
+</g>
+</a>
+<a href="./a330-main.gsn.svg#node_G4">
+<g class="gsn_module_Main gsnelem gsnawaygoal" id="node_G4">
+<title>
+G4
+</title>
+<path class="border" d="M273,72 V20 H457 V72" fill="transparent" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="280" y="39">
+G4
+</text>
+<text font-family="DejaVuSans" font-size="12" x="280" y="58">
+Reliability Requirements Met
+</text>
+<a href="./a330-main.gsn.svg#node_G4">
+<path class="border" d="M273,72 h185 v28 h-185 z" fill="transparent" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="307" y="93">
+Main
+</text>
+</a>
+<use href="#module_icon" x="280" y="79"/>
+</g>
+</a>
+<a href="eclipse+command://org.osate.contract.uriHandler.GSNURIMarker?org.osate.contract.uriHandler.GSNURIMarker.analysisName=areFlowsInSync1">
+<g class="gsn_module_Sub0 gsnelem gsnsltn" id="node_Sn1">
+<title>
+Sn1
+</title>
+<path class="border" d="M20,254 a114,114,0,1,0,228,0 a114,114,0,1,0,-228,0 z" fill="none" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="35" y="245">
+Sn1
+</text>
+<text font-family="DejaVuSans" font-size="12" x="35" y="264">
+End-to-End Input Jitter &lt;= Target
+</text>
+</g>
+</a>
+<a href="eclipse+command://org.osate.contract.uriHandler.GSNURIMarker?org.osate.contract.uriHandler.GSNURIMarker.analysisName=isE2EFlowProbabilityOfFailureMet">
+<g class="gsn_module_Sub0 gsnelem gsnsltn" id="node_Sn2">
+<title>
+Sn2
+</title>
+<path class="border" d="M288,254 a77,77,0,1,0,154,0 a77,77,0,1,0,-154,0 z" fill="none" stroke="black" stroke-width="1"/>
+<text font-family="DejaVuSans" font-size="12" font-weight="bold" x="304" y="245">
+Sn2
+</text>
+<text font-family="DejaVuSans" font-size="12" x="304" y="264">
+Reliability &gt;= Target
+</text>
+</g>
+</a>
+<path class="gsnedge gsninspby" d="M134,100 C134,130,134,110,134,130" fill="none" marker-end="url(#supportedby_arrow)" stroke="black" stroke-width="1"/>
+<path class="gsnedge gsninspby" d="M365,100 C365,130,365,147,365,167" fill="none" marker-end="url(#supportedby_arrow)" stroke="black" stroke-width="1"/>
+<g class="gsnmodule" id="node_gsn_module">
+<title>
+Module Information
+</title>
+<text font-family="DejaVuSans" font-size="12" x="218" y="423">
+Module: Sub0
+</text>
+<text font-family="DejaVuSans" font-size="12" x="218" y="437">
+Generated on: 2024-02-20 12:51:02.947161926 UTC
+</text>
+</g>
+</svg>

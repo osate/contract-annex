@@ -1,0 +1,16 @@
+package ContractWithOneAnalysis
+public
+	annex contract {**
+		verification plan ContractWithOneAnalysis {
+			component
+				s: pkg1::s.i;
+			contracts
+				Contract1;
+		}
+		
+		contract Contract1 {
+			analysis
+				`isHarmonicBoundSchedulable()`;
+		}
+	**};
+end ContractWithOneAnalysis;

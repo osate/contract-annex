@@ -1,0 +1,25 @@
+package AssumptionWithInterpolatedName
+public
+	annex contract {**
+		verification plan AssumptionWithInterpolatedName {
+			component
+				s: pkg1::s.i;
+			contracts
+				Contract1;
+		}
+		
+		contract Contract1 {
+			domains
+				schedulability;
+			assumptions
+				'''areAllPrioritiesSet(${rmsBoundThreads$},${priorities$}, ${names$},error0)''';
+		}
+		
+		domain schedulability {
+			queries
+				val names = self;
+				val priorities = self;
+				val rmsBoundThreads = self;
+		}
+	**};
+end AssumptionWithInterpolatedName;

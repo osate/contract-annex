@@ -475,6 +475,7 @@ following members:
 
 * `name`: Returns the name of the feature or component as a `String`.
 * `parent`: Returns the container of the connection end as a `ComponentInstance`.
+* `isDataPort`: Returns a `Boolean` indicating if the connection end is a data port.
 
 #### DoubleRange
 
@@ -546,6 +547,11 @@ type refers to the named element that contains the unnamed enumeration type. For
 is declared within a property, then an example of the ultimate type would be
 `Enumeration<Communication_Properties::Fan_Out_Policy>`. `Enumeration` has no members.
 
+`Enumeration` has the following members:
+
+* `is`: Returns a `Boolean` indicating if the receiver is a specific enumeration literal. An enumeration literal
+  of the enumeration type's AADL enumeration type is passed as a parameter to `is`.
+
 #### EventInstance
 
 The `EventInstance` type is backed by the Java type `org.osate.aadl2.errormodel.instance.EventInstance` and has the
@@ -600,6 +606,11 @@ elements of the list. A query or parameter with the type `List` will have its ge
   expression `components.mapPresent { c -> c#Queue_Size }` returns a `List<Long>`.
 * `contains`: Returns a `Boolean` indicating if the list contains a specified element. The element is passed as a
   parameter to `contains`.
+* `allMatch`: Returns a `Boolean` indicating if every element of the list matches a predicate which is passed as a
+  lambda to `allMatch`. Each element of the list is passed to the lambda and the lambda must return a `Boolean`
+  indicating if the element passes the predicate. If every element of the list passes the predicate, then true is
+  returned. If one or more elements fail the predicate, then false is returned. If the list is empty, then true is
+  returned.
 
 The following members only apply to lists that have an optional element type such as `List<ComponentInstance?>` or
 `List<String?>`:
@@ -683,6 +694,8 @@ present. Optional types appear with a question mark appended to the end of anoth
 list of optional components. The optional type has the following members:
 
 * `isEmpty`: Returns a `Boolean` indicating if a value is not present.
+* `filter`: If the optional has a value and the value matches the filter criterion, then return an optional with the
+  same value. Otherwise return an empty optional.
 * `filterType`: If the optional has a value and the value is an instance of the specified type argument, then
   `filterType` returns a new optional with the same value. If the optional is empty or if the optional has a value, but
   the value is not an instance of the specified type argument, then `filterType` returns an empty optional. The type of

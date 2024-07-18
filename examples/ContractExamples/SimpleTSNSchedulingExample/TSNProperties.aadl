@@ -1,0 +1,3 @@
+property set TSNProperties is
+	BitsPerSecond : aadlinteger applies to (bus);
+end TSNProperties;

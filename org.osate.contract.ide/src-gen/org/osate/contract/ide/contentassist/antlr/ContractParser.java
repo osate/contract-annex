@@ -62,7 +62,7 @@ public class ContractParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getAssumptionElementAccess().getAlternatives(), "rule__AssumptionElement__Alternatives");
 			builder.put(grammarAccess.getSourceAccess().getAlternatives_1(), "rule__Source__Alternatives_1");
 			builder.put(grammarAccess.getArgumentExpressionAccess().getAlternatives(), "rule__ArgumentExpression__Alternatives");
-			builder.put(grammarAccess.getArgumentNotAccess().getAlternatives(), "rule__ArgumentNot__Alternatives");
+			builder.put(grammarAccess.getArgumentNotAccess().getAlternatives_2(), "rule__ArgumentNot__Alternatives_2");
 			builder.put(grammarAccess.getArgumentTermAccess().getAlternatives(), "rule__ArgumentTerm__Alternatives");
 			builder.put(grammarAccess.getQueryAccess().getAlternatives(), "rule__Query__Alternatives");
 			builder.put(grammarAccess.getNotExpressionAccess().getAlternatives(), "rule__NotExpression__Alternatives");
@@ -112,8 +112,8 @@ public class ContractParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getArgumentAndAccess().getGroup_4(), "rule__ArgumentAnd__Group_4__0");
 			builder.put(grammarAccess.getArgumentOrAccess().getGroup(), "rule__ArgumentOr__Group__0");
 			builder.put(grammarAccess.getArgumentOrAccess().getGroup_4(), "rule__ArgumentOr__Group_4__0");
-			builder.put(grammarAccess.getArgumentNotAccess().getGroup_0(), "rule__ArgumentNot__Group_0__0");
-			builder.put(grammarAccess.getArgumentNotAccess().getGroup_1(), "rule__ArgumentNot__Group_1__0");
+			builder.put(grammarAccess.getArgumentNotAccess().getGroup(), "rule__ArgumentNot__Group__0");
+			builder.put(grammarAccess.getArgumentNotAccess().getGroup_2_1(), "rule__ArgumentNot__Group_2_1__0");
 			builder.put(grammarAccess.getArgumentTermAccess().getGroup_0(), "rule__ArgumentTerm__Group_0__0");
 			builder.put(grammarAccess.getArgumentTermAccess().getGroup_1(), "rule__ArgumentTerm__Group_1__0");
 			builder.put(grammarAccess.getVerificationPlanAccess().getGroup(), "rule__VerificationPlan__Group__0");

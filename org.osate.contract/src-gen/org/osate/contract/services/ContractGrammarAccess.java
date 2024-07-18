@@ -1067,55 +1067,51 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	}
 	public class ArgumentNotElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.ArgumentNot");
-		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
-		private final Action cArgumentNotAction_0_0 = (Action)cGroup_0.eContents().get(0);
-		private final Keyword cNotKeyword_0_1 = (Keyword)cGroup_0.eContents().get(1);
-		private final RuleCall cArgumentTermParserRuleCall_0_2 = (RuleCall)cGroup_0.eContents().get(2);
-		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
-		private final Keyword cLeftParenthesisKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
-		private final RuleCall cArgumentTermParserRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
-		private final Keyword cRightParenthesisKeyword_1_2 = (Keyword)cGroup_1.eContents().get(2);
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cArgumentNotAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cNotKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Alternatives cAlternatives_2 = (Alternatives)cGroup.eContents().get(2);
+		private final RuleCall cArgumentTermParserRuleCall_2_0 = (RuleCall)cAlternatives_2.eContents().get(0);
+		private final Group cGroup_2_1 = (Group)cAlternatives_2.eContents().get(1);
+		private final Keyword cLeftParenthesisKeyword_2_1_0 = (Keyword)cGroup_2_1.eContents().get(0);
+		private final RuleCall cArgumentTermParserRuleCall_2_1_1 = (RuleCall)cGroup_2_1.eContents().get(1);
+		private final Keyword cRightParenthesisKeyword_2_1_2 = (Keyword)cGroup_2_1.eContents().get(2);
 		
 		//ArgumentNot returns ArgumentExpression:
 		//    {ArgumentNot}
 		//    'not'
-		//        ArgumentTerm
-		//      | ('(' ArgumentTerm')')
+		//        (ArgumentTerm | '(' ArgumentTerm')')
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//{ArgumentNot}
 		//'not'
-		//    ArgumentTerm
-		//  | ('(' ArgumentTerm')')
-		public Alternatives getAlternatives() { return cAlternatives; }
+		//    (ArgumentTerm | '(' ArgumentTerm')')
+		public Group getGroup() { return cGroup; }
 		
 		//{ArgumentNot}
-		//'not'
-		//    ArgumentTerm
-		public Group getGroup_0() { return cGroup_0; }
-		
-		//{ArgumentNot}
-		public Action getArgumentNotAction_0_0() { return cArgumentNotAction_0_0; }
+		public Action getArgumentNotAction_0() { return cArgumentNotAction_0; }
 		
 		//'not'
-		public Keyword getNotKeyword_0_1() { return cNotKeyword_0_1; }
+		public Keyword getNotKeyword_1() { return cNotKeyword_1; }
+		
+		//(ArgumentTerm | '(' ArgumentTerm')')
+		public Alternatives getAlternatives_2() { return cAlternatives_2; }
 		
 		//ArgumentTerm
-		public RuleCall getArgumentTermParserRuleCall_0_2() { return cArgumentTermParserRuleCall_0_2; }
+		public RuleCall getArgumentTermParserRuleCall_2_0() { return cArgumentTermParserRuleCall_2_0; }
 		
-		//('(' ArgumentTerm')')
-		public Group getGroup_1() { return cGroup_1; }
+		//'(' ArgumentTerm')'
+		public Group getGroup_2_1() { return cGroup_2_1; }
 		
 		//'('
-		public Keyword getLeftParenthesisKeyword_1_0() { return cLeftParenthesisKeyword_1_0; }
+		public Keyword getLeftParenthesisKeyword_2_1_0() { return cLeftParenthesisKeyword_2_1_0; }
 		
 		//ArgumentTerm
-		public RuleCall getArgumentTermParserRuleCall_1_1() { return cArgumentTermParserRuleCall_1_1; }
+		public RuleCall getArgumentTermParserRuleCall_2_1_1() { return cArgumentTermParserRuleCall_2_1_1; }
 		
 		//')'
-		public Keyword getRightParenthesisKeyword_1_2() { return cRightParenthesisKeyword_1_2; }
+		public Keyword getRightParenthesisKeyword_2_1_2() { return cRightParenthesisKeyword_2_1_2; }
 	}
 	public class ArgumentTermElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.ArgumentTerm");
@@ -2834,8 +2830,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	//ArgumentNot returns ArgumentExpression:
 	//    {ArgumentNot}
 	//    'not'
-	//        ArgumentTerm
-	//      | ('(' ArgumentTerm')')
+	//        (ArgumentTerm | '(' ArgumentTerm')')
 	//;
 	public ArgumentNotElements getArgumentNotAccess() {
 		return pArgumentNot;

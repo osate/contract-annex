@@ -1,0 +1,38 @@
+package SimpleAnd
+public
+	annex contract {**
+		verification plan SimpleAnd {
+			component
+				s: pkg1::s.i;
+			contracts
+				Contract1;
+				Contract3;
+		}
+		
+		contract Contract1 {
+			assumptions
+				argument Argument1;
+		}
+		
+		argument Argument1 {
+			argument
+				and(contract Contract2);
+		}
+		
+		contract Contract2 {
+		}
+		
+		contract Contract3 {
+			assumptions
+				argument Argument2;
+		}
+		
+		argument Argument2 {
+			argument
+				and(argument Argument3);
+		}
+		
+		argument Argument3 {
+		}
+	**};
+end SimpleAnd;

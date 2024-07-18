@@ -598,7 +598,7 @@ public class EvaluateMemberCallTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(19, contract.getQueries().size());
+		assertEquals(21, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
@@ -715,6 +715,16 @@ public class EvaluateMemberCallTest {
 			assertEquals(1, result.size());
 			assertIterableEquals(List.of("f1", "f2", "f1", "f2"),
 					((List<FeatureInstance>) result.get("v19")).stream().map(NamedElement::getName).toList());
+		});
+		with(contract.getQueries().get(19), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertTrue((Boolean) result.get("v20"));
+		});
+		with(contract.getQueries().get(20), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertFalse((Boolean) result.get("v21"));
 		});
 	}
 
@@ -1180,17 +1190,22 @@ public class EvaluateMemberCallTest {
 		var defaultLibrary = (DefaultAnnexLibrary) pkg.getPublicSection().getOwnedAnnexLibraries().get(0);
 		var contractLibrary = (ContractLibrary) defaultLibrary.getParsedAnnexLibrary();
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
-		assertEquals(2, contract.getQueries().size());
+		assertEquals(3, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(List.of("b", "process_out"), (List<String>) result.get("v1"));
+			assertIterableEquals(List.of("b", "process_out", "out_port"), (List<String>) result.get("v1"));
 		});
 		with(contract.getQueries().get(1), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(List.of("s_i_Instance", "left_process"),
+			assertIterableEquals(List.of("s_i_Instance", "left_process", "left_process"),
 					((List<ComponentInstance>) result.get("v2")).stream().map(NamedElement::getName).toList());
+		});
+		with(contract.getQueries().get(2), query -> {
+			var result = interpreter.evaluateQuery(environment, query).getValue();
+			assertEquals(1, result.size());
+			assertIterableEquals(List.of(false, false, true), (List<Boolean>) result.get("v3"));
 		});
 	}
 }

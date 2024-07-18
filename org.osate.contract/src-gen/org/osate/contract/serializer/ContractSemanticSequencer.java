@@ -60,7 +60,6 @@ import org.osate.contract.contract.AndExpression;
 import org.osate.contract.contract.Argument;
 import org.osate.contract.contract.ArgumentAnd;
 import org.osate.contract.contract.ArgumentAssumption;
-import org.osate.contract.contract.ArgumentExpression;
 import org.osate.contract.contract.ArgumentNot;
 import org.osate.contract.contract.ArgumentOr;
 import org.osate.contract.contract.CodeAssumption;
@@ -220,9 +219,6 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 				return; 
 			case ContractPackage.ARGUMENT_ASSUMPTION:
 				sequence_AssumptionElement(context, (ArgumentAssumption) semanticObject); 
-				return; 
-			case ContractPackage.ARGUMENT_EXPRESSION:
-				sequence_ArgumentTerm(context, (ArgumentExpression) semanticObject); 
 				return; 
 			case ContractPackage.ARGUMENT_NOT:
 				sequence_ArgumentNot_ArgumentTerm(context, (ArgumentNot) semanticObject); 
@@ -455,21 +451,6 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	 * </pre>
 	 */
 	protected void sequence_ArgumentOr_ArgumentTerm(ISerializationContext context, ArgumentOr semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * <pre>
-	 * Contexts:
-	 *     ArgumentExpression returns ArgumentExpression
-	 *     ArgumentNot returns ArgumentExpression
-	 *
-	 * Constraint:
-	 *     (contracts+=[ContractElement|QPREF] | arguments+=[ContractElement|QPREF] | nested+=ArgumentExpression)
-	 * </pre>
-	 */
-	protected void sequence_ArgumentTerm(ISerializationContext context, ArgumentExpression semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

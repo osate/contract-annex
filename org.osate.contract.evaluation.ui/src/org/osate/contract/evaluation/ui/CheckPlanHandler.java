@@ -32,8 +32,15 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.WorkspaceJob;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.ease.service.IScriptService;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.ConsolePlugin;
@@ -64,10 +71,17 @@ public class CheckPlanHandler extends AbstractHandler {
 		var scriptService = PlatformUI.getWorkbench().getService(IScriptService.class);
 		var processor = new ContractProcessor(component,
 				scriptService.getEngineByID("org.eclipse.ease.lang.python.py4j.engine"));
-//		processor.processContract(component);
-		linkConsole(event);
-		processor.processVerificationPlan(component, true);
-		unlinkConsole();
+		WorkspaceJob job = new WorkspaceJob("Check verification plan") {
+			@Override
+			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+				Display.getDefault().syncExec(() -> linkConsole(event));
+				processor.processVerificationPlan(component, true);
+				unlinkConsole();
+				return Status.OK_STATUS;
+			}
+		};
+		job.setRule(ResourcesPlugin.getWorkspace().getRoot());
+		job.schedule();
 		return null;
 	}
 
@@ -91,7 +105,8 @@ public class CheckPlanHandler extends AbstractHandler {
 					consoleMgr.addConsoles(new IConsole[] { con });
 					return con;
 				});
-		out = new PrintStream(console.newMessageStream());
+		console.clearConsole();
+		out = new PrintStream(console.newMessageStream(), true);
 		System.setOut(out);
 		System.setErr(out);
 	}

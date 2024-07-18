@@ -1,0 +1,11 @@
+package ClaimWithInterpolatedName
+public
+	annex contract {**
+		verification plan ClaimWithInterpolatedName {
+			component
+				s: pkg1::s.i;
+			claims
+				'''And([blpOkay, channelsAreImplementedCorrectly, connectionsAreBound])''';
+		}
+	**};
+end ClaimWithInterpolatedName;

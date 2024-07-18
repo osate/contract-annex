@@ -1,0 +1,4 @@
+property set NetworkProtocols is
+	Protocol_Type:  type enumeration (TimeTriggered, ARINC429);
+	Protocol : NetworkProtocols::Protocol_Type applies to (bus);
+end NetworkProtocols;

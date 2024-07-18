@@ -1,0 +1,23 @@
+package AnalysisWithInterpolatedName
+public
+	annex contract {**
+		verification plan AnalysisWithInterpolatedName {
+			component
+				s: pkg1::s.i;
+			contracts
+				Contract1;
+		}
+		
+		contract Contract1 {
+			domains
+				schedulability;
+			analysis
+				'''isEdfDBFSchedulable(${edfBoundThreads$},error0)''';
+		}
+		
+		domain schedulability {
+			queries
+				val edfBoundThreads = self;
+		}
+	**};
+end AnalysisWithInterpolatedName;

@@ -1,0 +1,18 @@
+package ContractWithThreeAnalyses
+public
+	annex contract {**
+		verification plan ContractWithThreeAnalyses {
+			component
+				s: pkg1::s.i;
+			contracts
+				Contract1;
+		}
+		
+		contract Contract1 {
+			analysis
+				`withoutParens`;
+				`withParens()`;
+				`withParameters(stuff_in_the_middle)`;
+		}
+	**};
+end ContractWithThreeAnalyses;

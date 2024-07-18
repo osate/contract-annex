@@ -7,6 +7,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: org.osate.contract; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
+ org.eclipse.ui.ide;bundle-version="[3.16.0,4.0.0)";visibility:=reexport,
  org.eclipse.equinox.common,
  org.eclipse.emf.ecore,
  org.eclipse.xtext.util,
@@ -30,6 +31,7 @@ Export-Package: org.osate.contract,
  org.osate.contract.example,
  org.osate.contract.execution,
  org.osate.contract.generator,
+ org.osate.contract.gsn,
  org.osate.contract.parser.antlr,
  org.osate.contract.parser.antlr.internal,
  org.osate.contract.scoping,
@@ -39,4 +41,5 @@ Export-Package: org.osate.contract,
  org.osate.contract.typing,
  org.osate.contract.validation
 Import-Package: org.apache.log4j
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/ST-4.3.4.jar

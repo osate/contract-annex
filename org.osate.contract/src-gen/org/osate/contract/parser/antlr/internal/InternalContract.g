@@ -1417,50 +1417,50 @@ ruleArgumentNot returns [EObject current=null]
 }:
 	(
 		(
-			(
-				{
-					$current = forceCreateModelElement(
-						grammarAccess.getArgumentNotAccess().getArgumentNotAction_0_0(),
-						$current);
-				}
-			)
-			otherlv_1='not'
 			{
-				newLeafNode(otherlv_1, grammarAccess.getArgumentNotAccess().getNotKeyword_0_1());
+				$current = forceCreateModelElement(
+					grammarAccess.getArgumentNotAccess().getArgumentNotAction_0(),
+					$current);
 			}
+		)
+		otherlv_1='not'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getArgumentNotAccess().getNotKeyword_1());
+		}
+		(
 			{
 				if ($current==null) {
 					$current = createModelElement(grammarAccess.getArgumentNotRule());
 				}
-				newCompositeNode(grammarAccess.getArgumentNotAccess().getArgumentTermParserRuleCall_0_2());
+				newCompositeNode(grammarAccess.getArgumentNotAccess().getArgumentTermParserRuleCall_2_0());
 			}
 			this_ArgumentTerm_2=ruleArgumentTerm[$current]
 			{
 				$current = $this_ArgumentTerm_2.current;
 				afterParserOrEnumRuleCall();
 			}
-		)
-		    |
-		(
-			otherlv_3='('
-			{
-				newLeafNode(otherlv_3, grammarAccess.getArgumentNotAccess().getLeftParenthesisKeyword_1_0());
-			}
-			{
-				if ($current==null) {
-					$current = createModelElement(grammarAccess.getArgumentNotRule());
+			    |
+			(
+				otherlv_3='('
+				{
+					newLeafNode(otherlv_3, grammarAccess.getArgumentNotAccess().getLeftParenthesisKeyword_2_1_0());
 				}
-				newCompositeNode(grammarAccess.getArgumentNotAccess().getArgumentTermParserRuleCall_1_1());
-			}
-			this_ArgumentTerm_4=ruleArgumentTerm[$current]
-			{
-				$current = $this_ArgumentTerm_4.current;
-				afterParserOrEnumRuleCall();
-			}
-			otherlv_5=')'
-			{
-				newLeafNode(otherlv_5, grammarAccess.getArgumentNotAccess().getRightParenthesisKeyword_1_2());
-			}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getArgumentNotRule());
+					}
+					newCompositeNode(grammarAccess.getArgumentNotAccess().getArgumentTermParserRuleCall_2_1_1());
+				}
+				this_ArgumentTerm_4=ruleArgumentTerm[$current]
+				{
+					$current = $this_ArgumentTerm_4.current;
+					afterParserOrEnumRuleCall();
+				}
+				otherlv_5=')'
+				{
+					newLeafNode(otherlv_5, grammarAccess.getArgumentNotAccess().getRightParenthesisKeyword_2_1_2());
+				}
+			)
 		)
 	)
 ;
