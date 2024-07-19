@@ -1,0 +1,94 @@
+package VerificationPlans
+public
+	annex contract {**
+		verification plan Scenario1AVP {
+			component
+				s: Scenario1A::FlightSystem.oneSensor;
+			domains
+				Scenario1AContracts::synchronization;
+			claims
+				`And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+			contracts
+				Scenario1AContracts::EndToEndDelayedCommunicationContract;
+		} 
+
+		verification plan Scenario1BVP {
+			component
+				s: Scenario1B::FlightSystem.oneSensor;
+			domains
+				FlowSynchronizationContract::synchronization;
+			claims
+				`And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+			contracts
+				FlowSynchronizationContract::EndToEndDelayedCommunicationContract;
+		} 
+
+		verification plan Scenario2AVP {
+			component
+				s: Scenario2A::FlightSystem.oneSensor;
+			domains
+				Scenario1AContracts::synchronization;
+			claims
+				`And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+			contracts
+				Scenario2AContracts::EndToEndDelayedCommunicationContract;
+		} 
+
+		verification plan Scenario2BVP {
+			component
+				s: Scenario2B::FlightSystem.oneSensor;
+			domains
+				Scenario1AContracts::synchronization;
+			claims
+				`And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+			contracts
+				FlowSynchronizationContract::EndToEndDelayedCommunicationContract;
+		} 
+
+		verification plan Scenario3AVP_Harmonic {
+			component
+				s: Scenario2A::FlightSystem.oneSensor;
+			domains
+				Scenario1AContracts::synchronization;
+			claims
+				`And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+			contracts
+				Scenario3AContracts::EndToEndDelayedCommunicationContractHarmonic;
+		} 
+
+		verification plan Scenario3AVP_NonHarmonic {
+			component
+				s: Scenario2A::FlightSystem.oneSensor;
+			domains
+				Scenario1AContracts::synchronization;
+			claims
+				`And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+			contracts
+				Scenario3AContracts::EndToEndDelayedCommunicationContractNonHarmonic;
+		} 
+
+		verification plan Scenario3BVP {
+			component
+				s: Scenario3B::FlightSystem.oneSensor;
+			domains
+				Scenario1AContracts::synchronization;
+			claims
+				`And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+			contracts
+				FlowSynchronizationContract::EndToEndDelayedCommunicationContract;
+		} 
+
+--		verification plan verifySynchronizationSeparate {
+--			component
+--				s: Airbus330::FlightSystem.twoSensors;
+--			domains
+--				FlowSynchronizationContract::synchronization;
+--			claims
+--				`And([E2ESamplingJitter[i] <= E2ESamplingJitterTolerance[i] for i in range(len(E2ESamplingJitter))])`;
+--				`And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+--			contracts
+--				FlowSynchronizationContract::SamplingSynchronizationContract;
+--				FlowSynchronizationContract::EndToEndDelayedCommunicationContract;
+--		} 
+	**};
+end VerificationPlans;

@@ -1,0 +1,824 @@
+-- Assurance Contract Annex Plugin for OSATE
+-- Copyright 2023 Carnegie Mellon University.
+-- NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
+-- MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
+-- WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
+-- NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
+-- RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
+-- ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+-- INFRINGEMENT.
+-- Released under a BSD (SEI)-style license, please see license.txt or contact 
+-- permission@sei.cmu.edu for full terms.
+-- [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
+-- unlimited distribution.  Please see Copyright notice for non-US Government use and 
+-- distribution.
+-- Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+-- Mellon University.
+-- This Software includes and/or makes use of the following Third-Party Software subject 
+-- to its own license:
+-- 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+-- Corporation.
+-- 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+-- contributors and others.
+-- DM23-0575
+
+package Scenario2AContracts
+public
+
+annex contract {**
+
+	contract implementation E2ELatency {`
+import math
+
+def addError(error,msg):
+	error[0]+="|"+msg
+	
+def getResponseTimes(threads):
+	# threads is [(th, th.name, th.period, th.wcet, th.prio, th.deadline)]
+	# in increasing priority order
+	respTimes = [0] * len(threads)
+	for i in range(len(threads)):
+		r = 0
+		r1 = threads[i][3]
+		while r < r1 and r1 <= threads[i][5]:
+			r = r1
+			r1 = threads[i][3]
+			for j in range(0, i):
+				r1 = r1 + math.ceil(r / threads[j][2]) * threads[j][3]
+		respTimes[i] = r1
+	return respTimes
+		
+def isResponseTimeSchedulable(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	for p in range(len(boundThreads)):
+		threads = boundThreads[p][2]
+		inc = sorted(threads, reverse = True, key = lambda td: td[4])
+		rt = getResponseTimes(inc)
+		for i in range(len(rt)):
+			deadline = inc[i][5]
+			if rt[i] > deadline:
+				addError(error0,"{"+str(inc[i][0])+"}thread:"+inc[i][1]+" response time:"+str(rt[i])+" > deadline:"+str(deadline))
+				return False
+	print("ReponseTimeSchedulable=TRUE")
+	return True
+	
+def areAllPrioritiesSet(boundThreads,priorities,names,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	print("checking if all threads have priorities")
+	good = True
+	for p in range(len(boundThreads)):
+		threads = boundThreads[p][2]
+		for i in range(len(threads)):
+			if threads[i][4] is None:
+				addError(error0,"{"+str(threads[i][0])+"}thread " + threads[i][1] + " does not have priority ")
+				print("Thread "+threads[i][1]+" does not have a priority assigned")
+				good = False
+	return good
+	#if len(priorities) == len(names):
+	#	for i in range(len(priorities)):
+	#		if priorities[i] is None:
+	#			return False
+	#	return True
+	#return False
+	
+def areAllThreadsPeriodic(threads, threadActivations, names,error0):
+	for i in range(len(threads)):
+		if threadActivations[i].lower() != 'periodic':
+			addError(error0,"{"+str(threads[i])+"}thread " + names[i] + " activation is "+threadActivations[i]+" only periodic activations are allowed")
+			return False
+	return True	
+		
+def arePeriodsHarmonic(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet)])]
+	for p in range(len(boundThreads)):
+		incPeriods = sorted(boundThreads[p][2], key=lambda td: td[2])
+		for i in range(len(incPeriods)-1):
+			if incPeriods[i+1][2] % incPeriods[i][2] != 0:
+				addError(error0,"{"+str(incPeriods[i][0])+"}period "+str(incPeriods[i+1][2])+" is not a multiple of period "+str(incPeriods[i][2]))
+				return False
+	return True
+	
+#def arePeriodsNonHarmonic(threads,processors,periods,error0):
+#	return not arePeriodsHarmonic(threads,processors,periods,error0)	
+
+def areAllDeadlinesImplicit(threads, periods,deadlines,names,error0):
+	for i in range(len(periods)):
+		if periods[i] != deadlines[i]:
+			addError(error0,"{"+str(threads[i])+"}thread "+names[i]+" period is not equal to its deadline (not implicit)")
+			return False
+	return True
+
+def areAllDeadlinesConstrained(threads,periods,deadlines,names,error0):
+	for i in range(len(periods)):
+		if periods[i] < deadlines[i]:
+			addError(error0,"{"+str(threads[i])+"}thread "+names[i]+" period is smaller than its deadline (not constrained)")
+			return False
+	return True
+	
+def allProcessorHarmonicBoundSchedulable(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet)])]
+	for i in range(len(boundThreads)):
+		util=0.0
+		for j in range(len(boundThreads[i][2])):
+			util = util + boundThreads[i][2][j][3] / boundThreads[i][2][j][2]
+		if util > 1.0:
+			addError(error0,"{"+str(boundThreads[i][0])+"}processor "+boundThreads[i][1]+" workload exceeds 100% bound ")
+			return False
+	print("allProcessorsHarmonicBoundSchedulable=TRUE")
+	return True
+
+def arePrioritiesRM(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.priom th.deadline)])]
+	#  (t, t.name, period, wcet, prio, deadline)
+	for i in range(len(boundThreads)):
+		util=0.0
+		for j in range(len(boundThreads[i][2])):
+			for k in range(j+1, len(boundThreads[i][2])):
+				periodj = boundThreads[i][2][j][2]
+				priorityj = boundThreads[i][2][j][4]
+				namej = boundThreads[i][2][j][1]
+				periodk = boundThreads[i][2][k][2]
+				priorityk = boundThreads[i][2][k][4]
+				namek = boundThreads[i][2][k][1]
+				if periodj is None or periodk is None or priorityj is None or priorityk is None:
+					addError(error0,"{"+str(boundThreads[i][2][j][0])+"}thread "+namej+" XXXX")
+					return False
+				if (periodj < periodk and priorityj<priorityk):
+					addError(error0,"{"+str(boundThreads[i][2][j][0])+"}thread "+namej+" has shorter period than thread "+namek+" but lower priority")
+					print(" **NOT RMPRIORITIES thread "+namej+" has shorter period than "+namek+" but lower priority")
+					return False
+	print(" **RMPRIORITIES ")
+	return True
+	
+def z3arePrioritiesRM(threads,periods, priorities, names,error0):
+	Priorities = IntVector('priority',len(names))
+	Periods = IntVector('period', len(names))
+	rateMonotonicPriorities = [Implies(Periods[i] < Periods[j], Priorities[i]>Priorities[j]) for i in range(len(names)) for j in range(len(names))]
+	s = Solver()
+	s.add(rateMonotonicPriorities)
+	for i in range(len(periods)):
+		s.add(Periods[i] == periods[i])
+	for i in range(len(priorities)):
+		s.add(Priorities[i] == priorities[i])
+	if s.check() == sat :
+		return True
+	addError(error0,"{"+str(threads[0])+"}Priorities are not RM")
+	return False
+	
+def z3getRMPrioritiesConstraints(periods, priorities, names):
+	rmconstraints = "[Implies(Periods[i] < Periods[j], Priorities[i]>Priorities[j]) for i in range(len(Periods)) for j in range(len(Priorities))]"
+	periodconstraints="["
+	sep=""
+	for i in range(len(periods)):
+		periodconstraints += sep+"Periods["+str(i)+"] == "+str(periods[i])
+		sep =","
+	periodconstraints +="]"
+	prioritiesconstraints="["
+	sep=""
+	for i in range(len(priorities)):
+		prioritiesconstraints += sep+"Priorities["+str(i)+"] == "+str(priorities[i])
+		sep=","
+	prioritiesconstraints += "]"
+	return "And("+rmconstraints +"+"+periodconstraints+"+"+prioritiesconstraints+")"
+
+def allProcessorNonHarmonicBoundSchedulable(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet)])]
+	for i in range(len(boundThreads)):
+		util=0.0
+		for j in range(len(boundThreads[i][2])):
+			util = util + boundThreads[i][2][j][3] / boundThreads[i][2][j][2]
+		if util > 0.69:
+			addError(error0,"{"+str(boundThreads[i][0])+"}processor "+boundThreads[i][1]+" workload exceeds 69% bound ")
+			return False
+	print("allProcessorsNonHarmonicBoundSchedulable=TRUE")
+	return True
+
+def allThreadsBoundToSingleProcessor(bindings,error0):
+	for i in range(len(bindings)):
+		if bindings[i][2] is None or len(bindings[i][2]) == 0:
+			addError(error0,"{"+str(bindings[i][0])+"}thread " + bindings[i][1] + " is not assigned to run to any processor")
+			return False
+		if len(bindings[i][2]) > 1:
+			addError(error0,"{"+str(bindings[i][0])+"}thread " + bindings[i][1] + " is assigned to run in more than one processor")
+			return False
+	return True
+	
+def allThreadsSchedulable(processors,periods, wcets, deadlines, names,error0):
+	for i in range(len(processors)):
+		print("processor[",i,"]:")
+		for j in range(len(processors[i])):
+			print("\tthread[",processors[i][j],"]:")
+			print("\t\tperiod: ",periods[processors[i][j]])
+			print("\t\twcet: ",wcets[processors[i][j]])
+			print("\t\tdeadline: ",deadlines[processors[i][j]])
+			print("\t\tname: "+names[processors[i][j]])
+	return True
+			
+def areConnectionsDelayed(connections, connectionsTiming, connectionNames,error0):
+	if len(connections) != len(connectionsTiming):
+		addError(error0,"connections (len="+str(len(connections))+") and timing (len="+str(len(connectionsTiming))+") have not the same length")
+	for i in range(len(connections)):
+		if connectionsTiming[i].lower() == 'immediate' :
+			addError(error0,"Connection " + connectionNames[i] + " is Immediate")
+			return False
+	return True
+	
+def getEndToEndFlowSpecLatency(e2eflows,flowElementLatencies):
+	responseTimes = [0] * len(e2eflows)
+	for i in range(len(e2eflows)):
+		responseTimes[i]=0
+		for j in range(len(e2eflows[i])):
+			flowElementIdx = e2eflows[i][j]
+			responseTimes[i] += flowElementLatencies[flowElementIdx]
+		print("e2eflow latency: ", responseTimes[i])
+	return responseTimes
+	
+def meetEndToEndSpecLatencies(e2eflows, e2eflowLatencies, flowElementLatencies):
+	rts = getEndToEndFlowSpecLatency(e2eflows,flowElementLatencies)
+	for i in range(len(e2eflows)):
+		if rts[i] > e2eflowLatencies[i]:
+			return False
+	return True
+
+# sum periods of all components (assumed to be threads) in all flows
+def getEndToEndResponseTime(flowComponents):
+	responseTimes=[0]*len(flowComponents)
+	for i in range(len(flowComponents)):
+		flow = flowComponents[i]
+		print("flow : ", flow[1])
+		responseTimes[i]=0
+		for j in range(len(flow[3])):
+			thread = flow[3][j];
+			responseTimes[i] += thread[2]
+			print("thread(",thread[1],") period: ",str(thread[2])," exec: ",str(thread[3])," deadline: ",str(thread[4]))
+		print("end-to-end reponse time: ",responseTimes[i])
+	return responseTimes
+
+# FIXME: there is no assumption that all components are, in fact, threads
+# FIXME: no assumption that all flows have latencies
+def meetEndToEndLatencies(flowComponents,error0):
+	# flowComponents is [(f, f.name, f.latency, [(th, th.name, th.period, th.wcet, th.deadline)])]
+	rts = getEndToEndResponseTime(flowComponents)
+	for i in range(len(flowComponents)):
+		flow = flowComponents[i]
+		latency = flow[2]
+		if rts[i] > latency:
+			addError(error0,"{"+str(flow[0])+"}flow["+str(flow[1])+"] real latency ("+str(rts[i])+") is larger than the required latency ("+str(latency)+")")
+			return False
+		else:
+			addError(info0,"{"+str(flow[0])+"}flow["+str(flow[1])+"] meets its end-to-end latency")
+	return True
+	
+def areEndToEndLatenciesInputDataComplete(threads, periods, exectimes, deadlines, threadnames, error0):
+	complete = True
+	for (thr, period, exectime, deadline, name) in zip(threads, periods, exectimes, deadlines, threadnames):
+		if period is None:
+			addError(error0,"{"+str(thr)+"}thread " + name + " does not have period ")
+			print("Thread "+name+" does not have a period assigned")
+			complete = False
+		if exectime is None:
+			addError(error0,"{"+str(thr)+"}thread " + name + " does not have execution time ")
+			print("Thread "+name+" does not have an execution time assigned")
+			complete = False
+		if deadline is None:
+			addError(error0,"{"+str(thr)+"}thread " + name + " does not have deadline ")
+			print("Thread "+name+" does not have a deadline assigned")
+			complete = False
+	return complete
+	# return len(periods) != 0 and len(periods) == len(exectimes) == len(deadlines) == len(threadnames)
+
+def areNotEndToEndLatenciesInputDataComplete(periods, exectimes, deadlines, threadnames):
+	return not areEndToEndLatenciesInputDataComplete(periods, exectimes, deadlines, threadnames)
+	
+def areReplicasOnIndependentProcessors(flowComponents,error0):
+	# flowComponents is [(f, f.name, f.latency, [(th, th.name, th.period, th.wcet, th.deadline, th.bindings)]),[list of replicating]]
+	# bindings[i][2] is None or len(bindings[i][2]) == 0:
+	numFlows = len(flowComponents)
+	for i in range(len(flowComponents)):
+		for j in range(i+1,len(flowComponents)):
+			if not flowComponents[i][4] is None:
+				if flowComponents[j][0] in flowComponents[i][4]: 
+					thread1 = flowComponents[i][3][0]
+					thread2 = flowComponents[j][3][0]
+					thread1Bindings = thread1[7]
+					thread2Bindings = thread2[7]
+					if thread1Bindings[0] == thread2Bindings[0]:
+						addError(error0,"{"+str(thread1[0])+"}thread: "+thread1[1]+" on same processor than thread: "+thread2[1])
+						return False
+	return True
+
+def areFlowsInSync(flowComponents,error0):
+	# flowComponents is [(f, f.name, f.latency, [(th, th.name, th.period, th.wcet, th.deadline)]),[list of replicating], jitterToleance]
+	print("flowComponents:",flowComponents)
+	numFlows = len(flowComponents)
+	for i in range(len(flowComponents)):
+		for j in range(i+1,len(flowComponents)):
+			thread1 = flowComponents[i][3][0]
+			thread2 = flowComponents[j][3][0]
+			flow1Replicas = flowComponents[i][4]
+			jitterTolerance = flowComponents[i][5]
+			thread1Period = thread1[2]
+			thread2Period = thread2[2]
+			thread1ReplicaId = thread1[5]
+			thread2ReplicaId = thread2[5]
+			thread1ReplicaName = thread1[1]
+			thread2ReplicaName = thread2[1]
+			if not flow1Replicas is None:
+				if flowComponents[j][0] in flow1Replicas:
+					if thread1[0] != thread2[0] : #thread1ReplicaId != thread2ReplicaId:
+						if jitterTolerance < thread1Period:
+							addError(error0,"{"+str(thread1[0])+"}thread("+str(thread1[0])+").name("+thread1[1]+").replica("+thread1ReplicaName+") and thread("+str(thread2[0])+").name("+thread2[1]+").replica("+thread2ReplicaName+") out of sync by: "+str(thread1Period)+" ms")
+							return False
+	return True	
+
+def areFlowsInSync1(flowComponents,error0):
+	# flowComponents is [(f, f.name, f.latency, [(th, th.name, th.period, th.wcet, th.deadline)]),[list of replicating], jitterToleance]
+	print("flowComponents:",flowComponents)
+	for i in range(len(flowComponents)):
+		flowReplicas = flowComponents[i][4]
+		thread1 = flowComponents[i][3][0]
+		jitterTolerance = flowComponents[i][5]
+		if not flowReplicas is None:
+			for j in range(len(flowComponents)):
+				if flowComponents[j][0] in flowReplicas:
+					print("replicas: ",flowReplicas)
+					thread2 = flowComponents[j][3][0]
+					if thread1[0] != thread2[0]:
+						if jitterTolerance < thread1[2]:
+							addError(error0,"{"+str(thread1[0])+"}thread("+str(thread1[0])+").name("+thread1[1]+") and thread("+str(thread2[0])+").name("+thread2[1]+") out of sync by: "+str(thread1[2])+" ms")
+							return False
+			addError(info0,"{"+str(flowComponents[i][0])+"} end to end flow in sync with replicas")
+	return True
+						
+
+# fta in cnf = [[a,b,c],[d,e,f]] == (a or b or c) and (d or e or f)
+# each element in the inside is a real that represent a probability or occurrance of an event that together determine
+# if the failure that represents will occur
+# this function calculate the probability of the top failure occuring 
+# formula: 
+# OR Given prob of failure of leaf events a,b, if parent failure c occur if any of a or b occurs (c=(a or b))
+#    Then the failure prob: c = 1 - ((1-a) * (1-b))
+# AND Given prob of failure of leaf events d, e if parent failure f occur if both d and e occur (f= (d and e))
+#    Then the failure prob: f = (d)*(e)
+	
+def probabilityCNFFTA(fta):
+    prob = 1.0
+    for i in range(len(fta)):
+        conj = fta[i]
+        probconj = 1.0
+        for j in range(len(conj)):
+            probconj = probconj * (1.0 - conj[j])
+        prob = prob * (1.0 - probconj)
+    return prob
+        
+def probabilityCutSets(cutsets):
+    setprob=1.0
+    for i in range(len(cutsets)):
+        prob = 1.0
+        for j in range(len(cutsets[i])):
+            prob = prob * cutsets[i][j]
+        setprob = setprob * (1-prob)
+    return (1-setprob)
+    
+# set = [[1,0.5],[2,0.5]]
+# each element [id,probability of failure]
+def inSet(failingElement,set):
+    for i in range(len(set)):
+        if failingElement[0] == set[i][0]:
+            return True
+    return False
+
+# flows = [[[1,0.5],[2,0.5]],[[3,0.5],[4,0.5]]]
+# each element [id,probability of failure]
+def flowsToCutsets(flows,fid,sid,cutsets,set):
+    if fid >= len(flows):
+        cutsets.append(set)
+        return
+    set1=set.copy()
+    sid1=sid
+    for i in range(len(flows[fid])):
+        if not inSet(flows[fid][i],set1):
+            set1.append(flows[fid][i])
+        flowsToCutsets(flows,fid+1,sid1,cutsets,set1)
+        set1 = set.copy()
+        sid1 = sid1 + 1
+
+def getProbabilityOnlyCutsets(cutsets):
+    retcutsets=[]
+    for i in range(len(cutsets)):
+        set=[]
+        for j in range(len(cutsets[i])):
+            set.append(cutsets[i][j][1])
+        retcutsets.append(set)
+    return retcutsets    
+
+def isProbabilityOfFailureThresholdMet(redundantSystems,replicatedThreads, procFailureProbabilities, error0):
+	metReliability = True
+	processedReplicas = []
+	for i in range(len(redundantSystems)):
+		if (redundantSystems[i][1] != None):
+			print("reliability target:", redundantSystems[i][1])
+			redundantSysComponents = redundantSystems[i][2];
+			independentFailureProb = []
+			processedProcessors = []
+			for j in range(len(redundantSysComponents)):
+				if redundantSysComponents[j][1] != None:
+					alreadyProcessed = False
+					if not (redundantSysComponents[j][0] in processedReplicas or redundantSysComponents[j][1] in processedReplicas):
+						print(redundantSysComponents[j])
+						processedReplicas.append(redundantSysComponents[j][0])
+						processedReplicas.append(redundantSysComponents[j][1])
+						for t in range(2):
+							for l in range(len(replicatedThreads)):
+								if replicatedThreads[l][0] == redundantSysComponents[j][t]:
+									if not replicatedThreads[l][1][0][1][0] in processedProcessors:
+										processedProcessors.append(replicatedThreads[l][1][0][1][0])
+										print("looking at proc:",replicatedThreads[l][1][0][1][0])
+										for m in range(len(procFailureProbabilities)):
+											if procFailureProbabilities[m][0] == replicatedThreads[l][1][0][1][0]:
+												independentFailureProb.append(procFailureProbabilities[m][1])			
+			print("IndependentFailureProb:",independentFailureProb)
+			cnf = []
+			for r in range(len(independentFailureProb)):
+				cnf.append([independentFailureProb[r]])
+			topProbabilityFailure = probabilityCNFFTA(cnf);
+			print("Top Probability of Failure: ",topProbabilityFailure)
+			metReliability = metReliability and (redundantSystems[i][1] <= (1-topProbabilityFailure))
+	print("threads: ",replicatedThreads)	
+	print("failProbs: ",procFailureProbabilities)		
+	return metReliability
+	
+def removeSerialDuplicatedProcessors(processorProbabilityFailure):
+	cleaned = []
+	processed = []
+	for i in range(len(processorProbabilityFailure)):
+		if not processorProbabilityFailure[i][0] in processed:
+			processed.append(processorProbabilityFailure[i][0])
+			cleaned.append(processorProbabilityFailure[i])
+	return cleaned
+	
+def getSerialFailureProbabilities(cnfProcFailureProb):
+	cnftotal = []
+	for i in range(len(cnfProcFailureProb)):
+		totProb = 1.0
+		for j in range(len(cnfProcFailureProb[i])):
+			totProb *= (1-cnfProcFailureProb[i][1])
+		cnftotal.append([cnfProcFailureProb[i],(1-totalProb)])
+	return cnftotal
+
+def getPlainCNFProb(cnfProcFailureProb):
+	cnf = []
+	for i in range(len(cnfProcFailureProb)):
+		c = []
+		for j in range(len(cnfProcFailureProb[i])):
+			c.append(cnfProcFailureProb[i][j][0][1])
+		cnf.append(c)
+	return cnf			
+		
+# set = [[1,0.5],[2,0.5]]
+# each element [id,probability of failure]
+def inSet(failingElement,set):
+    for i in range(len(set)):
+        if failingElement[0] == set[i][0]:
+            return True
+    return False
+
+# flows = [[[1,0.5],[2,0.5]],[[3,0.5],[4,0.5]]]
+# each element [id,probability of failure]
+def flowsToCutsets(flows,fid,sid,cutsets,set):
+    if fid >= len(flows):
+        cutsets.append(set)
+        return
+    set1=set.copy()
+    sid1=sid
+    for i in range(len(flows[fid])):
+        if not inSet(flows[fid][i],set1):
+            set1.append(flows[fid][i])
+        flowsToCutsets(flows,fid+1,sid1,cutsets,set1)
+        set1 = set.copy()
+        sid1 = sid1 + 1
+
+def getProbabilityOnlyCutsets(cutsets):
+    retcutsets=[]
+    for i in range(len(cutsets)):
+        set=[]
+        for j in range(len(cutsets[i])):
+            set.append(cutsets[i][j][1])
+        retcutsets.append(set)
+    return retcutsets
+
+def procCNFFlows(cnf):
+	flows=[]
+	for i in range(len(cnf)):
+		flow=[]
+		for j in range(len(cnf[i])):
+			flow.append([cnf[i][j][0][0],cnf[i][j][0][1]])
+		flows.append(flow)
+	return flows
+				
+# replicatede2eflows = [e2eflow,2e2failprob,[replicatede2e1,...],[(procid,probFail)]]
+def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
+	print("rep end to end:",replicatede2eflows)
+	for i in range(len(replicatede2eflows)):
+		if replicatede2eflows[i][2] != None:
+			processorsProbabilityFailure = replicatede2eflows[i][3]
+			fflows=[]
+			fflows.append(removeSerialDuplicatedProcessors(processorsProbabilityFailure))
+			for j in range(len(replicatede2eflows)):
+				if replicatede2eflows[j][0] in replicatede2eflows[i][2]:
+					fflows.append(removeSerialDuplicatedProcessors(replicatede2eflows[j][3]))
+			flows = procCNFFlows(fflows)
+			cutsets =[]
+			flowsToCutsets(flows,0,0,cutsets,[])
+			cutsetprobonly =getProbabilityOnlyCutsets(cutsets)
+			probcutsets = probabilityCutSets(cutsetprobonly)
+			print("reliability:",(1-probcutsets))
+			print("target reliability:",replicatede2eflows[i][1])
+			if replicatede2eflows[i][1] > (1-probcutsets):
+				addError(error0,"{"+str(replicatede2eflows[i][0])+"}Reliability of replicated flow :"+str(1-probcutsets)+" lower than target: "+str(replicatede2eflows[i][1]))
+				return False
+			else:
+				addError(info0,"{"+str(replicatede2eflows[i][0])+"}Reliability of replicated flow :"+str(1-probcutsets)+" meet or exceeds its target: "+str(replicatede2eflows[i][1]))
+	return True
+
+`}
+
+	domain synchronization {
+		queries
+			val e2es = root.allEndToEndFlows;
+			val e2eCount = e2es.size;
+			val connections = root.allConnections;
+			val connectionTiming = connections.map { c -> c#Timing };
+			val connectionNames = connections.map { c -> c.name };
+			val connCount = connections.size;
+			val flowComponents = e2es
+														.map { f -> 
+															val latency = f#Latency.map { l -> l.maximum }.map { l -> l.scaledTo(ms) };
+															val replicating = f#ReplicationProperties::ValueReplicas;
+															val jitterTol = f#ReplicationProperties::ReplicaStartJitterTolerance.map{ r ->r.scaledTo(ms)};
+															val ts = f.components
+																				.filter { c -> c.isThread }
+																				.map { t -> 
+																					val period = t#Period.map { v -> v.scaledTo(ms)};
+																					val wcet = t#Compute_Execution_Time.map {cet -> cet.maximum.scaledTo(ms)};
+																					val deadline = t#Deadline.map { v -> v.scaledTo(ms)};
+																					val replicaid = t#ReplicationProperties::ReplicaThreadID;
+																					val replicaName = t#ReplicationProperties::ReplicaThreadName;
+																					val p = t#Actual_Processor_Binding;
+																					val proc = p.map{ x -> x.map{ y -> y}};
+																					(t, t.name, period, wcet, deadline,replicaid,replicaName,p)
+																				};
+															(f, f.name, latency, ts,replicating,jitterTol)
+													};
+		declarations 
+			'''
+			E2ESamplingJitter = IntVector('e2eresponse', ${e2eCount$})
+			E2ESamplingJitterTolerance = IntVector('e2elantency', ${e2eCount$})
+			E2EResponses = IntVector('e2eresponse', ${e2eCount$})
+			E2ELatencies = IntVector('e2elantency', ${e2eCount$})
+			DelayedConnections = BoolVector('delayconnection', ${connCount$})
+			'''
+	}
+
+	domain schedulability {
+		queries
+			val threads = root.allSubcomponents.filter { 
+				s -> s.isThread
+			};
+			val names = threads.map {
+				t-> t.name
+			};
+			val periods = threads.map {
+				t -> t#Period.map {
+					p -> p.scaledTo(ms)
+				}
+			};
+			val priorities = threads.map {
+				t -> t#Priority
+			};
+			val deadlines = threads.map {
+				t -> t#Deadline.map {
+					p -> p.scaledTo(ms)
+				}
+			};
+			val wcets = threads.map {
+				t -> t#Compute_Execution_Time.map {
+					cet -> cet.maximum.scaledTo(ms)
+				}
+			};
+			val protocols = threads.map {
+				t -> t#Dispatch_Protocol
+			};
+			-- only threads in flows?
+			val threadCount = root.allSubcomponents.map{t -> t.isThread}.size;
+			val threadToProcessorBindings = threads.map { t -> (t, t.name, t#Actual_Processor_Binding) };
+			val boundThreads = root.allSubcomponents
+					.filter { s -> s.isProcessor }
+					.map { p -> 
+							val ts = p.processorBindingSources
+									.filter { s -> s.isThread }
+									.map { t ->
+											val period = t#Period.map { v -> v.scaledTo(ms)};
+											val wcet = t#Compute_Execution_Time.map {cet -> cet.maximum.scaledTo(ms)};
+											val prio = t#Priority;
+											val deadline = t#Deadline.map { v -> v.scaledTo(ms)};
+											(t, t.name, period, wcet, prio, deadline)
+									};
+							(p, p.name, ts)
+					};
+			
+		declarations 
+			'''
+			Deadlines = IntVector('deadline', ${threadCount$})
+			Responses = IntVector('response', ${threadCount$})
+			Priorities = IntVector('priority', ${threadCount$})
+			SelfSuspendings = BoolVector('selfSuspending', ${threadCount$})
+			Periods = IntVector('period', ${threadCount$})	
+			Periodics = BoolVector('periodic', ${threadCount$})
+			RESPONSETIME_SHORTER_DEADLINES = And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])
+			'''
+	}
+
+	domain reliability {
+		queries
+			val replicatede2es = root.allEndToEndFlows.map{e->
+				val reps = e#ReplicationProperties::Replicating;
+				val probTarget = e#ReplicationProperties::ReliabilityTarget;
+				val failProbs = e.components.filter { c -> c.isThread }.map { t ->
+					val procs = t#Actual_Processor_Binding;
+					val proc = procs.map{p1->p1.map{p2->
+					val probFail = p2#ReplicationProperties::FailureProbability;
+					(p2,probFail)
+					}};
+					proc
+				}; 
+				(e,probTarget,reps,failProbs)
+			};
+			val redundantSystems = root.allSubcomponents.map{s -> 
+				val reliabilityTarget = s#FailureProbabilities::ReliabilityTarget;
+				val replicatedComponents = s.allSubcomponents.map{b -> 
+					val replicaprocesses = b#FailureProbabilities::Replicating;
+					(b,replicaprocesses)
+				};
+				(s, reliabilityTarget,replicatedComponents)
+			};
+			val redundantSystemsCount = redundantSystems.size;
+			val replicatedThreads = root.allSubcomponents.
+				filter{c->c.isProcess}.
+				map{p->
+					val threads = p.allSubcomponents.filter{c1->c1.isThread}.
+						map{t->
+							val proc = t#Actual_Processor_Binding.map{p1->p1};
+							val prob = proc.map{p1->p1.map{p2->p2#FailureProbabilities::FailureProbability}};
+							(t,proc,prob)
+						};
+					(p,threads)
+					};
+			val procFailureProbabilities = root.allSubcomponents.filter{c->c.isProcessor}.map{
+					pr->
+					val fprob = pr#FailureProbabilities::FailureProbability;
+					(pr,fprob)
+				};
+		declarations 
+			'''
+			Reliability = RealVector('Reliability',${redundantSystemsCount$})
+			ReliabiiltyTarget = RealVector('ReliabilityTarget',${redundantSystemsCount$})
+			'''
+	}
+
+	contract ReliabilityContract {
+		domains
+			reliability;
+		guarantee
+			<=> `And([Reliability[i]>=ReliabiiltyTarget[i] for i in range(len(Reliability))])`;
+		analysis
+--			'''isProbabilityOfFailureThresholdMet(${redundantSystems$},${replicatedThreads$},${procFailureProbabilities$},error0)''';
+			'''isE2EFlowProbabilityOfFailureMet(${replicatede2es$},error0)''';			
+	}
+	
+	contract areConnectionsDelayedContract {
+		domains
+			schedulability;
+			synchronization;
+		guarantee
+			<=> `And([DelayedConnections[i] for i in range(len(DelayedConnections))])`;
+		analysis
+			'''areConnectionsDelayed(${synchronization::connections$}, ${synchronization::connectionTiming$}, ${synchronization::connectionNames$},error0)''';
+	}	
+	
+	contract fpResponseTimeContract {
+		domains
+			schedulability;
+		queries
+		input assumptions
+			'''areAllPrioritiesSet(${boundThreads$},${priorities$}, ${names$},error0)''';
+		assumptions
+			'''areAllDeadlinesConstrained(${threads$},${periods$}, ${deadlines$}, ${names$},error0)''';
+			'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
+			`True` => `Not(Or([SelfSuspendings[i] for i in range(len(SelfSuspendings))]))`;
+		guarantee
+			<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+		invocation
+			'''isResponseTimeSchedulable(${boundThreads$},error0)''';
+	}
+	
+	contract RMPrioritiesContract {
+		domains
+			schedulability;
+		input assumptions
+			'''areAllPrioritiesSet(${boundThreads$},${priorities$}, ${names$},error0)''';			
+		guarantee
+			<=>`And([(Periods[i]<Periods[j]) == (Priorities[i]>Priorities[j]) for i in range(len(Periods)-1) for j in range(i+1,len(Periods))])`;
+		analysis
+			'''arePrioritiesRM(${boundThreads$},error0)''';	
+	}
+	
+	contract RMAHarmonicBoundContract {
+		domains
+			schedulability;
+		assumptions
+			--'''arePrioritiesRM(${boundThreads$},error0)''';
+--			contract RMPrioritiesContract;
+			'''areAllDeadlinesImplicit(${threads$}, ${periods$},${deadlines$},${names$},error0)''';
+			'''arePeriodsHarmonic(${boundThreads$},error0)''';
+			'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
+		guarantee
+			<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+		analysis
+			'''allProcessorHarmonicBoundSchedulable(${boundThreads$},error0)''';
+	}
+
+	contract RMANonHarmonicBoundContract {
+		domains
+			schedulability;
+		assumptions
+			--'''arePrioritiesRM(${boundThreads$},error0)''';
+--			contract RMPrioritiesContract;
+			'''areAllDeadlinesImplicit(${threads$},${periods$},${deadlines$},${names$},error0)''';
+			'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
+		guarantee
+			<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+		analysis
+			'''allProcessorNonHarmonicBoundSchedulable(${boundThreads$},error0)''';
+	}
+
+	argument schedulabilityArgument {
+		domains
+			schedulability;
+		guarantee
+			--<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+			<=> `RESPONSETIME_SHORTER_DEADLINES`;
+		argument
+			and(
+--				contract RMPrioritiesContract
+				or(
+				contract RMAHarmonicBoundContract
+				contract RMANonHarmonicBoundContract
+				)
+				--contract fpResponseTimeContract
+			);
+	}
+	
+	contract EndToEndDelayedCommunicationContract {
+		domains
+			schedulability;
+		queries
+		input assumptions
+			'''areEndToEndLatenciesInputDataComplete(${threads$}, ${periods$}, ${wcets$}, ${deadlines$}, ${names$}, error0)''';
+		assumptions
+			contract areConnectionsDelayedContract;
+			'''areAllThreadsPeriodic(${threads$}, ${protocols$}, ${names$},error0)''' 
+				=> `And([Periodics[i] for i in range(len(Periodics))])`;
+			'''areAllDeadlinesConstrained(${threads$},${periods$}, ${deadlines$}, ${names$},error0)''' 
+				=> `And([Deadlines[i] <= Periods[i] for i in range(len(Deadlines))])`;
+			argument schedulabilityArgument;
+		guarantee
+			<=> `And([E2EResponses[i] <= E2ELatencies[i] for i in range(len(E2EResponses))])`;
+		analysis
+			'''meetEndToEndLatencies(${synchronization::flowComponents$},error0)''';
+	}
+
+	contract SamplingSynchronizationContract {
+		domains
+			synchronization;
+		queries
+		input assumptions
+		assumptions
+			'''areReplicasOnIndependentProcessors(${synchronization::flowComponents$},error0)''';
+		guarantee
+			<=> `And([E2ESamplingJitter[i] <= E2ESamplingJitterTolerance[i] for i in range(len(E2ESamplingJitter))])`;
+		analysis
+			'''areFlowsInSync1(${synchronization::flowComponents$},error0)''';
+	}
+
+	contract SamplingSynchronizationWithSharedProcessorsContract {
+		domains
+			synchronization;
+		queries
+		guarantee
+			<=> `And([E2ESamplingJitter[i] <= E2ESamplingJitterTolerance[i] for i in range(len(E2ESamplingJitter))])`;
+		analysis
+			'''areFlowsInSync1(${synchronization::flowComponents$},error0)''';
+	}
+**};
+end Scenario2AContracts;
