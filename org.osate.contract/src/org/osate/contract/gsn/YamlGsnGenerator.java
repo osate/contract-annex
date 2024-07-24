@@ -295,7 +295,9 @@ public final class YamlGsnGenerator {
 		var template = new ST("""
 				%name%:
 				  text: %name%
-				  nodeType: Solution""", '%', '%');
+				  nodeType: Solution
+				  url: eclipse+command://org.osate.contract.uriHandler.GSNURIMarker?org.osate.contract.uriHandler.GSNURIMarker.analysisName=%name%""",
+				'%', '%');
 		template.add("name", name);
 		return template.render();
 	}
