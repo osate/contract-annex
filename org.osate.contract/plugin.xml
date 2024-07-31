@@ -40,6 +40,11 @@
             uriSchemeDescription="uri marker handler"
             uriScheme="eclipse+com">
       </uriSchemeHandler>
+      <uriSchemeHandler
+            class="org.osate.contract.uriHandler.GSNMarkerUriSchemeHandler"
+            uriScheme="eclipse+gsnmarker"
+            uriSchemeDescription="GSN Markers">
+      </uriSchemeHandler>
    </extension>
    	<extension
 		point="org.eclipse.ui.commands">
