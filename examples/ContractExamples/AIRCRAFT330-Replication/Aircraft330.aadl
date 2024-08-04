@@ -948,8 +948,8 @@ public
 			Period => 100 ms applies to rep3.mon.compProc.compThread;
 			Period => 100 ms applies to rep3.mon.validatorProc.validatorThread;
 
-			Priority => 1 applies to rep3.com.compProc.compThread;
-			Priority => 2 applies to rep3.com.validatorProc.validatorThread;
+			Priority => 2 applies to rep3.com.compProc.compThread;
+			Priority => 1 applies to rep3.com.validatorProc.validatorThread;
 			Priority => 1 applies to rep3.mon.compProc.compThread;
 			Priority => 1 applies to rep3.mon.validatorProc.validatorThread;
 
