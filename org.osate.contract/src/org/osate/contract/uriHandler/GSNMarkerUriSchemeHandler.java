@@ -30,6 +30,7 @@ public class GSNMarkerUriSchemeHandler implements IUriSchemeHandler {
 								if (marker.getAttribute(IMarker.MESSAGE) instanceof String message
 										&& message.contains(analysisName)) {
 									MarkerViewUtil.showMarker(page, marker, true);
+									break;
 								}
 							}
 						} catch (CoreException e) {
