@@ -14,6 +14,7 @@ import org.eclipse.ui.views.markers.MarkerViewUtil;
 import org.eclipse.urischeme.IUriSchemeHandler;
 
 public class GSNMarkerUriSchemeHandler implements IUriSchemeHandler {
+	@Override
 	public void handle(String uri) {
 		var analysisName = URI.create(uri).getHost();
 		if (analysisName != null) {
