@@ -1,0 +1,8 @@
+property set QueueingProperties is
+	NumberOfThreads: aadlinteger applies to (thread group);
+	ArrivalRate: aadlreal applies to (feature, connection,thread group);
+	ServiceRate: aadlreal applies to (thread, thread group);
+	MaxQueueCapacity: aadlinteger applies to (thread group);
+	MaxTimeInSystem: aadlreal applies to (thread group);
+	MaxTimeWaiting: aadlreal applies to (thread group); 
+end QueueingProperties;

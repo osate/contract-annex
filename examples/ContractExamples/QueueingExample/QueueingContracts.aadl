@@ -1,0 +1,123 @@
+package QueueingContracts
+public
+	annex contract {**
+	contract implementation ReliabilityContract {`
+import math
+
+def addError(error,msg):
+	error[0]+="|"+msg
+
+def getp0(mu,lambd, nservers):
+    rho = lambd/mu
+    p0=0
+    for i in range(nservers):
+        p0 += (rho ** i)/(math.factorial(i))
+    p0 += ((rho**nservers)/math.factorial(nservers))*(nservers*mu/(nservers*mu - lambd))
+    p0 = 1/p0
+    return p0
+
+def getUtilization(mu,lambd,nservers):
+    return lambd / (nservers*mu)
+
+def getNumJobsInQueue(p0,rho,nservers):
+    return p0*(rho**(nservers+1))/((math.factorial(nservers-1)*((nservers-rho)**2)))
+
+def getTimeWaitingInQueue(jobsInQueue,lambd):
+    return jobsInQueue/lambd
+
+def getTimeInSystem(timeInQueue,mu):
+    return timeInQueue+ (1/mu)
+
+def getNumJobsInSystem(timeInSystem,lambd):
+    return timeInSystem * lambd
+
+def getMMsProperties(lambd,mu,nservers):
+    rho = lambd/mu
+    if rho >= 1:
+        return 0,0,0,0,0
+    p0 = getp0(mu,lambd,nservers)
+    util = getUtilization(mu,lambd,nservers)
+    jobsInQueue = getNumJobsInQueue(p0,rho,nservers)
+    timeWaitingInQueue = getTimeWaitingInQueue(jobsInQueue,lambd)
+    timeInSystem = getTimeInSystem(timeWaitingInQueue,mu)
+    jobsInSystem = getNumJobsInSystem(timeInSystem,lambd)
+    return util,jobsInQueue,timeWaitingInQueue,timeInSystem,jobsInSystem
+    
+def doServersMeetCapacityRequirementsMMQs(threadGroups):
+	print(threadGroups)
+	meetRequirements = True
+	for i in range(len(threadGroups)):
+		lambd = threadGroups[i][1]
+		mu = threadGroups[i][2][0][1]
+		nservers = len(threadGroups[i][2])
+		maxQueue = threadGroups[i][3]
+		maxWaiting = threadGroups[i][4]
+		maxInSystem = threadGroups[i][5]
+		util,jobsInQueue,timeInQueue,timeInSystem,jobInSystem = getMMsProperties(lambd,mu,nservers)
+		if jobsInQueue > maxQueue:
+			meetRequirements = False
+			addError(error0,"{"+str(threadGroups[i][0])+"} thread group average queue("+str(jobsInQueue)+") larger than max("+str(maxQueue)+")")
+		else:
+			addError(info0,"{"+str(threadGroups[i][0])+"} thread group average queue("+str(jobsInQueue)+") meet max("+str(maxQueue)+") limit")			
+		if timeInQueue > maxWaiting:
+			meetRequirements = False
+			addError(error0,"{"+str(threadGroups[i][0])+"} thread group time in queue("+str(timeInQueue)+") larger than max("+str(maxWaiting)+")")
+		else:
+			addError(info0,"{"+str(threadGroups[i][0])+"} thread group time in queue("+str(timeInQueue)+") meet max("+str(maxWaiting)+") limit")			
+		if timeInSystem > maxInSystem:
+			meetRequirements = False
+			addError(error0,"{"+str(threadGroups[i][0])+"} thread group time in system("+str(timeInQueue)+") larger than max("+str(maxInSystem)+")")
+		else:
+			addError(info0,"{"+str(threadGroups[i][0])+"} thread group time in system("+str(timeInQueue)+") meet max("+str(maxInSystem)+") limit")		
+	return meetRequirements
+		
+`}
+
+	domain queueing{
+		queries
+			val threadGroups = root.allSubcomponents.filter{c->c.isThreadGroup}.map{tg->
+				val threads = tg.allSubcomponents.map{t->
+					val mu = t#QueueingProperties::ServiceRate;
+					(t,mu)
+				};
+				val arrivalrate = tg#QueueingProperties::ArrivalRate;
+				val maxQueue = tg#QueueingProperties::MaxQueueCapacity;
+				val maxWaiting = tg#QueueingProperties::MaxTimeWaiting;
+				val maxTimeInSystem = tg#QueueingProperties::MaxTimeInSystem;
+				(tg,arrivalrate,threads,maxQueue,maxWaiting,maxTimeInSystem)
+			};
+			val tgSize = threadGroups.size;
+		declarations 
+			'''
+			MaxQueueSize= IntVector('MaxQueueSize',${tgSize$})
+			QueueSize = IntVector('QueueSize',${tgSize$})
+			MaxWaiting= IntVector('MaxWaiting',${tgSize$})
+			Waiting= IntVector('Waiting',${tgSize$})
+			MaxInSystem= IntVector('MaxInSystem',${tgSize$})
+			InSystem= IntVector('InSystem',${tgSize$})		
+			'''			
+	}
+	
+	contract QueueingContract {
+		domains
+			queueing;
+		guarantee
+			<=> `And([QueueSize[i]>=MaxQueueSize[i] for i in range(len(QueueSize))],)`;	
+		analysis
+			'''doServersMeetCapacityRequirementsMMQs(${threadGroups$})''';
+	}
+	
+	verification plan verifyQueueingCapacity {
+		component
+			s: QueueingExample::main.i;
+		domains
+			queueing;
+		claims
+			`And([QueueSize[i]>=MaxQueueSize[i] for i in range(len(QueueSize))],)`;		
+		contracts
+			QueueingContract;
+	} 
+	
+**};
+
+end QueueingContracts;

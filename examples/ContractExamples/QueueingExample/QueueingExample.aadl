@@ -1,0 +1,77 @@
+package QueueingExample
+public
+	with QueueingProperties;
+	
+	process sprocess
+		features
+			inrequests: in event data port;
+	end sprocess;
+	
+	thread group servers
+		features
+			inrequests: in event data port;
+	end servers;
+	
+	thread server
+		features
+			inrequests: in event data port;
+	end server;
+	
+	thread group implementation servers.i
+		subcomponents
+			t1: thread server;
+			t2: thread server;
+			t3: thread server;
+		connections
+			c1: port inrequests->t1.inrequests;
+			c2: port inrequests->t2.inrequests;
+			c3: port inrequests->t3.inrequests;
+	end servers.i;
+	
+	process implementation sprocess.i
+		subcomponents
+			tg: thread group servers.i;
+		connections
+			c1: port inrequests->tg.inrequests;
+	end sprocess.i;
+	
+	process cprocess
+		features
+			outrequests: out event data port;
+	end cprocess;
+	
+	thread clients
+		features
+			outrequests: out event data port;
+	end clients;
+	
+	process implementation cprocess.i
+		subcomponents
+			t1: thread clients;
+		connections
+			c1: port t1.outrequests->outrequests;
+	end cprocess.i;
+	
+	system main
+	end main;
+	
+	system implementation main.i
+		subcomponents
+			server: process sprocess.i;
+			clients: process cprocess.i;
+		connections
+			c1: port clients.outrequests->server.inrequests;
+		properties
+			QueueingProperties::ArrivalRate => 0.6 applies to server.tg; -- items per second
+			QueueingProperties::MaxTimeWaiting => 5.0 applies to server.tg;
+			QueueingProperties::MaxQueueCapacity => 10 applies to server.tg;
+			QueueingProperties::MaxTimeInSystem => 6.0 applies to server.tg;
+			QueueingProperties::ServiceRate => 0.8 applies to server.tg.t1;
+			QueueingProperties::ServiceRate => 0.8 applies to server.tg.t2;
+			QueueingProperties::ServiceRate => 0.8 applies to server.tg.t3;
+		annex contract {**
+			verify QueueingContracts::verifyQueueingCapacity;
+		**};			
+			
+	end main.i;
+end QueueingExample;
