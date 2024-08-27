@@ -1,18 +1,19 @@
 package org.osate.contract.evaluation.ui;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
@@ -27,7 +28,6 @@ import org.osate.contract.gsn.YamlFolder;
 import org.osate.contract.gsn.YamlGsnGenerator;
 
 public class GenerateYamlGsnHandler extends AbstractHandler {
-	String pathtoYaml = "";
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		var node = (EObjectNode) HandlerUtil.getCurrentStructuredSelection(event).getFirstElement();
@@ -38,85 +38,102 @@ public class GenerateYamlGsnHandler extends AbstractHandler {
 		});
 		var yamlFolder = generatedYaml.folder();
 		var folderPath = generatedYaml.project().getFullPath().append("yaml-gen").append(yamlFolder.name());
-		pathtoYaml = "";
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).run(true, true, new WorkspaceModifyOperation() {
 				@Override
 				protected void execute(IProgressMonitor monitor)
 						throws CoreException, InvocationTargetException, InterruptedException {
-					var subMonitor = SubMonitor.convert(monitor, "Generating YAML-GSN", yamlFolder.files().size() + 1);
+					var subMonitor = SubMonitor.convert(monitor, "Generating YAML-GSN", yamlFolder.files().size() + 4);
 					var folder = new ContainerGenerator(folderPath).generateContainer(subMonitor.split(1));
+					subMonitor.setWorkRemaining(folder.members().length + yamlFolder.files().size() + 2);
+
+					for (var member : folder.members()) {
+						member.delete(false, subMonitor.split(1));
+					}
+
+					var yamlIFolder = folder.getFolder(new Path("yaml"));
+					yamlIFolder.create(false, true, subMonitor.split(1));
 
 					for (var yamlFile : yamlFolder.files()) {
-						var file = folder.getFile(new Path(yamlFile.name()));
-
-						// Dio: for temporal the yaml compilation
-						if (pathtoYaml.length() == 0) {
-							pathtoYaml = file.getParent().getRawLocation().toOSString();
-						}
-						// Dio: end of yaml compilation piece
-
+						var file = yamlIFolder.getFile(new Path(yamlFile.name()));
 						var stream = new ByteArrayInputStream(yamlFile.contents().getBytes());
-						if (file.exists()) {
-							file.setContents(stream, false, true, subMonitor.split(1));
-						} else {
-							file.create(stream, false, subMonitor.split(1));
-						}
+						file.create(stream, false, subMonitor.split(1));
 					}
+
+					try {
+						String commandName;
+						Process process;
+						/*
+						 * First try calling gsn2x. If that doesn't work, then try calling gsn2x-Linux, gsn2x-macOS, or
+						 * gsn2x-Windows.
+						 */
+						try {
+							commandName = "gsn2x";
+							process = callGsn2x(commandName, yamlFolder, yamlIFolder);
+						} catch (IOException e) {
+							/*
+							 * Assume that an IOException means that gsn2x isn't available. Go ahead and try
+							 * gsn2x-Linux, gsn2x-macOS, or gsn2x-Windows.
+							 */
+							commandName = getOSBasedCommandName();
+							if (commandName != null) {
+								process = callGsn2x(commandName, yamlFolder, yamlIFolder);
+							} else {
+								throw new IOException("OS not supported by gsn2x: " + System.getProperty("os.name"));
+							}
+						}
+						var exitCode = process.waitFor();
+						if (exitCode != 0) {
+							var message = new StringBuilder(
+									commandName + " returned exit code " + exitCode + ":" + System.lineSeparator());
+							process.inputReader()
+									.lines()
+									.forEach(line -> message.append("  " + line + System.lineSeparator()));
+							throw new IOException(message.toString());
+						}
+					} catch (IOException e) {
+						throw new InvocationTargetException(e);
+					}
+
+					folder.refreshLocal(IResource.DEPTH_INFINITE, subMonitor.split(1));
 				}
 			});
 		} catch (InvocationTargetException e) {
-			var status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error while generating YAML-GSN.",
-					e.getTargetException());
+			var status = Status.error("Error while generating YAML-GSN.", e.getTargetException());
 			StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
 		} catch (InterruptedException e) {
 		}
-
-		/**
-		 * Dio: This is a temporary call to compile the yaml files.
-		 * It should be replaced by the proper one
-		 */
-		try {
-			// folderPath contains the path where all the yaml files are located
-			String osname = System.getProperty("os.name");
-
-			if (osname.equalsIgnoreCase("LINUX")) {
-				ProcessBuilder pb = new ProcessBuilder("sh", "-c", "gsn2x *.yaml");
-
-				String abspath = pathtoYaml;
-
-				pb.directory(new File(abspath));
-				Process process = pb.start();
-
-				StringBuilder output = new StringBuilder();
-				BufferedReader reader
-				= new BufferedReader(new InputStreamReader(
-						process.getInputStream()));
-
-				String line;
-				while ((line = reader.readLine()) != null) {
-					output.append(line + "\n");
-				}
-
-				int exitVal = process.waitFor();
-				if (exitVal == 0) {
-					System.out.println(" --- GSN2X SVG GENERATION PROCESS OUTPUT ---");
-					System.out.println(output);
-				} else {
-					System.out.println("gsn2x svg generation process error: "+exitVal);
-				}
-			} else {
-				System.out.println("Could not compile yaml files. Feature only enabled in Linux. Now running on:"+osname);
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-
-		/**
-		 * Dio: End of yaml -> svg generation
-		 */
-
 		return null;
+	}
+
+	private static Process callGsn2x(String commandName, YamlFolder yamlFolder, IContainer folder) throws IOException {
+		var command = new ArrayList<String>();
+		command.add(commandName);
+		command.add("-o");
+		command.add(".." + File.separatorChar + "svg");
+		for (var yamlFile : yamlFolder.files()) {
+			command.add(yamlFile.name());
+		}
+		return new ProcessBuilder(command).directory(new File(folder.getRawLocation().toOSString()))
+				.redirectErrorStream(true)
+				.start();
+	}
+
+	private static String getOSBasedCommandName() {
+		var osName = System.getProperty("os.name").toLowerCase();
+		String osPostfix = null;
+		if (osName.contains("linux")) {
+			osPostfix = "Linux";
+		} else if (osName.contains("mac")) {
+			osPostfix = "macOS";
+		} else if (osName.contains("windows")) {
+			osPostfix = "Windows";
+		}
+		if (osPostfix != null) {
+			return "gsn2x-" + osPostfix;
+		} else {
+			return null;
+		}
 	}
 
 	private record GeneratedYAML(IProject project, YamlFolder folder) {
