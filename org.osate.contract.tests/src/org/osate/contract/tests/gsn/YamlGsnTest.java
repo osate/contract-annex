@@ -324,7 +324,8 @@ public class YamlGsnTest {
 
 					isHarmonicBoundSchedulable:
 					  text: isHarmonicBoundSchedulable
-					  nodeType: Solution""";
+					  nodeType: Solution
+					  url: eclipse+gsnmarker://isHarmonicBoundSchedulable""";
 			assertEquals(expected, file.contents());
 		});
 	}
@@ -359,14 +360,17 @@ public class YamlGsnTest {
 					withoutParens:
 					  text: withoutParens
 					  nodeType: Solution
+					  url: eclipse+gsnmarker://withoutParens
 
 					withParens:
 					  text: withParens
 					  nodeType: Solution
+					  url: eclipse+gsnmarker://withParens
 
 					withParameters:
 					  text: withParameters
-					  nodeType: Solution""";
+					  nodeType: Solution
+					  url: eclipse+gsnmarker://withParameters""";
 			assertEquals(expected, file.contents());
 		});
 	}
@@ -698,10 +702,12 @@ public class YamlGsnTest {
 					analysis1:
 					  text: analysis1
 					  nodeType: Solution
+					  url: eclipse+gsnmarker://analysis1
 
 					analysis2:
 					  text: analysis2
-					  nodeType: Solution""";
+					  nodeType: Solution
+					  url: eclipse+gsnmarker://analysis2""";
 			assertEquals(expected, file.contents());
 		});
 		with(folder.files().get(2), file -> {
@@ -714,7 +720,8 @@ public class YamlGsnTest {
 
 					analysis4:
 					  text: analysis4
-					  nodeType: Solution""";
+					  nodeType: Solution
+					  url: eclipse+gsnmarker://analysis4""";
 			assertEquals(expected, file.contents());
 		});
 		with(folder.files().get(3), file -> {
@@ -722,7 +729,8 @@ public class YamlGsnTest {
 			var expected = """
 					analysis3:
 					  text: analysis3
-					  nodeType: Solution""";
+					  nodeType: Solution
+					  url: eclipse+gsnmarker://analysis3""";
 			assertEquals(expected, file.contents());
 		});
 	}
@@ -756,7 +764,8 @@ public class YamlGsnTest {
 
 					isEdfDBFSchedulable:
 					  text: isEdfDBFSchedulable
-					  nodeType: Solution""";
+					  nodeType: Solution
+					  url: eclipse+gsnmarker://isEdfDBFSchedulable""";
 			assertEquals(expected, file.contents());
 		});
 	}
