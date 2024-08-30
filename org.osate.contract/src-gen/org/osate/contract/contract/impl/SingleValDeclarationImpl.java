@@ -39,6 +39,7 @@ import org.osate.contract.contract.ContractPackage;
 import org.osate.contract.contract.Expression;
 import org.osate.contract.contract.Query;
 import org.osate.contract.contract.SingleValDeclaration;
+import org.osate.contract.contract.TypeAnnotation;
 
 /**
  * <!-- begin-user-doc -->
@@ -49,6 +50,7 @@ import org.osate.contract.contract.SingleValDeclaration;
  * </p>
  * <ul>
  *   <li>{@link org.osate.contract.contract.impl.SingleValDeclarationImpl#getValue <em>Value</em>}</li>
+ *   <li>{@link org.osate.contract.contract.impl.SingleValDeclarationImpl#getType <em>Type</em>}</li>
  * </ul>
  *
  * @generated
@@ -64,6 +66,16 @@ public class SingleValDeclarationImpl extends NamedElementImpl implements Single
    * @ordered
    */
   protected Expression value;
+
+  /**
+   * The cached value of the '{@link #getType() <em>Type</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getType()
+   * @generated
+   * @ordered
+   */
+  protected TypeAnnotation type;
 
   /**
    * <!-- begin-user-doc -->
@@ -142,12 +154,64 @@ public class SingleValDeclarationImpl extends NamedElementImpl implements Single
    * @generated
    */
   @Override
+  public TypeAnnotation getType()
+  {
+    return type;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetType(TypeAnnotation newType, NotificationChain msgs)
+  {
+    TypeAnnotation oldType = type;
+    type = newType;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ContractPackage.SINGLE_VAL_DECLARATION__TYPE, oldType, newType);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setType(TypeAnnotation newType)
+  {
+    if (newType != type)
+    {
+      NotificationChain msgs = null;
+      if (type != null)
+        msgs = ((InternalEObject)type).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ContractPackage.SINGLE_VAL_DECLARATION__TYPE, null, msgs);
+      if (newType != null)
+        msgs = ((InternalEObject)newType).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ContractPackage.SINGLE_VAL_DECLARATION__TYPE, null, msgs);
+      msgs = basicSetType(newType, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.SINGLE_VAL_DECLARATION__TYPE, newType, newType));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
     switch (featureID)
     {
       case ContractPackage.SINGLE_VAL_DECLARATION__VALUE:
         return basicSetValue(null, msgs);
+      case ContractPackage.SINGLE_VAL_DECLARATION__TYPE:
+        return basicSetType(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -164,6 +228,8 @@ public class SingleValDeclarationImpl extends NamedElementImpl implements Single
     {
       case ContractPackage.SINGLE_VAL_DECLARATION__VALUE:
         return getValue();
+      case ContractPackage.SINGLE_VAL_DECLARATION__TYPE:
+        return getType();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -180,6 +246,9 @@ public class SingleValDeclarationImpl extends NamedElementImpl implements Single
     {
       case ContractPackage.SINGLE_VAL_DECLARATION__VALUE:
         setValue((Expression)newValue);
+        return;
+      case ContractPackage.SINGLE_VAL_DECLARATION__TYPE:
+        setType((TypeAnnotation)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -198,6 +267,9 @@ public class SingleValDeclarationImpl extends NamedElementImpl implements Single
       case ContractPackage.SINGLE_VAL_DECLARATION__VALUE:
         setValue((Expression)null);
         return;
+      case ContractPackage.SINGLE_VAL_DECLARATION__TYPE:
+        setType((TypeAnnotation)null);
+        return;
     }
     super.eUnset(featureID);
   }
@@ -214,6 +286,8 @@ public class SingleValDeclarationImpl extends NamedElementImpl implements Single
     {
       case ContractPackage.SINGLE_VAL_DECLARATION__VALUE:
         return value != null;
+      case ContractPackage.SINGLE_VAL_DECLARATION__TYPE:
+        return type != null;
     }
     return super.eIsSet(featureID);
   }

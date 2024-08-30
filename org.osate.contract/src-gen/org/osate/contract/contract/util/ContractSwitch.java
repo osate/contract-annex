@@ -239,6 +239,13 @@ public class ContractSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case ContractPackage.TYPE_ANNOTATION:
+      {
+        TypeAnnotation typeAnnotation = (TypeAnnotation)theEObject;
+        T result = caseTypeAnnotation(typeAnnotation);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case ContractPackage.EXPRESSION:
       {
         Expression expression = (Expression)theEObject;
@@ -367,6 +374,46 @@ public class ContractSwitch<T> extends Switch<T>
         T result = caseTupleDeclaration(tupleDeclaration);
         if (result == null) result = caseQuery(tupleDeclaration);
         if (result == null) result = caseElement(tupleDeclaration);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ContractPackage.OPTIONAL_TYPE_ANNOTATION:
+      {
+        OptionalTypeAnnotation optionalTypeAnnotation = (OptionalTypeAnnotation)theEObject;
+        T result = caseOptionalTypeAnnotation(optionalTypeAnnotation);
+        if (result == null) result = caseTypeAnnotation(optionalTypeAnnotation);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ContractPackage.SIMPLE_TYPE_ANNOTATION:
+      {
+        SimpleTypeAnnotation simpleTypeAnnotation = (SimpleTypeAnnotation)theEObject;
+        T result = caseSimpleTypeAnnotation(simpleTypeAnnotation);
+        if (result == null) result = caseTypeAnnotation(simpleTypeAnnotation);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ContractPackage.GENERIC_TYPE_ANNOTATION:
+      {
+        GenericTypeAnnotation genericTypeAnnotation = (GenericTypeAnnotation)theEObject;
+        T result = caseGenericTypeAnnotation(genericTypeAnnotation);
+        if (result == null) result = caseTypeAnnotation(genericTypeAnnotation);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION:
+      {
+        GenericPropertyTypeAnnotation genericPropertyTypeAnnotation = (GenericPropertyTypeAnnotation)theEObject;
+        T result = caseGenericPropertyTypeAnnotation(genericPropertyTypeAnnotation);
+        if (result == null) result = caseTypeAnnotation(genericPropertyTypeAnnotation);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ContractPackage.TUPLE_TYPE_ANNOTATION:
+      {
+        TupleTypeAnnotation tupleTypeAnnotation = (TupleTypeAnnotation)theEObject;
+        T result = caseTupleTypeAnnotation(tupleTypeAnnotation);
+        if (result == null) result = caseTypeAnnotation(tupleTypeAnnotation);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -720,6 +767,22 @@ public class ContractSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Type Annotation</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Type Annotation</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseTypeAnnotation(TypeAnnotation object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Expression</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -971,6 +1034,86 @@ public class ContractSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseTupleDeclaration(TupleDeclaration object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Optional Type Annotation</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Optional Type Annotation</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseOptionalTypeAnnotation(OptionalTypeAnnotation object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Simple Type Annotation</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Simple Type Annotation</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSimpleTypeAnnotation(SimpleTypeAnnotation object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Generic Type Annotation</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Generic Type Annotation</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseGenericTypeAnnotation(GenericTypeAnnotation object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Generic Property Type Annotation</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Generic Property Type Annotation</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseGenericPropertyTypeAnnotation(GenericPropertyTypeAnnotation object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Tuple Type Annotation</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Tuple Type Annotation</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseTupleTypeAnnotation(TupleTypeAnnotation object)
   {
     return null;
   }

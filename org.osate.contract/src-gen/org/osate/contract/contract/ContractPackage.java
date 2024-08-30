@@ -1007,13 +1007,22 @@ public interface ContractPackage extends EPackage
   int SINGLE_VAL_DECLARATION__VALUE = Aadl2Package.NAMED_ELEMENT_FEATURE_COUNT + 0;
 
   /**
+   * The feature id for the '<em><b>Type</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SINGLE_VAL_DECLARATION__TYPE = Aadl2Package.NAMED_ELEMENT_FEATURE_COUNT + 1;
+
+  /**
    * The number of structural features of the '<em>Single Val Declaration</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SINGLE_VAL_DECLARATION_FEATURE_COUNT = Aadl2Package.NAMED_ELEMENT_FEATURE_COUNT + 1;
+  int SINGLE_VAL_DECLARATION_FEATURE_COUNT = Aadl2Package.NAMED_ELEMENT_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link org.osate.contract.contract.impl.TupleNameImpl <em>Tuple Name</em>}' class.
@@ -1080,6 +1089,25 @@ public interface ContractPackage extends EPackage
   int TUPLE_NAME_FEATURE_COUNT = Aadl2Package.NAMED_ELEMENT_FEATURE_COUNT + 0;
 
   /**
+   * The meta object id for the '{@link org.osate.contract.contract.impl.TypeAnnotationImpl <em>Type Annotation</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.osate.contract.contract.impl.TypeAnnotationImpl
+   * @see org.osate.contract.contract.impl.ContractPackageImpl#getTypeAnnotation()
+   * @generated
+   */
+  int TYPE_ANNOTATION = 16;
+
+  /**
+   * The number of structural features of the '<em>Type Annotation</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TYPE_ANNOTATION_FEATURE_COUNT = 0;
+
+  /**
    * The meta object id for the '{@link org.osate.contract.contract.impl.ExpressionImpl <em>Expression</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1087,7 +1115,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getExpression()
    * @generated
    */
-  int EXPRESSION = 16;
+  int EXPRESSION = 17;
 
   /**
    * The number of structural features of the '<em>Expression</em>' class.
@@ -1106,7 +1134,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getLambda()
    * @generated
    */
-  int LAMBDA = 17;
+  int LAMBDA = 18;
 
   /**
    * The feature id for the '<em><b>Owned Element</b></em>' reference list.
@@ -1170,7 +1198,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getParameter()
    * @generated
    */
-  int PARAMETER = 18;
+  int PARAMETER = 19;
 
   /**
    * The feature id for the '<em><b>Owned Element</b></em>' reference list.
@@ -1207,7 +1235,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getSingleParameter()
    * @generated
    */
-  int SINGLE_PARAMETER = 19;
+  int SINGLE_PARAMETER = 20;
 
   /**
    * The feature id for the '<em><b>Owned Element</b></em>' reference list.
@@ -1271,7 +1299,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getContractSubclause()
    * @generated
    */
-  int CONTRACT_SUBCLAUSE = 20;
+  int CONTRACT_SUBCLAUSE = 21;
 
   /**
    * The feature id for the '<em><b>Owned Element</b></em>' reference list.
@@ -1362,7 +1390,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getIString()
    * @generated
    */
-  int ISTRING = 21;
+  int ISTRING = 22;
 
   /**
    * The feature id for the '<em><b>Parts</b></em>' containment reference list.
@@ -1390,7 +1418,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getIStringPart()
    * @generated
    */
-  int ISTRING_PART = 22;
+  int ISTRING_PART = 23;
 
   /**
    * The number of structural features of the '<em>IString Part</em>' class.
@@ -1409,7 +1437,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getIStringLiteral()
    * @generated
    */
-  int ISTRING_LITERAL = 23;
+  int ISTRING_LITERAL = 24;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -1437,7 +1465,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getIStringVar()
    * @generated
    */
-  int ISTRING_VAR = 24;
+  int ISTRING_VAR = 25;
 
   /**
    * The feature id for the '<em><b>Direct</b></em>' attribute.
@@ -1492,7 +1520,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getContractAssumption()
    * @generated
    */
-  int CONTRACT_ASSUMPTION = 25;
+  int CONTRACT_ASSUMPTION = 26;
 
   /**
    * The feature id for the '<em><b>Contract</b></em>' reference.
@@ -1520,7 +1548,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getArgumentAssumption()
    * @generated
    */
-  int ARGUMENT_ASSUMPTION = 26;
+  int ARGUMENT_ASSUMPTION = 27;
 
   /**
    * The feature id for the '<em><b>Argument</b></em>' reference.
@@ -1548,7 +1576,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getCodeAssumption()
    * @generated
    */
-  int CODE_ASSUMPTION = 27;
+  int CODE_ASSUMPTION = 28;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1594,7 +1622,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getArgumentAnd()
    * @generated
    */
-  int ARGUMENT_AND = 28;
+  int ARGUMENT_AND = 29;
 
   /**
    * The feature id for the '<em><b>Contracts</b></em>' reference list.
@@ -1640,7 +1668,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getArgumentOr()
    * @generated
    */
-  int ARGUMENT_OR = 29;
+  int ARGUMENT_OR = 30;
 
   /**
    * The feature id for the '<em><b>Contracts</b></em>' reference list.
@@ -1686,7 +1714,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getArgumentNot()
    * @generated
    */
-  int ARGUMENT_NOT = 30;
+  int ARGUMENT_NOT = 31;
 
   /**
    * The feature id for the '<em><b>Contracts</b></em>' reference list.
@@ -1732,7 +1760,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getTupleDeclaration()
    * @generated
    */
-  int TUPLE_DECLARATION = 31;
+  int TUPLE_DECLARATION = 32;
 
   /**
    * The feature id for the '<em><b>Owned Element</b></em>' reference list.
@@ -1780,6 +1808,182 @@ public interface ContractPackage extends EPackage
   int TUPLE_DECLARATION_FEATURE_COUNT = QUERY_FEATURE_COUNT + 1;
 
   /**
+   * The meta object id for the '{@link org.osate.contract.contract.impl.OptionalTypeAnnotationImpl <em>Optional Type Annotation</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.osate.contract.contract.impl.OptionalTypeAnnotationImpl
+   * @see org.osate.contract.contract.impl.ContractPackageImpl#getOptionalTypeAnnotation()
+   * @generated
+   */
+  int OPTIONAL_TYPE_ANNOTATION = 33;
+
+  /**
+   * The feature id for the '<em><b>Base Type</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OPTIONAL_TYPE_ANNOTATION__BASE_TYPE = TYPE_ANNOTATION_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Optional Type Annotation</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OPTIONAL_TYPE_ANNOTATION_FEATURE_COUNT = TYPE_ANNOTATION_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link org.osate.contract.contract.impl.SimpleTypeAnnotationImpl <em>Simple Type Annotation</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.osate.contract.contract.impl.SimpleTypeAnnotationImpl
+   * @see org.osate.contract.contract.impl.ContractPackageImpl#getSimpleTypeAnnotation()
+   * @generated
+   */
+  int SIMPLE_TYPE_ANNOTATION = 34;
+
+  /**
+   * The feature id for the '<em><b>Type</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SIMPLE_TYPE_ANNOTATION__TYPE = TYPE_ANNOTATION_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Simple Type Annotation</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SIMPLE_TYPE_ANNOTATION_FEATURE_COUNT = TYPE_ANNOTATION_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link org.osate.contract.contract.impl.GenericTypeAnnotationImpl <em>Generic Type Annotation</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.osate.contract.contract.impl.GenericTypeAnnotationImpl
+   * @see org.osate.contract.contract.impl.ContractPackageImpl#getGenericTypeAnnotation()
+   * @generated
+   */
+  int GENERIC_TYPE_ANNOTATION = 35;
+
+  /**
+   * The feature id for the '<em><b>Base Type</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int GENERIC_TYPE_ANNOTATION__BASE_TYPE = TYPE_ANNOTATION_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Generic Type</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int GENERIC_TYPE_ANNOTATION__GENERIC_TYPE = TYPE_ANNOTATION_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Generic Type Annotation</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int GENERIC_TYPE_ANNOTATION_FEATURE_COUNT = TYPE_ANNOTATION_FEATURE_COUNT + 2;
+
+  /**
+   * The meta object id for the '{@link org.osate.contract.contract.impl.GenericPropertyTypeAnnotationImpl <em>Generic Property Type Annotation</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.osate.contract.contract.impl.GenericPropertyTypeAnnotationImpl
+   * @see org.osate.contract.contract.impl.ContractPackageImpl#getGenericPropertyTypeAnnotation()
+   * @generated
+   */
+  int GENERIC_PROPERTY_TYPE_ANNOTATION = 36;
+
+  /**
+   * The feature id for the '<em><b>Base Type</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int GENERIC_PROPERTY_TYPE_ANNOTATION__BASE_TYPE = TYPE_ANNOTATION_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Property Set</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int GENERIC_PROPERTY_TYPE_ANNOTATION__PROPERTY_SET = TYPE_ANNOTATION_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Property Type</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int GENERIC_PROPERTY_TYPE_ANNOTATION__PROPERTY_TYPE = TYPE_ANNOTATION_FEATURE_COUNT + 2;
+
+  /**
+   * The feature id for the '<em><b>Fields</b></em>' attribute list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int GENERIC_PROPERTY_TYPE_ANNOTATION__FIELDS = TYPE_ANNOTATION_FEATURE_COUNT + 3;
+
+  /**
+   * The number of structural features of the '<em>Generic Property Type Annotation</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int GENERIC_PROPERTY_TYPE_ANNOTATION_FEATURE_COUNT = TYPE_ANNOTATION_FEATURE_COUNT + 4;
+
+  /**
+   * The meta object id for the '{@link org.osate.contract.contract.impl.TupleTypeAnnotationImpl <em>Tuple Type Annotation</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.osate.contract.contract.impl.TupleTypeAnnotationImpl
+   * @see org.osate.contract.contract.impl.ContractPackageImpl#getTupleTypeAnnotation()
+   * @generated
+   */
+  int TUPLE_TYPE_ANNOTATION = 37;
+
+  /**
+   * The feature id for the '<em><b>Types</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TUPLE_TYPE_ANNOTATION__TYPES = TYPE_ANNOTATION_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Tuple Type Annotation</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TUPLE_TYPE_ANNOTATION_FEATURE_COUNT = TYPE_ANNOTATION_FEATURE_COUNT + 1;
+
+  /**
    * The meta object id for the '{@link org.osate.contract.contract.impl.OrExpressionImpl <em>Or Expression</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1787,7 +1991,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getOrExpression()
    * @generated
    */
-  int OR_EXPRESSION = 32;
+  int OR_EXPRESSION = 38;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1824,7 +2028,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getAndExpression()
    * @generated
    */
-  int AND_EXPRESSION = 33;
+  int AND_EXPRESSION = 39;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1861,7 +2065,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getNotExpression()
    * @generated
    */
-  int NOT_EXPRESSION = 34;
+  int NOT_EXPRESSION = 40;
 
   /**
    * The feature id for the '<em><b>Operand</b></em>' containment reference.
@@ -1889,7 +2093,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getMemberCall()
    * @generated
    */
-  int MEMBER_CALL = 35;
+  int MEMBER_CALL = 41;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1953,7 +2157,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getPropertyLookup()
    * @generated
    */
-  int PROPERTY_LOOKUP = 36;
+  int PROPERTY_LOOKUP = 42;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1990,7 +2194,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getTupleParameter()
    * @generated
    */
-  int TUPLE_PARAMETER = 37;
+  int TUPLE_PARAMETER = 43;
 
   /**
    * The feature id for the '<em><b>Owned Element</b></em>' reference list.
@@ -2036,7 +2240,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getSelfExpression()
    * @generated
    */
-  int SELF_EXPRESSION = 38;
+  int SELF_EXPRESSION = 44;
 
   /**
    * The number of structural features of the '<em>Self Expression</em>' class.
@@ -2055,7 +2259,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getRootExpression()
    * @generated
    */
-  int ROOT_EXPRESSION = 39;
+  int ROOT_EXPRESSION = 45;
 
   /**
    * The number of structural features of the '<em>Root Expression</em>' class.
@@ -2074,7 +2278,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getStringLiteral()
    * @generated
    */
-  int STRING_LITERAL = 40;
+  int STRING_LITERAL = 46;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2102,7 +2306,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getNameReference()
    * @generated
    */
-  int NAME_REFERENCE = 41;
+  int NAME_REFERENCE = 47;
 
   /**
    * The feature id for the '<em><b>Reference</b></em>' reference.
@@ -2130,7 +2334,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getTupleExpression()
    * @generated
    */
-  int TUPLE_EXPRESSION = 42;
+  int TUPLE_EXPRESSION = 48;
 
   /**
    * The feature id for the '<em><b>Elements</b></em>' containment reference list.
@@ -2158,7 +2362,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getLanguage()
    * @generated
    */
-  int LANGUAGE = 43;
+  int LANGUAGE = 49;
 
   /**
    * The meta object id for the '{@link org.osate.contract.contract.Predefined <em>Predefined</em>}' enum.
@@ -2168,7 +2372,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getPredefined()
    * @generated
    */
-  int PREDEFINED = 44;
+  int PREDEFINED = 50;
 
 
   /**
@@ -2641,6 +2845,17 @@ public interface ContractPackage extends EPackage
   EClass getSingleValDeclaration();
 
   /**
+   * Returns the meta object for the containment reference '{@link org.osate.contract.contract.SingleValDeclaration#getType <em>Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Type</em>'.
+   * @see org.osate.contract.contract.SingleValDeclaration#getType()
+   * @see #getSingleValDeclaration()
+   * @generated
+   */
+  EReference getSingleValDeclaration_Type();
+
+  /**
    * Returns the meta object for class '{@link org.osate.contract.contract.TupleName <em>Tuple Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2649,6 +2864,16 @@ public interface ContractPackage extends EPackage
    * @generated
    */
   EClass getTupleName();
+
+  /**
+   * Returns the meta object for class '{@link org.osate.contract.contract.TypeAnnotation <em>Type Annotation</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Type Annotation</em>'.
+   * @see org.osate.contract.contract.TypeAnnotation
+   * @generated
+   */
+  EClass getTypeAnnotation();
 
   /**
    * Returns the meta object for class '{@link org.osate.contract.contract.Expression <em>Expression</em>}'.
@@ -2996,6 +3221,155 @@ public interface ContractPackage extends EPackage
    * @generated
    */
   EReference getTupleDeclaration_Names();
+
+  /**
+   * Returns the meta object for class '{@link org.osate.contract.contract.OptionalTypeAnnotation <em>Optional Type Annotation</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Optional Type Annotation</em>'.
+   * @see org.osate.contract.contract.OptionalTypeAnnotation
+   * @generated
+   */
+  EClass getOptionalTypeAnnotation();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.osate.contract.contract.OptionalTypeAnnotation#getBaseType <em>Base Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Base Type</em>'.
+   * @see org.osate.contract.contract.OptionalTypeAnnotation#getBaseType()
+   * @see #getOptionalTypeAnnotation()
+   * @generated
+   */
+  EReference getOptionalTypeAnnotation_BaseType();
+
+  /**
+   * Returns the meta object for class '{@link org.osate.contract.contract.SimpleTypeAnnotation <em>Simple Type Annotation</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Simple Type Annotation</em>'.
+   * @see org.osate.contract.contract.SimpleTypeAnnotation
+   * @generated
+   */
+  EClass getSimpleTypeAnnotation();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.osate.contract.contract.SimpleTypeAnnotation#getType <em>Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Type</em>'.
+   * @see org.osate.contract.contract.SimpleTypeAnnotation#getType()
+   * @see #getSimpleTypeAnnotation()
+   * @generated
+   */
+  EAttribute getSimpleTypeAnnotation_Type();
+
+  /**
+   * Returns the meta object for class '{@link org.osate.contract.contract.GenericTypeAnnotation <em>Generic Type Annotation</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Generic Type Annotation</em>'.
+   * @see org.osate.contract.contract.GenericTypeAnnotation
+   * @generated
+   */
+  EClass getGenericTypeAnnotation();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.osate.contract.contract.GenericTypeAnnotation#getBaseType <em>Base Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Base Type</em>'.
+   * @see org.osate.contract.contract.GenericTypeAnnotation#getBaseType()
+   * @see #getGenericTypeAnnotation()
+   * @generated
+   */
+  EAttribute getGenericTypeAnnotation_BaseType();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.osate.contract.contract.GenericTypeAnnotation#getGenericType <em>Generic Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Generic Type</em>'.
+   * @see org.osate.contract.contract.GenericTypeAnnotation#getGenericType()
+   * @see #getGenericTypeAnnotation()
+   * @generated
+   */
+  EReference getGenericTypeAnnotation_GenericType();
+
+  /**
+   * Returns the meta object for class '{@link org.osate.contract.contract.GenericPropertyTypeAnnotation <em>Generic Property Type Annotation</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Generic Property Type Annotation</em>'.
+   * @see org.osate.contract.contract.GenericPropertyTypeAnnotation
+   * @generated
+   */
+  EClass getGenericPropertyTypeAnnotation();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.osate.contract.contract.GenericPropertyTypeAnnotation#getBaseType <em>Base Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Base Type</em>'.
+   * @see org.osate.contract.contract.GenericPropertyTypeAnnotation#getBaseType()
+   * @see #getGenericPropertyTypeAnnotation()
+   * @generated
+   */
+  EAttribute getGenericPropertyTypeAnnotation_BaseType();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.osate.contract.contract.GenericPropertyTypeAnnotation#getPropertySet <em>Property Set</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Property Set</em>'.
+   * @see org.osate.contract.contract.GenericPropertyTypeAnnotation#getPropertySet()
+   * @see #getGenericPropertyTypeAnnotation()
+   * @generated
+   */
+  EAttribute getGenericPropertyTypeAnnotation_PropertySet();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.osate.contract.contract.GenericPropertyTypeAnnotation#getPropertyType <em>Property Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Property Type</em>'.
+   * @see org.osate.contract.contract.GenericPropertyTypeAnnotation#getPropertyType()
+   * @see #getGenericPropertyTypeAnnotation()
+   * @generated
+   */
+  EAttribute getGenericPropertyTypeAnnotation_PropertyType();
+
+  /**
+   * Returns the meta object for the attribute list '{@link org.osate.contract.contract.GenericPropertyTypeAnnotation#getFields <em>Fields</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute list '<em>Fields</em>'.
+   * @see org.osate.contract.contract.GenericPropertyTypeAnnotation#getFields()
+   * @see #getGenericPropertyTypeAnnotation()
+   * @generated
+   */
+  EAttribute getGenericPropertyTypeAnnotation_Fields();
+
+  /**
+   * Returns the meta object for class '{@link org.osate.contract.contract.TupleTypeAnnotation <em>Tuple Type Annotation</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Tuple Type Annotation</em>'.
+   * @see org.osate.contract.contract.TupleTypeAnnotation
+   * @generated
+   */
+  EClass getTupleTypeAnnotation();
+
+  /**
+   * Returns the meta object for the containment reference list '{@link org.osate.contract.contract.TupleTypeAnnotation#getTypes <em>Types</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Types</em>'.
+   * @see org.osate.contract.contract.TupleTypeAnnotation#getTypes()
+   * @see #getTupleTypeAnnotation()
+   * @generated
+   */
+  EReference getTupleTypeAnnotation_Types();
 
   /**
    * Returns the meta object for class '{@link org.osate.contract.contract.OrExpression <em>Or Expression</em>}'.
@@ -3709,6 +4083,14 @@ public interface ContractPackage extends EPackage
     EClass SINGLE_VAL_DECLARATION = eINSTANCE.getSingleValDeclaration();
 
     /**
+     * The meta object literal for the '<em><b>Type</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference SINGLE_VAL_DECLARATION__TYPE = eINSTANCE.getSingleValDeclaration_Type();
+
+    /**
      * The meta object literal for the '{@link org.osate.contract.contract.impl.TupleNameImpl <em>Tuple Name</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3717,6 +4099,16 @@ public interface ContractPackage extends EPackage
      * @generated
      */
     EClass TUPLE_NAME = eINSTANCE.getTupleName();
+
+    /**
+     * The meta object literal for the '{@link org.osate.contract.contract.impl.TypeAnnotationImpl <em>Type Annotation</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.osate.contract.contract.impl.TypeAnnotationImpl
+     * @see org.osate.contract.contract.impl.ContractPackageImpl#getTypeAnnotation()
+     * @generated
+     */
+    EClass TYPE_ANNOTATION = eINSTANCE.getTypeAnnotation();
 
     /**
      * The meta object literal for the '{@link org.osate.contract.contract.impl.ExpressionImpl <em>Expression</em>}' class.
@@ -4013,6 +4405,128 @@ public interface ContractPackage extends EPackage
      * @generated
      */
     EReference TUPLE_DECLARATION__NAMES = eINSTANCE.getTupleDeclaration_Names();
+
+    /**
+     * The meta object literal for the '{@link org.osate.contract.contract.impl.OptionalTypeAnnotationImpl <em>Optional Type Annotation</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.osate.contract.contract.impl.OptionalTypeAnnotationImpl
+     * @see org.osate.contract.contract.impl.ContractPackageImpl#getOptionalTypeAnnotation()
+     * @generated
+     */
+    EClass OPTIONAL_TYPE_ANNOTATION = eINSTANCE.getOptionalTypeAnnotation();
+
+    /**
+     * The meta object literal for the '<em><b>Base Type</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference OPTIONAL_TYPE_ANNOTATION__BASE_TYPE = eINSTANCE.getOptionalTypeAnnotation_BaseType();
+
+    /**
+     * The meta object literal for the '{@link org.osate.contract.contract.impl.SimpleTypeAnnotationImpl <em>Simple Type Annotation</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.osate.contract.contract.impl.SimpleTypeAnnotationImpl
+     * @see org.osate.contract.contract.impl.ContractPackageImpl#getSimpleTypeAnnotation()
+     * @generated
+     */
+    EClass SIMPLE_TYPE_ANNOTATION = eINSTANCE.getSimpleTypeAnnotation();
+
+    /**
+     * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute SIMPLE_TYPE_ANNOTATION__TYPE = eINSTANCE.getSimpleTypeAnnotation_Type();
+
+    /**
+     * The meta object literal for the '{@link org.osate.contract.contract.impl.GenericTypeAnnotationImpl <em>Generic Type Annotation</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.osate.contract.contract.impl.GenericTypeAnnotationImpl
+     * @see org.osate.contract.contract.impl.ContractPackageImpl#getGenericTypeAnnotation()
+     * @generated
+     */
+    EClass GENERIC_TYPE_ANNOTATION = eINSTANCE.getGenericTypeAnnotation();
+
+    /**
+     * The meta object literal for the '<em><b>Base Type</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute GENERIC_TYPE_ANNOTATION__BASE_TYPE = eINSTANCE.getGenericTypeAnnotation_BaseType();
+
+    /**
+     * The meta object literal for the '<em><b>Generic Type</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference GENERIC_TYPE_ANNOTATION__GENERIC_TYPE = eINSTANCE.getGenericTypeAnnotation_GenericType();
+
+    /**
+     * The meta object literal for the '{@link org.osate.contract.contract.impl.GenericPropertyTypeAnnotationImpl <em>Generic Property Type Annotation</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.osate.contract.contract.impl.GenericPropertyTypeAnnotationImpl
+     * @see org.osate.contract.contract.impl.ContractPackageImpl#getGenericPropertyTypeAnnotation()
+     * @generated
+     */
+    EClass GENERIC_PROPERTY_TYPE_ANNOTATION = eINSTANCE.getGenericPropertyTypeAnnotation();
+
+    /**
+     * The meta object literal for the '<em><b>Base Type</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute GENERIC_PROPERTY_TYPE_ANNOTATION__BASE_TYPE = eINSTANCE.getGenericPropertyTypeAnnotation_BaseType();
+
+    /**
+     * The meta object literal for the '<em><b>Property Set</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute GENERIC_PROPERTY_TYPE_ANNOTATION__PROPERTY_SET = eINSTANCE.getGenericPropertyTypeAnnotation_PropertySet();
+
+    /**
+     * The meta object literal for the '<em><b>Property Type</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute GENERIC_PROPERTY_TYPE_ANNOTATION__PROPERTY_TYPE = eINSTANCE.getGenericPropertyTypeAnnotation_PropertyType();
+
+    /**
+     * The meta object literal for the '<em><b>Fields</b></em>' attribute list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute GENERIC_PROPERTY_TYPE_ANNOTATION__FIELDS = eINSTANCE.getGenericPropertyTypeAnnotation_Fields();
+
+    /**
+     * The meta object literal for the '{@link org.osate.contract.contract.impl.TupleTypeAnnotationImpl <em>Tuple Type Annotation</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.osate.contract.contract.impl.TupleTypeAnnotationImpl
+     * @see org.osate.contract.contract.impl.ContractPackageImpl#getTupleTypeAnnotation()
+     * @generated
+     */
+    EClass TUPLE_TYPE_ANNOTATION = eINSTANCE.getTupleTypeAnnotation();
+
+    /**
+     * The meta object literal for the '<em><b>Types</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference TUPLE_TYPE_ANNOTATION__TYPES = eINSTANCE.getTupleTypeAnnotation_Types();
 
     /**
      * The meta object literal for the '{@link org.osate.contract.contract.impl.OrExpressionImpl <em>Or Expression</em>}' class.

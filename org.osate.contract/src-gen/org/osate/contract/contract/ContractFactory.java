@@ -190,6 +190,15 @@ public interface ContractFactory extends EFactory
   TupleName createTupleName();
 
   /**
+   * Returns a new object of class '<em>Type Annotation</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Type Annotation</em>'.
+   * @generated
+   */
+  TypeAnnotation createTypeAnnotation();
+
+  /**
    * Returns a new object of class '<em>Expression</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -332,6 +341,51 @@ public interface ContractFactory extends EFactory
    * @generated
    */
   TupleDeclaration createTupleDeclaration();
+
+  /**
+   * Returns a new object of class '<em>Optional Type Annotation</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Optional Type Annotation</em>'.
+   * @generated
+   */
+  OptionalTypeAnnotation createOptionalTypeAnnotation();
+
+  /**
+   * Returns a new object of class '<em>Simple Type Annotation</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Simple Type Annotation</em>'.
+   * @generated
+   */
+  SimpleTypeAnnotation createSimpleTypeAnnotation();
+
+  /**
+   * Returns a new object of class '<em>Generic Type Annotation</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Generic Type Annotation</em>'.
+   * @generated
+   */
+  GenericTypeAnnotation createGenericTypeAnnotation();
+
+  /**
+   * Returns a new object of class '<em>Generic Property Type Annotation</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Generic Property Type Annotation</em>'.
+   * @generated
+   */
+  GenericPropertyTypeAnnotation createGenericPropertyTypeAnnotation();
+
+  /**
+   * Returns a new object of class '<em>Tuple Type Annotation</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Tuple Type Annotation</em>'.
+   * @generated
+   */
+  TupleTypeAnnotation createTupleTypeAnnotation();
 
   /**
    * Returns a new object of class '<em>Or Expression</em>'.

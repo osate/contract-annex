@@ -184,6 +184,11 @@ public class ContractAdapterFactory extends AdapterFactoryImpl
         return createTupleNameAdapter();
       }
       @Override
+      public Adapter caseTypeAnnotation(TypeAnnotation object)
+      {
+        return createTypeAnnotationAdapter();
+      }
+      @Override
       public Adapter caseExpression(Expression object)
       {
         return createExpressionAdapter();
@@ -262,6 +267,31 @@ public class ContractAdapterFactory extends AdapterFactoryImpl
       public Adapter caseTupleDeclaration(TupleDeclaration object)
       {
         return createTupleDeclarationAdapter();
+      }
+      @Override
+      public Adapter caseOptionalTypeAnnotation(OptionalTypeAnnotation object)
+      {
+        return createOptionalTypeAnnotationAdapter();
+      }
+      @Override
+      public Adapter caseSimpleTypeAnnotation(SimpleTypeAnnotation object)
+      {
+        return createSimpleTypeAnnotationAdapter();
+      }
+      @Override
+      public Adapter caseGenericTypeAnnotation(GenericTypeAnnotation object)
+      {
+        return createGenericTypeAnnotationAdapter();
+      }
+      @Override
+      public Adapter caseGenericPropertyTypeAnnotation(GenericPropertyTypeAnnotation object)
+      {
+        return createGenericPropertyTypeAnnotationAdapter();
+      }
+      @Override
+      public Adapter caseTupleTypeAnnotation(TupleTypeAnnotation object)
+      {
+        return createTupleTypeAnnotationAdapter();
       }
       @Override
       public Adapter caseOrExpression(OrExpression object)
@@ -606,6 +636,21 @@ public class ContractAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link org.osate.contract.contract.TypeAnnotation <em>Type Annotation</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.osate.contract.contract.TypeAnnotation
+   * @generated
+   */
+  public Adapter createTypeAnnotationAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link org.osate.contract.contract.Expression <em>Expression</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -841,6 +886,81 @@ public class ContractAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createTupleDeclarationAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.osate.contract.contract.OptionalTypeAnnotation <em>Optional Type Annotation</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.osate.contract.contract.OptionalTypeAnnotation
+   * @generated
+   */
+  public Adapter createOptionalTypeAnnotationAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.osate.contract.contract.SimpleTypeAnnotation <em>Simple Type Annotation</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.osate.contract.contract.SimpleTypeAnnotation
+   * @generated
+   */
+  public Adapter createSimpleTypeAnnotationAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.osate.contract.contract.GenericTypeAnnotation <em>Generic Type Annotation</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.osate.contract.contract.GenericTypeAnnotation
+   * @generated
+   */
+  public Adapter createGenericTypeAnnotationAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.osate.contract.contract.GenericPropertyTypeAnnotation <em>Generic Property Type Annotation</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.osate.contract.contract.GenericPropertyTypeAnnotation
+   * @generated
+   */
+  public Adapter createGenericPropertyTypeAnnotationAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.osate.contract.contract.TupleTypeAnnotation <em>Tuple Type Annotation</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.osate.contract.contract.TupleTypeAnnotation
+   * @generated
+   */
+  public Adapter createTupleTypeAnnotationAdapter()
   {
     return null;
   }

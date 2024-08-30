@@ -25,46 +25,45 @@
  */
 package org.osate.contract.contract;
 
-import org.osate.aadl2.NamedElement;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Single Val Declaration</b></em>'.
+ * A representation of the model object '<em><b>Simple Type Annotation</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.osate.contract.contract.SingleValDeclaration#getType <em>Type</em>}</li>
+ *   <li>{@link org.osate.contract.contract.SimpleTypeAnnotation#getType <em>Type</em>}</li>
  * </ul>
  *
- * @see org.osate.contract.contract.ContractPackage#getSingleValDeclaration()
+ * @see org.osate.contract.contract.ContractPackage#getSimpleTypeAnnotation()
  * @model
  * @generated
  */
-public interface SingleValDeclaration extends NamedElement, Query
+public interface SimpleTypeAnnotation extends TypeAnnotation
 {
   /**
-   * Returns the value of the '<em><b>Type</b></em>' containment reference.
+   * Returns the value of the '<em><b>Type</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Type</em>' containment reference.
-   * @see #setType(TypeAnnotation)
-   * @see org.osate.contract.contract.ContractPackage#getSingleValDeclaration_Type()
-   * @model containment="true"
+   * @return the value of the '<em>Type</em>' attribute.
+   * @see #setType(String)
+   * @see org.osate.contract.contract.ContractPackage#getSimpleTypeAnnotation_Type()
+   * @model
    * @generated
    */
-  TypeAnnotation getType();
+  String getType();
 
   /**
-   * Sets the value of the '{@link org.osate.contract.contract.SingleValDeclaration#getType <em>Type</em>}' containment reference.
+   * Sets the value of the '{@link org.osate.contract.contract.SimpleTypeAnnotation#getType <em>Type</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Type</em>' containment reference.
+   * @param value the new value of the '<em>Type</em>' attribute.
    * @see #getType()
    * @generated
    */
-  void setType(TypeAnnotation value);
+  void setType(String value);
 
-} // SingleValDeclaration
+} // SimpleTypeAnnotation

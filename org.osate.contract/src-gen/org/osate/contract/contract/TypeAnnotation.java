@@ -25,46 +25,18 @@
  */
 package org.osate.contract.contract;
 
-import org.osate.aadl2.NamedElement;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Single Val Declaration</b></em>'.
+ * A representation of the model object '<em><b>Type Annotation</b></em>'.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * </p>
- * <ul>
- *   <li>{@link org.osate.contract.contract.SingleValDeclaration#getType <em>Type</em>}</li>
- * </ul>
  *
- * @see org.osate.contract.contract.ContractPackage#getSingleValDeclaration()
+ * @see org.osate.contract.contract.ContractPackage#getTypeAnnotation()
  * @model
  * @generated
  */
-public interface SingleValDeclaration extends NamedElement, Query
+public interface TypeAnnotation extends EObject
 {
-  /**
-   * Returns the value of the '<em><b>Type</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Type</em>' containment reference.
-   * @see #setType(TypeAnnotation)
-   * @see org.osate.contract.contract.ContractPackage#getSingleValDeclaration_Type()
-   * @model containment="true"
-   * @generated
-   */
-  TypeAnnotation getType();
-
-  /**
-   * Sets the value of the '{@link org.osate.contract.contract.SingleValDeclaration#getType <em>Type</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Type</em>' containment reference.
-   * @see #getType()
-   * @generated
-   */
-  void setType(TypeAnnotation value);
-
-} // SingleValDeclaration
+} // TypeAnnotation

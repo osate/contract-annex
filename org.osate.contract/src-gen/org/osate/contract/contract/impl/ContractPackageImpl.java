@@ -55,6 +55,8 @@ import org.osate.contract.contract.ContractPackage;
 import org.osate.contract.contract.ContractSubclause;
 import org.osate.contract.contract.Domain;
 import org.osate.contract.contract.Expression;
+import org.osate.contract.contract.GenericPropertyTypeAnnotation;
+import org.osate.contract.contract.GenericTypeAnnotation;
 import org.osate.contract.contract.Guarantee;
 import org.osate.contract.contract.IString;
 import org.osate.contract.contract.IStringLiteral;
@@ -67,6 +69,7 @@ import org.osate.contract.contract.Language;
 import org.osate.contract.contract.MemberCall;
 import org.osate.contract.contract.NameReference;
 import org.osate.contract.contract.NotExpression;
+import org.osate.contract.contract.OptionalTypeAnnotation;
 import org.osate.contract.contract.OrExpression;
 import org.osate.contract.contract.Parameter;
 import org.osate.contract.contract.Predefined;
@@ -74,6 +77,7 @@ import org.osate.contract.contract.PropertyLookup;
 import org.osate.contract.contract.Query;
 import org.osate.contract.contract.RootExpression;
 import org.osate.contract.contract.SelfExpression;
+import org.osate.contract.contract.SimpleTypeAnnotation;
 import org.osate.contract.contract.SingleParameter;
 import org.osate.contract.contract.SingleValDeclaration;
 import org.osate.contract.contract.Source;
@@ -82,6 +86,8 @@ import org.osate.contract.contract.TupleDeclaration;
 import org.osate.contract.contract.TupleExpression;
 import org.osate.contract.contract.TupleName;
 import org.osate.contract.contract.TupleParameter;
+import org.osate.contract.contract.TupleTypeAnnotation;
+import org.osate.contract.contract.TypeAnnotation;
 import org.osate.contract.contract.VerificationPlan;
 
 /**
@@ -209,6 +215,13 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass typeAnnotationEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass expressionEClass = null;
 
   /**
@@ -315,6 +328,41 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   private EClass tupleDeclarationEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass optionalTypeAnnotationEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass simpleTypeAnnotationEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass genericTypeAnnotationEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass genericPropertyTypeAnnotationEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass tupleTypeAnnotationEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -963,9 +1011,31 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   @Override
+  public EReference getSingleValDeclaration_Type()
+  {
+    return (EReference)singleValDeclarationEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getTupleName()
   {
     return tupleNameEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getTypeAnnotation()
+  {
+    return typeAnnotationEClass;
   }
 
   /**
@@ -1329,6 +1399,160 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
   public EReference getTupleDeclaration_Names()
   {
     return (EReference)tupleDeclarationEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getOptionalTypeAnnotation()
+  {
+    return optionalTypeAnnotationEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getOptionalTypeAnnotation_BaseType()
+  {
+    return (EReference)optionalTypeAnnotationEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getSimpleTypeAnnotation()
+  {
+    return simpleTypeAnnotationEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getSimpleTypeAnnotation_Type()
+  {
+    return (EAttribute)simpleTypeAnnotationEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getGenericTypeAnnotation()
+  {
+    return genericTypeAnnotationEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getGenericTypeAnnotation_BaseType()
+  {
+    return (EAttribute)genericTypeAnnotationEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getGenericTypeAnnotation_GenericType()
+  {
+    return (EReference)genericTypeAnnotationEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getGenericPropertyTypeAnnotation()
+  {
+    return genericPropertyTypeAnnotationEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getGenericPropertyTypeAnnotation_BaseType()
+  {
+    return (EAttribute)genericPropertyTypeAnnotationEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getGenericPropertyTypeAnnotation_PropertySet()
+  {
+    return (EAttribute)genericPropertyTypeAnnotationEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getGenericPropertyTypeAnnotation_PropertyType()
+  {
+    return (EAttribute)genericPropertyTypeAnnotationEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getGenericPropertyTypeAnnotation_Fields()
+  {
+    return (EAttribute)genericPropertyTypeAnnotationEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getTupleTypeAnnotation()
+  {
+    return tupleTypeAnnotationEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getTupleTypeAnnotation_Types()
+  {
+    return (EReference)tupleTypeAnnotationEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1739,8 +1963,11 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     createEReference(queryEClass, QUERY__VALUE);
 
     singleValDeclarationEClass = createEClass(SINGLE_VAL_DECLARATION);
+    createEReference(singleValDeclarationEClass, SINGLE_VAL_DECLARATION__TYPE);
 
     tupleNameEClass = createEClass(TUPLE_NAME);
+
+    typeAnnotationEClass = createEClass(TYPE_ANNOTATION);
 
     expressionEClass = createEClass(EXPRESSION);
 
@@ -1790,6 +2017,25 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
 
     tupleDeclarationEClass = createEClass(TUPLE_DECLARATION);
     createEReference(tupleDeclarationEClass, TUPLE_DECLARATION__NAMES);
+
+    optionalTypeAnnotationEClass = createEClass(OPTIONAL_TYPE_ANNOTATION);
+    createEReference(optionalTypeAnnotationEClass, OPTIONAL_TYPE_ANNOTATION__BASE_TYPE);
+
+    simpleTypeAnnotationEClass = createEClass(SIMPLE_TYPE_ANNOTATION);
+    createEAttribute(simpleTypeAnnotationEClass, SIMPLE_TYPE_ANNOTATION__TYPE);
+
+    genericTypeAnnotationEClass = createEClass(GENERIC_TYPE_ANNOTATION);
+    createEAttribute(genericTypeAnnotationEClass, GENERIC_TYPE_ANNOTATION__BASE_TYPE);
+    createEReference(genericTypeAnnotationEClass, GENERIC_TYPE_ANNOTATION__GENERIC_TYPE);
+
+    genericPropertyTypeAnnotationEClass = createEClass(GENERIC_PROPERTY_TYPE_ANNOTATION);
+    createEAttribute(genericPropertyTypeAnnotationEClass, GENERIC_PROPERTY_TYPE_ANNOTATION__BASE_TYPE);
+    createEAttribute(genericPropertyTypeAnnotationEClass, GENERIC_PROPERTY_TYPE_ANNOTATION__PROPERTY_SET);
+    createEAttribute(genericPropertyTypeAnnotationEClass, GENERIC_PROPERTY_TYPE_ANNOTATION__PROPERTY_TYPE);
+    createEAttribute(genericPropertyTypeAnnotationEClass, GENERIC_PROPERTY_TYPE_ANNOTATION__FIELDS);
+
+    tupleTypeAnnotationEClass = createEClass(TUPLE_TYPE_ANNOTATION);
+    createEReference(tupleTypeAnnotationEClass, TUPLE_TYPE_ANNOTATION__TYPES);
 
     orExpressionEClass = createEClass(OR_EXPRESSION);
     createEReference(orExpressionEClass, OR_EXPRESSION__LEFT);
@@ -1892,6 +2138,11 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     argumentOrEClass.getESuperTypes().add(this.getArgumentExpression());
     argumentNotEClass.getESuperTypes().add(this.getArgumentExpression());
     tupleDeclarationEClass.getESuperTypes().add(this.getQuery());
+    optionalTypeAnnotationEClass.getESuperTypes().add(this.getTypeAnnotation());
+    simpleTypeAnnotationEClass.getESuperTypes().add(this.getTypeAnnotation());
+    genericTypeAnnotationEClass.getESuperTypes().add(this.getTypeAnnotation());
+    genericPropertyTypeAnnotationEClass.getESuperTypes().add(this.getTypeAnnotation());
+    tupleTypeAnnotationEClass.getESuperTypes().add(this.getTypeAnnotation());
     orExpressionEClass.getESuperTypes().add(this.getExpression());
     andExpressionEClass.getESuperTypes().add(this.getExpression());
     notExpressionEClass.getESuperTypes().add(this.getExpression());
@@ -1963,8 +2214,11 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     initEReference(getQuery_Value(), this.getExpression(), null, "value", null, 0, 1, Query.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(singleValDeclarationEClass, SingleValDeclaration.class, "SingleValDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSingleValDeclaration_Type(), this.getTypeAnnotation(), null, "type", null, 0, 1, SingleValDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(tupleNameEClass, TupleName.class, "TupleName", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(typeAnnotationEClass, TypeAnnotation.class, "TypeAnnotation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(expressionEClass, Expression.class, "Expression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -2014,6 +2268,25 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
 
     initEClass(tupleDeclarationEClass, TupleDeclaration.class, "TupleDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getTupleDeclaration_Names(), this.getTupleName(), null, "names", null, 0, -1, TupleDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(optionalTypeAnnotationEClass, OptionalTypeAnnotation.class, "OptionalTypeAnnotation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getOptionalTypeAnnotation_BaseType(), this.getTypeAnnotation(), null, "baseType", null, 0, 1, OptionalTypeAnnotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(simpleTypeAnnotationEClass, SimpleTypeAnnotation.class, "SimpleTypeAnnotation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getSimpleTypeAnnotation_Type(), theEcorePackage.getEString(), "type", null, 0, 1, SimpleTypeAnnotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(genericTypeAnnotationEClass, GenericTypeAnnotation.class, "GenericTypeAnnotation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getGenericTypeAnnotation_BaseType(), theEcorePackage.getEString(), "baseType", null, 0, 1, GenericTypeAnnotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getGenericTypeAnnotation_GenericType(), this.getTypeAnnotation(), null, "genericType", null, 0, 1, GenericTypeAnnotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(genericPropertyTypeAnnotationEClass, GenericPropertyTypeAnnotation.class, "GenericPropertyTypeAnnotation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getGenericPropertyTypeAnnotation_BaseType(), theEcorePackage.getEString(), "baseType", null, 0, 1, GenericPropertyTypeAnnotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getGenericPropertyTypeAnnotation_PropertySet(), theEcorePackage.getEString(), "propertySet", null, 0, 1, GenericPropertyTypeAnnotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getGenericPropertyTypeAnnotation_PropertyType(), theEcorePackage.getEString(), "propertyType", null, 0, 1, GenericPropertyTypeAnnotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getGenericPropertyTypeAnnotation_Fields(), theEcorePackage.getEString(), "fields", null, 0, -1, GenericPropertyTypeAnnotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(tupleTypeAnnotationEClass, TupleTypeAnnotation.class, "TupleTypeAnnotation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getTupleTypeAnnotation_Types(), this.getTypeAnnotation(), null, "types", null, 0, -1, TupleTypeAnnotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(orExpressionEClass, OrExpression.class, "OrExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getOrExpression_Left(), this.getExpression(), null, "left", null, 0, 1, OrExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

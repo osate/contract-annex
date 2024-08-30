@@ -69,6 +69,8 @@ import org.osate.contract.contract.ContractLibrary;
 import org.osate.contract.contract.ContractPackage;
 import org.osate.contract.contract.ContractSubclause;
 import org.osate.contract.contract.Domain;
+import org.osate.contract.contract.GenericPropertyTypeAnnotation;
+import org.osate.contract.contract.GenericTypeAnnotation;
 import org.osate.contract.contract.Guarantee;
 import org.osate.contract.contract.IString;
 import org.osate.contract.contract.IStringLiteral;
@@ -79,10 +81,12 @@ import org.osate.contract.contract.Lambda;
 import org.osate.contract.contract.MemberCall;
 import org.osate.contract.contract.NameReference;
 import org.osate.contract.contract.NotExpression;
+import org.osate.contract.contract.OptionalTypeAnnotation;
 import org.osate.contract.contract.OrExpression;
 import org.osate.contract.contract.PropertyLookup;
 import org.osate.contract.contract.RootExpression;
 import org.osate.contract.contract.SelfExpression;
+import org.osate.contract.contract.SimpleTypeAnnotation;
 import org.osate.contract.contract.SingleParameter;
 import org.osate.contract.contract.SingleValDeclaration;
 import org.osate.contract.contract.Source;
@@ -90,6 +94,7 @@ import org.osate.contract.contract.TupleDeclaration;
 import org.osate.contract.contract.TupleExpression;
 import org.osate.contract.contract.TupleName;
 import org.osate.contract.contract.TupleParameter;
+import org.osate.contract.contract.TupleTypeAnnotation;
 import org.osate.contract.contract.VerificationPlan;
 import org.osate.contract.services.ContractGrammarAccess;
 import org.osate.xtext.aadl2.properties.serializer.PropertiesSemanticSequencer;
@@ -244,6 +249,12 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 			case ContractPackage.DOMAIN:
 				sequence_Domain_Queries(context, (Domain) semanticObject); 
 				return; 
+			case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION:
+				sequence_TerminalTypeAnnotation(context, (GenericPropertyTypeAnnotation) semanticObject); 
+				return; 
+			case ContractPackage.GENERIC_TYPE_ANNOTATION:
+				sequence_TerminalTypeAnnotation(context, (GenericTypeAnnotation) semanticObject); 
+				return; 
 			case ContractPackage.GUARANTEE:
 				sequence_Guarantee(context, (Guarantee) semanticObject); 
 				return; 
@@ -290,6 +301,9 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 			case ContractPackage.NOT_EXPRESSION:
 				sequence_NotExpression(context, (NotExpression) semanticObject); 
 				return; 
+			case ContractPackage.OPTIONAL_TYPE_ANNOTATION:
+				sequence_TypeAnnotation(context, (OptionalTypeAnnotation) semanticObject); 
+				return; 
 			case ContractPackage.OR_EXPRESSION:
 				sequence_Expression(context, (OrExpression) semanticObject); 
 				return; 
@@ -301,6 +315,9 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 				return; 
 			case ContractPackage.SELF_EXPRESSION:
 				sequence_TerminalExpression(context, (SelfExpression) semanticObject); 
+				return; 
+			case ContractPackage.SIMPLE_TYPE_ANNOTATION:
+				sequence_TerminalTypeAnnotation(context, (SimpleTypeAnnotation) semanticObject); 
 				return; 
 			case ContractPackage.SINGLE_PARAMETER:
 				sequence_SingleParameter(context, (SingleParameter) semanticObject); 
@@ -325,6 +342,9 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 				return; 
 			case ContractPackage.TUPLE_PARAMETER:
 				sequence_Parameter(context, (TupleParameter) semanticObject); 
+				return; 
+			case ContractPackage.TUPLE_TYPE_ANNOTATION:
+				sequence_TerminalTypeAnnotation(context, (TupleTypeAnnotation) semanticObject); 
 				return; 
 			case ContractPackage.VERIFICATION_PLAN:
 				sequence_Claims_Domains_VerificationPlan(context, (VerificationPlan) semanticObject); 
@@ -952,20 +972,11 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	 *     SingleValDeclaration returns SingleValDeclaration
 	 *
 	 * Constraint:
-	 *     (name=ID value=Expression)
+	 *     (name=ID type=TypeAnnotation? value=Expression)
 	 * </pre>
 	 */
 	protected void sequence_SingleValDeclaration(ISerializationContext context, SingleValDeclaration semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, Aadl2Package.eINSTANCE.getNamedElement_Name()) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, Aadl2Package.eINSTANCE.getNamedElement_Name()));
-			if (transientValues.isValueTransient(semanticObject, ContractPackage.Literals.QUERY__VALUE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ContractPackage.Literals.QUERY__VALUE));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getSingleValDeclarationAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
-		feeder.accept(grammarAccess.getSingleValDeclarationAccess().getValueExpressionParserRuleCall_3_0(), semanticObject.getValue());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -1113,6 +1124,85 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	/**
 	 * <pre>
 	 * Contexts:
+	 *     TypeAnnotation returns GenericPropertyTypeAnnotation
+	 *     TypeAnnotation.OptionalTypeAnnotation_1_0 returns GenericPropertyTypeAnnotation
+	 *     TerminalTypeAnnotation returns GenericPropertyTypeAnnotation
+	 *
+	 * Constraint:
+	 *     (baseType=ID propertySet=ID propertyType=ID fields+=ID*)
+	 * </pre>
+	 */
+	protected void sequence_TerminalTypeAnnotation(ISerializationContext context, GenericPropertyTypeAnnotation semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
+	 *     TypeAnnotation returns GenericTypeAnnotation
+	 *     TypeAnnotation.OptionalTypeAnnotation_1_0 returns GenericTypeAnnotation
+	 *     TerminalTypeAnnotation returns GenericTypeAnnotation
+	 *
+	 * Constraint:
+	 *     (baseType=ID genericType=TypeAnnotation)
+	 * </pre>
+	 */
+	protected void sequence_TerminalTypeAnnotation(ISerializationContext context, GenericTypeAnnotation semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ContractPackage.Literals.GENERIC_TYPE_ANNOTATION__BASE_TYPE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ContractPackage.Literals.GENERIC_TYPE_ANNOTATION__BASE_TYPE));
+			if (transientValues.isValueTransient(semanticObject, ContractPackage.Literals.GENERIC_TYPE_ANNOTATION__GENERIC_TYPE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ContractPackage.Literals.GENERIC_TYPE_ANNOTATION__GENERIC_TYPE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getTerminalTypeAnnotationAccess().getBaseTypeIDTerminalRuleCall_1_1_0(), semanticObject.getBaseType());
+		feeder.accept(grammarAccess.getTerminalTypeAnnotationAccess().getGenericTypeTypeAnnotationParserRuleCall_1_3_0(), semanticObject.getGenericType());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
+	 *     TypeAnnotation returns SimpleTypeAnnotation
+	 *     TypeAnnotation.OptionalTypeAnnotation_1_0 returns SimpleTypeAnnotation
+	 *     TerminalTypeAnnotation returns SimpleTypeAnnotation
+	 *
+	 * Constraint:
+	 *     type=ID
+	 * </pre>
+	 */
+	protected void sequence_TerminalTypeAnnotation(ISerializationContext context, SimpleTypeAnnotation semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ContractPackage.Literals.SIMPLE_TYPE_ANNOTATION__TYPE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ContractPackage.Literals.SIMPLE_TYPE_ANNOTATION__TYPE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getTerminalTypeAnnotationAccess().getTypeIDTerminalRuleCall_0_1_0(), semanticObject.getType());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
+	 *     TypeAnnotation returns TupleTypeAnnotation
+	 *     TypeAnnotation.OptionalTypeAnnotation_1_0 returns TupleTypeAnnotation
+	 *     TerminalTypeAnnotation returns TupleTypeAnnotation
+	 *
+	 * Constraint:
+	 *     (types+=TypeAnnotation types+=TypeAnnotation+)
+	 * </pre>
+	 */
+	protected void sequence_TerminalTypeAnnotation(ISerializationContext context, TupleTypeAnnotation semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
 	 *     NamedElement returns TupleName
 	 *     TupleName returns TupleName
 	 *
@@ -1127,6 +1217,27 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getTupleNameAccess().getNameIDTerminalRuleCall_0(), semanticObject.getName());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
+	 *     TypeAnnotation returns OptionalTypeAnnotation
+	 *     TypeAnnotation.OptionalTypeAnnotation_1_0 returns OptionalTypeAnnotation
+	 *
+	 * Constraint:
+	 *     baseType=TypeAnnotation_OptionalTypeAnnotation_1_0
+	 * </pre>
+	 */
+	protected void sequence_TypeAnnotation(ISerializationContext context, OptionalTypeAnnotation semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ContractPackage.Literals.OPTIONAL_TYPE_ANNOTATION__BASE_TYPE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ContractPackage.Literals.OPTIONAL_TYPE_ANNOTATION__BASE_TYPE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getTypeAnnotationAccess().getOptionalTypeAnnotationBaseTypeAction_1_0(), semanticObject.getBaseType());
 		feeder.finish();
 	}
 	

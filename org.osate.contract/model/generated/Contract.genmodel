@@ -70,8 +70,11 @@
     <genClasses ecoreClass="Contract.ecore#//Query">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//Query/value"/>
     </genClasses>
-    <genClasses ecoreClass="Contract.ecore#//SingleValDeclaration"/>
+    <genClasses ecoreClass="Contract.ecore#//SingleValDeclaration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//SingleValDeclaration/type"/>
+    </genClasses>
     <genClasses ecoreClass="Contract.ecore#//TupleName"/>
+    <genClasses ecoreClass="Contract.ecore#//TypeAnnotation"/>
     <genClasses ecoreClass="Contract.ecore#//Expression"/>
     <genClasses ecoreClass="Contract.ecore#//Lambda">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//Lambda/parameter"/>
@@ -113,6 +116,25 @@
     <genClasses ecoreClass="Contract.ecore#//ArgumentNot"/>
     <genClasses ecoreClass="Contract.ecore#//TupleDeclaration">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//TupleDeclaration/names"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//OptionalTypeAnnotation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//OptionalTypeAnnotation/baseType"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//SimpleTypeAnnotation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//SimpleTypeAnnotation/type"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//GenericTypeAnnotation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//GenericTypeAnnotation/baseType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//GenericTypeAnnotation/genericType"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//GenericPropertyTypeAnnotation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//GenericPropertyTypeAnnotation/baseType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//GenericPropertyTypeAnnotation/propertySet"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//GenericPropertyTypeAnnotation/propertyType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//GenericPropertyTypeAnnotation/fields"/>
+    </genClasses>
+    <genClasses ecoreClass="Contract.ecore#//TupleTypeAnnotation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//TupleTypeAnnotation/types"/>
     </genClasses>
     <genClasses ecoreClass="Contract.ecore#//OrExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//OrExpression/left"/>

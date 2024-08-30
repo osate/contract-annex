@@ -23,48 +23,43 @@
  * contributors and others.
  * DM23-0575
  */
-package org.osate.contract.contract;
+package org.osate.contract.contract.impl;
 
-import org.osate.aadl2.NamedElement;
+import org.eclipse.emf.ecore.EClass;
+
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
+import org.osate.contract.contract.ContractPackage;
+import org.osate.contract.contract.TypeAnnotation;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Single Val Declaration</b></em>'.
+ * An implementation of the model object '<em><b>Type Annotation</b></em>'.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * </p>
- * <ul>
- *   <li>{@link org.osate.contract.contract.SingleValDeclaration#getType <em>Type</em>}</li>
- * </ul>
- *
- * @see org.osate.contract.contract.ContractPackage#getSingleValDeclaration()
- * @model
  * @generated
  */
-public interface SingleValDeclaration extends NamedElement, Query
+public class TypeAnnotationImpl extends MinimalEObjectImpl.Container implements TypeAnnotation
 {
   /**
-   * Returns the value of the '<em><b>Type</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Type</em>' containment reference.
-   * @see #setType(TypeAnnotation)
-   * @see org.osate.contract.contract.ContractPackage#getSingleValDeclaration_Type()
-   * @model containment="true"
    * @generated
    */
-  TypeAnnotation getType();
+  protected TypeAnnotationImpl()
+  {
+    super();
+  }
 
   /**
-   * Sets the value of the '{@link org.osate.contract.contract.SingleValDeclaration#getType <em>Type</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Type</em>' containment reference.
-   * @see #getType()
    * @generated
    */
-  void setType(TypeAnnotation value);
+  @Override
+  protected EClass eStaticClass()
+  {
+    return ContractPackage.Literals.TYPE_ANNOTATION;
+  }
 
-} // SingleValDeclaration
+} //TypeAnnotationImpl

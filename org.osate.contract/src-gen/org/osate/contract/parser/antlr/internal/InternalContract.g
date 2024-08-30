@@ -1880,16 +1880,41 @@ ruleSingleValDeclaration returns [EObject current=null]
 				}
 			)
 		)
-		otherlv_2='='
+		(
+			otherlv_2=':'
+			{
+				newLeafNode(otherlv_2, grammarAccess.getSingleValDeclarationAccess().getColonKeyword_2_0());
+			}
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getSingleValDeclarationAccess().getTypeTypeAnnotationParserRuleCall_2_1_0());
+					}
+					lv_type_3_0=ruleTypeAnnotation
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getSingleValDeclarationRule());
+						}
+						set(
+							$current,
+							"type",
+							lv_type_3_0,
+							"org.osate.contract.Contract.TypeAnnotation");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+		)?
+		otherlv_4='='
 		{
-			newLeafNode(otherlv_2, grammarAccess.getSingleValDeclarationAccess().getEqualsSignKeyword_2());
+			newLeafNode(otherlv_4, grammarAccess.getSingleValDeclarationAccess().getEqualsSignKeyword_3());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getSingleValDeclarationAccess().getValueExpressionParserRuleCall_3_0());
+					newCompositeNode(grammarAccess.getSingleValDeclarationAccess().getValueExpressionParserRuleCall_4_0());
 				}
-				lv_value_3_0=ruleExpression
+				lv_value_5_0=ruleExpression
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getSingleValDeclarationRule());
@@ -1897,7 +1922,7 @@ ruleSingleValDeclaration returns [EObject current=null]
 					set(
 						$current,
 						"value",
-						lv_value_3_0,
+						lv_value_5_0,
 						"org.osate.contract.Contract.Expression");
 					afterParserOrEnumRuleCall();
 				}
@@ -1936,6 +1961,309 @@ ruleTupleName returns [EObject current=null]
 					"name",
 					lv_name_0_0,
 					"org.osate.xtext.aadl2.properties.Properties.ID");
+			}
+		)
+	)
+;
+
+// Entry rule entryRuleTypeAnnotation
+entryRuleTypeAnnotation returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getTypeAnnotationRule()); }
+	iv_ruleTypeAnnotation=ruleTypeAnnotation
+	{ $current=$iv_ruleTypeAnnotation.current; }
+	EOF;
+
+// Rule TypeAnnotation
+ruleTypeAnnotation returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		{
+			newCompositeNode(grammarAccess.getTypeAnnotationAccess().getTerminalTypeAnnotationParserRuleCall_0());
+		}
+		this_TerminalTypeAnnotation_0=ruleTerminalTypeAnnotation
+		{
+			$current = $this_TerminalTypeAnnotation_0.current;
+			afterParserOrEnumRuleCall();
+		}
+		(
+			(
+				{
+					$current = forceCreateModelElementAndSet(
+						grammarAccess.getTypeAnnotationAccess().getOptionalTypeAnnotationBaseTypeAction_1_0(),
+						$current);
+				}
+			)
+			otherlv_2='?'
+			{
+				newLeafNode(otherlv_2, grammarAccess.getTypeAnnotationAccess().getQuestionMarkKeyword_1_1());
+			}
+		)*
+	)
+;
+
+// Entry rule entryRuleTerminalTypeAnnotation
+entryRuleTerminalTypeAnnotation returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getTerminalTypeAnnotationRule()); }
+	iv_ruleTerminalTypeAnnotation=ruleTerminalTypeAnnotation
+	{ $current=$iv_ruleTerminalTypeAnnotation.current; }
+	EOF;
+
+// Rule TerminalTypeAnnotation
+ruleTerminalTypeAnnotation returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			(
+				{
+					$current = forceCreateModelElement(
+						grammarAccess.getTerminalTypeAnnotationAccess().getSimpleTypeAnnotationAction_0_0(),
+						$current);
+				}
+			)
+			(
+				(
+					lv_type_1_0=RULE_ID
+					{
+						newLeafNode(lv_type_1_0, grammarAccess.getTerminalTypeAnnotationAccess().getTypeIDTerminalRuleCall_0_1_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getTerminalTypeAnnotationRule());
+						}
+						setWithLastConsumed(
+							$current,
+							"type",
+							lv_type_1_0,
+							"org.osate.xtext.aadl2.properties.Properties.ID");
+					}
+				)
+			)
+		)
+		    |
+		(
+			(
+				{
+					$current = forceCreateModelElement(
+						grammarAccess.getTerminalTypeAnnotationAccess().getGenericTypeAnnotationAction_1_0(),
+						$current);
+				}
+			)
+			(
+				(
+					lv_baseType_3_0=RULE_ID
+					{
+						newLeafNode(lv_baseType_3_0, grammarAccess.getTerminalTypeAnnotationAccess().getBaseTypeIDTerminalRuleCall_1_1_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getTerminalTypeAnnotationRule());
+						}
+						setWithLastConsumed(
+							$current,
+							"baseType",
+							lv_baseType_3_0,
+							"org.osate.xtext.aadl2.properties.Properties.ID");
+					}
+				)
+			)
+			otherlv_4='<'
+			{
+				newLeafNode(otherlv_4, grammarAccess.getTerminalTypeAnnotationAccess().getLessThanSignKeyword_1_2());
+			}
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getTerminalTypeAnnotationAccess().getGenericTypeTypeAnnotationParserRuleCall_1_3_0());
+					}
+					lv_genericType_5_0=ruleTypeAnnotation
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getTerminalTypeAnnotationRule());
+						}
+						set(
+							$current,
+							"genericType",
+							lv_genericType_5_0,
+							"org.osate.contract.Contract.TypeAnnotation");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			otherlv_6='>'
+			{
+				newLeafNode(otherlv_6, grammarAccess.getTerminalTypeAnnotationAccess().getGreaterThanSignKeyword_1_4());
+			}
+		)
+		    |
+		(
+			(
+				{
+					$current = forceCreateModelElement(
+						grammarAccess.getTerminalTypeAnnotationAccess().getGenericPropertyTypeAnnotationAction_2_0(),
+						$current);
+				}
+			)
+			(
+				(
+					lv_baseType_8_0=RULE_ID
+					{
+						newLeafNode(lv_baseType_8_0, grammarAccess.getTerminalTypeAnnotationAccess().getBaseTypeIDTerminalRuleCall_2_1_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getTerminalTypeAnnotationRule());
+						}
+						setWithLastConsumed(
+							$current,
+							"baseType",
+							lv_baseType_8_0,
+							"org.osate.xtext.aadl2.properties.Properties.ID");
+					}
+				)
+			)
+			otherlv_9='<'
+			{
+				newLeafNode(otherlv_9, grammarAccess.getTerminalTypeAnnotationAccess().getLessThanSignKeyword_2_2());
+			}
+			(
+				(
+					lv_propertySet_10_0=RULE_ID
+					{
+						newLeafNode(lv_propertySet_10_0, grammarAccess.getTerminalTypeAnnotationAccess().getPropertySetIDTerminalRuleCall_2_3_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getTerminalTypeAnnotationRule());
+						}
+						setWithLastConsumed(
+							$current,
+							"propertySet",
+							lv_propertySet_10_0,
+							"org.osate.xtext.aadl2.properties.Properties.ID");
+					}
+				)
+			)
+			otherlv_11='::'
+			{
+				newLeafNode(otherlv_11, grammarAccess.getTerminalTypeAnnotationAccess().getColonColonKeyword_2_4());
+			}
+			(
+				(
+					lv_propertyType_12_0=RULE_ID
+					{
+						newLeafNode(lv_propertyType_12_0, grammarAccess.getTerminalTypeAnnotationAccess().getPropertyTypeIDTerminalRuleCall_2_5_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getTerminalTypeAnnotationRule());
+						}
+						setWithLastConsumed(
+							$current,
+							"propertyType",
+							lv_propertyType_12_0,
+							"org.osate.xtext.aadl2.properties.Properties.ID");
+					}
+				)
+			)
+			(
+				otherlv_13='.'
+				{
+					newLeafNode(otherlv_13, grammarAccess.getTerminalTypeAnnotationAccess().getFullStopKeyword_2_6_0());
+				}
+				(
+					(
+						lv_fields_14_0=RULE_ID
+						{
+							newLeafNode(lv_fields_14_0, grammarAccess.getTerminalTypeAnnotationAccess().getFieldsIDTerminalRuleCall_2_6_1_0());
+						}
+						{
+							if ($current==null) {
+								$current = createModelElement(grammarAccess.getTerminalTypeAnnotationRule());
+							}
+							addWithLastConsumed(
+								$current,
+								"fields",
+								lv_fields_14_0,
+								"org.osate.xtext.aadl2.properties.Properties.ID");
+						}
+					)
+				)
+			)*
+			otherlv_15='>'
+			{
+				newLeafNode(otherlv_15, grammarAccess.getTerminalTypeAnnotationAccess().getGreaterThanSignKeyword_2_7());
+			}
+		)
+		    |
+		(
+			(
+				{
+					$current = forceCreateModelElement(
+						grammarAccess.getTerminalTypeAnnotationAccess().getTupleTypeAnnotationAction_3_0(),
+						$current);
+				}
+			)
+			otherlv_17='('
+			{
+				newLeafNode(otherlv_17, grammarAccess.getTerminalTypeAnnotationAccess().getLeftParenthesisKeyword_3_1());
+			}
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getTerminalTypeAnnotationAccess().getTypesTypeAnnotationParserRuleCall_3_2_0());
+					}
+					lv_types_18_0=ruleTypeAnnotation
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getTerminalTypeAnnotationRule());
+						}
+						add(
+							$current,
+							"types",
+							lv_types_18_0,
+							"org.osate.contract.Contract.TypeAnnotation");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			(
+				otherlv_19=','
+				{
+					newLeafNode(otherlv_19, grammarAccess.getTerminalTypeAnnotationAccess().getCommaKeyword_3_3_0());
+				}
+				(
+					(
+						{
+							newCompositeNode(grammarAccess.getTerminalTypeAnnotationAccess().getTypesTypeAnnotationParserRuleCall_3_3_1_0());
+						}
+						lv_types_20_0=ruleTypeAnnotation
+						{
+							if ($current==null) {
+								$current = createModelElementForParent(grammarAccess.getTerminalTypeAnnotationRule());
+							}
+							add(
+								$current,
+								"types",
+								lv_types_20_0,
+								"org.osate.contract.Contract.TypeAnnotation");
+							afterParserOrEnumRuleCall();
+						}
+					)
+				)
+			)+
+			otherlv_21=')'
+			{
+				newLeafNode(otherlv_21, grammarAccess.getTerminalTypeAnnotationAccess().getRightParenthesisKeyword_3_4());
 			}
 		)
 	)

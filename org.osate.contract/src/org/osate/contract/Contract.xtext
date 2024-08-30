@@ -224,11 +224,23 @@ Query:
 ;
 
 SingleValDeclaration:
-	'val' name=ID '=' value=Expression
+	'val' name=ID (':' type=TypeAnnotation)? '=' value=Expression
 ;
 
 TupleName:
 	name=ID
+;
+
+TypeAnnotation:
+	TerminalTypeAnnotation ({OptionalTypeAnnotation.baseType=current} '?')*
+;
+
+TerminalTypeAnnotation returns TypeAnnotation:
+	{SimpleTypeAnnotation} type=ID |
+	{GenericTypeAnnotation} baseType=ID '<' genericType=TypeAnnotation '>' |
+	//TODO: Turn IDs into cross references
+	{GenericPropertyTypeAnnotation} baseType=ID '<' propertySet=ID '::' propertyType=ID ('.' fields+=ID)* '>' |
+	{TupleTypeAnnotation} '(' types+=TypeAnnotation (',' types+=TypeAnnotation)+ ')'
 ;
 
 Expression:

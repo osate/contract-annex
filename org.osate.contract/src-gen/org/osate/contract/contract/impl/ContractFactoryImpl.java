@@ -104,6 +104,7 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
       case ContractPackage.QUERY: return createQuery();
       case ContractPackage.SINGLE_VAL_DECLARATION: return createSingleValDeclaration();
       case ContractPackage.TUPLE_NAME: return createTupleName();
+      case ContractPackage.TYPE_ANNOTATION: return createTypeAnnotation();
       case ContractPackage.EXPRESSION: return createExpression();
       case ContractPackage.LAMBDA: return createLambda();
       case ContractPackage.PARAMETER: return createParameter();
@@ -120,6 +121,11 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
       case ContractPackage.ARGUMENT_OR: return createArgumentOr();
       case ContractPackage.ARGUMENT_NOT: return createArgumentNot();
       case ContractPackage.TUPLE_DECLARATION: return createTupleDeclaration();
+      case ContractPackage.OPTIONAL_TYPE_ANNOTATION: return createOptionalTypeAnnotation();
+      case ContractPackage.SIMPLE_TYPE_ANNOTATION: return createSimpleTypeAnnotation();
+      case ContractPackage.GENERIC_TYPE_ANNOTATION: return createGenericTypeAnnotation();
+      case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION: return createGenericPropertyTypeAnnotation();
+      case ContractPackage.TUPLE_TYPE_ANNOTATION: return createTupleTypeAnnotation();
       case ContractPackage.OR_EXPRESSION: return createOrExpression();
       case ContractPackage.AND_EXPRESSION: return createAndExpression();
       case ContractPackage.NOT_EXPRESSION: return createNotExpression();
@@ -372,6 +378,18 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
    * @generated
    */
   @Override
+  public TypeAnnotation createTypeAnnotation()
+  {
+    TypeAnnotationImpl typeAnnotation = new TypeAnnotationImpl();
+    return typeAnnotation;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public Expression createExpression()
   {
     ExpressionImpl expression = new ExpressionImpl();
@@ -556,6 +574,66 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
   {
     TupleDeclarationImpl tupleDeclaration = new TupleDeclarationImpl();
     return tupleDeclaration;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public OptionalTypeAnnotation createOptionalTypeAnnotation()
+  {
+    OptionalTypeAnnotationImpl optionalTypeAnnotation = new OptionalTypeAnnotationImpl();
+    return optionalTypeAnnotation;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public SimpleTypeAnnotation createSimpleTypeAnnotation()
+  {
+    SimpleTypeAnnotationImpl simpleTypeAnnotation = new SimpleTypeAnnotationImpl();
+    return simpleTypeAnnotation;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public GenericTypeAnnotation createGenericTypeAnnotation()
+  {
+    GenericTypeAnnotationImpl genericTypeAnnotation = new GenericTypeAnnotationImpl();
+    return genericTypeAnnotation;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public GenericPropertyTypeAnnotation createGenericPropertyTypeAnnotation()
+  {
+    GenericPropertyTypeAnnotationImpl genericPropertyTypeAnnotation = new GenericPropertyTypeAnnotationImpl();
+    return genericPropertyTypeAnnotation;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public TupleTypeAnnotation createTupleTypeAnnotation()
+  {
+    TupleTypeAnnotationImpl tupleTypeAnnotation = new TupleTypeAnnotationImpl();
+    return tupleTypeAnnotation;
   }
 
   /**

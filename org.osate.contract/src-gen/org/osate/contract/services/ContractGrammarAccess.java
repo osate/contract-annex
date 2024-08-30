@@ -1431,16 +1431,20 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final Keyword cValKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Keyword cEqualsSignKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cValueAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cValueExpressionParserRuleCall_3_0 = (RuleCall)cValueAssignment_3.eContents().get(0);
+		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
+		private final Keyword cColonKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
+		private final Assignment cTypeAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
+		private final RuleCall cTypeTypeAnnotationParserRuleCall_2_1_0 = (RuleCall)cTypeAssignment_2_1.eContents().get(0);
+		private final Keyword cEqualsSignKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Assignment cValueAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final RuleCall cValueExpressionParserRuleCall_4_0 = (RuleCall)cValueAssignment_4.eContents().get(0);
 		
 		//SingleValDeclaration:
-		//    'val' name=ID '=' value=Expression
+		//    'val' name=ID (':' type=TypeAnnotation)? '=' value=Expression
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'val' name=ID '=' value=Expression
+		//'val' name=ID (':' type=TypeAnnotation)? '=' value=Expression
 		public Group getGroup() { return cGroup; }
 		
 		//'val'
@@ -1452,14 +1456,26 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//ID
 		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
 		
+		//(':' type=TypeAnnotation)?
+		public Group getGroup_2() { return cGroup_2; }
+		
+		//':'
+		public Keyword getColonKeyword_2_0() { return cColonKeyword_2_0; }
+		
+		//type=TypeAnnotation
+		public Assignment getTypeAssignment_2_1() { return cTypeAssignment_2_1; }
+		
+		//TypeAnnotation
+		public RuleCall getTypeTypeAnnotationParserRuleCall_2_1_0() { return cTypeTypeAnnotationParserRuleCall_2_1_0; }
+		
 		//'='
-		public Keyword getEqualsSignKeyword_2() { return cEqualsSignKeyword_2; }
+		public Keyword getEqualsSignKeyword_3() { return cEqualsSignKeyword_3; }
 		
 		//value=Expression
-		public Assignment getValueAssignment_3() { return cValueAssignment_3; }
+		public Assignment getValueAssignment_4() { return cValueAssignment_4; }
 		
 		//Expression
-		public RuleCall getValueExpressionParserRuleCall_3_0() { return cValueExpressionParserRuleCall_3_0; }
+		public RuleCall getValueExpressionParserRuleCall_4_0() { return cValueExpressionParserRuleCall_4_0; }
 	}
 	public class TupleNameElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.TupleName");
@@ -1476,6 +1492,204 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		
 		//ID
 		public RuleCall getNameIDTerminalRuleCall_0() { return cNameIDTerminalRuleCall_0; }
+	}
+	public class TypeAnnotationElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.TypeAnnotation");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final RuleCall cTerminalTypeAnnotationParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Action cOptionalTypeAnnotationBaseTypeAction_1_0 = (Action)cGroup_1.eContents().get(0);
+		private final Keyword cQuestionMarkKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
+		
+		//TypeAnnotation:
+		//    TerminalTypeAnnotation ({OptionalTypeAnnotation.baseType=current} '?')*
+		//;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//TerminalTypeAnnotation ({OptionalTypeAnnotation.baseType=current} '?')*
+		public Group getGroup() { return cGroup; }
+		
+		//TerminalTypeAnnotation
+		public RuleCall getTerminalTypeAnnotationParserRuleCall_0() { return cTerminalTypeAnnotationParserRuleCall_0; }
+		
+		//({OptionalTypeAnnotation.baseType=current} '?')*
+		public Group getGroup_1() { return cGroup_1; }
+		
+		//{OptionalTypeAnnotation.baseType=current}
+		public Action getOptionalTypeAnnotationBaseTypeAction_1_0() { return cOptionalTypeAnnotationBaseTypeAction_1_0; }
+		
+		//'?'
+		public Keyword getQuestionMarkKeyword_1_1() { return cQuestionMarkKeyword_1_1; }
+	}
+	public class TerminalTypeAnnotationElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.TerminalTypeAnnotation");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
+		private final Action cSimpleTypeAnnotationAction_0_0 = (Action)cGroup_0.eContents().get(0);
+		private final Assignment cTypeAssignment_0_1 = (Assignment)cGroup_0.eContents().get(1);
+		private final RuleCall cTypeIDTerminalRuleCall_0_1_0 = (RuleCall)cTypeAssignment_0_1.eContents().get(0);
+		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
+		private final Action cGenericTypeAnnotationAction_1_0 = (Action)cGroup_1.eContents().get(0);
+		private final Assignment cBaseTypeAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final RuleCall cBaseTypeIDTerminalRuleCall_1_1_0 = (RuleCall)cBaseTypeAssignment_1_1.eContents().get(0);
+		private final Keyword cLessThanSignKeyword_1_2 = (Keyword)cGroup_1.eContents().get(2);
+		private final Assignment cGenericTypeAssignment_1_3 = (Assignment)cGroup_1.eContents().get(3);
+		private final RuleCall cGenericTypeTypeAnnotationParserRuleCall_1_3_0 = (RuleCall)cGenericTypeAssignment_1_3.eContents().get(0);
+		private final Keyword cGreaterThanSignKeyword_1_4 = (Keyword)cGroup_1.eContents().get(4);
+		private final Group cGroup_2 = (Group)cAlternatives.eContents().get(2);
+		private final Action cGenericPropertyTypeAnnotationAction_2_0 = (Action)cGroup_2.eContents().get(0);
+		private final Assignment cBaseTypeAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
+		private final RuleCall cBaseTypeIDTerminalRuleCall_2_1_0 = (RuleCall)cBaseTypeAssignment_2_1.eContents().get(0);
+		private final Keyword cLessThanSignKeyword_2_2 = (Keyword)cGroup_2.eContents().get(2);
+		private final Assignment cPropertySetAssignment_2_3 = (Assignment)cGroup_2.eContents().get(3);
+		private final RuleCall cPropertySetIDTerminalRuleCall_2_3_0 = (RuleCall)cPropertySetAssignment_2_3.eContents().get(0);
+		private final Keyword cColonColonKeyword_2_4 = (Keyword)cGroup_2.eContents().get(4);
+		private final Assignment cPropertyTypeAssignment_2_5 = (Assignment)cGroup_2.eContents().get(5);
+		private final RuleCall cPropertyTypeIDTerminalRuleCall_2_5_0 = (RuleCall)cPropertyTypeAssignment_2_5.eContents().get(0);
+		private final Group cGroup_2_6 = (Group)cGroup_2.eContents().get(6);
+		private final Keyword cFullStopKeyword_2_6_0 = (Keyword)cGroup_2_6.eContents().get(0);
+		private final Assignment cFieldsAssignment_2_6_1 = (Assignment)cGroup_2_6.eContents().get(1);
+		private final RuleCall cFieldsIDTerminalRuleCall_2_6_1_0 = (RuleCall)cFieldsAssignment_2_6_1.eContents().get(0);
+		private final Keyword cGreaterThanSignKeyword_2_7 = (Keyword)cGroup_2.eContents().get(7);
+		private final Group cGroup_3 = (Group)cAlternatives.eContents().get(3);
+		private final Action cTupleTypeAnnotationAction_3_0 = (Action)cGroup_3.eContents().get(0);
+		private final Keyword cLeftParenthesisKeyword_3_1 = (Keyword)cGroup_3.eContents().get(1);
+		private final Assignment cTypesAssignment_3_2 = (Assignment)cGroup_3.eContents().get(2);
+		private final RuleCall cTypesTypeAnnotationParserRuleCall_3_2_0 = (RuleCall)cTypesAssignment_3_2.eContents().get(0);
+		private final Group cGroup_3_3 = (Group)cGroup_3.eContents().get(3);
+		private final Keyword cCommaKeyword_3_3_0 = (Keyword)cGroup_3_3.eContents().get(0);
+		private final Assignment cTypesAssignment_3_3_1 = (Assignment)cGroup_3_3.eContents().get(1);
+		private final RuleCall cTypesTypeAnnotationParserRuleCall_3_3_1_0 = (RuleCall)cTypesAssignment_3_3_1.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_3_4 = (Keyword)cGroup_3.eContents().get(4);
+		
+		//TerminalTypeAnnotation returns TypeAnnotation:
+		//    {SimpleTypeAnnotation} type=ID |
+		//    {GenericTypeAnnotation} baseType=ID '<' genericType=TypeAnnotation '>' |
+		//    //TODO: Turn IDs into cross references
+		//    {GenericPropertyTypeAnnotation} baseType=ID '<' propertySet=ID '::' propertyType=ID ('.' fields+=ID)* '>' |
+		//    {TupleTypeAnnotation} '(' types+=TypeAnnotation (',' types+=TypeAnnotation)+ ')'
+		//;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{SimpleTypeAnnotation} type=ID |
+		//{GenericTypeAnnotation} baseType=ID '<' genericType=TypeAnnotation '>' |
+		////TODO: Turn IDs into cross references
+		//{GenericPropertyTypeAnnotation} baseType=ID '<' propertySet=ID '::' propertyType=ID ('.' fields+=ID)* '>' |
+		//{TupleTypeAnnotation} '(' types+=TypeAnnotation (',' types+=TypeAnnotation)+ ')'
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//{SimpleTypeAnnotation} type=ID
+		public Group getGroup_0() { return cGroup_0; }
+		
+		//{SimpleTypeAnnotation}
+		public Action getSimpleTypeAnnotationAction_0_0() { return cSimpleTypeAnnotationAction_0_0; }
+		
+		//type=ID
+		public Assignment getTypeAssignment_0_1() { return cTypeAssignment_0_1; }
+		
+		//ID
+		public RuleCall getTypeIDTerminalRuleCall_0_1_0() { return cTypeIDTerminalRuleCall_0_1_0; }
+		
+		//{GenericTypeAnnotation} baseType=ID '<' genericType=TypeAnnotation '>'
+		public Group getGroup_1() { return cGroup_1; }
+		
+		//{GenericTypeAnnotation}
+		public Action getGenericTypeAnnotationAction_1_0() { return cGenericTypeAnnotationAction_1_0; }
+		
+		//baseType=ID
+		public Assignment getBaseTypeAssignment_1_1() { return cBaseTypeAssignment_1_1; }
+		
+		//ID
+		public RuleCall getBaseTypeIDTerminalRuleCall_1_1_0() { return cBaseTypeIDTerminalRuleCall_1_1_0; }
+		
+		//'<'
+		public Keyword getLessThanSignKeyword_1_2() { return cLessThanSignKeyword_1_2; }
+		
+		//genericType=TypeAnnotation
+		public Assignment getGenericTypeAssignment_1_3() { return cGenericTypeAssignment_1_3; }
+		
+		//TypeAnnotation
+		public RuleCall getGenericTypeTypeAnnotationParserRuleCall_1_3_0() { return cGenericTypeTypeAnnotationParserRuleCall_1_3_0; }
+		
+		//'>'
+		public Keyword getGreaterThanSignKeyword_1_4() { return cGreaterThanSignKeyword_1_4; }
+		
+		////TODO: Turn IDs into cross references
+		//{GenericPropertyTypeAnnotation} baseType=ID '<' propertySet=ID '::' propertyType=ID ('.' fields+=ID)* '>'
+		public Group getGroup_2() { return cGroup_2; }
+		
+		////TODO: Turn IDs into cross references
+		//{GenericPropertyTypeAnnotation}
+		public Action getGenericPropertyTypeAnnotationAction_2_0() { return cGenericPropertyTypeAnnotationAction_2_0; }
+		
+		//baseType=ID
+		public Assignment getBaseTypeAssignment_2_1() { return cBaseTypeAssignment_2_1; }
+		
+		//ID
+		public RuleCall getBaseTypeIDTerminalRuleCall_2_1_0() { return cBaseTypeIDTerminalRuleCall_2_1_0; }
+		
+		//'<'
+		public Keyword getLessThanSignKeyword_2_2() { return cLessThanSignKeyword_2_2; }
+		
+		//propertySet=ID
+		public Assignment getPropertySetAssignment_2_3() { return cPropertySetAssignment_2_3; }
+		
+		//ID
+		public RuleCall getPropertySetIDTerminalRuleCall_2_3_0() { return cPropertySetIDTerminalRuleCall_2_3_0; }
+		
+		//'::'
+		public Keyword getColonColonKeyword_2_4() { return cColonColonKeyword_2_4; }
+		
+		//propertyType=ID
+		public Assignment getPropertyTypeAssignment_2_5() { return cPropertyTypeAssignment_2_5; }
+		
+		//ID
+		public RuleCall getPropertyTypeIDTerminalRuleCall_2_5_0() { return cPropertyTypeIDTerminalRuleCall_2_5_0; }
+		
+		//('.' fields+=ID)*
+		public Group getGroup_2_6() { return cGroup_2_6; }
+		
+		//'.'
+		public Keyword getFullStopKeyword_2_6_0() { return cFullStopKeyword_2_6_0; }
+		
+		//fields+=ID
+		public Assignment getFieldsAssignment_2_6_1() { return cFieldsAssignment_2_6_1; }
+		
+		//ID
+		public RuleCall getFieldsIDTerminalRuleCall_2_6_1_0() { return cFieldsIDTerminalRuleCall_2_6_1_0; }
+		
+		//'>'
+		public Keyword getGreaterThanSignKeyword_2_7() { return cGreaterThanSignKeyword_2_7; }
+		
+		//{TupleTypeAnnotation} '(' types+=TypeAnnotation (',' types+=TypeAnnotation)+ ')'
+		public Group getGroup_3() { return cGroup_3; }
+		
+		//{TupleTypeAnnotation}
+		public Action getTupleTypeAnnotationAction_3_0() { return cTupleTypeAnnotationAction_3_0; }
+		
+		//'('
+		public Keyword getLeftParenthesisKeyword_3_1() { return cLeftParenthesisKeyword_3_1; }
+		
+		//types+=TypeAnnotation
+		public Assignment getTypesAssignment_3_2() { return cTypesAssignment_3_2; }
+		
+		//TypeAnnotation
+		public RuleCall getTypesTypeAnnotationParserRuleCall_3_2_0() { return cTypesTypeAnnotationParserRuleCall_3_2_0; }
+		
+		//(',' types+=TypeAnnotation)+
+		public Group getGroup_3_3() { return cGroup_3_3; }
+		
+		//','
+		public Keyword getCommaKeyword_3_3_0() { return cCommaKeyword_3_3_0; }
+		
+		//types+=TypeAnnotation
+		public Assignment getTypesAssignment_3_3_1() { return cTypesAssignment_3_3_1; }
+		
+		//TypeAnnotation
+		public RuleCall getTypesTypeAnnotationParserRuleCall_3_3_1_0() { return cTypesTypeAnnotationParserRuleCall_3_3_1_0; }
+		
+		//')'
+		public Keyword getRightParenthesisKeyword_3_4() { return cRightParenthesisKeyword_3_4; }
 	}
 	public class ExpressionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.Expression");
@@ -2399,6 +2613,8 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	private final QueryElements pQuery;
 	private final SingleValDeclarationElements pSingleValDeclaration;
 	private final TupleNameElements pTupleName;
+	private final TypeAnnotationElements pTypeAnnotation;
+	private final TerminalTypeAnnotationElements pTerminalTypeAnnotation;
 	private final ExpressionElements pExpression;
 	private final AndExpressionElements pAndExpression;
 	private final NotExpressionElements pNotExpression;
@@ -2465,6 +2681,8 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		this.pQuery = new QueryElements();
 		this.pSingleValDeclaration = new SingleValDeclarationElements();
 		this.pTupleName = new TupleNameElements();
+		this.pTypeAnnotation = new TypeAnnotationElements();
+		this.pTerminalTypeAnnotation = new TerminalTypeAnnotationElements();
 		this.pExpression = new ExpressionElements();
 		this.pAndExpression = new AndExpressionElements();
 		this.pNotExpression = new NotExpressionElements();
@@ -2913,7 +3131,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	}
 	
 	//SingleValDeclaration:
-	//    'val' name=ID '=' value=Expression
+	//    'val' name=ID (':' type=TypeAnnotation)? '=' value=Expression
 	//;
 	public SingleValDeclarationElements getSingleValDeclarationAccess() {
 		return pSingleValDeclaration;
@@ -2932,6 +3150,32 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	
 	public ParserRule getTupleNameRule() {
 		return getTupleNameAccess().getRule();
+	}
+	
+	//TypeAnnotation:
+	//    TerminalTypeAnnotation ({OptionalTypeAnnotation.baseType=current} '?')*
+	//;
+	public TypeAnnotationElements getTypeAnnotationAccess() {
+		return pTypeAnnotation;
+	}
+	
+	public ParserRule getTypeAnnotationRule() {
+		return getTypeAnnotationAccess().getRule();
+	}
+	
+	//TerminalTypeAnnotation returns TypeAnnotation:
+	//    {SimpleTypeAnnotation} type=ID |
+	//    {GenericTypeAnnotation} baseType=ID '<' genericType=TypeAnnotation '>' |
+	//    //TODO: Turn IDs into cross references
+	//    {GenericPropertyTypeAnnotation} baseType=ID '<' propertySet=ID '::' propertyType=ID ('.' fields+=ID)* '>' |
+	//    {TupleTypeAnnotation} '(' types+=TypeAnnotation (',' types+=TypeAnnotation)+ ')'
+	//;
+	public TerminalTypeAnnotationElements getTerminalTypeAnnotationAccess() {
+		return pTerminalTypeAnnotation;
+	}
+	
+	public ParserRule getTerminalTypeAnnotationRule() {
+		return getTerminalTypeAnnotationAccess().getRule();
 	}
 	
 	//Expression:
