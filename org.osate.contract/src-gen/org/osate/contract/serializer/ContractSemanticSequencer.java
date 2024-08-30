@@ -69,6 +69,7 @@ import org.osate.contract.contract.ContractLibrary;
 import org.osate.contract.contract.ContractPackage;
 import org.osate.contract.contract.ContractSubclause;
 import org.osate.contract.contract.Domain;
+import org.osate.contract.contract.FieldLocator;
 import org.osate.contract.contract.GenericPropertyTypeAnnotation;
 import org.osate.contract.contract.GenericTypeAnnotation;
 import org.osate.contract.contract.Guarantee;
@@ -90,6 +91,7 @@ import org.osate.contract.contract.SimpleTypeAnnotation;
 import org.osate.contract.contract.SingleParameter;
 import org.osate.contract.contract.SingleValDeclaration;
 import org.osate.contract.contract.Source;
+import org.osate.contract.contract.TopLevelLocator;
 import org.osate.contract.contract.TupleDeclaration;
 import org.osate.contract.contract.TupleExpression;
 import org.osate.contract.contract.TupleName;
@@ -249,6 +251,9 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 			case ContractPackage.DOMAIN:
 				sequence_Domain_Queries(context, (Domain) semanticObject); 
 				return; 
+			case ContractPackage.FIELD_LOCATOR:
+				sequence_PropertyTypeLocator(context, (FieldLocator) semanticObject); 
+				return; 
 			case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION:
 				sequence_TerminalTypeAnnotation(context, (GenericPropertyTypeAnnotation) semanticObject); 
 				return; 
@@ -330,6 +335,9 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 				return; 
 			case ContractPackage.STRING_LITERAL:
 				sequence_TerminalExpression(context, (org.osate.contract.contract.StringLiteral) semanticObject); 
+				return; 
+			case ContractPackage.TOP_LEVEL_LOCATOR:
+				sequence_TopLevelLocator(context, (TopLevelLocator) semanticObject); 
 				return; 
 			case ContractPackage.TUPLE_DECLARATION:
 				sequence_Query(context, (TupleDeclaration) semanticObject); 
@@ -928,6 +936,30 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	/**
 	 * <pre>
 	 * Contexts:
+	 *     PropertyTypeLocator returns FieldLocator
+	 *     PropertyTypeLocator.FieldLocator_1_0 returns FieldLocator
+	 *
+	 * Constraint:
+	 *     (previous=PropertyTypeLocator_FieldLocator_1_0 field=[BasicProperty|ID])
+	 * </pre>
+	 */
+	protected void sequence_PropertyTypeLocator(ISerializationContext context, FieldLocator semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ContractPackage.Literals.FIELD_LOCATOR__PREVIOUS) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ContractPackage.Literals.FIELD_LOCATOR__PREVIOUS));
+			if (transientValues.isValueTransient(semanticObject, ContractPackage.Literals.FIELD_LOCATOR__FIELD) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ContractPackage.Literals.FIELD_LOCATOR__FIELD));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getPropertyTypeLocatorAccess().getFieldLocatorPreviousAction_1_0(), semanticObject.getPrevious());
+		feeder.accept(grammarAccess.getPropertyTypeLocatorAccess().getFieldBasicPropertyIDTerminalRuleCall_1_2_0_1(), semanticObject.eGet(ContractPackage.Literals.FIELD_LOCATOR__FIELD, false));
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
 	 *     Element returns TupleDeclaration
 	 *     Query returns TupleDeclaration
 	 *
@@ -1129,11 +1161,20 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	 *     TerminalTypeAnnotation returns GenericPropertyTypeAnnotation
 	 *
 	 * Constraint:
-	 *     (baseType=ID propertySet=ID propertyType=ID fields+=ID*)
+	 *     (baseType=ID genericType=PropertyTypeLocator)
 	 * </pre>
 	 */
 	protected void sequence_TerminalTypeAnnotation(ISerializationContext context, GenericPropertyTypeAnnotation semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ContractPackage.Literals.GENERIC_PROPERTY_TYPE_ANNOTATION__BASE_TYPE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ContractPackage.Literals.GENERIC_PROPERTY_TYPE_ANNOTATION__BASE_TYPE));
+			if (transientValues.isValueTransient(semanticObject, ContractPackage.Literals.GENERIC_PROPERTY_TYPE_ANNOTATION__GENERIC_TYPE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ContractPackage.Literals.GENERIC_PROPERTY_TYPE_ANNOTATION__GENERIC_TYPE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getTerminalTypeAnnotationAccess().getBaseTypeIDTerminalRuleCall_2_1_0(), semanticObject.getBaseType());
+		feeder.accept(grammarAccess.getTerminalTypeAnnotationAccess().getGenericTypePropertyTypeLocatorParserRuleCall_2_3_0(), semanticObject.getGenericType());
+		feeder.finish();
 	}
 	
 	
@@ -1197,6 +1238,28 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	 */
 	protected void sequence_TerminalTypeAnnotation(ISerializationContext context, TupleTypeAnnotation semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
+	 *     PropertyTypeLocator returns TopLevelLocator
+	 *     PropertyTypeLocator.FieldLocator_1_0 returns TopLevelLocator
+	 *     TopLevelLocator returns TopLevelLocator
+	 *
+	 * Constraint:
+	 *     propertyType=[NamedElement|QCLREF]
+	 * </pre>
+	 */
+	protected void sequence_TopLevelLocator(ISerializationContext context, TopLevelLocator semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ContractPackage.Literals.TOP_LEVEL_LOCATOR__PROPERTY_TYPE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ContractPackage.Literals.TOP_LEVEL_LOCATOR__PROPERTY_TYPE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getTopLevelLocatorAccess().getPropertyTypeNamedElementQCLREFParserRuleCall_0_1(), semanticObject.eGet(ContractPackage.Literals.TOP_LEVEL_LOCATOR__PROPERTY_TYPE, false));
+		feeder.finish();
 	}
 	
 	

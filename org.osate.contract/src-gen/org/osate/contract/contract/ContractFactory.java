@@ -199,6 +199,24 @@ public interface ContractFactory extends EFactory
   TypeAnnotation createTypeAnnotation();
 
   /**
+   * Returns a new object of class '<em>Property Type Locator</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Property Type Locator</em>'.
+   * @generated
+   */
+  PropertyTypeLocator createPropertyTypeLocator();
+
+  /**
+   * Returns a new object of class '<em>Top Level Locator</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Top Level Locator</em>'.
+   * @generated
+   */
+  TopLevelLocator createTopLevelLocator();
+
+  /**
    * Returns a new object of class '<em>Expression</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -386,6 +404,15 @@ public interface ContractFactory extends EFactory
    * @generated
    */
   TupleTypeAnnotation createTupleTypeAnnotation();
+
+  /**
+   * Returns a new object of class '<em>Field Locator</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Field Locator</em>'.
+   * @generated
+   */
+  FieldLocator createFieldLocator();
 
   /**
    * Returns a new object of class '<em>Or Expression</em>'.

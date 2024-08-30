@@ -238,9 +238,20 @@ TypeAnnotation:
 TerminalTypeAnnotation returns TypeAnnotation:
 	{SimpleTypeAnnotation} type=ID |
 	{GenericTypeAnnotation} baseType=ID '<' genericType=TypeAnnotation '>' |
-	//TODO: Turn IDs into cross references
-	{GenericPropertyTypeAnnotation} baseType=ID '<' propertySet=ID '::' propertyType=ID ('.' fields+=ID)* '>' |
+	{GenericPropertyTypeAnnotation} baseType=ID '<' genericType=PropertyTypeLocator '>' |
 	{TupleTypeAnnotation} '(' types+=TypeAnnotation (',' types+=TypeAnnotation)+ ')'
+;
+
+PropertyTypeLocator:
+	TopLevelLocator ({FieldLocator.previous=current} '.' field=[aadl2::BasicProperty])*
+;
+
+TopLevelLocator:
+	/*
+	 * I originally wanted to use the rule QPREF so that a simple name could be used for standard property types.
+	 * However, that would create an ambiguity with TopLevelLocator and GenericTypeAnnotation.
+	 */
+	propertyType=[aadl2::NamedElement|QCLREF]
 ;
 
 Expression:

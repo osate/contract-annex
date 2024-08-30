@@ -189,6 +189,16 @@ public class ContractAdapterFactory extends AdapterFactoryImpl
         return createTypeAnnotationAdapter();
       }
       @Override
+      public Adapter casePropertyTypeLocator(PropertyTypeLocator object)
+      {
+        return createPropertyTypeLocatorAdapter();
+      }
+      @Override
+      public Adapter caseTopLevelLocator(TopLevelLocator object)
+      {
+        return createTopLevelLocatorAdapter();
+      }
+      @Override
       public Adapter caseExpression(Expression object)
       {
         return createExpressionAdapter();
@@ -292,6 +302,11 @@ public class ContractAdapterFactory extends AdapterFactoryImpl
       public Adapter caseTupleTypeAnnotation(TupleTypeAnnotation object)
       {
         return createTupleTypeAnnotationAdapter();
+      }
+      @Override
+      public Adapter caseFieldLocator(FieldLocator object)
+      {
+        return createFieldLocatorAdapter();
       }
       @Override
       public Adapter caseOrExpression(OrExpression object)
@@ -651,6 +666,36 @@ public class ContractAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link org.osate.contract.contract.PropertyTypeLocator <em>Property Type Locator</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.osate.contract.contract.PropertyTypeLocator
+   * @generated
+   */
+  public Adapter createPropertyTypeLocatorAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.osate.contract.contract.TopLevelLocator <em>Top Level Locator</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.osate.contract.contract.TopLevelLocator
+   * @generated
+   */
+  public Adapter createTopLevelLocatorAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link org.osate.contract.contract.Expression <em>Expression</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -961,6 +1006,21 @@ public class ContractAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createTupleTypeAnnotationAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.osate.contract.contract.FieldLocator <em>Field Locator</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.osate.contract.contract.FieldLocator
+   * @generated
+   */
+  public Adapter createFieldLocatorAdapter()
   {
     return null;
   }

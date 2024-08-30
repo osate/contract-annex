@@ -25,68 +25,69 @@
  */
 package org.osate.contract.contract;
 
+import org.osate.aadl2.BasicProperty;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Generic Property Type Annotation</b></em>'.
+ * A representation of the model object '<em><b>Field Locator</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.osate.contract.contract.GenericPropertyTypeAnnotation#getBaseType <em>Base Type</em>}</li>
- *   <li>{@link org.osate.contract.contract.GenericPropertyTypeAnnotation#getGenericType <em>Generic Type</em>}</li>
+ *   <li>{@link org.osate.contract.contract.FieldLocator#getPrevious <em>Previous</em>}</li>
+ *   <li>{@link org.osate.contract.contract.FieldLocator#getField <em>Field</em>}</li>
  * </ul>
  *
- * @see org.osate.contract.contract.ContractPackage#getGenericPropertyTypeAnnotation()
+ * @see org.osate.contract.contract.ContractPackage#getFieldLocator()
  * @model
  * @generated
  */
-public interface GenericPropertyTypeAnnotation extends TypeAnnotation
+public interface FieldLocator extends PropertyTypeLocator
 {
   /**
-   * Returns the value of the '<em><b>Base Type</b></em>' attribute.
+   * Returns the value of the '<em><b>Previous</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Base Type</em>' attribute.
-   * @see #setBaseType(String)
-   * @see org.osate.contract.contract.ContractPackage#getGenericPropertyTypeAnnotation_BaseType()
-   * @model
-   * @generated
-   */
-  String getBaseType();
-
-  /**
-   * Sets the value of the '{@link org.osate.contract.contract.GenericPropertyTypeAnnotation#getBaseType <em>Base Type</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Base Type</em>' attribute.
-   * @see #getBaseType()
-   * @generated
-   */
-  void setBaseType(String value);
-
-  /**
-   * Returns the value of the '<em><b>Generic Type</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Generic Type</em>' containment reference.
-   * @see #setGenericType(PropertyTypeLocator)
-   * @see org.osate.contract.contract.ContractPackage#getGenericPropertyTypeAnnotation_GenericType()
+   * @return the value of the '<em>Previous</em>' containment reference.
+   * @see #setPrevious(PropertyTypeLocator)
+   * @see org.osate.contract.contract.ContractPackage#getFieldLocator_Previous()
    * @model containment="true"
    * @generated
    */
-  PropertyTypeLocator getGenericType();
+  PropertyTypeLocator getPrevious();
 
   /**
-   * Sets the value of the '{@link org.osate.contract.contract.GenericPropertyTypeAnnotation#getGenericType <em>Generic Type</em>}' containment reference.
+   * Sets the value of the '{@link org.osate.contract.contract.FieldLocator#getPrevious <em>Previous</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Generic Type</em>' containment reference.
-   * @see #getGenericType()
+   * @param value the new value of the '<em>Previous</em>' containment reference.
+   * @see #getPrevious()
    * @generated
    */
-  void setGenericType(PropertyTypeLocator value);
+  void setPrevious(PropertyTypeLocator value);
 
-} // GenericPropertyTypeAnnotation
+  /**
+   * Returns the value of the '<em><b>Field</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Field</em>' reference.
+   * @see #setField(BasicProperty)
+   * @see org.osate.contract.contract.ContractPackage#getFieldLocator_Field()
+   * @model
+   * @generated
+   */
+  BasicProperty getField();
+
+  /**
+   * Sets the value of the '{@link org.osate.contract.contract.FieldLocator#getField <em>Field</em>}' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Field</em>' reference.
+   * @see #getField()
+   * @generated
+   */
+  void setField(BasicProperty value);
+
+} // FieldLocator

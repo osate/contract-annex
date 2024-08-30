@@ -55,6 +55,7 @@ import org.osate.contract.contract.ContractPackage;
 import org.osate.contract.contract.ContractSubclause;
 import org.osate.contract.contract.Domain;
 import org.osate.contract.contract.Expression;
+import org.osate.contract.contract.FieldLocator;
 import org.osate.contract.contract.GenericPropertyTypeAnnotation;
 import org.osate.contract.contract.GenericTypeAnnotation;
 import org.osate.contract.contract.Guarantee;
@@ -74,6 +75,7 @@ import org.osate.contract.contract.OrExpression;
 import org.osate.contract.contract.Parameter;
 import org.osate.contract.contract.Predefined;
 import org.osate.contract.contract.PropertyLookup;
+import org.osate.contract.contract.PropertyTypeLocator;
 import org.osate.contract.contract.Query;
 import org.osate.contract.contract.RootExpression;
 import org.osate.contract.contract.SelfExpression;
@@ -82,6 +84,7 @@ import org.osate.contract.contract.SingleParameter;
 import org.osate.contract.contract.SingleValDeclaration;
 import org.osate.contract.contract.Source;
 import org.osate.contract.contract.StringLiteral;
+import org.osate.contract.contract.TopLevelLocator;
 import org.osate.contract.contract.TupleDeclaration;
 import org.osate.contract.contract.TupleExpression;
 import org.osate.contract.contract.TupleName;
@@ -216,6 +219,20 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   private EClass typeAnnotationEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass propertyTypeLocatorEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass topLevelLocatorEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -363,6 +380,13 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   private EClass tupleTypeAnnotationEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass fieldLocatorEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -1044,6 +1068,39 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   @Override
+  public EClass getPropertyTypeLocator()
+  {
+    return propertyTypeLocatorEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getTopLevelLocator()
+  {
+    return topLevelLocatorEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getTopLevelLocator_PropertyType()
+  {
+    return (EReference)topLevelLocatorEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getExpression()
   {
     return expressionEClass;
@@ -1506,31 +1563,9 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   @Override
-  public EAttribute getGenericPropertyTypeAnnotation_PropertySet()
+  public EReference getGenericPropertyTypeAnnotation_GenericType()
   {
-    return (EAttribute)genericPropertyTypeAnnotationEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getGenericPropertyTypeAnnotation_PropertyType()
-  {
-    return (EAttribute)genericPropertyTypeAnnotationEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getGenericPropertyTypeAnnotation_Fields()
-  {
-    return (EAttribute)genericPropertyTypeAnnotationEClass.getEStructuralFeatures().get(3);
+    return (EReference)genericPropertyTypeAnnotationEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1553,6 +1588,39 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
   public EReference getTupleTypeAnnotation_Types()
   {
     return (EReference)tupleTypeAnnotationEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getFieldLocator()
+  {
+    return fieldLocatorEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getFieldLocator_Previous()
+  {
+    return (EReference)fieldLocatorEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getFieldLocator_Field()
+  {
+    return (EReference)fieldLocatorEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1969,6 +2037,11 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
 
     typeAnnotationEClass = createEClass(TYPE_ANNOTATION);
 
+    propertyTypeLocatorEClass = createEClass(PROPERTY_TYPE_LOCATOR);
+
+    topLevelLocatorEClass = createEClass(TOP_LEVEL_LOCATOR);
+    createEReference(topLevelLocatorEClass, TOP_LEVEL_LOCATOR__PROPERTY_TYPE);
+
     expressionEClass = createEClass(EXPRESSION);
 
     lambdaEClass = createEClass(LAMBDA);
@@ -2030,12 +2103,14 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
 
     genericPropertyTypeAnnotationEClass = createEClass(GENERIC_PROPERTY_TYPE_ANNOTATION);
     createEAttribute(genericPropertyTypeAnnotationEClass, GENERIC_PROPERTY_TYPE_ANNOTATION__BASE_TYPE);
-    createEAttribute(genericPropertyTypeAnnotationEClass, GENERIC_PROPERTY_TYPE_ANNOTATION__PROPERTY_SET);
-    createEAttribute(genericPropertyTypeAnnotationEClass, GENERIC_PROPERTY_TYPE_ANNOTATION__PROPERTY_TYPE);
-    createEAttribute(genericPropertyTypeAnnotationEClass, GENERIC_PROPERTY_TYPE_ANNOTATION__FIELDS);
+    createEReference(genericPropertyTypeAnnotationEClass, GENERIC_PROPERTY_TYPE_ANNOTATION__GENERIC_TYPE);
 
     tupleTypeAnnotationEClass = createEClass(TUPLE_TYPE_ANNOTATION);
     createEReference(tupleTypeAnnotationEClass, TUPLE_TYPE_ANNOTATION__TYPES);
+
+    fieldLocatorEClass = createEClass(FIELD_LOCATOR);
+    createEReference(fieldLocatorEClass, FIELD_LOCATOR__PREVIOUS);
+    createEReference(fieldLocatorEClass, FIELD_LOCATOR__FIELD);
 
     orExpressionEClass = createEClass(OR_EXPRESSION);
     createEReference(orExpressionEClass, OR_EXPRESSION__LEFT);
@@ -2124,6 +2199,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     singleValDeclarationEClass.getESuperTypes().add(theAadl2Package.getNamedElement());
     singleValDeclarationEClass.getESuperTypes().add(this.getQuery());
     tupleNameEClass.getESuperTypes().add(theAadl2Package.getNamedElement());
+    topLevelLocatorEClass.getESuperTypes().add(this.getPropertyTypeLocator());
     lambdaEClass.getESuperTypes().add(theAadl2Package.getElement());
     parameterEClass.getESuperTypes().add(theAadl2Package.getElement());
     singleParameterEClass.getESuperTypes().add(theAadl2Package.getNamedElement());
@@ -2143,6 +2219,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     genericTypeAnnotationEClass.getESuperTypes().add(this.getTypeAnnotation());
     genericPropertyTypeAnnotationEClass.getESuperTypes().add(this.getTypeAnnotation());
     tupleTypeAnnotationEClass.getESuperTypes().add(this.getTypeAnnotation());
+    fieldLocatorEClass.getESuperTypes().add(this.getPropertyTypeLocator());
     orExpressionEClass.getESuperTypes().add(this.getExpression());
     andExpressionEClass.getESuperTypes().add(this.getExpression());
     notExpressionEClass.getESuperTypes().add(this.getExpression());
@@ -2220,6 +2297,11 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
 
     initEClass(typeAnnotationEClass, TypeAnnotation.class, "TypeAnnotation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+    initEClass(propertyTypeLocatorEClass, PropertyTypeLocator.class, "PropertyTypeLocator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(topLevelLocatorEClass, TopLevelLocator.class, "TopLevelLocator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getTopLevelLocator_PropertyType(), theAadl2Package.getNamedElement(), null, "propertyType", null, 0, 1, TopLevelLocator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(expressionEClass, Expression.class, "Expression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(lambdaEClass, Lambda.class, "Lambda", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2281,12 +2363,14 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
 
     initEClass(genericPropertyTypeAnnotationEClass, GenericPropertyTypeAnnotation.class, "GenericPropertyTypeAnnotation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getGenericPropertyTypeAnnotation_BaseType(), theEcorePackage.getEString(), "baseType", null, 0, 1, GenericPropertyTypeAnnotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getGenericPropertyTypeAnnotation_PropertySet(), theEcorePackage.getEString(), "propertySet", null, 0, 1, GenericPropertyTypeAnnotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getGenericPropertyTypeAnnotation_PropertyType(), theEcorePackage.getEString(), "propertyType", null, 0, 1, GenericPropertyTypeAnnotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getGenericPropertyTypeAnnotation_Fields(), theEcorePackage.getEString(), "fields", null, 0, -1, GenericPropertyTypeAnnotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getGenericPropertyTypeAnnotation_GenericType(), this.getPropertyTypeLocator(), null, "genericType", null, 0, 1, GenericPropertyTypeAnnotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(tupleTypeAnnotationEClass, TupleTypeAnnotation.class, "TupleTypeAnnotation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getTupleTypeAnnotation_Types(), this.getTypeAnnotation(), null, "types", null, 0, -1, TupleTypeAnnotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(fieldLocatorEClass, FieldLocator.class, "FieldLocator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getFieldLocator_Previous(), this.getPropertyTypeLocator(), null, "previous", null, 0, 1, FieldLocator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getFieldLocator_Field(), theAadl2Package.getBasicProperty(), null, "field", null, 0, 1, FieldLocator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(orExpressionEClass, OrExpression.class, "OrExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getOrExpression_Left(), this.getExpression(), null, "left", null, 0, 1, OrExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

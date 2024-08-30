@@ -132,9 +132,10 @@ public class ContractParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getTerminalTypeAnnotationAccess().getGroup_0(), "rule__TerminalTypeAnnotation__Group_0__0");
 			builder.put(grammarAccess.getTerminalTypeAnnotationAccess().getGroup_1(), "rule__TerminalTypeAnnotation__Group_1__0");
 			builder.put(grammarAccess.getTerminalTypeAnnotationAccess().getGroup_2(), "rule__TerminalTypeAnnotation__Group_2__0");
-			builder.put(grammarAccess.getTerminalTypeAnnotationAccess().getGroup_2_6(), "rule__TerminalTypeAnnotation__Group_2_6__0");
 			builder.put(grammarAccess.getTerminalTypeAnnotationAccess().getGroup_3(), "rule__TerminalTypeAnnotation__Group_3__0");
 			builder.put(grammarAccess.getTerminalTypeAnnotationAccess().getGroup_3_3(), "rule__TerminalTypeAnnotation__Group_3_3__0");
+			builder.put(grammarAccess.getPropertyTypeLocatorAccess().getGroup(), "rule__PropertyTypeLocator__Group__0");
+			builder.put(grammarAccess.getPropertyTypeLocatorAccess().getGroup_1(), "rule__PropertyTypeLocator__Group_1__0");
 			builder.put(grammarAccess.getExpressionAccess().getGroup(), "rule__Expression__Group__0");
 			builder.put(grammarAccess.getExpressionAccess().getGroup_1(), "rule__Expression__Group_1__0");
 			builder.put(grammarAccess.getAndExpressionAccess().getGroup(), "rule__AndExpression__Group__0");
@@ -257,11 +258,11 @@ public class ContractParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getTerminalTypeAnnotationAccess().getBaseTypeAssignment_1_1(), "rule__TerminalTypeAnnotation__BaseTypeAssignment_1_1");
 			builder.put(grammarAccess.getTerminalTypeAnnotationAccess().getGenericTypeAssignment_1_3(), "rule__TerminalTypeAnnotation__GenericTypeAssignment_1_3");
 			builder.put(grammarAccess.getTerminalTypeAnnotationAccess().getBaseTypeAssignment_2_1(), "rule__TerminalTypeAnnotation__BaseTypeAssignment_2_1");
-			builder.put(grammarAccess.getTerminalTypeAnnotationAccess().getPropertySetAssignment_2_3(), "rule__TerminalTypeAnnotation__PropertySetAssignment_2_3");
-			builder.put(grammarAccess.getTerminalTypeAnnotationAccess().getPropertyTypeAssignment_2_5(), "rule__TerminalTypeAnnotation__PropertyTypeAssignment_2_5");
-			builder.put(grammarAccess.getTerminalTypeAnnotationAccess().getFieldsAssignment_2_6_1(), "rule__TerminalTypeAnnotation__FieldsAssignment_2_6_1");
+			builder.put(grammarAccess.getTerminalTypeAnnotationAccess().getGenericTypeAssignment_2_3(), "rule__TerminalTypeAnnotation__GenericTypeAssignment_2_3");
 			builder.put(grammarAccess.getTerminalTypeAnnotationAccess().getTypesAssignment_3_2(), "rule__TerminalTypeAnnotation__TypesAssignment_3_2");
 			builder.put(grammarAccess.getTerminalTypeAnnotationAccess().getTypesAssignment_3_3_1(), "rule__TerminalTypeAnnotation__TypesAssignment_3_3_1");
+			builder.put(grammarAccess.getPropertyTypeLocatorAccess().getFieldAssignment_1_2(), "rule__PropertyTypeLocator__FieldAssignment_1_2");
+			builder.put(grammarAccess.getTopLevelLocatorAccess().getPropertyTypeAssignment(), "rule__TopLevelLocator__PropertyTypeAssignment");
 			builder.put(grammarAccess.getExpressionAccess().getRightAssignment_1_2(), "rule__Expression__RightAssignment_1_2");
 			builder.put(grammarAccess.getAndExpressionAccess().getRightAssignment_1_2(), "rule__AndExpression__RightAssignment_1_2");
 			builder.put(grammarAccess.getNotExpressionAccess().getOperandAssignment_1_2(), "rule__NotExpression__OperandAssignment_1_2");

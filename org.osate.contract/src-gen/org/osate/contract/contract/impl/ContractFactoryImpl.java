@@ -105,6 +105,8 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
       case ContractPackage.SINGLE_VAL_DECLARATION: return createSingleValDeclaration();
       case ContractPackage.TUPLE_NAME: return createTupleName();
       case ContractPackage.TYPE_ANNOTATION: return createTypeAnnotation();
+      case ContractPackage.PROPERTY_TYPE_LOCATOR: return createPropertyTypeLocator();
+      case ContractPackage.TOP_LEVEL_LOCATOR: return createTopLevelLocator();
       case ContractPackage.EXPRESSION: return createExpression();
       case ContractPackage.LAMBDA: return createLambda();
       case ContractPackage.PARAMETER: return createParameter();
@@ -126,6 +128,7 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
       case ContractPackage.GENERIC_TYPE_ANNOTATION: return createGenericTypeAnnotation();
       case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION: return createGenericPropertyTypeAnnotation();
       case ContractPackage.TUPLE_TYPE_ANNOTATION: return createTupleTypeAnnotation();
+      case ContractPackage.FIELD_LOCATOR: return createFieldLocator();
       case ContractPackage.OR_EXPRESSION: return createOrExpression();
       case ContractPackage.AND_EXPRESSION: return createAndExpression();
       case ContractPackage.NOT_EXPRESSION: return createNotExpression();
@@ -390,6 +393,30 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
    * @generated
    */
   @Override
+  public PropertyTypeLocator createPropertyTypeLocator()
+  {
+    PropertyTypeLocatorImpl propertyTypeLocator = new PropertyTypeLocatorImpl();
+    return propertyTypeLocator;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public TopLevelLocator createTopLevelLocator()
+  {
+    TopLevelLocatorImpl topLevelLocator = new TopLevelLocatorImpl();
+    return topLevelLocator;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public Expression createExpression()
   {
     ExpressionImpl expression = new ExpressionImpl();
@@ -634,6 +661,18 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
   {
     TupleTypeAnnotationImpl tupleTypeAnnotation = new TupleTypeAnnotationImpl();
     return tupleTypeAnnotation;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public FieldLocator createFieldLocator()
+  {
+    FieldLocatorImpl fieldLocator = new FieldLocatorImpl();
+    return fieldLocator;
   }
 
   /**

@@ -1541,16 +1541,9 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final Assignment cBaseTypeAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
 		private final RuleCall cBaseTypeIDTerminalRuleCall_2_1_0 = (RuleCall)cBaseTypeAssignment_2_1.eContents().get(0);
 		private final Keyword cLessThanSignKeyword_2_2 = (Keyword)cGroup_2.eContents().get(2);
-		private final Assignment cPropertySetAssignment_2_3 = (Assignment)cGroup_2.eContents().get(3);
-		private final RuleCall cPropertySetIDTerminalRuleCall_2_3_0 = (RuleCall)cPropertySetAssignment_2_3.eContents().get(0);
-		private final Keyword cColonColonKeyword_2_4 = (Keyword)cGroup_2.eContents().get(4);
-		private final Assignment cPropertyTypeAssignment_2_5 = (Assignment)cGroup_2.eContents().get(5);
-		private final RuleCall cPropertyTypeIDTerminalRuleCall_2_5_0 = (RuleCall)cPropertyTypeAssignment_2_5.eContents().get(0);
-		private final Group cGroup_2_6 = (Group)cGroup_2.eContents().get(6);
-		private final Keyword cFullStopKeyword_2_6_0 = (Keyword)cGroup_2_6.eContents().get(0);
-		private final Assignment cFieldsAssignment_2_6_1 = (Assignment)cGroup_2_6.eContents().get(1);
-		private final RuleCall cFieldsIDTerminalRuleCall_2_6_1_0 = (RuleCall)cFieldsAssignment_2_6_1.eContents().get(0);
-		private final Keyword cGreaterThanSignKeyword_2_7 = (Keyword)cGroup_2.eContents().get(7);
+		private final Assignment cGenericTypeAssignment_2_3 = (Assignment)cGroup_2.eContents().get(3);
+		private final RuleCall cGenericTypePropertyTypeLocatorParserRuleCall_2_3_0 = (RuleCall)cGenericTypeAssignment_2_3.eContents().get(0);
+		private final Keyword cGreaterThanSignKeyword_2_4 = (Keyword)cGroup_2.eContents().get(4);
 		private final Group cGroup_3 = (Group)cAlternatives.eContents().get(3);
 		private final Action cTupleTypeAnnotationAction_3_0 = (Action)cGroup_3.eContents().get(0);
 		private final Keyword cLeftParenthesisKeyword_3_1 = (Keyword)cGroup_3.eContents().get(1);
@@ -1565,16 +1558,14 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//TerminalTypeAnnotation returns TypeAnnotation:
 		//    {SimpleTypeAnnotation} type=ID |
 		//    {GenericTypeAnnotation} baseType=ID '<' genericType=TypeAnnotation '>' |
-		//    //TODO: Turn IDs into cross references
-		//    {GenericPropertyTypeAnnotation} baseType=ID '<' propertySet=ID '::' propertyType=ID ('.' fields+=ID)* '>' |
+		//    {GenericPropertyTypeAnnotation} baseType=ID '<' genericType=PropertyTypeLocator '>' |
 		//    {TupleTypeAnnotation} '(' types+=TypeAnnotation (',' types+=TypeAnnotation)+ ')'
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//{SimpleTypeAnnotation} type=ID |
 		//{GenericTypeAnnotation} baseType=ID '<' genericType=TypeAnnotation '>' |
-		////TODO: Turn IDs into cross references
-		//{GenericPropertyTypeAnnotation} baseType=ID '<' propertySet=ID '::' propertyType=ID ('.' fields+=ID)* '>' |
+		//{GenericPropertyTypeAnnotation} baseType=ID '<' genericType=PropertyTypeLocator '>' |
 		//{TupleTypeAnnotation} '(' types+=TypeAnnotation (',' types+=TypeAnnotation)+ ')'
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
@@ -1614,11 +1605,9 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//'>'
 		public Keyword getGreaterThanSignKeyword_1_4() { return cGreaterThanSignKeyword_1_4; }
 		
-		////TODO: Turn IDs into cross references
-		//{GenericPropertyTypeAnnotation} baseType=ID '<' propertySet=ID '::' propertyType=ID ('.' fields+=ID)* '>'
+		//{GenericPropertyTypeAnnotation} baseType=ID '<' genericType=PropertyTypeLocator '>'
 		public Group getGroup_2() { return cGroup_2; }
 		
-		////TODO: Turn IDs into cross references
 		//{GenericPropertyTypeAnnotation}
 		public Action getGenericPropertyTypeAnnotationAction_2_0() { return cGenericPropertyTypeAnnotationAction_2_0; }
 		
@@ -1631,35 +1620,14 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//'<'
 		public Keyword getLessThanSignKeyword_2_2() { return cLessThanSignKeyword_2_2; }
 		
-		//propertySet=ID
-		public Assignment getPropertySetAssignment_2_3() { return cPropertySetAssignment_2_3; }
+		//genericType=PropertyTypeLocator
+		public Assignment getGenericTypeAssignment_2_3() { return cGenericTypeAssignment_2_3; }
 		
-		//ID
-		public RuleCall getPropertySetIDTerminalRuleCall_2_3_0() { return cPropertySetIDTerminalRuleCall_2_3_0; }
-		
-		//'::'
-		public Keyword getColonColonKeyword_2_4() { return cColonColonKeyword_2_4; }
-		
-		//propertyType=ID
-		public Assignment getPropertyTypeAssignment_2_5() { return cPropertyTypeAssignment_2_5; }
-		
-		//ID
-		public RuleCall getPropertyTypeIDTerminalRuleCall_2_5_0() { return cPropertyTypeIDTerminalRuleCall_2_5_0; }
-		
-		//('.' fields+=ID)*
-		public Group getGroup_2_6() { return cGroup_2_6; }
-		
-		//'.'
-		public Keyword getFullStopKeyword_2_6_0() { return cFullStopKeyword_2_6_0; }
-		
-		//fields+=ID
-		public Assignment getFieldsAssignment_2_6_1() { return cFieldsAssignment_2_6_1; }
-		
-		//ID
-		public RuleCall getFieldsIDTerminalRuleCall_2_6_1_0() { return cFieldsIDTerminalRuleCall_2_6_1_0; }
+		//PropertyTypeLocator
+		public RuleCall getGenericTypePropertyTypeLocatorParserRuleCall_2_3_0() { return cGenericTypePropertyTypeLocatorParserRuleCall_2_3_0; }
 		
 		//'>'
-		public Keyword getGreaterThanSignKeyword_2_7() { return cGreaterThanSignKeyword_2_7; }
+		public Keyword getGreaterThanSignKeyword_2_4() { return cGreaterThanSignKeyword_2_4; }
 		
 		//{TupleTypeAnnotation} '(' types+=TypeAnnotation (',' types+=TypeAnnotation)+ ')'
 		public Group getGroup_3() { return cGroup_3; }
@@ -1690,6 +1658,74 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		
 		//')'
 		public Keyword getRightParenthesisKeyword_3_4() { return cRightParenthesisKeyword_3_4; }
+	}
+	public class PropertyTypeLocatorElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.PropertyTypeLocator");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final RuleCall cTopLevelLocatorParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Action cFieldLocatorPreviousAction_1_0 = (Action)cGroup_1.eContents().get(0);
+		private final Keyword cFullStopKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
+		private final Assignment cFieldAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
+		private final CrossReference cFieldBasicPropertyCrossReference_1_2_0 = (CrossReference)cFieldAssignment_1_2.eContents().get(0);
+		private final RuleCall cFieldBasicPropertyIDTerminalRuleCall_1_2_0_1 = (RuleCall)cFieldBasicPropertyCrossReference_1_2_0.eContents().get(1);
+		
+		//PropertyTypeLocator:
+		//    TopLevelLocator ({FieldLocator.previous=current} '.' field=[aadl2::BasicProperty])*
+		//;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//TopLevelLocator ({FieldLocator.previous=current} '.' field=[aadl2::BasicProperty])*
+		public Group getGroup() { return cGroup; }
+		
+		//TopLevelLocator
+		public RuleCall getTopLevelLocatorParserRuleCall_0() { return cTopLevelLocatorParserRuleCall_0; }
+		
+		//({FieldLocator.previous=current} '.' field=[aadl2::BasicProperty])*
+		public Group getGroup_1() { return cGroup_1; }
+		
+		//{FieldLocator.previous=current}
+		public Action getFieldLocatorPreviousAction_1_0() { return cFieldLocatorPreviousAction_1_0; }
+		
+		//'.'
+		public Keyword getFullStopKeyword_1_1() { return cFullStopKeyword_1_1; }
+		
+		//field=[aadl2::BasicProperty]
+		public Assignment getFieldAssignment_1_2() { return cFieldAssignment_1_2; }
+		
+		//[aadl2::BasicProperty]
+		public CrossReference getFieldBasicPropertyCrossReference_1_2_0() { return cFieldBasicPropertyCrossReference_1_2_0; }
+		
+		//ID
+		public RuleCall getFieldBasicPropertyIDTerminalRuleCall_1_2_0_1() { return cFieldBasicPropertyIDTerminalRuleCall_1_2_0_1; }
+	}
+	public class TopLevelLocatorElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.TopLevelLocator");
+		private final Assignment cPropertyTypeAssignment = (Assignment)rule.eContents().get(1);
+		private final CrossReference cPropertyTypeNamedElementCrossReference_0 = (CrossReference)cPropertyTypeAssignment.eContents().get(0);
+		private final RuleCall cPropertyTypeNamedElementQCLREFParserRuleCall_0_1 = (RuleCall)cPropertyTypeNamedElementCrossReference_0.eContents().get(1);
+		
+		//TopLevelLocator:
+		//    /*
+		//     * I originally wanted to use the rule QPREF so that a simple name could be used for standard property types.
+		//     * However, that would create an ambiguity with TopLevelLocator and GenericTypeAnnotation.
+		//     */
+		//    propertyType=[aadl2::NamedElement|QCLREF]
+		//;
+		@Override public ParserRule getRule() { return rule; }
+		
+		///*
+		// * I originally wanted to use the rule QPREF so that a simple name could be used for standard property types.
+		// * However, that would create an ambiguity with TopLevelLocator and GenericTypeAnnotation.
+		// */
+		//propertyType=[aadl2::NamedElement|QCLREF]
+		public Assignment getPropertyTypeAssignment() { return cPropertyTypeAssignment; }
+		
+		//[aadl2::NamedElement|QCLREF]
+		public CrossReference getPropertyTypeNamedElementCrossReference_0() { return cPropertyTypeNamedElementCrossReference_0; }
+		
+		//QCLREF
+		public RuleCall getPropertyTypeNamedElementQCLREFParserRuleCall_0_1() { return cPropertyTypeNamedElementQCLREFParserRuleCall_0_1; }
 	}
 	public class ExpressionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.Expression");
@@ -2615,6 +2651,8 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	private final TupleNameElements pTupleName;
 	private final TypeAnnotationElements pTypeAnnotation;
 	private final TerminalTypeAnnotationElements pTerminalTypeAnnotation;
+	private final PropertyTypeLocatorElements pPropertyTypeLocator;
+	private final TopLevelLocatorElements pTopLevelLocator;
 	private final ExpressionElements pExpression;
 	private final AndExpressionElements pAndExpression;
 	private final NotExpressionElements pNotExpression;
@@ -2683,6 +2721,8 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		this.pTupleName = new TupleNameElements();
 		this.pTypeAnnotation = new TypeAnnotationElements();
 		this.pTerminalTypeAnnotation = new TerminalTypeAnnotationElements();
+		this.pPropertyTypeLocator = new PropertyTypeLocatorElements();
+		this.pTopLevelLocator = new TopLevelLocatorElements();
 		this.pExpression = new ExpressionElements();
 		this.pAndExpression = new AndExpressionElements();
 		this.pNotExpression = new NotExpressionElements();
@@ -3166,8 +3206,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	//TerminalTypeAnnotation returns TypeAnnotation:
 	//    {SimpleTypeAnnotation} type=ID |
 	//    {GenericTypeAnnotation} baseType=ID '<' genericType=TypeAnnotation '>' |
-	//    //TODO: Turn IDs into cross references
-	//    {GenericPropertyTypeAnnotation} baseType=ID '<' propertySet=ID '::' propertyType=ID ('.' fields+=ID)* '>' |
+	//    {GenericPropertyTypeAnnotation} baseType=ID '<' genericType=PropertyTypeLocator '>' |
 	//    {TupleTypeAnnotation} '(' types+=TypeAnnotation (',' types+=TypeAnnotation)+ ')'
 	//;
 	public TerminalTypeAnnotationElements getTerminalTypeAnnotationAccess() {
@@ -3176,6 +3215,32 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	
 	public ParserRule getTerminalTypeAnnotationRule() {
 		return getTerminalTypeAnnotationAccess().getRule();
+	}
+	
+	//PropertyTypeLocator:
+	//    TopLevelLocator ({FieldLocator.previous=current} '.' field=[aadl2::BasicProperty])*
+	//;
+	public PropertyTypeLocatorElements getPropertyTypeLocatorAccess() {
+		return pPropertyTypeLocator;
+	}
+	
+	public ParserRule getPropertyTypeLocatorRule() {
+		return getPropertyTypeLocatorAccess().getRule();
+	}
+	
+	//TopLevelLocator:
+	//    /*
+	//     * I originally wanted to use the rule QPREF so that a simple name could be used for standard property types.
+	//     * However, that would create an ambiguity with TopLevelLocator and GenericTypeAnnotation.
+	//     */
+	//    propertyType=[aadl2::NamedElement|QCLREF]
+	//;
+	public TopLevelLocatorElements getTopLevelLocatorAccess() {
+		return pTopLevelLocator;
+	}
+	
+	public ParserRule getTopLevelLocatorRule() {
+		return getTopLevelLocatorAccess().getRule();
 	}
 	
 	//Expression:

@@ -246,6 +246,21 @@ public class ContractSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case ContractPackage.PROPERTY_TYPE_LOCATOR:
+      {
+        PropertyTypeLocator propertyTypeLocator = (PropertyTypeLocator)theEObject;
+        T result = casePropertyTypeLocator(propertyTypeLocator);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ContractPackage.TOP_LEVEL_LOCATOR:
+      {
+        TopLevelLocator topLevelLocator = (TopLevelLocator)theEObject;
+        T result = caseTopLevelLocator(topLevelLocator);
+        if (result == null) result = casePropertyTypeLocator(topLevelLocator);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case ContractPackage.EXPRESSION:
       {
         Expression expression = (Expression)theEObject;
@@ -414,6 +429,14 @@ public class ContractSwitch<T> extends Switch<T>
         TupleTypeAnnotation tupleTypeAnnotation = (TupleTypeAnnotation)theEObject;
         T result = caseTupleTypeAnnotation(tupleTypeAnnotation);
         if (result == null) result = caseTypeAnnotation(tupleTypeAnnotation);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ContractPackage.FIELD_LOCATOR:
+      {
+        FieldLocator fieldLocator = (FieldLocator)theEObject;
+        T result = caseFieldLocator(fieldLocator);
+        if (result == null) result = casePropertyTypeLocator(fieldLocator);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -783,6 +806,38 @@ public class ContractSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Property Type Locator</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Property Type Locator</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casePropertyTypeLocator(PropertyTypeLocator object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Top Level Locator</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Top Level Locator</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseTopLevelLocator(TopLevelLocator object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Expression</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -1114,6 +1169,22 @@ public class ContractSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseTupleTypeAnnotation(TupleTypeAnnotation object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Field Locator</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Field Locator</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseFieldLocator(FieldLocator object)
   {
     return null;
   }

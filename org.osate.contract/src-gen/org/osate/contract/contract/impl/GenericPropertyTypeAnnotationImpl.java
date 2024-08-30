@@ -25,20 +25,17 @@
  */
 package org.osate.contract.contract.impl;
 
-import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.emf.ecore.util.EDataTypeEList;
-
 import org.osate.contract.contract.ContractPackage;
 import org.osate.contract.contract.GenericPropertyTypeAnnotation;
+import org.osate.contract.contract.PropertyTypeLocator;
 
 /**
  * <!-- begin-user-doc -->
@@ -49,9 +46,7 @@ import org.osate.contract.contract.GenericPropertyTypeAnnotation;
  * </p>
  * <ul>
  *   <li>{@link org.osate.contract.contract.impl.GenericPropertyTypeAnnotationImpl#getBaseType <em>Base Type</em>}</li>
- *   <li>{@link org.osate.contract.contract.impl.GenericPropertyTypeAnnotationImpl#getPropertySet <em>Property Set</em>}</li>
- *   <li>{@link org.osate.contract.contract.impl.GenericPropertyTypeAnnotationImpl#getPropertyType <em>Property Type</em>}</li>
- *   <li>{@link org.osate.contract.contract.impl.GenericPropertyTypeAnnotationImpl#getFields <em>Fields</em>}</li>
+ *   <li>{@link org.osate.contract.contract.impl.GenericPropertyTypeAnnotationImpl#getGenericType <em>Generic Type</em>}</li>
  * </ul>
  *
  * @generated
@@ -79,54 +74,14 @@ public class GenericPropertyTypeAnnotationImpl extends TypeAnnotationImpl implem
   protected String baseType = BASE_TYPE_EDEFAULT;
 
   /**
-   * The default value of the '{@link #getPropertySet() <em>Property Set</em>}' attribute.
+   * The cached value of the '{@link #getGenericType() <em>Generic Type</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getPropertySet()
+   * @see #getGenericType()
    * @generated
    * @ordered
    */
-  protected static final String PROPERTY_SET_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getPropertySet() <em>Property Set</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getPropertySet()
-   * @generated
-   * @ordered
-   */
-  protected String propertySet = PROPERTY_SET_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getPropertyType() <em>Property Type</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getPropertyType()
-   * @generated
-   * @ordered
-   */
-  protected static final String PROPERTY_TYPE_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getPropertyType() <em>Property Type</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getPropertyType()
-   * @generated
-   * @ordered
-   */
-  protected String propertyType = PROPERTY_TYPE_EDEFAULT;
-
-  /**
-   * The cached value of the '{@link #getFields() <em>Fields</em>}' attribute list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getFields()
-   * @generated
-   * @ordered
-   */
-  protected EList<String> fields;
+  protected PropertyTypeLocator genericType;
 
   /**
    * <!-- begin-user-doc -->
@@ -180,9 +135,9 @@ public class GenericPropertyTypeAnnotationImpl extends TypeAnnotationImpl implem
    * @generated
    */
   @Override
-  public String getPropertySet()
+  public PropertyTypeLocator getGenericType()
   {
-    return propertySet;
+    return genericType;
   }
 
   /**
@@ -190,53 +145,54 @@ public class GenericPropertyTypeAnnotationImpl extends TypeAnnotationImpl implem
    * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public void setPropertySet(String newPropertySet)
+  public NotificationChain basicSetGenericType(PropertyTypeLocator newGenericType, NotificationChain msgs)
   {
-    String oldPropertySet = propertySet;
-    propertySet = newPropertySet;
+    PropertyTypeLocator oldGenericType = genericType;
+    genericType = newGenericType;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__PROPERTY_SET, oldPropertySet, propertySet));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String getPropertyType()
-  {
-    return propertyType;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setPropertyType(String newPropertyType)
-  {
-    String oldPropertyType = propertyType;
-    propertyType = newPropertyType;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__PROPERTY_TYPE, oldPropertyType, propertyType));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EList<String> getFields()
-  {
-    if (fields == null)
     {
-      fields = new EDataTypeEList<String>(String.class, this, ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__FIELDS);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__GENERIC_TYPE, oldGenericType, newGenericType);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
-    return fields;
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setGenericType(PropertyTypeLocator newGenericType)
+  {
+    if (newGenericType != genericType)
+    {
+      NotificationChain msgs = null;
+      if (genericType != null)
+        msgs = ((InternalEObject)genericType).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__GENERIC_TYPE, null, msgs);
+      if (newGenericType != null)
+        msgs = ((InternalEObject)newGenericType).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__GENERIC_TYPE, null, msgs);
+      msgs = basicSetGenericType(newGenericType, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__GENERIC_TYPE, newGenericType, newGenericType));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__GENERIC_TYPE:
+        return basicSetGenericType(null, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
   /**
@@ -251,12 +207,8 @@ public class GenericPropertyTypeAnnotationImpl extends TypeAnnotationImpl implem
     {
       case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__BASE_TYPE:
         return getBaseType();
-      case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__PROPERTY_SET:
-        return getPropertySet();
-      case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__PROPERTY_TYPE:
-        return getPropertyType();
-      case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__FIELDS:
-        return getFields();
+      case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__GENERIC_TYPE:
+        return getGenericType();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -266,7 +218,6 @@ public class GenericPropertyTypeAnnotationImpl extends TypeAnnotationImpl implem
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
@@ -275,15 +226,8 @@ public class GenericPropertyTypeAnnotationImpl extends TypeAnnotationImpl implem
       case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__BASE_TYPE:
         setBaseType((String)newValue);
         return;
-      case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__PROPERTY_SET:
-        setPropertySet((String)newValue);
-        return;
-      case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__PROPERTY_TYPE:
-        setPropertyType((String)newValue);
-        return;
-      case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__FIELDS:
-        getFields().clear();
-        getFields().addAll((Collection<? extends String>)newValue);
+      case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__GENERIC_TYPE:
+        setGenericType((PropertyTypeLocator)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -302,14 +246,8 @@ public class GenericPropertyTypeAnnotationImpl extends TypeAnnotationImpl implem
       case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__BASE_TYPE:
         setBaseType(BASE_TYPE_EDEFAULT);
         return;
-      case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__PROPERTY_SET:
-        setPropertySet(PROPERTY_SET_EDEFAULT);
-        return;
-      case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__PROPERTY_TYPE:
-        setPropertyType(PROPERTY_TYPE_EDEFAULT);
-        return;
-      case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__FIELDS:
-        getFields().clear();
+      case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__GENERIC_TYPE:
+        setGenericType((PropertyTypeLocator)null);
         return;
     }
     super.eUnset(featureID);
@@ -327,12 +265,8 @@ public class GenericPropertyTypeAnnotationImpl extends TypeAnnotationImpl implem
     {
       case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__BASE_TYPE:
         return BASE_TYPE_EDEFAULT == null ? baseType != null : !BASE_TYPE_EDEFAULT.equals(baseType);
-      case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__PROPERTY_SET:
-        return PROPERTY_SET_EDEFAULT == null ? propertySet != null : !PROPERTY_SET_EDEFAULT.equals(propertySet);
-      case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__PROPERTY_TYPE:
-        return PROPERTY_TYPE_EDEFAULT == null ? propertyType != null : !PROPERTY_TYPE_EDEFAULT.equals(propertyType);
-      case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__FIELDS:
-        return fields != null && !fields.isEmpty();
+      case ContractPackage.GENERIC_PROPERTY_TYPE_ANNOTATION__GENERIC_TYPE:
+        return genericType != null;
     }
     return super.eIsSet(featureID);
   }
@@ -350,12 +284,6 @@ public class GenericPropertyTypeAnnotationImpl extends TypeAnnotationImpl implem
     StringBuilder result = new StringBuilder(super.toString());
     result.append(" (baseType: ");
     result.append(baseType);
-    result.append(", propertySet: ");
-    result.append(propertySet);
-    result.append(", propertyType: ");
-    result.append(propertyType);
-    result.append(", fields: ");
-    result.append(fields);
     result.append(')');
     return result.toString();
   }
