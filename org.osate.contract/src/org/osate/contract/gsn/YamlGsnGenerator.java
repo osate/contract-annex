@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 import org.eclipse.xtext.EcoreUtil2;
 import org.osate.aadl2.AadlPackage;
-import org.osate.aadl2.NamedElement;
 import org.osate.contract.contract.Analysis;
 import org.osate.contract.contract.Argument;
 import org.osate.contract.contract.ArgumentAnd;
@@ -74,6 +73,12 @@ public final class YamlGsnGenerator {
 			files.add(new YamlFile("CommonNodes", commonNodes));
 		}
 
+		for (var contract : new LinkedHashSet<>(verificationPlan.getContracts())) {
+			var nodes = new ArrayList<String>();
+			nodes.add(generateContract(contract, verificationPlan.getName()));
+			files.add(new YamlFile(verificationPlan.getName() + '-' + contract.getName(), nodes));
+		}
+
 		var aadlPackage = EcoreUtil2.getContainerOfType(verificationPlan, AadlPackage.class);
 		var folderName = aadlPackage.getName() + "_" + verificationPlan.getName();
 		return new YamlFolder(folderName, files);
@@ -98,9 +103,14 @@ public final class YamlGsnGenerator {
 		if (verificationPlan.getContracts().isEmpty()) {
 			template.add("supportedBy", "");
 		} else {
-			var supportedBy = verificationPlan.getContracts()
-					.stream()
-					.map(NamedElement::getName)
+			var contractNames = new ArrayList<String>();
+			for (var contract : verificationPlan.getContracts()) {
+				contractNames.add(contract.getName());
+			}
+			for (var contract : verificationPlan.getContracts()) {
+				contractNames.add(verificationPlan.getName() + '-' + contract.getName());
+			}
+			var supportedBy = contractNames.stream()
 					.distinct()
 					.collect(Collectors.joining(", ", "supportedBy: [", "]"));
 			template.add("supportedBy", supportedBy);
@@ -130,6 +140,68 @@ public final class YamlGsnGenerator {
 				  %undeveloped%""", '%', '%');
 
 		template.add("name", contract.getName());
+
+		var guarantee = contract.getGuarantee();
+		if (guarantee == null) {
+			template.add("text", contract.getName());
+		} else {
+			var symbol = contract.isExact() ? "<=>" : "=>";
+			var source = toString(guarantee.getCode());
+			template.add("text", symbol + ' ' + source);
+		}
+
+		var supportedBy = new ArrayList<String>();
+		var inContextOf = new ArrayList<String>();
+
+		for (var assumption : contract.getAssumptions()) {
+			if (assumption instanceof ContractAssumption contractAssumption
+					&& contractAssumption.getContract() instanceof Contract referencedContract) {
+				supportedBy.add(referencedContract.getName());
+			} else if (assumption instanceof ArgumentAssumption argumentAssumption
+					&& argumentAssumption.getArgument() instanceof Argument referencedArgument) {
+				supportedBy.add(referencedArgument.getName());
+			} else if (assumption instanceof CodeAssumption codeAssumption) {
+				inContextOf.add(getAssumptionName(codeAssumption));
+			}
+		}
+		for (var analysis : contract.getAnalyses()) {
+			supportedBy.add(getAnalysisName(analysis));
+		}
+
+		if (supportedBy.isEmpty()) {
+			template.add("supportedBy", "");
+		} else {
+			template.add("supportedBy",
+					supportedBy.stream().distinct().collect(Collectors.joining(", ", "supportedBy: [", "]")));
+		}
+
+		if (inContextOf.isEmpty()) {
+			template.add("inContextOf", "");
+		} else {
+			template.add("inContextOf",
+					inContextOf.stream().distinct().collect(Collectors.joining(", ", "inContextOf: [", "]")));
+		}
+
+		if (supportedBy.isEmpty() && inContextOf.isEmpty()) {
+			template.add("undeveloped", "undeveloped: true");
+		} else {
+			template.add("undeveloped", "");
+		}
+
+		// The result is trimmed because there could be an extra line ending at the end if %undeveloped% is blank.
+		return template.render().trim();
+	}
+
+	private static String generateContract(Contract contract, String path) {
+		var template = new ST("""
+				%name%:
+				  text: %text%
+				  nodeType: Goal
+				  %supportedBy%
+				  %inContextOf%
+				  %undeveloped%""", '%', '%');
+
+		template.add("name", path + '-' + contract.getName());
 
 		var guarantee = contract.getGuarantee();
 		if (guarantee == null) {
