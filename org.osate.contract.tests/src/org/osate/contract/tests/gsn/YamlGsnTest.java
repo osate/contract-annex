@@ -586,7 +586,7 @@ public class YamlGsnTest {
 		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
 		var folder = YamlGsnGenerator.generateYamlGsn(plan);
 		assertEquals("ContractWithOneContract_ContractWithOneContract", folder.name());
-		assertEquals(4, folder.files().size());
+		assertEquals(5, folder.files().size());
 		with(folder.files().get(0), file -> {
 			assertEquals("ContractWithOneContract.gsn.yaml", file.name());
 			var expected = """
@@ -620,7 +620,16 @@ public class YamlGsnTest {
 					ContractWithOneContract-Contract1:
 					  text: Contract1
 					  nodeType: Goal
-					  supportedBy: [Contract2]""";
+					  supportedBy: [ContractWithOneContract-Contract1-Contract2]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(4), file -> {
+			assertEquals("ContractWithOneContract-Contract1-Contract2.gsn.yaml", file.name());
+			var expected = """
+					ContractWithOneContract-Contract1-Contract2:
+					  text: Contract2
+					  nodeType: Goal
+					  undeveloped: true""";
 			assertEquals(expected, file.contents());
 		});
 	}
@@ -634,7 +643,7 @@ public class YamlGsnTest {
 		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
 		var folder = YamlGsnGenerator.generateYamlGsn(plan);
 		assertEquals("ContractWithThreeContracts_ContractWithThreeContracts", folder.name());
-		assertEquals(6, folder.files().size());
+		assertEquals(9, folder.files().size());
 		with(folder.files().get(0), file -> {
 			assertEquals("ContractWithThreeContracts.gsn.yaml", file.name());
 			var expected = """
@@ -686,7 +695,34 @@ public class YamlGsnTest {
 					ContractWithThreeContracts-Contract1:
 					  text: Contract1
 					  nodeType: Goal
-					  supportedBy: [Contract2, Contract3, Contract4]""";
+					  supportedBy: [ContractWithThreeContracts-Contract1-Contract2, ContractWithThreeContracts-Contract1-Contract3, ContractWithThreeContracts-Contract1-Contract4]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(6), file -> {
+			assertEquals("ContractWithThreeContracts-Contract1-Contract2.gsn.yaml", file.name());
+			var expected = """
+					ContractWithThreeContracts-Contract1-Contract2:
+					  text: Contract2
+					  nodeType: Goal
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(7), file -> {
+			assertEquals("ContractWithThreeContracts-Contract1-Contract3.gsn.yaml", file.name());
+			var expected = """
+					ContractWithThreeContracts-Contract1-Contract3:
+					  text: Contract3
+					  nodeType: Goal
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(8), file -> {
+			assertEquals("ContractWithThreeContracts-Contract1-Contract4.gsn.yaml", file.name());
+			var expected = """
+					ContractWithThreeContracts-Contract1-Contract4:
+					  text: Contract4
+					  nodeType: Goal
+					  undeveloped: true""";
 			assertEquals(expected, file.contents());
 		});
 	}
@@ -700,7 +736,7 @@ public class YamlGsnTest {
 		var plan = (VerificationPlan) contractLibrary.getContractElements().get(0);
 		var folder = YamlGsnGenerator.generateYamlGsn(plan);
 		assertEquals("RepeatedContracts_RepeatedContracts", folder.name());
-		assertEquals(8, folder.files().size());
+		assertEquals(12, folder.files().size());
 		with(folder.files().get(0), file -> {
 			assertEquals("RepeatedContracts.gsn.yaml", file.name());
 			var expected = """
@@ -770,7 +806,43 @@ public class YamlGsnTest {
 					RepeatedContracts-Contract2:
 					  text: Contract2
 					  nodeType: Goal
-					  supportedBy: [Contract3, Contract4]""";
+					  supportedBy: [RepeatedContracts-Contract2-Contract3, RepeatedContracts-Contract2-Contract4]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(8), file -> {
+			assertEquals("RepeatedContracts-Contract2-Contract3.gsn.yaml", file.name());
+			var expected = """
+					RepeatedContracts-Contract2-Contract3:
+					  text: Contract3
+					  nodeType: Goal
+					  supportedBy: [RepeatedContracts-Contract2-Contract3-Contract5]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(9), file -> {
+			assertEquals("RepeatedContracts-Contract2-Contract3-Contract5.gsn.yaml", file.name());
+			var expected = """
+					RepeatedContracts-Contract2-Contract3-Contract5:
+					  text: Contract5
+					  nodeType: Goal
+					  undeveloped: true""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(10), file -> {
+			assertEquals("RepeatedContracts-Contract2-Contract4.gsn.yaml", file.name());
+			var expected = """
+					RepeatedContracts-Contract2-Contract4:
+					  text: Contract4
+					  nodeType: Goal
+					  supportedBy: [RepeatedContracts-Contract2-Contract4-Contract5]""";
+			assertEquals(expected, file.contents());
+		});
+		with(folder.files().get(11), file -> {
+			assertEquals("RepeatedContracts-Contract2-Contract4-Contract5.gsn.yaml", file.name());
+			var expected = """
+					RepeatedContracts-Contract2-Contract4-Contract5:
+					  text: Contract5
+					  nodeType: Goal
+					  undeveloped: true""";
 			assertEquals(expected, file.contents());
 		});
 	}

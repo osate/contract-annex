@@ -73,11 +73,11 @@ public final class YamlGsnGenerator {
 			files.add(new YamlFile("CommonNodes", commonNodes));
 		}
 
-		for (var contract : new LinkedHashSet<>(verificationPlan.getContracts())) {
+		collector.separatedContractNodes.forEach((contractPath, contractNodes) -> {
 			var nodes = new ArrayList<String>();
-			nodes.add(generateContract(contract, verificationPlan.getName()));
-			files.add(new YamlFile(verificationPlan.getName() + '-' + contract.getName(), nodes));
-		}
+			nodes.add(generateContract(contractPath.contract(), contractPath.parentPath()));
+			files.add(new YamlFile(contractPath.parentPath() + '-' + contractPath.contract().getName(), nodes));
+		});
 
 		var aadlPackage = EcoreUtil2.getContainerOfType(verificationPlan, AadlPackage.class);
 		var folderName = aadlPackage.getName() + "_" + verificationPlan.getName();
@@ -218,7 +218,7 @@ public final class YamlGsnGenerator {
 		for (var assumption : contract.getAssumptions()) {
 			if (assumption instanceof ContractAssumption contractAssumption
 					&& contractAssumption.getContract() instanceof Contract referencedContract) {
-				supportedBy.add(referencedContract.getName());
+				supportedBy.add(path + '-' + contract.getName() + '-' + referencedContract.getName());
 			} else if (assumption instanceof ArgumentAssumption argumentAssumption
 					&& argumentAssumption.getArgument() instanceof Argument referencedArgument) {
 				supportedBy.add(referencedArgument.getName());
@@ -422,6 +422,7 @@ public final class YamlGsnGenerator {
 
 	private static class NodeCollector {
 		public final Map<Contract, ContractNodes> contractNodes = new LinkedHashMap<>();
+		public final Map<ContractPath, ContractNodes> separatedContractNodes = new LinkedHashMap<>();
 		public final Map<Argument, ArgumentNodes> argumentNodes = new LinkedHashMap<>();
 		public final List<String> commonAssumptions = new ArrayList<>();
 		public final List<String> commonAnalyses = new ArrayList<>();
@@ -429,6 +430,7 @@ public final class YamlGsnGenerator {
 		public NodeCollector(VerificationPlan verificationPlan) {
 			for (var contract : verificationPlan.getContracts()) {
 				collect(contract);
+				collect(contract, verificationPlan.getName());
 			}
 
 			var assumptionOccurrences = new LinkedHashMap<String, Integer>();
@@ -478,6 +480,17 @@ public final class YamlGsnGenerator {
 			}
 		}
 
+		private void collect(Contract contract, String path) {
+			var nodes = separatedContractNodes.computeIfAbsent(new ContractPath(contract, path),
+					key -> new ContractNodes());
+			for (var assumption : contract.getAssumptions()) {
+				if (assumption instanceof ContractAssumption contractAssumption
+						&& contractAssumption.getContract() instanceof Contract referencedContract) {
+					collect(referencedContract, path + '-' + contract.getName());
+				}
+			}
+		}
+
 		private void collect(Argument argument) {
 			var nodes = argumentNodes.computeIfAbsent(argument, key -> new ArgumentNodes());
 			if (argument.getArgumentExpression() != null) {
@@ -501,6 +514,9 @@ public final class YamlGsnGenerator {
 				collect(nested, nodes);
 			}
 		}
+	}
+
+	private record ContractPath(Contract contract, String parentPath) {
 	}
 
 	private static class ContractNodes {
