@@ -31,6 +31,17 @@ public final class YamlGsnGenerator {
 	private YamlGsnGenerator() {
 	}
 
+	/*
+	 * TODO: References to consider for separation:
+	 *
+	 * Contract -> Argument
+	 * Contract -> Assumption
+	 * Contract -> Analysis
+	 * Argument -> (and, or, not)
+	 * (and, or, not) -> Argument
+	 * (and, or, not) -> (and, or, not)
+	 * (and, or, not) -> Contract
+	 */
 	public static YamlFolder generateYamlGsn(VerificationPlan verificationPlan) {
 		var files = new ArrayList<YamlFile>();
 
