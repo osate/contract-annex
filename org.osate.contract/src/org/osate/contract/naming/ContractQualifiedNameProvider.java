@@ -26,10 +26,9 @@
 package org.osate.contract.naming;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.DefaultDeclarativeQualifiedNameProvider;
 import org.eclipse.xtext.naming.QualifiedName;
-import org.osate.aadl2.AadlPackage;
+import org.osate.aadl2.modelsupport.resources.OsateResourceUtil;
 import org.osate.contract.contract.ContractElement;
 
 public class ContractQualifiedNameProvider extends DefaultDeclarativeQualifiedNameProvider {
@@ -38,8 +37,10 @@ public class ContractQualifiedNameProvider extends DefaultDeclarativeQualifiedNa
 	@Override
 	public QualifiedName getFullyQualifiedName(EObject obj) {
 		if (obj instanceof ContractElement ne) {
-			var pkg = EcoreUtil2.getContainerOfType(ne, AadlPackage.class);
-			return QualifiedName.create(PREFIX + pkg.getName(), ne.getName());
+//			var pkg = EcoreUtil2.getContainerOfType(ne, AadlPackage.class);
+//			return QualifiedName.create(PREFIX + pkg.getName(), ne.getName());
+			final var prj = OsateResourceUtil.toIFile(ne.eResource().getURI()).getProject();
+			return QualifiedName.create(PREFIX + prj.getName(), ne.getName());
 		}
 		return null;
 	}

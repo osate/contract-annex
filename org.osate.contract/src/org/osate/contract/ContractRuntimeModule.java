@@ -32,11 +32,9 @@ import org.eclipse.xtext.conversion.IValueConverterService;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.parsetree.reconstr.ITransientValueService;
-import org.eclipse.xtext.scoping.IGlobalScopeProvider;
 import org.eclipse.xtext.scoping.IScopeProvider;
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
 import org.eclipse.xtext.serializer.ISerializer;
-import org.osate.aadl2.modelsupport.scoping.DelegatingEClassGlobalScopeProvider;
 import org.osate.contract.conversion.ContractValueConverters;
 import org.osate.contract.naming.ContractQualifiedNameConverter;
 import org.osate.contract.naming.ContractQualifiedNameProvider;
@@ -60,10 +58,15 @@ public class ContractRuntimeModule extends AbstractContractRuntimeModule {
 		return ContractQualifiedNameConverter.class;
 	}
 
-	@Override
-	public Class<? extends IGlobalScopeProvider> bindIGlobalScopeProvider() {
-		return DelegatingEClassGlobalScopeProvider.class;
-	}
+	/*
+	 * Don't need this when outside of an annex. In fact, it causes problems. For example,
+	 * it causes the contract resource to incorrectly use the AnnexAwareResourceDescriptionStrategy.
+	 */
+
+//	@Override
+//	public Class<? extends IGlobalScopeProvider> bindIGlobalScopeProvider() {
+//		return DelegatingEClassGlobalScopeProvider.class;
+//	}
 
 	@Override
 	public Class<? extends ITransientValueService> bindITransientValueService() {
