@@ -31,9 +31,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 
 import org.osate.aadl2.AnnexLibrary;
-import org.osate.aadl2.AnnexSubclause;
 import org.osate.aadl2.Element;
-import org.osate.aadl2.ModalElement;
 import org.osate.aadl2.NamedElement;
 
 import org.osate.contract.contract.*;
@@ -276,10 +274,6 @@ public class ContractSwitch<T> extends Switch<T>
       {
         ContractSubclause contractSubclause = (ContractSubclause)theEObject;
         T result = caseContractSubclause(contractSubclause);
-        if (result == null) result = caseAnnexSubclause(contractSubclause);
-        if (result == null) result = caseModalElement(contractSubclause);
-        if (result == null) result = caseNamedElement(contractSubclause);
-        if (result == null) result = caseElement(contractSubclause);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -1195,38 +1189,6 @@ public class ContractSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseAnnexLibrary(AnnexLibrary object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Modal Element</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Modal Element</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseModalElement(ModalElement object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Annex Subclause</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Annex Subclause</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseAnnexSubclause(AnnexSubclause object)
   {
     return null;
   }

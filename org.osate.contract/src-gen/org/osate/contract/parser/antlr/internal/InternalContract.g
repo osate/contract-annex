@@ -125,19 +125,38 @@ ruleContractLibrary returns [EObject current=null]
 	leaveRule();
 }:
 	(
+		otherlv_0='package'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getContractLibraryAccess().getPackageKeyword_0());
+		}
 		(
-			{
-				$current = forceCreateModelElement(
-					grammarAccess.getContractLibraryAccess().getContractLibraryAction_0(),
-					$current);
-			}
+			(
+				lv_name_1_0=RULE_ID
+				{
+					newLeafNode(lv_name_1_0, grammarAccess.getContractLibraryAccess().getNameIDTerminalRuleCall_1_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getContractLibraryRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"name",
+						lv_name_1_0,
+						"org.osate.xtext.aadl2.properties.Properties.ID");
+				}
+			)
 		)
+		otherlv_2=';'
+		{
+			newLeafNode(otherlv_2, grammarAccess.getContractLibraryAccess().getSemicolonKeyword_2());
+		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getContractLibraryAccess().getContractElementsContractElementParserRuleCall_1_0());
+					newCompositeNode(grammarAccess.getContractLibraryAccess().getContractElementsContractElementParserRuleCall_3_0());
 				}
-				lv_contractElements_1_0=ruleContractElement
+				lv_contractElements_3_0=ruleContractElement
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getContractLibraryRule());
@@ -145,7 +164,7 @@ ruleContractLibrary returns [EObject current=null]
 					add(
 						$current,
 						"contractElements",
-						lv_contractElements_1_0,
+						lv_contractElements_3_0,
 						"org.osate.contract.Contract.ContractElement");
 					afterParserOrEnumRuleCall();
 				}
@@ -2636,80 +2655,6 @@ ruleTerminalExpression returns [EObject current=null]
 				newLeafNode(otherlv_13, grammarAccess.getTerminalExpressionAccess().getRightParenthesisKeyword_4_3());
 			}
 		)
-	)
-;
-
-// Entry rule entryRuleContractSubclause
-entryRuleContractSubclause returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getContractSubclauseRule()); }
-	iv_ruleContractSubclause=ruleContractSubclause
-	{ $current=$iv_ruleContractSubclause.current; }
-	EOF;
-
-// Rule ContractSubclause
-ruleContractSubclause returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		(
-			{
-				$current = forceCreateModelElement(
-					grammarAccess.getContractSubclauseAccess().getContractSubclauseAction_0(),
-					$current);
-			}
-		)
-		(
-			otherlv_1='use'
-			{
-				newLeafNode(otherlv_1, grammarAccess.getContractSubclauseAccess().getUseKeyword_1_0());
-			}
-			(
-				(
-					{
-						if ($current==null) {
-							$current = createModelElement(grammarAccess.getContractSubclauseRule());
-						}
-					}
-					{
-						newCompositeNode(grammarAccess.getContractSubclauseAccess().getUseQueriesContractCrossReference_1_1_0());
-					}
-					ruleQPREF
-					{
-						afterParserOrEnumRuleCall();
-					}
-				)
-			)
-		)*
-		(
-			otherlv_3='verify'
-			{
-				newLeafNode(otherlv_3, grammarAccess.getContractSubclauseAccess().getVerifyKeyword_2_0());
-			}
-			(
-				(
-					{
-						if ($current==null) {
-							$current = createModelElement(grammarAccess.getContractSubclauseRule());
-						}
-					}
-					{
-						newCompositeNode(grammarAccess.getContractSubclauseAccess().getVerifyPlansVerificationPlanCrossReference_2_1_0());
-					}
-					ruleQPREF
-					{
-						afterParserOrEnumRuleCall();
-					}
-				)
-			)
-			otherlv_5=';'
-			{
-				newLeafNode(otherlv_5, grammarAccess.getContractSubclauseAccess().getSemicolonKeyword_2_2());
-			}
-		)*
 	)
 ;
 

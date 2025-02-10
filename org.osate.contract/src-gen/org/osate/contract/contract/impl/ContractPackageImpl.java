@@ -1882,7 +1882,6 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     parameterEClass.getESuperTypes().add(theAadl2Package.getElement());
     singleParameterEClass.getESuperTypes().add(theAadl2Package.getNamedElement());
     singleParameterEClass.getESuperTypes().add(this.getParameter());
-    contractSubclauseEClass.getESuperTypes().add(theAadl2Package.getAnnexSubclause());
     iStringLiteralEClass.getESuperTypes().add(this.getIStringPart());
     iStringVarEClass.getESuperTypes().add(this.getIStringPart());
     contractAssumptionEClass.getESuperTypes().add(this.getAssumptionElement());

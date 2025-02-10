@@ -203,7 +203,8 @@ public class ContractParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getQCREFAccess().getGroup(), "rule__QCREF__Group__0");
 			builder.put(grammarAccess.getQCREFAccess().getGroup_0(), "rule__QCREF__Group_0__0");
 			builder.put(grammarAccess.getQCREFAccess().getGroup_2(), "rule__QCREF__Group_2__0");
-			builder.put(grammarAccess.getContractLibraryAccess().getContractElementsAssignment_1(), "rule__ContractLibrary__ContractElementsAssignment_1");
+			builder.put(grammarAccess.getContractLibraryAccess().getNameAssignment_1(), "rule__ContractLibrary__NameAssignment_1");
+			builder.put(grammarAccess.getContractLibraryAccess().getContractElementsAssignment_3(), "rule__ContractLibrary__ContractElementsAssignment_3");
 			builder.put(grammarAccess.getContractAccess().getNameAssignment_1(), "rule__Contract__NameAssignment_1");
 			builder.put(grammarAccess.getContractAccess().getInputsAssignment_5_2(), "rule__Contract__InputsAssignment_5_2");
 			builder.put(grammarAccess.getContractAccess().getGuaranteeAssignment_7_2(), "rule__Contract__GuaranteeAssignment_7_2");

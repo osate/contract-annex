@@ -31,9 +31,9 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.osate.aadl2.impl.AnnexSubclauseImpl;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 import org.osate.contract.contract.Contract;
 import org.osate.contract.contract.ContractPackage;
@@ -54,7 +54,7 @@ import org.osate.contract.contract.VerificationPlan;
  *
  * @generated
  */
-public class ContractSubclauseImpl extends AnnexSubclauseImpl implements ContractSubclause
+public class ContractSubclauseImpl extends MinimalEObjectImpl.Container implements ContractSubclause
 {
   /**
    * The cached value of the '{@link #getUseQueries() <em>Use Queries</em>}' reference list.

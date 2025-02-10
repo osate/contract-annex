@@ -61,18 +61,6 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//ContractLibrary
 		public RuleCall getContractLibraryParserRuleCall() { return cContractLibraryParserRuleCall; }
 	}
-	public class AnnexSubclauseElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.AnnexSubclause");
-		private final RuleCall cContractSubclauseParserRuleCall = (RuleCall)rule.eContents().get(1);
-		
-		//AnnexSubclause returns aadl2::AnnexSubclause:
-		//    ContractSubclause
-		//;
-		@Override public ParserRule getRule() { return rule; }
-		
-		//ContractSubclause
-		public RuleCall getContractSubclauseParserRuleCall() { return cContractSubclauseParserRuleCall; }
-	}
 	public class ElementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.Element");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
@@ -128,26 +116,40 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	public class ContractLibraryElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.ContractLibrary");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cContractLibraryAction_0 = (Action)cGroup.eContents().get(0);
-		private final Assignment cContractElementsAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cContractElementsContractElementParserRuleCall_1_0 = (RuleCall)cContractElementsAssignment_1.eContents().get(0);
+		private final Keyword cPackageKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Keyword cSemicolonKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cContractElementsAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cContractElementsContractElementParserRuleCall_3_0 = (RuleCall)cContractElementsAssignment_3.eContents().get(0);
 		
 		//ContractLibrary:
-		//    {ContractLibrary} contractElements+=ContractElement*
+		//    'package' name = ID ';'
+		//    contractElements+=ContractElement*
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{ContractLibrary} contractElements+=ContractElement*
+		//'package' name = ID ';'
+		//contractElements+=ContractElement*
 		public Group getGroup() { return cGroup; }
 		
-		//{ContractLibrary}
-		public Action getContractLibraryAction_0() { return cContractLibraryAction_0; }
+		//'package'
+		public Keyword getPackageKeyword_0() { return cPackageKeyword_0; }
+		
+		//name = ID
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		
+		//ID
+		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		
+		//';'
+		public Keyword getSemicolonKeyword_2() { return cSemicolonKeyword_2; }
 		
 		//contractElements+=ContractElement*
-		public Assignment getContractElementsAssignment_1() { return cContractElementsAssignment_1; }
+		public Assignment getContractElementsAssignment_3() { return cContractElementsAssignment_3; }
 		
 		//ContractElement
-		public RuleCall getContractElementsContractElementParserRuleCall_1_0() { return cContractElementsContractElementParserRuleCall_1_0; }
+		public RuleCall getContractElementsContractElementParserRuleCall_3_0() { return cContractElementsContractElementParserRuleCall_3_0; }
 	}
 	public class ContractElementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.ContractElement");
@@ -2369,7 +2371,6 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	}
 	
 	private final AnnexLibraryElements pAnnexLibrary;
-	private final AnnexSubclauseElements pAnnexSubclause;
 	private final ElementElements pElement;
 	private final NamedElementElements pNamedElement;
 	private final ContractLibraryElements pContractLibrary;
@@ -2435,7 +2436,6 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		this.grammar = internalFindGrammar(grammarProvider);
 		this.gaProperties = gaProperties;
 		this.pAnnexLibrary = new AnnexLibraryElements();
-		this.pAnnexSubclause = new AnnexSubclauseElements();
 		this.pElement = new ElementElements();
 		this.pNamedElement = new NamedElementElements();
 		this.pContractLibrary = new ContractLibraryElements();
@@ -2530,17 +2530,6 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		return getAnnexLibraryAccess().getRule();
 	}
 	
-	//AnnexSubclause returns aadl2::AnnexSubclause:
-	//    ContractSubclause
-	//;
-	public AnnexSubclauseElements getAnnexSubclauseAccess() {
-		return pAnnexSubclause;
-	}
-	
-	public ParserRule getAnnexSubclauseRule() {
-		return getAnnexSubclauseAccess().getRule();
-	}
-	
 	//Element returns aadl2::Element:
 	//    Lambda | Parameter | Query
 	//;
@@ -2564,7 +2553,8 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	}
 	
 	//ContractLibrary:
-	//    {ContractLibrary} contractElements+=ContractElement*
+	//    'package' name = ID ';'
+	//    contractElements+=ContractElement*
 	//;
 	public ContractLibraryElements getContractLibraryAccess() {
 		return pContractLibrary;

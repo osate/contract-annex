@@ -603,7 +603,7 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	 *     ContractLibrary returns ContractLibrary
 	 *
 	 * Constraint:
-	 *     contractElements+=ContractElement*
+	 *     (name=ID contractElements+=ContractElement*)
 	 * </pre>
 	 */
 	protected void sequence_ContractLibrary(ISerializationContext context, ContractLibrary semanticObject) {
@@ -614,7 +614,6 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	/**
 	 * <pre>
 	 * Contexts:
-	 *     AnnexSubclause returns ContractSubclause
 	 *     ContractSubclause returns ContractSubclause
 	 *
 	 * Constraint:

@@ -35,10 +35,6 @@ AnnexLibrary returns aadl2::AnnexLibrary:
 	ContractLibrary 
 ;
 
-AnnexSubclause returns aadl2::AnnexSubclause:
-	ContractSubclause
-;
-
 Element returns aadl2::Element:
 	Lambda | Parameter | Query
 ;
@@ -48,7 +44,8 @@ NamedElement returns aadl2::NamedElement:
 ;
 
 ContractLibrary:
-	{ContractLibrary} contractElements+=ContractElement*
+	'package' name = ID ';'
+	contractElements+=ContractElement*
 ;
 
 ContractElement:

@@ -1274,67 +1274,13 @@ public interface ContractPackage extends EPackage
   int CONTRACT_SUBCLAUSE = 20;
 
   /**
-   * The feature id for the '<em><b>Owned Element</b></em>' reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONTRACT_SUBCLAUSE__OWNED_ELEMENT = Aadl2Package.ANNEX_SUBCLAUSE__OWNED_ELEMENT;
-
-  /**
-   * The feature id for the '<em><b>Owned Comment</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONTRACT_SUBCLAUSE__OWNED_COMMENT = Aadl2Package.ANNEX_SUBCLAUSE__OWNED_COMMENT;
-
-  /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONTRACT_SUBCLAUSE__NAME = Aadl2Package.ANNEX_SUBCLAUSE__NAME;
-
-  /**
-   * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONTRACT_SUBCLAUSE__QUALIFIED_NAME = Aadl2Package.ANNEX_SUBCLAUSE__QUALIFIED_NAME;
-
-  /**
-   * The feature id for the '<em><b>Owned Property Association</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONTRACT_SUBCLAUSE__OWNED_PROPERTY_ASSOCIATION = Aadl2Package.ANNEX_SUBCLAUSE__OWNED_PROPERTY_ASSOCIATION;
-
-  /**
-   * The feature id for the '<em><b>In Mode</b></em>' reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONTRACT_SUBCLAUSE__IN_MODE = Aadl2Package.ANNEX_SUBCLAUSE__IN_MODE;
-
-  /**
    * The feature id for the '<em><b>Use Queries</b></em>' reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CONTRACT_SUBCLAUSE__USE_QUERIES = Aadl2Package.ANNEX_SUBCLAUSE_FEATURE_COUNT + 0;
+  int CONTRACT_SUBCLAUSE__USE_QUERIES = 0;
 
   /**
    * The feature id for the '<em><b>Verify Plans</b></em>' reference list.
@@ -1343,7 +1289,7 @@ public interface ContractPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CONTRACT_SUBCLAUSE__VERIFY_PLANS = Aadl2Package.ANNEX_SUBCLAUSE_FEATURE_COUNT + 1;
+  int CONTRACT_SUBCLAUSE__VERIFY_PLANS = 1;
 
   /**
    * The number of structural features of the '<em>Subclause</em>' class.
@@ -1352,7 +1298,7 @@ public interface ContractPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CONTRACT_SUBCLAUSE_FEATURE_COUNT = Aadl2Package.ANNEX_SUBCLAUSE_FEATURE_COUNT + 2;
+  int CONTRACT_SUBCLAUSE_FEATURE_COUNT = 2;
 
   /**
    * The meta object id for the '{@link org.osate.contract.contract.impl.IStringImpl <em>IString</em>}' class.

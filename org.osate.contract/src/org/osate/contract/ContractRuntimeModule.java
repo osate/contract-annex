@@ -32,18 +32,12 @@ import org.eclipse.xtext.conversion.IValueConverterService;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.parsetree.reconstr.ITransientValueService;
-import org.eclipse.xtext.scoping.IScopeProvider;
-import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.osate.contract.conversion.ContractValueConverters;
 import org.osate.contract.naming.ContractQualifiedNameConverter;
 import org.osate.contract.naming.ContractQualifiedNameProvider;
-import org.osate.contract.scoping.ContractImportedNamespaceAwareLocalScopeProvider;
 import org.osate.contract.serializer.ContractSerializer;
 import org.osate.contract.serializer.ContractTransientValueService;
-
-import com.google.inject.Binder;
-import com.google.inject.name.Names;
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
@@ -78,12 +72,12 @@ public class ContractRuntimeModule extends AbstractContractRuntimeModule {
 		return ContractSerializer.class;
 	}
 
-	@Override
-	public void configureIScopeProviderDelegate(Binder binder) {
-		binder.bind(IScopeProvider.class)
-				.annotatedWith(Names.named(AbstractDeclarativeScopeProvider.NAMED_DELEGATE))
-				.to(ContractImportedNamespaceAwareLocalScopeProvider.class);
-	}
+//	@Override
+//	public void configureIScopeProviderDelegate(Binder binder) {
+//		binder.bind(IScopeProvider.class)
+//				.annotatedWith(Names.named(AbstractDeclarativeScopeProvider.NAMED_DELEGATE))
+//				.to(ContractImportedNamespaceAwareLocalScopeProvider.class);
+//	}
 
 	@Override
 	public Class<? extends IValueConverterService> bindIValueConverterService() {

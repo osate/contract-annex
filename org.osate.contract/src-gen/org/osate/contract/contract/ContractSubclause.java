@@ -29,8 +29,6 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
 
-import org.osate.aadl2.AnnexSubclause;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Subclause</b></em>'.
@@ -48,7 +46,7 @@ import org.osate.aadl2.AnnexSubclause;
  * @model
  * @generated
  */
-public interface ContractSubclause extends EObject, AnnexSubclause
+public interface ContractSubclause extends EObject
 {
   /**
    * Returns the value of the '<em><b>Use Queries</b></em>' reference list.
