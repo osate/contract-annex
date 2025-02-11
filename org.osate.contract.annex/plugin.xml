@@ -27,7 +27,7 @@
  -->
 
 <plugin>
-	<extension
+	<!--extension
 			point="org.osate.annexsupport.parser">
 		<parser
 				annexName="contract"
@@ -50,5 +50,5 @@
         		class="org.osate.contract.annex.ContractAnnexUnparser"
         		id="org.osate.contract.unparser"
         		name="Contract Annex Unparser"/>
-	</extension>
+	</extension-->
 </plugin>
