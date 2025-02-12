@@ -27,6 +27,7 @@ package org.osate.contract.evaluation.ui;
 
 import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -69,7 +70,7 @@ public class CheckPlanHandler extends AbstractHandler {
 			throw new ExecutionException("Unexpected selection: " + selection);
 		}
 		var scriptService = PlatformUI.getWorkbench().getService(IScriptService.class);
-		var processor = new ContractProcessor(component,
+		var processor = new ContractProcessor(component, Collections.emptyList(),
 				scriptService.getEngineByID("org.eclipse.ease.lang.python.py4j.engine"));
 		WorkspaceJob job = new WorkspaceJob("Check verification plan") {
 			@Override

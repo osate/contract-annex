@@ -80,8 +80,12 @@ public class ContractProcessor {
 
 	private List<String> info = new ArrayList<>();
 
-	public ContractProcessor(ComponentInstance context, EngineDescription description) {
+	private final Iterable<VerificationPlan> plans;
+
+	public ContractProcessor(ComponentInstance context, Iterable<VerificationPlan> plans,
+			EngineDescription description) {
 		this.context = context;
+		this.plans = plans;
 		error.add("");
 		info.add("");
 		pyBuilder = newPythonBuilder(context);
@@ -443,6 +447,24 @@ public class ContractProcessor {
 		pb.outdent().addCode("""
 				),
 				""");
+	}
+
+	public void processVerificationPlans(boolean checkCompleteness) {
+		for (var plan : plans) {
+			smtVerificationPlan(plan, checkCompleteness);
+
+			var pyCode = pyBuilder.getScript();
+
+			int i = 1;
+			try (var s = new Scanner(pyCode)) {
+				while (s.hasNextLine()) {
+					System.out.println(i + s.nextLine());
+					i += 1;
+				}
+			}
+
+			pyRunner.run(pyCode, pyBuilder.getVariables());
+		}
 	}
 
 	@Deprecated(forRemoval = true)
