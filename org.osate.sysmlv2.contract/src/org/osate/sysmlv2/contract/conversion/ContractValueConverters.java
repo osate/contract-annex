@@ -25,11 +25,12 @@
  *******************************************************************************/
 package org.osate.sysmlv2.contract.conversion;
 
+import org.eclipse.xtext.common.services.DefaultTerminalConverters;
 import org.eclipse.xtext.conversion.IValueConverter;
 import org.eclipse.xtext.conversion.ValueConverter;
-import org.osate.xtext.aadl2.valueconversion.Aadl2ValueConverter;
 
-public class ContractValueConverters extends Aadl2ValueConverter {
+//XXX this is probably broken now
+public class ContractValueConverters extends DefaultTerminalConverters { // extends Aadl2ValueConverter {
 
 	SSTRINGValueConverter sstringValueConverter = new SSTRINGValueConverter();
 
