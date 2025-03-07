@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.osate.contract.ide
+Bundle-ManifestVersion: 2
+Bundle-Name: Contract Language for SysMLv2 IDE
+Bundle-Vendor: CMU/SEI
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: org.osate.sysmlv2.contract.ide;singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.osate.contract,
+ org.eclipse.xtext.ide,
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Export-Package: org.osate.contract.ide.contentassist.antlr.internal,
+ org.osate.contract.ide.contentassist.antlr
