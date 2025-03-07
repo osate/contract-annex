@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+    Assurance Contract Annex Plugin for OSATE
+    Copyright 2023 Carnegie Mellon University.
+    NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
+    MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
+    WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
+    NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
+    RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
+    ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+    INFRINGEMENT.
+    Released under a BSD (SEI)-style license, please see license.txt or contact 
+    permission@sei.cmu.edu for full terms.
+    [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
+    unlimited distribution.  Please see Copyright notice for non-US Government use and 
+    distribution.
+    Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+    Mellon University.
+    This Software includes and/or makes use of the following Third-Party Software subject 
+    to its own license:
+    1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+    Corporation.
+    2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+    contributors and others.
+    DM23-0575
+ -->
+
+<plugin>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="org.osate.contract.evaluation.ui.evaluateQueries"
+            name="Debug: Evaluate Queries">
+      </command>
+      <command
+            id="org.osate.contract.evaluation.ui.generateYamlGsn"
+            name="Generate YAML-GSN">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.osate.sysmlv2.contract.evaluation.ui.EvaluationHandler"
+            commandId="org.osate.contract.evaluation.ui.evaluateQueries">
+         <enabledWhen>
+            <reference
+                  definitionId="org.osate.ui.definition.isInstanceFileOrComponentInstanceSelected">
+            </reference>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="org.osate.sysmlv2.contract.evaluation.ui.GenerateYamlGsnHandler"
+            commandId="org.osate.contract.evaluation.ui.generateYamlGsn">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <adapt
+                           type="org.eclipse.xtext.ui.editor.outline.impl.EObjectNode">
+                        <test
+                              forcePluginActivation="true"
+                              property="org.osate.contract.evaluation.ui.superType"
+                              value="VerificationPlan">
+                        </test>
+                     </adapt>
+                  </iterate>
+               </and>
+            </with></enabledWhen>
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="org.osate.contract.executePlan"
+            name="Execute Verificaton Plans">
+      </command>
+      <command
+            id="org.osate.contract.checkPlan"
+            name="Check Verification Plan Completeness">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.osate.sysmlv2.contract.evaluation.ui.ExecutePlanHandler"
+            commandId="org.osate.contract.executePlan">
+         <enabledWhen>
+            <reference
+                  definitionId="org.osate.ui.definition.isInstanceFileOrComponentInstanceSelected">
+            </reference>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="org.osate.sysmlv2.contract.evaluation.ui.CheckPlanHandler"
+            commandId="org.osate.contract.checkPlan">
+         <enabledWhen>
+            <reference
+                  definitionId="org.osate.ui.definition.isInstanceFileOrComponentInstanceSelected">
+            </reference>
+         </enabledWhen>
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.osate.ui.analysesMenu?after=third_party">
+         <menu
+               id="org.osate.contract.menu"
+               label="Analysis Contracts">
+            <command
+                  commandId="org.osate.contract.executePlan"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.osate.contract.checkPlan"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.osate.ui.analysesNavigatorPopup?after=third_party">
+         <menu
+               id="org.osate.contract.menu"
+               label="Analysis Contracts">
+            <command
+                  commandId="org.osate.contract.executePlan"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="true">
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="org.osate.contract.checkPlan"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="true">
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="org.osate.contract.evaluation.ui.evaluateQueries"
+                  style="push">
+               <visibleWhen
+                    checkEnabled="true">
+               </visibleWhen>
+            </command>
+            
+         </menu>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.osate.xtext.aadl2.ui.outline?after=additions">
+         <command
+               commandId="org.osate.contract.evaluation.ui.generateYamlGsn"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="org.osate.sysmlv2.contract.evaluation.ui.EObjectNodeContractSuperTypePropertyTester"
+            id="org.osate.contract.evaluation.ui.EObjectSuperTypePropertyTester"
+            namespace="org.osate.contract.evaluation.ui"
+            properties="superType"
+            type="org.eclipse.xtext.ui.editor.outline.impl.EObjectNode">
+      </propertyTester>
+   </extension>
+</plugin>
