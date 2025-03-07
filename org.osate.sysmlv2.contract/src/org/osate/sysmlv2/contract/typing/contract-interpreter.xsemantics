@@ -1,0 +1,215 @@
+/*******************************************************************************
+ * Assurance Contract Annex Plugin for OSATE
+ * Copyright 2023 Carnegie Mellon University.
+ * NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
+ * MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
+ * WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
+ * NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
+ * RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
+ * ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+ * INFRINGEMENT.
+ * Released under a BSD (SEI)-style license, please see license.txt or contact 
+ * permission@sei.cmu.edu for full terms.
+ * [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
+ * unlimited distribution.  Please see Copyright notice for non-US Government use and 
+ * distribution.
+ * Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+ * Mellon University.
+ * This Software includes and/or makes use of the following Third-Party Software subject 
+ * to its own license:
+ * 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+ * Corporation.
+ * 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+ * contributors and others.
+ * DM23-0575
+ *******************************************************************************/
+
+import java.util.Map
+import java.util.Optional
+import org.eclipse.xsemantics.runtime.RuleEnvironment
+import org.eclipse.xtext.EcoreUtil2
+import org.osate.aadl2.BasicProperty
+import org.osate.aadl2.NamedElement
+import org.osate.aadl2.UnitLiteral
+import org.osate.aadl2.instance.ComponentInstance
+import org.osate.aadl2.instance.SystemInstance
+import org.osate.aadl2.properties.PropertyDoesNotApplyToHolderException
+import org.osate.aadl2.properties.PropertyIsModalException
+import org.osate.aadl2.properties.PropertyNotPresentException
+import org.osate.contract.contract.AndExpression
+import org.osate.contract.contract.Expression
+import org.osate.contract.contract.MemberCall
+import org.osate.contract.contract.NameReference
+import org.osate.contract.contract.NotExpression
+import org.osate.contract.contract.OrExpression
+import org.osate.contract.contract.PropertyLookup
+import org.osate.contract.contract.Query
+import org.osate.contract.contract.RootExpression
+import org.osate.contract.contract.SelfExpression
+import org.osate.contract.contract.SingleParameter
+import org.osate.contract.contract.SingleValDeclaration
+import org.osate.contract.contract.StringLiteral
+import org.osate.contract.contract.TupleDeclaration
+import org.osate.contract.contract.TupleExpression
+import org.osate.contract.contract.TupleName
+import org.osate.contract.contract.TupleParameter
+import org.osate.contract.tuples.Tuple
+import org.osate.pluginsupport.properties.CodeGenUtil
+import org.osate.aadl2.EnumerationLiteral
+
+system org.osate.contract.typing.ContractInterpreter
+
+inject ContractTypeSystem typeSystem
+
+judgments {
+	evaluateQuery ||- Query query ~> output Map<String, Object>
+	evaluateExpression |- Expression expression ~> output Object
+}
+
+rule EvaluateSingleValDeclaration
+	G ||- SingleValDeclaration valDeclaration ~> Map<String, Object> result
+from {
+	G |- valDeclaration.value ~> var Object value
+	result = #{valDeclaration.name -> value}
+}
+
+rule EvaluateTupleDeclaration
+	G ||- TupleDeclaration tupleDeclaration ~> Map<String, Object> result
+from {
+	G |- tupleDeclaration.value ~> var Tuple tupleResult
+	result = newLinkedHashMap
+	for (var i = 0; i < tupleDeclaration.names.size; i++) {
+		result.put(tupleDeclaration.names.get(i).name, tupleResult.elements.get(i))
+	}
+}
+
+rule EvaluateOrExpression
+	G |- OrExpression expression ~> Boolean result
+from {
+	G |- expression.left ~> var Boolean leftValue
+	if (leftValue) {
+		result = true
+	} else {
+		G |- expression.right ~> var Boolean rightValue
+		result = rightValue
+	}
+}
+
+rule EvaluateAndExpression
+	G |- AndExpression expression ~> Boolean result
+from {
+	G |- expression.left ~> var Boolean leftValue
+	if (leftValue) {
+		G |- expression.right ~> var Boolean rightValue
+		result = rightValue
+	} else {
+		result = false
+	}
+}
+
+rule EvaluateNotExpression
+	G |- NotExpression expression ~> Boolean result
+from {
+	G |- expression.operand ~> var Boolean operandValue
+	result = !operandValue
+}
+
+rule EvaluateMemberCall
+	G |- MemberCall expression ~> Object result
+from {
+	val leftType = typeSystem.expressionType(expression.left).value
+	G |- expression.left ~> var Object leftValue
+	result = switch member : leftType.members.get(expression.right) {
+		SimpleMember<Object, Object>: member.evaluate(leftValue)
+		MemberWithTypeParameter<Object, Object>: {
+			val javaType = GenericTypeArgumentRegistry.getJavaType(expression.typeArgument)
+			if (javaType !== null) {
+				member.evaluate(leftValue, javaType)
+			}
+		}
+		MemberWithArgument<Object, Object, Object>: {
+			G |- expression.argument ~> var Object argumentValue
+			member.evaluate(leftValue, argumentValue)
+		}
+		MemberWithLambda<Object, Object, Object>: {
+			val lambda = expression.lambda
+			val parameter = lambda.parameter
+			member.evaluate(leftValue) [element |
+				val withParameters = new RuleEnvironment(G)
+				switch parameter {
+					SingleParameter: withParameters.add(parameter.name, element)
+					TupleParameter: {
+						val tuple = element as Tuple
+						for (var i = 0; i < parameter.names.size; i++) {
+							withParameters.add(parameter.names.get(i).name, tuple.elements.get(i))
+						}
+					}
+				}
+				withParameters |- lambda.returnValue ~> var Object lambdaResult
+				lambdaResult
+			]
+		}
+	}
+}
+
+rule EvaluatePropertyLookup
+	G |- PropertyLookup expression ~> Optional<?> result
+from {
+	G |- expression.left ~> var NamedElement lookupContext
+	try {
+		val value = CodeGenUtil.lookupProperty(expression.right, lookupContext, Optional.^empty)
+		val resolved = CodeGenUtil.resolveNamedValue(value, lookupContext, Optional.^empty)
+		result = Optional.of(TypeSystemUtils.convertPropertyValue(resolved, lookupContext))
+	} catch (PropertyNotPresentException e) {
+		result = Optional.^empty
+	} catch (PropertyDoesNotApplyToHolderException e) {
+		result = Optional.^empty
+	} catch (PropertyIsModalException e) {
+		result = Optional.^empty
+	}
+}
+
+axiom EvaluateSelfExpression
+	G |- SelfExpression expression ~> env(G, "self", ComponentInstance)
+
+axiom EvaluateRootExpression
+	G |- RootExpression expression ~> EcoreUtil2.getContainerOfType(env(G, "self", ComponentInstance), SystemInstance)
+
+axiom EvaluateStringLiteral
+	G |- StringLiteral expression ~> expression.value
+
+rule EvaluateTupleExpression
+	G |- TupleExpression expression ~> Tuple result
+from {
+	val elementResults = newArrayList
+	for (element : expression.elements) {
+		G |- element ~> var Object elementResult
+		elementResults += elementResult
+	}
+	result = new Tuple(elementResults)
+}
+
+rule EvaluateNameReference
+	G |- NameReference expression ~> Object result
+from {
+	val named = expression.reference
+	switch named {
+		SingleParameter,
+		TupleName case named.eContainer instanceof TupleParameter: result = env(G, named.name, Object)
+		SingleValDeclaration: {
+			G |- named.value ~> result
+		}
+		TupleName: {
+			val tupleDeclaration = EcoreUtil2.getContainerOfType(named, TupleDeclaration)
+			G |- tupleDeclaration.value ~> var Tuple tupleResult
+			val index = tupleDeclaration.names.indexOf(named)
+			result = tupleResult.elements.get(index)
+		}
+		/*
+		 * Special handling for LongWithUnits.scaledTo() and Record.get(), etc. 
+		 */
+		UnitLiteral,
+		EnumerationLiteral,
+		BasicProperty: result = named
+	}
+}
