@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.osate.contract.ui
+Bundle-ManifestVersion: 2
+Bundle-Name: Contract Language for SysMLv2 UI
+Bundle-Vendor: CMU/SEI
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: org.osate.sysmlv2.contract.ui;singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.osate.contract,
+ org.osate.contract.ide,
+ org.eclipse.xtext.ui,
+ org.eclipse.xtext.ui.shared,
+ org.eclipse.xtext.ui.codetemplates.ui,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.ide,
+ org.eclipse.ui,
+ org.eclipse.compare,
+ org.eclipse.xtext.builder,
+ org.eclipse.xsemantics.runtime,
+ org.eclipse.ease
+Import-Package: org.apache.log4j
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Export-Package: org.osate.contract.ui.internal,
+ org.osate.sysmlv2.contract.ui,
+ org.osate.sysmlv2.contract.ui.contentassist,
+ org.osate.sysmlv2.contract.ui.quickfix
+Bundle-Activator: org.osate.contract.ui.internal.ContractActivator
