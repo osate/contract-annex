@@ -226,15 +226,6 @@ public interface ContractFactory extends EFactory
   SingleParameter createSingleParameter();
 
   /**
-   * Returns a new object of class '<em>Subclause</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Subclause</em>'.
-   * @generated
-   */
-  ContractSubclause createContractSubclause();
-
-  /**
    * Returns a new object of class '<em>IString</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

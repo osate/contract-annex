@@ -67,7 +67,7 @@ import org.osate.sysmlv2.contract.services.ContractGrammarAccess;
 
     @Override
     protected String getFirstRuleName() {
-    	return "ContractLibrary";
+    	return "Root";
    	}
 
    	@Override
@@ -83,6 +83,31 @@ import org.osate.sysmlv2.contract.services.ContractGrammarAccess;
         appendSkippedTokens();
     }
 }
+
+// Entry rule entryRuleRoot
+entryRuleRoot returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getRootRule()); }
+	iv_ruleRoot=ruleRoot
+	{ $current=$iv_ruleRoot.current; }
+	EOF;
+
+// Rule Root
+ruleRoot returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	{
+		newCompositeNode(grammarAccess.getRootAccess().getContractLibraryParserRuleCall());
+	}
+	this_ContractLibrary_0=ruleContractLibrary
+	{
+		$current = $this_ContractLibrary_0.current;
+		afterParserOrEnumRuleCall();
+	}
+;
 
 // Entry rule entryRuleContractLibrary
 entryRuleContractLibrary returns [EObject current=null]:

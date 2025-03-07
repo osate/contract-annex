@@ -54,7 +54,6 @@ import org.osate.sysmlv2.contract.contract.ContractElement;
 import org.osate.sysmlv2.contract.contract.ContractFactory;
 import org.osate.sysmlv2.contract.contract.ContractLibrary;
 import org.osate.sysmlv2.contract.contract.ContractPackage;
-import org.osate.sysmlv2.contract.contract.ContractSubclause;
 import org.osate.sysmlv2.contract.contract.Domain;
 import org.osate.sysmlv2.contract.contract.Expression;
 import org.osate.sysmlv2.contract.contract.Guarantee;
@@ -233,13 +232,6 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   private EClass singleParameterEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass contractSubclauseEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -493,20 +485,9 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   @Override
-  public EAttribute getContractLibrary_Name()
-  {
-    return (EAttribute)contractLibraryEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public EReference getContractLibrary_ContractElements()
   {
-    return (EReference)contractLibraryEClass.getEStructuralFeatures().get(1);
+    return (EReference)contractLibraryEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1057,39 +1038,6 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
   public EClass getSingleParameter()
   {
     return singleParameterEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getContractSubclause()
-  {
-    return contractSubclauseEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getContractSubclause_UseQueries()
-  {
-    return (EReference)contractSubclauseEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getContractSubclause_VerifyPlans()
-  {
-    return (EReference)contractSubclauseEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1696,7 +1644,6 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
 
     // Create classes and their features
     contractLibraryEClass = createEClass(CONTRACT_LIBRARY);
-    createEAttribute(contractLibraryEClass, CONTRACT_LIBRARY__NAME);
     createEReference(contractLibraryEClass, CONTRACT_LIBRARY__CONTRACT_ELEMENTS);
 
     contractElementEClass = createEClass(CONTRACT_ELEMENT);
@@ -1767,10 +1714,6 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     parameterEClass = createEClass(PARAMETER);
 
     singleParameterEClass = createEClass(SINGLE_PARAMETER);
-
-    contractSubclauseEClass = createEClass(CONTRACT_SUBCLAUSE);
-    createEReference(contractSubclauseEClass, CONTRACT_SUBCLAUSE__USE_QUERIES);
-    createEReference(contractSubclauseEClass, CONTRACT_SUBCLAUSE__VERIFY_PLANS);
 
     iStringEClass = createEClass(ISTRING);
     createEReference(iStringEClass, ISTRING__PARTS);
@@ -1874,14 +1817,15 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     setNsURI(eNS_URI);
 
     // Obtain other dependent packages
-    EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
     SysMLPackage theSysMLPackage = (SysMLPackage)EPackage.Registry.INSTANCE.getEPackage(SysMLPackage.eNS_URI);
+    EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 
     // Create type parameters
 
     // Set bounds for type parameters
 
     // Add supertypes to classes
+    contractLibraryEClass.getESuperTypes().add(theSysMLPackage.getElement());
     contractElementEClass.getESuperTypes().add(theSysMLPackage.getElement());
     contractEClass.getESuperTypes().add(this.getContractElement());
     implementationEClass.getESuperTypes().add(this.getContractElement());
@@ -1916,7 +1860,6 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
 
     // Initialize classes and features; add operations and parameters
     initEClass(contractLibraryEClass, ContractLibrary.class, "ContractLibrary", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getContractLibrary_Name(), theEcorePackage.getEString(), "name", null, 0, 1, ContractLibrary.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getContractLibrary_ContractElements(), this.getContractElement(), null, "contractElements", null, 0, -1, ContractLibrary.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(contractElementEClass, ContractElement.class, "ContractElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1987,10 +1930,6 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     initEClass(parameterEClass, Parameter.class, "Parameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(singleParameterEClass, SingleParameter.class, "SingleParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(contractSubclauseEClass, ContractSubclause.class, "ContractSubclause", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getContractSubclause_UseQueries(), this.getContract(), null, "useQueries", null, 0, -1, ContractSubclause.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getContractSubclause_VerifyPlans(), this.getVerificationPlan(), null, "verifyPlans", null, 0, -1, ContractSubclause.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(iStringEClass, IString.class, "IString", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getIString_Parts(), this.getIStringPart(), null, "parts", null, 0, -1, IString.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

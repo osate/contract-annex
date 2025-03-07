@@ -200,11 +200,6 @@ public class ContractAdapterFactory extends AdapterFactoryImpl
         return createSingleParameterAdapter();
       }
       @Override
-      public Adapter caseContractSubclause(ContractSubclause object)
-      {
-        return createContractSubclauseAdapter();
-      }
-      @Override
       public Adapter caseIString(IString object)
       {
         return createIStringAdapter();
@@ -637,21 +632,6 @@ public class ContractAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createSingleParameterAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.osate.sysmlv2.contract.contract.ContractSubclause <em>Subclause</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.osate.sysmlv2.contract.contract.ContractSubclause
-   * @generated
-   */
-  public Adapter createContractSubclauseAdapter()
   {
     return null;
   }

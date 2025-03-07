@@ -50,7 +50,6 @@ import org.osate.sysmlv2.contract.contract.Contract;
 import org.osate.sysmlv2.contract.contract.ContractAssumption;
 import org.osate.sysmlv2.contract.contract.ContractLibrary;
 import org.osate.sysmlv2.contract.contract.ContractPackage;
-import org.osate.sysmlv2.contract.contract.ContractSubclause;
 import org.osate.sysmlv2.contract.contract.Domain;
 import org.osate.sysmlv2.contract.contract.Guarantee;
 import org.osate.sysmlv2.contract.contract.IString;
@@ -123,9 +122,6 @@ public class ContractSemanticSequencer extends AbstractDelegatingSemanticSequenc
 				return; 
 			case ContractPackage.CONTRACT_LIBRARY:
 				sequence_ContractLibrary(context, (ContractLibrary) semanticObject); 
-				return; 
-			case ContractPackage.CONTRACT_SUBCLAUSE:
-				sequence_ContractSubclause(context, (ContractSubclause) semanticObject); 
 				return; 
 			case ContractPackage.DOMAIN:
 				sequence_Domain_Queries(context, (Domain) semanticObject); 
@@ -485,6 +481,7 @@ public class ContractSemanticSequencer extends AbstractDelegatingSemanticSequenc
 	/**
 	 * <pre>
 	 * Contexts:
+	 *     Root returns ContractLibrary
 	 *     ContractLibrary returns ContractLibrary
 	 *
 	 * Constraint:
@@ -492,20 +489,6 @@ public class ContractSemanticSequencer extends AbstractDelegatingSemanticSequenc
 	 * </pre>
 	 */
 	protected void sequence_ContractLibrary(ISerializationContext context, ContractLibrary semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * <pre>
-	 * Contexts:
-	 *     ContractSubclause returns ContractSubclause
-	 *
-	 * Constraint:
-	 *     (useQueries+=[Contract|QPREF]* verifyPlans+=[VerificationPlan|QPREF]*)
-	 * </pre>
-	 */
-	protected void sequence_ContractSubclause(ISerializationContext context, ContractSubclause semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

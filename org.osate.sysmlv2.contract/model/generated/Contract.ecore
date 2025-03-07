@@ -2,8 +2,7 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="contract" nsURI="http://www.osate.org/contract/ContractForSysMLv2"
     nsPrefix="contract">
-  <eClassifiers xsi:type="ecore:EClass" name="ContractLibrary">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ContractLibrary" eSuperTypes="platform:/resource/org.omg.sysml/model/SysML.ecore#//Element">
     <eStructuralFeatures xsi:type="ecore:EReference" name="contractElements" upperBound="-1"
         eType="#//ContractElement" containment="true"/>
   </eClassifiers>
@@ -101,12 +100,6 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Parameter"/>
   <eClassifiers xsi:type="ecore:EClass" name="SingleParameter" eSuperTypes="platform:/resource/org.omg.sysml/model/SysML.ecore#//Element #//Parameter"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ContractSubclause">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="useQueries" unique="false"
-        upperBound="-1" eType="#//Contract"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="verifyPlans" unique="false"
-        upperBound="-1" eType="#//VerificationPlan"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IString">
     <eStructuralFeatures xsi:type="ecore:EReference" name="parts" upperBound="-1"
         eType="#//IStringPart" containment="true"/>

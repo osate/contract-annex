@@ -48,6 +48,18 @@ import org.eclipse.xtext.service.GrammarProvider;
 @Singleton
 public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammarElementFinder {
 	
+	public class RootElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.sysmlv2.contract.Contract.Root");
+		private final RuleCall cContractLibraryParserRuleCall = (RuleCall)rule.eContents().get(1);
+		
+		//Root returns sysmlv2::Element:
+		//    ContractLibrary
+		//;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//ContractLibrary
+		public RuleCall getContractLibraryParserRuleCall() { return cContractLibraryParserRuleCall; }
+	}
 	public class ContractLibraryElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.sysmlv2.contract.Contract.ContractLibrary");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -1951,68 +1963,6 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//')'
 		public Keyword getRightParenthesisKeyword_4_3() { return cRightParenthesisKeyword_4_3; }
 	}
-	public class ContractSubclauseElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.sysmlv2.contract.Contract.ContractSubclause");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cContractSubclauseAction_0 = (Action)cGroup.eContents().get(0);
-		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
-		private final Keyword cUseKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
-		private final Assignment cUseQueriesAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
-		private final CrossReference cUseQueriesContractCrossReference_1_1_0 = (CrossReference)cUseQueriesAssignment_1_1.eContents().get(0);
-		private final RuleCall cUseQueriesContractQPREFParserRuleCall_1_1_0_1 = (RuleCall)cUseQueriesContractCrossReference_1_1_0.eContents().get(1);
-		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
-		private final Keyword cVerifyKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
-		private final Assignment cVerifyPlansAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
-		private final CrossReference cVerifyPlansVerificationPlanCrossReference_2_1_0 = (CrossReference)cVerifyPlansAssignment_2_1.eContents().get(0);
-		private final RuleCall cVerifyPlansVerificationPlanQPREFParserRuleCall_2_1_0_1 = (RuleCall)cVerifyPlansVerificationPlanCrossReference_2_1_0.eContents().get(1);
-		private final Keyword cSemicolonKeyword_2_2 = (Keyword)cGroup_2.eContents().get(2);
-		
-		//ContractSubclause:
-		//    {ContractSubclause} ('use' useQueries+=[Contract|QPREF])*
-		//    ('verify' verifyPlans+=[VerificationPlan|QPREF] ';')*
-		//;
-		@Override public ParserRule getRule() { return rule; }
-		
-		//{ContractSubclause} ('use' useQueries+=[Contract|QPREF])*
-		//('verify' verifyPlans+=[VerificationPlan|QPREF] ';')*
-		public Group getGroup() { return cGroup; }
-		
-		//{ContractSubclause}
-		public Action getContractSubclauseAction_0() { return cContractSubclauseAction_0; }
-		
-		//('use' useQueries+=[Contract|QPREF])*
-		public Group getGroup_1() { return cGroup_1; }
-		
-		//'use'
-		public Keyword getUseKeyword_1_0() { return cUseKeyword_1_0; }
-		
-		//useQueries+=[Contract|QPREF]
-		public Assignment getUseQueriesAssignment_1_1() { return cUseQueriesAssignment_1_1; }
-		
-		//[Contract|QPREF]
-		public CrossReference getUseQueriesContractCrossReference_1_1_0() { return cUseQueriesContractCrossReference_1_1_0; }
-		
-		//QPREF
-		public RuleCall getUseQueriesContractQPREFParserRuleCall_1_1_0_1() { return cUseQueriesContractQPREFParserRuleCall_1_1_0_1; }
-		
-		//('verify' verifyPlans+=[VerificationPlan|QPREF] ';')*
-		public Group getGroup_2() { return cGroup_2; }
-		
-		//'verify'
-		public Keyword getVerifyKeyword_2_0() { return cVerifyKeyword_2_0; }
-		
-		//verifyPlans+=[VerificationPlan|QPREF]
-		public Assignment getVerifyPlansAssignment_2_1() { return cVerifyPlansAssignment_2_1; }
-		
-		//[VerificationPlan|QPREF]
-		public CrossReference getVerifyPlansVerificationPlanCrossReference_2_1_0() { return cVerifyPlansVerificationPlanCrossReference_2_1_0; }
-		
-		//QPREF
-		public RuleCall getVerifyPlansVerificationPlanQPREFParserRuleCall_2_1_0_1() { return cVerifyPlansVerificationPlanQPREFParserRuleCall_2_1_0_1; }
-		
-		//';'
-		public Keyword getSemicolonKeyword_2_2() { return cSemicolonKeyword_2_2; }
-	}
 	public class IStringElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.sysmlv2.contract.Contract.IString");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
@@ -2423,6 +2373,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		public Keyword getINFOInfo0Keyword_1_0() { return cINFOInfo0Keyword_1_0; }
 	}
 	
+	private final RootElements pRoot;
 	private final ContractLibraryElements pContractLibrary;
 	private final NamedElementElements pNamedElement;
 	private final ContractElementElements pContractElement;
@@ -2459,7 +2410,6 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	private final ParameterElements pParameter;
 	private final SingleParameterElements pSingleParameter;
 	private final TerminalExpressionElements pTerminalExpression;
-	private final ContractSubclauseElements pContractSubclause;
 	private final IStringElements pIString;
 	private final IStringPartElements pIStringPart;
 	private final IStringLiteralElements pIStringLiteral;
@@ -2487,6 +2437,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	@Inject
 	public ContractGrammarAccess(GrammarProvider grammarProvider) {
 		this.grammar = internalFindGrammar(grammarProvider);
+		this.pRoot = new RootElements();
 		this.pContractLibrary = new ContractLibraryElements();
 		this.pNamedElement = new NamedElementElements();
 		this.pContractElement = new ContractElementElements();
@@ -2523,7 +2474,6 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		this.pParameter = new ParameterElements();
 		this.pSingleParameter = new SingleParameterElements();
 		this.pTerminalExpression = new TerminalExpressionElements();
-		this.pContractSubclause = new ContractSubclauseElements();
 		this.pIString = new IStringElements();
 		this.pIStringPart = new IStringPartElements();
 		this.pIStringLiteral = new IStringLiteralElements();
@@ -2569,6 +2519,17 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	}
 	
 
+	
+	//Root returns sysmlv2::Element:
+	//    ContractLibrary
+	//;
+	public RootElements getRootAccess() {
+		return pRoot;
+	}
+	
+	public ParserRule getRootRule() {
+		return getRootAccess().getRule();
+	}
 	
 	//ContractLibrary:
 	//    'package' name = ID ';'
@@ -3057,18 +3018,6 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	
 	public ParserRule getTerminalExpressionRule() {
 		return getTerminalExpressionAccess().getRule();
-	}
-	
-	//ContractSubclause:
-	//    {ContractSubclause} ('use' useQueries+=[Contract|QPREF])*
-	//    ('verify' verifyPlans+=[VerificationPlan|QPREF] ';')*
-	//;
-	public ContractSubclauseElements getContractSubclauseAccess() {
-		return pContractSubclause;
-	}
-	
-	public ParserRule getContractSubclauseRule() {
-		return getContractSubclauseAccess().getRule();
 	}
 	
 	//// interpolated strings

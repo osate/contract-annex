@@ -108,7 +108,6 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
       case ContractPackage.LAMBDA: return createLambda();
       case ContractPackage.PARAMETER: return createParameter();
       case ContractPackage.SINGLE_PARAMETER: return createSingleParameter();
-      case ContractPackage.CONTRACT_SUBCLAUSE: return createContractSubclause();
       case ContractPackage.ISTRING: return createIString();
       case ContractPackage.ISTRING_PART: return createIStringPart();
       case ContractPackage.ISTRING_LITERAL: return createIStringLiteral();
@@ -412,18 +411,6 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
   {
     SingleParameterImpl singleParameter = new SingleParameterImpl();
     return singleParameter;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public ContractSubclause createContractSubclause()
-  {
-    ContractSubclauseImpl contractSubclause = new ContractSubclauseImpl();
-    return contractSubclause;
   }
 
   /**

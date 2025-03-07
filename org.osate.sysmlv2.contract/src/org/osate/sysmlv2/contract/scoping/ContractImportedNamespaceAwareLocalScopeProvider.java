@@ -25,34 +25,26 @@
  *******************************************************************************/
 package org.osate.sysmlv2.contract.scoping;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtext.naming.QualifiedName;
-import org.eclipse.xtext.resource.ISelectable;
-import org.eclipse.xtext.scoping.impl.ImportNormalizer;
 import org.eclipse.xtext.scoping.impl.ImportedNamespaceAwareLocalScopeProvider;
-import org.eclipse.xtext.util.IResourceScopeCache;
-import org.osate.aadl2.modelsupport.util.AadlUtil;
 
-import com.google.inject.Inject;
-
+/* I don't think I need this SysMLv2 because the projects are required to explicitly create a 
+ * project dependency on the SysMLv2 library.
+ */
 public class ContractImportedNamespaceAwareLocalScopeProvider extends ImportedNamespaceAwareLocalScopeProvider {
-	@Inject
-	private IResourceScopeCache cache = IResourceScopeCache.NullImpl.INSTANCE;
-
-	@Override
-	protected List<ImportNormalizer> getImplicitImports(boolean ignoreCase) {
-		var normalizers = new ArrayList<ImportNormalizer>();
-		for (var propertySetName : AadlUtil.getPredeclaredPropertySetNames()) {
-			normalizers.add(new ImportNormalizer(QualifiedName.create(propertySetName), true, ignoreCase));
-		}
-		return normalizers;
-	}
-
-	@Override
-	protected ISelectable getAllDescriptions(Resource resource) {
-		return cache.get("internalGetAllDescriptions-contract", resource, () -> internalGetAllDescriptions(resource));
-	}
+//	@Inject
+//	private IResourceScopeCache cache = IResourceScopeCache.NullImpl.INSTANCE;
+//
+//	@Override
+//	protected List<ImportNormalizer> getImplicitImports(boolean ignoreCase) {
+//		var normalizers = new ArrayList<ImportNormalizer>();
+//		for (var propertySetName : AadlUtil.getPredeclaredPropertySetNames()) {
+//			normalizers.add(new ImportNormalizer(QualifiedName.create(propertySetName), true, ignoreCase));
+//		}
+//		return normalizers;
+//	}
+//
+//	@Override
+//	protected ISelectable getAllDescriptions(Resource resource) {
+//		return cache.get("internalGetAllDescriptions-contract", resource, () -> internalGetAllDescriptions(resource));
+//	}
 }

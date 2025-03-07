@@ -27,7 +27,6 @@ package org.osate.sysmlv2.contract.contract.impl;
 
 import java.util.Collection;
 
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
@@ -35,11 +34,10 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
+import org.omg.sysml.lang.sysml.impl.ElementImpl;
 
 import org.osate.sysmlv2.contract.contract.ContractElement;
 import org.osate.sysmlv2.contract.contract.ContractLibrary;
@@ -53,34 +51,13 @@ import org.osate.sysmlv2.contract.contract.ContractPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.osate.sysmlv2.contract.contract.impl.ContractLibraryImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.osate.sysmlv2.contract.contract.impl.ContractLibraryImpl#getContractElements <em>Contract Elements</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ContractLibraryImpl extends MinimalEObjectImpl.Container implements ContractLibrary
+public class ContractLibraryImpl extends ElementImpl implements ContractLibrary
 {
-  /**
-   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getName()
-   * @generated
-   * @ordered
-   */
-  protected static final String NAME_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getName()
-   * @generated
-   * @ordered
-   */
-  protected String name = NAME_EDEFAULT;
-
   /**
    * The cached value of the '{@link #getContractElements() <em>Contract Elements</em>}' containment reference list.
    * <!-- begin-user-doc -->
@@ -110,31 +87,6 @@ public class ContractLibraryImpl extends MinimalEObjectImpl.Container implements
   protected EClass eStaticClass()
   {
     return ContractPackage.Literals.CONTRACT_LIBRARY;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String getName()
-  {
-    return name;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setName(String newName)
-  {
-    String oldName = name;
-    name = newName;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.CONTRACT_LIBRARY__NAME, oldName, name));
   }
 
   /**
@@ -178,8 +130,6 @@ public class ContractLibraryImpl extends MinimalEObjectImpl.Container implements
   {
     switch (featureID)
     {
-      case ContractPackage.CONTRACT_LIBRARY__NAME:
-        return getName();
       case ContractPackage.CONTRACT_LIBRARY__CONTRACT_ELEMENTS:
         return getContractElements();
     }
@@ -197,9 +147,6 @@ public class ContractLibraryImpl extends MinimalEObjectImpl.Container implements
   {
     switch (featureID)
     {
-      case ContractPackage.CONTRACT_LIBRARY__NAME:
-        setName((String)newValue);
-        return;
       case ContractPackage.CONTRACT_LIBRARY__CONTRACT_ELEMENTS:
         getContractElements().clear();
         getContractElements().addAll((Collection<? extends ContractElement>)newValue);
@@ -218,9 +165,6 @@ public class ContractLibraryImpl extends MinimalEObjectImpl.Container implements
   {
     switch (featureID)
     {
-      case ContractPackage.CONTRACT_LIBRARY__NAME:
-        setName(NAME_EDEFAULT);
-        return;
       case ContractPackage.CONTRACT_LIBRARY__CONTRACT_ELEMENTS:
         getContractElements().clear();
         return;
@@ -238,29 +182,10 @@ public class ContractLibraryImpl extends MinimalEObjectImpl.Container implements
   {
     switch (featureID)
     {
-      case ContractPackage.CONTRACT_LIBRARY__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case ContractPackage.CONTRACT_LIBRARY__CONTRACT_ELEMENTS:
         return contractElements != null && !contractElements.isEmpty();
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (name: ");
-    result.append(name);
-    result.append(')');
-    return result.toString();
   }
 
 } //ContractLibraryImpl

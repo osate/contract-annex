@@ -72,6 +72,31 @@ import org.osate.sysmlv2.contract.services.ContractGrammarAccess;
 	}
 }
 
+// Entry rule entryRuleRoot
+entryRuleRoot
+:
+{ before(grammarAccess.getRootRule()); }
+	 ruleRoot
+{ after(grammarAccess.getRootRule()); } 
+	 EOF 
+;
+
+// Rule Root
+ruleRoot 
+	@init {
+		int stackSize = keepStackSize();
+	}
+	:
+	(
+		{ before(grammarAccess.getRootAccess().getContractLibraryParserRuleCall()); }
+		ruleContractLibrary
+		{ after(grammarAccess.getRootAccess().getContractLibraryParserRuleCall()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
 // Entry rule entryRuleContractLibrary
 entryRuleContractLibrary
 :

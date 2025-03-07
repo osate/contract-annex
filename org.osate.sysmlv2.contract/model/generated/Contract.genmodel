@@ -16,7 +16,6 @@
       <genEnumLiterals ecoreEnumLiteral="Contract.ecore#//Predefined/INFO"/>
     </genEnums>
     <genClasses ecoreClass="Contract.ecore#//ContractLibrary">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//ContractLibrary/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//ContractLibrary/contractElements"/>
     </genClasses>
     <genClasses ecoreClass="Contract.ecore#//ContractElement"/>
@@ -81,10 +80,6 @@
     </genClasses>
     <genClasses ecoreClass="Contract.ecore#//Parameter"/>
     <genClasses ecoreClass="Contract.ecore#//SingleParameter"/>
-    <genClasses ecoreClass="Contract.ecore#//ContractSubclause">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//ContractSubclause/useQueries"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//ContractSubclause/verifyPlans"/>
-    </genClasses>
     <genClasses ecoreClass="Contract.ecore#//IString">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//IString/parts"/>
     </genClasses>

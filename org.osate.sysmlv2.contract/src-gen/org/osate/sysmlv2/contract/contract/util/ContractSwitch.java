@@ -101,6 +101,7 @@ public class ContractSwitch<T> extends Switch<T>
       {
         ContractLibrary contractLibrary = (ContractLibrary)theEObject;
         T result = caseContractLibrary(contractLibrary);
+        if (result == null) result = caseElement(contractLibrary);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -250,13 +251,6 @@ public class ContractSwitch<T> extends Switch<T>
         T result = caseSingleParameter(singleParameter);
         if (result == null) result = caseElement(singleParameter);
         if (result == null) result = caseParameter(singleParameter);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case ContractPackage.CONTRACT_SUBCLAUSE:
-      {
-        ContractSubclause contractSubclause = (ContractSubclause)theEObject;
-        T result = caseContractSubclause(contractSubclause);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -754,22 +748,6 @@ public class ContractSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseSingleParameter(SingleParameter object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Subclause</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Subclause</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseContractSubclause(ContractSubclause object)
   {
     return null;
   }

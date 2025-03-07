@@ -1084,12 +1084,12 @@ public class InternalContractLexer extends Lexer {
         try {
             int _type = RULE_ISTRING_TEXT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalContract.g:3159:19: ( '\\'\\'\\'' ( RULE_IN_ISTRING )* ( '\\'\\'\\'' | ( '\\'' ( '\\'' )? )? EOF ) )
-            // InternalContract.g:3159:21: '\\'\\'\\'' ( RULE_IN_ISTRING )* ( '\\'\\'\\'' | ( '\\'' ( '\\'' )? )? EOF )
+            // InternalContract.g:3184:19: ( '\\'\\'\\'' ( RULE_IN_ISTRING )* ( '\\'\\'\\'' | ( '\\'' ( '\\'' )? )? EOF ) )
+            // InternalContract.g:3184:21: '\\'\\'\\'' ( RULE_IN_ISTRING )* ( '\\'\\'\\'' | ( '\\'' ( '\\'' )? )? EOF )
             {
             match("'''"); 
 
-            // InternalContract.g:3159:30: ( RULE_IN_ISTRING )*
+            // InternalContract.g:3184:30: ( RULE_IN_ISTRING )*
             loop1:
             do {
                 int alt1=2;
@@ -1120,7 +1120,7 @@ public class InternalContractLexer extends Lexer {
 
                 switch (alt1) {
             	case 1 :
-            	    // InternalContract.g:3159:30: RULE_IN_ISTRING
+            	    // InternalContract.g:3184:30: RULE_IN_ISTRING
             	    {
             	    mRULE_IN_ISTRING(); 
 
@@ -1132,7 +1132,7 @@ public class InternalContractLexer extends Lexer {
                 }
             } while (true);
 
-            // InternalContract.g:3159:47: ( '\\'\\'\\'' | ( '\\'' ( '\\'' )? )? EOF )
+            // InternalContract.g:3184:47: ( '\\'\\'\\'' | ( '\\'' ( '\\'' )? )? EOF )
             int alt4=2;
             int LA4_0 = input.LA(1);
 
@@ -1155,7 +1155,7 @@ public class InternalContractLexer extends Lexer {
                 alt4=2;}
             switch (alt4) {
                 case 1 :
-                    // InternalContract.g:3159:48: '\\'\\'\\''
+                    // InternalContract.g:3184:48: '\\'\\'\\''
                     {
                     match("'''"); 
 
@@ -1163,9 +1163,9 @@ public class InternalContractLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // InternalContract.g:3159:57: ( '\\'' ( '\\'' )? )? EOF
+                    // InternalContract.g:3184:57: ( '\\'' ( '\\'' )? )? EOF
                     {
-                    // InternalContract.g:3159:57: ( '\\'' ( '\\'' )? )?
+                    // InternalContract.g:3184:57: ( '\\'' ( '\\'' )? )?
                     int alt3=2;
                     int LA3_0 = input.LA(1);
 
@@ -1174,10 +1174,10 @@ public class InternalContractLexer extends Lexer {
                     }
                     switch (alt3) {
                         case 1 :
-                            // InternalContract.g:3159:58: '\\'' ( '\\'' )?
+                            // InternalContract.g:3184:58: '\\'' ( '\\'' )?
                             {
                             match('\''); 
-                            // InternalContract.g:3159:63: ( '\\'' )?
+                            // InternalContract.g:3184:63: ( '\\'' )?
                             int alt2=2;
                             int LA2_0 = input.LA(1);
 
@@ -1186,7 +1186,7 @@ public class InternalContractLexer extends Lexer {
                             }
                             switch (alt2) {
                                 case 1 :
-                                    // InternalContract.g:3159:63: '\\''
+                                    // InternalContract.g:3184:63: '\\''
                                     {
                                     match('\''); 
 
@@ -1224,12 +1224,12 @@ public class InternalContractLexer extends Lexer {
         try {
             int _type = RULE_ISTRING_LEFT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalContract.g:3161:19: ( '\\'\\'\\'' ( RULE_IN_ISTRING )* ( '\\'' ( '\\'' )? )? '${' )
-            // InternalContract.g:3161:21: '\\'\\'\\'' ( RULE_IN_ISTRING )* ( '\\'' ( '\\'' )? )? '${'
+            // InternalContract.g:3186:19: ( '\\'\\'\\'' ( RULE_IN_ISTRING )* ( '\\'' ( '\\'' )? )? '${' )
+            // InternalContract.g:3186:21: '\\'\\'\\'' ( RULE_IN_ISTRING )* ( '\\'' ( '\\'' )? )? '${'
             {
             match("'''"); 
 
-            // InternalContract.g:3161:30: ( RULE_IN_ISTRING )*
+            // InternalContract.g:3186:30: ( RULE_IN_ISTRING )*
             loop5:
             do {
                 int alt5=2;
@@ -1305,7 +1305,7 @@ public class InternalContractLexer extends Lexer {
 
                 switch (alt5) {
             	case 1 :
-            	    // InternalContract.g:3161:30: RULE_IN_ISTRING
+            	    // InternalContract.g:3186:30: RULE_IN_ISTRING
             	    {
             	    mRULE_IN_ISTRING(); 
 
@@ -1317,7 +1317,7 @@ public class InternalContractLexer extends Lexer {
                 }
             } while (true);
 
-            // InternalContract.g:3161:47: ( '\\'' ( '\\'' )? )?
+            // InternalContract.g:3186:47: ( '\\'' ( '\\'' )? )?
             int alt7=2;
             int LA7_0 = input.LA(1);
 
@@ -1326,10 +1326,10 @@ public class InternalContractLexer extends Lexer {
             }
             switch (alt7) {
                 case 1 :
-                    // InternalContract.g:3161:48: '\\'' ( '\\'' )?
+                    // InternalContract.g:3186:48: '\\'' ( '\\'' )?
                     {
                     match('\''); 
-                    // InternalContract.g:3161:53: ( '\\'' )?
+                    // InternalContract.g:3186:53: ( '\\'' )?
                     int alt6=2;
                     int LA6_0 = input.LA(1);
 
@@ -1338,7 +1338,7 @@ public class InternalContractLexer extends Lexer {
                     }
                     switch (alt6) {
                         case 1 :
-                            // InternalContract.g:3161:53: '\\''
+                            // InternalContract.g:3186:53: '\\''
                             {
                             match('\''); 
 
@@ -1371,12 +1371,12 @@ public class InternalContractLexer extends Lexer {
         try {
             int _type = RULE_ISTRING_MIDDLE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalContract.g:3163:21: ( '$}' ( RULE_IN_ISTRING )* ( '\\'' ( '\\'' )? )? '${' )
-            // InternalContract.g:3163:23: '$}' ( RULE_IN_ISTRING )* ( '\\'' ( '\\'' )? )? '${'
+            // InternalContract.g:3188:21: ( '$}' ( RULE_IN_ISTRING )* ( '\\'' ( '\\'' )? )? '${' )
+            // InternalContract.g:3188:23: '$}' ( RULE_IN_ISTRING )* ( '\\'' ( '\\'' )? )? '${'
             {
             match("$}"); 
 
-            // InternalContract.g:3163:28: ( RULE_IN_ISTRING )*
+            // InternalContract.g:3188:28: ( RULE_IN_ISTRING )*
             loop8:
             do {
                 int alt8=2;
@@ -1452,7 +1452,7 @@ public class InternalContractLexer extends Lexer {
 
                 switch (alt8) {
             	case 1 :
-            	    // InternalContract.g:3163:28: RULE_IN_ISTRING
+            	    // InternalContract.g:3188:28: RULE_IN_ISTRING
             	    {
             	    mRULE_IN_ISTRING(); 
 
@@ -1464,7 +1464,7 @@ public class InternalContractLexer extends Lexer {
                 }
             } while (true);
 
-            // InternalContract.g:3163:45: ( '\\'' ( '\\'' )? )?
+            // InternalContract.g:3188:45: ( '\\'' ( '\\'' )? )?
             int alt10=2;
             int LA10_0 = input.LA(1);
 
@@ -1473,10 +1473,10 @@ public class InternalContractLexer extends Lexer {
             }
             switch (alt10) {
                 case 1 :
-                    // InternalContract.g:3163:46: '\\'' ( '\\'' )?
+                    // InternalContract.g:3188:46: '\\'' ( '\\'' )?
                     {
                     match('\''); 
-                    // InternalContract.g:3163:51: ( '\\'' )?
+                    // InternalContract.g:3188:51: ( '\\'' )?
                     int alt9=2;
                     int LA9_0 = input.LA(1);
 
@@ -1485,7 +1485,7 @@ public class InternalContractLexer extends Lexer {
                     }
                     switch (alt9) {
                         case 1 :
-                            // InternalContract.g:3163:51: '\\''
+                            // InternalContract.g:3188:51: '\\''
                             {
                             match('\''); 
 
@@ -1518,12 +1518,12 @@ public class InternalContractLexer extends Lexer {
         try {
             int _type = RULE_ISTRING_RIGHT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalContract.g:3165:20: ( '$}' ( RULE_IN_ISTRING )* ( '\\'\\'\\'' | ( '\\'' ( '\\'' )? )? EOF ) )
-            // InternalContract.g:3165:22: '$}' ( RULE_IN_ISTRING )* ( '\\'\\'\\'' | ( '\\'' ( '\\'' )? )? EOF )
+            // InternalContract.g:3190:20: ( '$}' ( RULE_IN_ISTRING )* ( '\\'\\'\\'' | ( '\\'' ( '\\'' )? )? EOF ) )
+            // InternalContract.g:3190:22: '$}' ( RULE_IN_ISTRING )* ( '\\'\\'\\'' | ( '\\'' ( '\\'' )? )? EOF )
             {
             match("$}"); 
 
-            // InternalContract.g:3165:27: ( RULE_IN_ISTRING )*
+            // InternalContract.g:3190:27: ( RULE_IN_ISTRING )*
             loop11:
             do {
                 int alt11=2;
@@ -1554,7 +1554,7 @@ public class InternalContractLexer extends Lexer {
 
                 switch (alt11) {
             	case 1 :
-            	    // InternalContract.g:3165:27: RULE_IN_ISTRING
+            	    // InternalContract.g:3190:27: RULE_IN_ISTRING
             	    {
             	    mRULE_IN_ISTRING(); 
 
@@ -1566,7 +1566,7 @@ public class InternalContractLexer extends Lexer {
                 }
             } while (true);
 
-            // InternalContract.g:3165:44: ( '\\'\\'\\'' | ( '\\'' ( '\\'' )? )? EOF )
+            // InternalContract.g:3190:44: ( '\\'\\'\\'' | ( '\\'' ( '\\'' )? )? EOF )
             int alt14=2;
             int LA14_0 = input.LA(1);
 
@@ -1589,7 +1589,7 @@ public class InternalContractLexer extends Lexer {
                 alt14=2;}
             switch (alt14) {
                 case 1 :
-                    // InternalContract.g:3165:45: '\\'\\'\\''
+                    // InternalContract.g:3190:45: '\\'\\'\\''
                     {
                     match("'''"); 
 
@@ -1597,9 +1597,9 @@ public class InternalContractLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // InternalContract.g:3165:54: ( '\\'' ( '\\'' )? )? EOF
+                    // InternalContract.g:3190:54: ( '\\'' ( '\\'' )? )? EOF
                     {
-                    // InternalContract.g:3165:54: ( '\\'' ( '\\'' )? )?
+                    // InternalContract.g:3190:54: ( '\\'' ( '\\'' )? )?
                     int alt13=2;
                     int LA13_0 = input.LA(1);
 
@@ -1608,10 +1608,10 @@ public class InternalContractLexer extends Lexer {
                     }
                     switch (alt13) {
                         case 1 :
-                            // InternalContract.g:3165:55: '\\'' ( '\\'' )?
+                            // InternalContract.g:3190:55: '\\'' ( '\\'' )?
                             {
                             match('\''); 
-                            // InternalContract.g:3165:60: ( '\\'' )?
+                            // InternalContract.g:3190:60: ( '\\'' )?
                             int alt12=2;
                             int LA12_0 = input.LA(1);
 
@@ -1620,7 +1620,7 @@ public class InternalContractLexer extends Lexer {
                             }
                             switch (alt12) {
                                 case 1 :
-                                    // InternalContract.g:3165:60: '\\''
+                                    // InternalContract.g:3190:60: '\\''
                                     {
                                     match('\''); 
 
@@ -1656,10 +1656,10 @@ public class InternalContractLexer extends Lexer {
     // $ANTLR start "RULE_IN_ISTRING"
     public final void mRULE_IN_ISTRING() throws RecognitionException {
         try {
-            // InternalContract.g:3167:26: ( ( '\\'\\'' ~ ( '\\'' ) | '\\'' ~ ( '\\'' ) | '$' ~ ( '{' ) | ~ ( ( '\\'' | '$' ) ) ) )
-            // InternalContract.g:3167:28: ( '\\'\\'' ~ ( '\\'' ) | '\\'' ~ ( '\\'' ) | '$' ~ ( '{' ) | ~ ( ( '\\'' | '$' ) ) )
+            // InternalContract.g:3192:26: ( ( '\\'\\'' ~ ( '\\'' ) | '\\'' ~ ( '\\'' ) | '$' ~ ( '{' ) | ~ ( ( '\\'' | '$' ) ) ) )
+            // InternalContract.g:3192:28: ( '\\'\\'' ~ ( '\\'' ) | '\\'' ~ ( '\\'' ) | '$' ~ ( '{' ) | ~ ( ( '\\'' | '$' ) ) )
             {
-            // InternalContract.g:3167:28: ( '\\'\\'' ~ ( '\\'' ) | '\\'' ~ ( '\\'' ) | '$' ~ ( '{' ) | ~ ( ( '\\'' | '$' ) ) )
+            // InternalContract.g:3192:28: ( '\\'\\'' ~ ( '\\'' ) | '\\'' ~ ( '\\'' ) | '$' ~ ( '{' ) | ~ ( ( '\\'' | '$' ) ) )
             int alt15=4;
             int LA15_0 = input.LA(1);
 
@@ -1693,7 +1693,7 @@ public class InternalContractLexer extends Lexer {
             }
             switch (alt15) {
                 case 1 :
-                    // InternalContract.g:3167:29: '\\'\\'' ~ ( '\\'' )
+                    // InternalContract.g:3192:29: '\\'\\'' ~ ( '\\'' )
                     {
                     match("''"); 
 
@@ -1710,7 +1710,7 @@ public class InternalContractLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // InternalContract.g:3167:44: '\\'' ~ ( '\\'' )
+                    // InternalContract.g:3192:44: '\\'' ~ ( '\\'' )
                     {
                     match('\''); 
                     if ( (input.LA(1)>='\u0000' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='\uFFFF') ) {
@@ -1726,7 +1726,7 @@ public class InternalContractLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // InternalContract.g:3167:57: '$' ~ ( '{' )
+                    // InternalContract.g:3192:57: '$' ~ ( '{' )
                     {
                     match('$'); 
                     if ( (input.LA(1)>='\u0000' && input.LA(1)<='z')||(input.LA(1)>='|' && input.LA(1)<='\uFFFF') ) {
@@ -1742,7 +1742,7 @@ public class InternalContractLexer extends Lexer {
                     }
                     break;
                 case 4 :
-                    // InternalContract.g:3167:68: ~ ( ( '\\'' | '$' ) )
+                    // InternalContract.g:3192:68: ~ ( ( '\\'' | '$' ) )
                     {
                     if ( (input.LA(1)>='\u0000' && input.LA(1)<='#')||(input.LA(1)>='%' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='\uFFFF') ) {
                         input.consume();
@@ -1773,11 +1773,11 @@ public class InternalContractLexer extends Lexer {
         try {
             int _type = RULE_SSTRING;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalContract.g:3169:14: ( '`' (~ ( '`' ) )* '`' )
-            // InternalContract.g:3169:16: '`' (~ ( '`' ) )* '`'
+            // InternalContract.g:3194:14: ( '`' (~ ( '`' ) )* '`' )
+            // InternalContract.g:3194:16: '`' (~ ( '`' ) )* '`'
             {
             match('`'); 
-            // InternalContract.g:3169:20: (~ ( '`' ) )*
+            // InternalContract.g:3194:20: (~ ( '`' ) )*
             loop16:
             do {
                 int alt16=2;
@@ -1790,7 +1790,7 @@ public class InternalContractLexer extends Lexer {
 
                 switch (alt16) {
             	case 1 :
-            	    // InternalContract.g:3169:20: ~ ( '`' )
+            	    // InternalContract.g:3194:20: ~ ( '`' )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='_')||(input.LA(1)>='a' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -1827,12 +1827,12 @@ public class InternalContractLexer extends Lexer {
         try {
             int _type = RULE_SL_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalContract.g:3171:17: ( '--' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
-            // InternalContract.g:3171:19: '--' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
+            // InternalContract.g:3196:17: ( '--' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
+            // InternalContract.g:3196:19: '--' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
             {
             match("--"); 
 
-            // InternalContract.g:3171:24: (~ ( ( '\\n' | '\\r' ) ) )*
+            // InternalContract.g:3196:24: (~ ( ( '\\n' | '\\r' ) ) )*
             loop17:
             do {
                 int alt17=2;
@@ -1845,7 +1845,7 @@ public class InternalContractLexer extends Lexer {
 
                 switch (alt17) {
             	case 1 :
-            	    // InternalContract.g:3171:24: ~ ( ( '\\n' | '\\r' ) )
+            	    // InternalContract.g:3196:24: ~ ( ( '\\n' | '\\r' ) )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -1865,7 +1865,7 @@ public class InternalContractLexer extends Lexer {
                 }
             } while (true);
 
-            // InternalContract.g:3171:40: ( ( '\\r' )? '\\n' )?
+            // InternalContract.g:3196:40: ( ( '\\r' )? '\\n' )?
             int alt19=2;
             int LA19_0 = input.LA(1);
 
@@ -1874,9 +1874,9 @@ public class InternalContractLexer extends Lexer {
             }
             switch (alt19) {
                 case 1 :
-                    // InternalContract.g:3171:41: ( '\\r' )? '\\n'
+                    // InternalContract.g:3196:41: ( '\\r' )? '\\n'
                     {
-                    // InternalContract.g:3171:41: ( '\\r' )?
+                    // InternalContract.g:3196:41: ( '\\r' )?
                     int alt18=2;
                     int LA18_0 = input.LA(1);
 
@@ -1885,7 +1885,7 @@ public class InternalContractLexer extends Lexer {
                     }
                     switch (alt18) {
                         case 1 :
-                            // InternalContract.g:3171:41: '\\r'
+                            // InternalContract.g:3196:41: '\\r'
                             {
                             match('\r'); 
 
@@ -1917,10 +1917,10 @@ public class InternalContractLexer extends Lexer {
         try {
             int _type = RULE_STRING;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalContract.g:3173:13: ( ( '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' ) )
-            // InternalContract.g:3173:15: ( '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
+            // InternalContract.g:3198:13: ( ( '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' ) )
+            // InternalContract.g:3198:15: ( '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
             {
-            // InternalContract.g:3173:15: ( '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
+            // InternalContract.g:3198:15: ( '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
             int alt22=2;
             int LA22_0 = input.LA(1);
 
@@ -1938,10 +1938,10 @@ public class InternalContractLexer extends Lexer {
             }
             switch (alt22) {
                 case 1 :
-                    // InternalContract.g:3173:16: '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"'
+                    // InternalContract.g:3198:16: '\"' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )* '\"'
                     {
                     match('\"'); 
-                    // InternalContract.g:3173:20: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )*
+                    // InternalContract.g:3198:20: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\"' ) ) )*
                     loop20:
                     do {
                         int alt20=3;
@@ -1957,7 +1957,7 @@ public class InternalContractLexer extends Lexer {
 
                         switch (alt20) {
                     	case 1 :
-                    	    // InternalContract.g:3173:21: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' )
+                    	    // InternalContract.g:3198:21: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' )
                     	    {
                     	    match('\\'); 
                     	    if ( input.LA(1)=='\"'||input.LA(1)=='\''||input.LA(1)=='\\'||input.LA(1)=='b'||input.LA(1)=='f'||input.LA(1)=='n'||input.LA(1)=='r'||(input.LA(1)>='t' && input.LA(1)<='u') ) {
@@ -1973,7 +1973,7 @@ public class InternalContractLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // InternalContract.g:3173:66: ~ ( ( '\\\\' | '\"' ) )
+                    	    // InternalContract.g:3198:66: ~ ( ( '\\\\' | '\"' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -1998,10 +1998,10 @@ public class InternalContractLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // InternalContract.g:3173:86: '\\'' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )* '\\''
+                    // InternalContract.g:3198:86: '\\'' ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )* '\\''
                     {
                     match('\''); 
-                    // InternalContract.g:3173:91: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )*
+                    // InternalContract.g:3198:91: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' ) | ~ ( ( '\\\\' | '\\'' ) ) )*
                     loop21:
                     do {
                         int alt21=3;
@@ -2017,7 +2017,7 @@ public class InternalContractLexer extends Lexer {
 
                         switch (alt21) {
                     	case 1 :
-                    	    // InternalContract.g:3173:92: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' )
+                    	    // InternalContract.g:3198:92: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | 'u' | '\"' | '\\'' | '\\\\' )
                     	    {
                     	    match('\\'); 
                     	    if ( input.LA(1)=='\"'||input.LA(1)=='\''||input.LA(1)=='\\'||input.LA(1)=='b'||input.LA(1)=='f'||input.LA(1)=='n'||input.LA(1)=='r'||(input.LA(1)>='t' && input.LA(1)<='u') ) {
@@ -2033,7 +2033,7 @@ public class InternalContractLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // InternalContract.g:3173:137: ~ ( ( '\\\\' | '\\'' ) )
+                    	    // InternalContract.g:3198:137: ~ ( ( '\\\\' | '\\'' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -2076,8 +2076,8 @@ public class InternalContractLexer extends Lexer {
         try {
             int _type = RULE_ID;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalContract.g:3175:9: ( ( 'a' .. 'z' | 'A' .. 'Z' ) ( ( '_' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' ) )* )
-            // InternalContract.g:3175:11: ( 'a' .. 'z' | 'A' .. 'Z' ) ( ( '_' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' ) )*
+            // InternalContract.g:3200:9: ( ( 'a' .. 'z' | 'A' .. 'Z' ) ( ( '_' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' ) )* )
+            // InternalContract.g:3200:11: ( 'a' .. 'z' | 'A' .. 'Z' ) ( ( '_' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' ) )*
             {
             if ( (input.LA(1)>='A' && input.LA(1)<='Z')||(input.LA(1)>='a' && input.LA(1)<='z') ) {
                 input.consume();
@@ -2088,7 +2088,7 @@ public class InternalContractLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // InternalContract.g:3175:31: ( ( '_' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' ) )*
+            // InternalContract.g:3200:31: ( ( '_' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' ) )*
             loop24:
             do {
                 int alt24=2;
@@ -2101,9 +2101,9 @@ public class InternalContractLexer extends Lexer {
 
                 switch (alt24) {
             	case 1 :
-            	    // InternalContract.g:3175:32: ( '_' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )
+            	    // InternalContract.g:3200:32: ( '_' )? ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )
             	    {
-            	    // InternalContract.g:3175:32: ( '_' )?
+            	    // InternalContract.g:3200:32: ( '_' )?
             	    int alt23=2;
             	    int LA23_0 = input.LA(1);
 
@@ -2112,7 +2112,7 @@ public class InternalContractLexer extends Lexer {
             	    }
             	    switch (alt23) {
             	        case 1 :
-            	            // InternalContract.g:3175:32: '_'
+            	            // InternalContract.g:3200:32: '_'
             	            {
             	            match('_'); 
 

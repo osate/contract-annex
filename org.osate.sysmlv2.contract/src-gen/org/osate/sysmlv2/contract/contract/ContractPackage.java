@@ -93,13 +93,166 @@ public interface ContractPackage extends EPackage
   int CONTRACT_LIBRARY = 0;
 
   /**
+   * The feature id for the '<em><b>Owning Membership</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONTRACT_LIBRARY__OWNING_MEMBERSHIP = SysMLPackage.ELEMENT__OWNING_MEMBERSHIP;
+
+  /**
+   * The feature id for the '<em><b>Owned Relationship</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONTRACT_LIBRARY__OWNED_RELATIONSHIP = SysMLPackage.ELEMENT__OWNED_RELATIONSHIP;
+
+  /**
+   * The feature id for the '<em><b>Owning Relationship</b></em>' container reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONTRACT_LIBRARY__OWNING_RELATIONSHIP = SysMLPackage.ELEMENT__OWNING_RELATIONSHIP;
+
+  /**
+   * The feature id for the '<em><b>Owning Namespace</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONTRACT_LIBRARY__OWNING_NAMESPACE = SysMLPackage.ELEMENT__OWNING_NAMESPACE;
+
+  /**
+   * The feature id for the '<em><b>Element Id</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONTRACT_LIBRARY__ELEMENT_ID = SysMLPackage.ELEMENT__ELEMENT_ID;
+
+  /**
+   * The feature id for the '<em><b>Owner</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONTRACT_LIBRARY__OWNER = SysMLPackage.ELEMENT__OWNER;
+
+  /**
+   * The feature id for the '<em><b>Owned Element</b></em>' reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONTRACT_LIBRARY__OWNED_ELEMENT = SysMLPackage.ELEMENT__OWNED_ELEMENT;
+
+  /**
+   * The feature id for the '<em><b>Documentation</b></em>' reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONTRACT_LIBRARY__DOCUMENTATION = SysMLPackage.ELEMENT__DOCUMENTATION;
+
+  /**
+   * The feature id for the '<em><b>Owned Annotation</b></em>' reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONTRACT_LIBRARY__OWNED_ANNOTATION = SysMLPackage.ELEMENT__OWNED_ANNOTATION;
+
+  /**
+   * The feature id for the '<em><b>Textual Representation</b></em>' reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONTRACT_LIBRARY__TEXTUAL_REPRESENTATION = SysMLPackage.ELEMENT__TEXTUAL_REPRESENTATION;
+
+  /**
+   * The feature id for the '<em><b>Alias Ids</b></em>' attribute list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONTRACT_LIBRARY__ALIAS_IDS = SysMLPackage.ELEMENT__ALIAS_IDS;
+
+  /**
+   * The feature id for the '<em><b>Declared Short Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONTRACT_LIBRARY__DECLARED_SHORT_NAME = SysMLPackage.ELEMENT__DECLARED_SHORT_NAME;
+
+  /**
+   * The feature id for the '<em><b>Declared Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONTRACT_LIBRARY__DECLARED_NAME = SysMLPackage.ELEMENT__DECLARED_NAME;
+
+  /**
+   * The feature id for the '<em><b>Short Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONTRACT_LIBRARY__SHORT_NAME = SysMLPackage.ELEMENT__SHORT_NAME;
+
+  /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CONTRACT_LIBRARY__NAME = 0;
+  int CONTRACT_LIBRARY__NAME = SysMLPackage.ELEMENT__NAME;
+
+  /**
+   * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONTRACT_LIBRARY__QUALIFIED_NAME = SysMLPackage.ELEMENT__QUALIFIED_NAME;
+
+  /**
+   * The feature id for the '<em><b>Is Implied Included</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONTRACT_LIBRARY__IS_IMPLIED_INCLUDED = SysMLPackage.ELEMENT__IS_IMPLIED_INCLUDED;
+
+  /**
+   * The feature id for the '<em><b>Is Library Element</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONTRACT_LIBRARY__IS_LIBRARY_ELEMENT = SysMLPackage.ELEMENT__IS_LIBRARY_ELEMENT;
 
   /**
    * The feature id for the '<em><b>Contract Elements</b></em>' containment reference list.
@@ -108,7 +261,7 @@ public interface ContractPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CONTRACT_LIBRARY__CONTRACT_ELEMENTS = 1;
+  int CONTRACT_LIBRARY__CONTRACT_ELEMENTS = SysMLPackage.ELEMENT_FEATURE_COUNT + 0;
 
   /**
    * The number of structural features of the '<em>Library</em>' class.
@@ -117,7 +270,7 @@ public interface ContractPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CONTRACT_LIBRARY_FEATURE_COUNT = 2;
+  int CONTRACT_LIBRARY_FEATURE_COUNT = SysMLPackage.ELEMENT_FEATURE_COUNT + 1;
 
   /**
    * The meta object id for the '{@link org.osate.sysmlv2.contract.contract.impl.ContractElementImpl <em>Element</em>}' class.
@@ -2227,43 +2380,6 @@ public interface ContractPackage extends EPackage
   int SINGLE_PARAMETER_FEATURE_COUNT = SysMLPackage.ELEMENT_FEATURE_COUNT + 0;
 
   /**
-   * The meta object id for the '{@link org.osate.sysmlv2.contract.contract.impl.ContractSubclauseImpl <em>Subclause</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.osate.sysmlv2.contract.contract.impl.ContractSubclauseImpl
-   * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getContractSubclause()
-   * @generated
-   */
-  int CONTRACT_SUBCLAUSE = 20;
-
-  /**
-   * The feature id for the '<em><b>Use Queries</b></em>' reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONTRACT_SUBCLAUSE__USE_QUERIES = 0;
-
-  /**
-   * The feature id for the '<em><b>Verify Plans</b></em>' reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONTRACT_SUBCLAUSE__VERIFY_PLANS = 1;
-
-  /**
-   * The number of structural features of the '<em>Subclause</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONTRACT_SUBCLAUSE_FEATURE_COUNT = 2;
-
-  /**
    * The meta object id for the '{@link org.osate.sysmlv2.contract.contract.impl.IStringImpl <em>IString</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2271,7 +2387,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getIString()
    * @generated
    */
-  int ISTRING = 21;
+  int ISTRING = 20;
 
   /**
    * The feature id for the '<em><b>Parts</b></em>' containment reference list.
@@ -2299,7 +2415,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getIStringPart()
    * @generated
    */
-  int ISTRING_PART = 22;
+  int ISTRING_PART = 21;
 
   /**
    * The number of structural features of the '<em>IString Part</em>' class.
@@ -2318,7 +2434,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getIStringLiteral()
    * @generated
    */
-  int ISTRING_LITERAL = 23;
+  int ISTRING_LITERAL = 22;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2346,7 +2462,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getIStringVar()
    * @generated
    */
-  int ISTRING_VAR = 24;
+  int ISTRING_VAR = 23;
 
   /**
    * The feature id for the '<em><b>Direct</b></em>' attribute.
@@ -2401,7 +2517,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getContractAssumption()
    * @generated
    */
-  int CONTRACT_ASSUMPTION = 25;
+  int CONTRACT_ASSUMPTION = 24;
 
   /**
    * The feature id for the '<em><b>Contract</b></em>' reference.
@@ -2429,7 +2545,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getArgumentAssumption()
    * @generated
    */
-  int ARGUMENT_ASSUMPTION = 26;
+  int ARGUMENT_ASSUMPTION = 25;
 
   /**
    * The feature id for the '<em><b>Argument</b></em>' reference.
@@ -2457,7 +2573,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getCodeAssumption()
    * @generated
    */
-  int CODE_ASSUMPTION = 27;
+  int CODE_ASSUMPTION = 26;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -2503,7 +2619,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getArgumentAnd()
    * @generated
    */
-  int ARGUMENT_AND = 28;
+  int ARGUMENT_AND = 27;
 
   /**
    * The feature id for the '<em><b>Contracts</b></em>' reference list.
@@ -2549,7 +2665,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getArgumentOr()
    * @generated
    */
-  int ARGUMENT_OR = 29;
+  int ARGUMENT_OR = 28;
 
   /**
    * The feature id for the '<em><b>Contracts</b></em>' reference list.
@@ -2595,7 +2711,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getArgumentNot()
    * @generated
    */
-  int ARGUMENT_NOT = 30;
+  int ARGUMENT_NOT = 29;
 
   /**
    * The feature id for the '<em><b>Contracts</b></em>' reference list.
@@ -2641,7 +2757,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getTupleDeclaration()
    * @generated
    */
-  int TUPLE_DECLARATION = 31;
+  int TUPLE_DECLARATION = 30;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' containment reference.
@@ -2678,7 +2794,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getOrExpression()
    * @generated
    */
-  int OR_EXPRESSION = 32;
+  int OR_EXPRESSION = 31;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2715,7 +2831,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getAndExpression()
    * @generated
    */
-  int AND_EXPRESSION = 33;
+  int AND_EXPRESSION = 32;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2752,7 +2868,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getNotExpression()
    * @generated
    */
-  int NOT_EXPRESSION = 34;
+  int NOT_EXPRESSION = 33;
 
   /**
    * The feature id for the '<em><b>Operand</b></em>' containment reference.
@@ -2780,7 +2896,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getMemberCall()
    * @generated
    */
-  int MEMBER_CALL = 35;
+  int MEMBER_CALL = 34;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2844,7 +2960,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getPropertyLookup()
    * @generated
    */
-  int PROPERTY_LOOKUP = 36;
+  int PROPERTY_LOOKUP = 35;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2881,7 +2997,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getTupleParameter()
    * @generated
    */
-  int TUPLE_PARAMETER = 37;
+  int TUPLE_PARAMETER = 36;
 
   /**
    * The feature id for the '<em><b>Names</b></em>' containment reference list.
@@ -2909,7 +3025,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getSelfExpression()
    * @generated
    */
-  int SELF_EXPRESSION = 38;
+  int SELF_EXPRESSION = 37;
 
   /**
    * The number of structural features of the '<em>Self Expression</em>' class.
@@ -2928,7 +3044,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getRootExpression()
    * @generated
    */
-  int ROOT_EXPRESSION = 39;
+  int ROOT_EXPRESSION = 38;
 
   /**
    * The number of structural features of the '<em>Root Expression</em>' class.
@@ -2947,7 +3063,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getStringLiteral()
    * @generated
    */
-  int STRING_LITERAL = 40;
+  int STRING_LITERAL = 39;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2975,7 +3091,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getNameReference()
    * @generated
    */
-  int NAME_REFERENCE = 41;
+  int NAME_REFERENCE = 40;
 
   /**
    * The feature id for the '<em><b>Reference</b></em>' reference.
@@ -3003,7 +3119,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getTupleExpression()
    * @generated
    */
-  int TUPLE_EXPRESSION = 42;
+  int TUPLE_EXPRESSION = 41;
 
   /**
    * The feature id for the '<em><b>Elements</b></em>' containment reference list.
@@ -3031,7 +3147,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getLanguage()
    * @generated
    */
-  int LANGUAGE = 43;
+  int LANGUAGE = 42;
 
   /**
    * The meta object id for the '{@link org.osate.sysmlv2.contract.contract.Predefined <em>Predefined</em>}' enum.
@@ -3041,7 +3157,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getPredefined()
    * @generated
    */
-  int PREDEFINED = 44;
+  int PREDEFINED = 43;
 
 
   /**
@@ -3053,17 +3169,6 @@ public interface ContractPackage extends EPackage
    * @generated
    */
   EClass getContractLibrary();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.osate.sysmlv2.contract.contract.ContractLibrary#getName <em>Name</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Name</em>'.
-   * @see org.osate.sysmlv2.contract.contract.ContractLibrary#getName()
-   * @see #getContractLibrary()
-   * @generated
-   */
-  EAttribute getContractLibrary_Name();
 
   /**
    * Returns the meta object for the containment reference list '{@link org.osate.sysmlv2.contract.contract.ContractLibrary#getContractElements <em>Contract Elements</em>}'.
@@ -3606,38 +3711,6 @@ public interface ContractPackage extends EPackage
    * @generated
    */
   EClass getSingleParameter();
-
-  /**
-   * Returns the meta object for class '{@link org.osate.sysmlv2.contract.contract.ContractSubclause <em>Subclause</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Subclause</em>'.
-   * @see org.osate.sysmlv2.contract.contract.ContractSubclause
-   * @generated
-   */
-  EClass getContractSubclause();
-
-  /**
-   * Returns the meta object for the reference list '{@link org.osate.sysmlv2.contract.contract.ContractSubclause#getUseQueries <em>Use Queries</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the reference list '<em>Use Queries</em>'.
-   * @see org.osate.sysmlv2.contract.contract.ContractSubclause#getUseQueries()
-   * @see #getContractSubclause()
-   * @generated
-   */
-  EReference getContractSubclause_UseQueries();
-
-  /**
-   * Returns the meta object for the reference list '{@link org.osate.sysmlv2.contract.contract.ContractSubclause#getVerifyPlans <em>Verify Plans</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the reference list '<em>Verify Plans</em>'.
-   * @see org.osate.sysmlv2.contract.contract.ContractSubclause#getVerifyPlans()
-   * @see #getContractSubclause()
-   * @generated
-   */
-  EReference getContractSubclause_VerifyPlans();
 
   /**
    * Returns the meta object for class '{@link org.osate.sysmlv2.contract.contract.IString <em>IString</em>}'.
@@ -4221,14 +4294,6 @@ public interface ContractPackage extends EPackage
     EClass CONTRACT_LIBRARY = eINSTANCE.getContractLibrary();
 
     /**
-     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute CONTRACT_LIBRARY__NAME = eINSTANCE.getContractLibrary_Name();
-
-    /**
      * The meta object literal for the '<em><b>Contract Elements</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4673,32 +4738,6 @@ public interface ContractPackage extends EPackage
      * @generated
      */
     EClass SINGLE_PARAMETER = eINSTANCE.getSingleParameter();
-
-    /**
-     * The meta object literal for the '{@link org.osate.sysmlv2.contract.contract.impl.ContractSubclauseImpl <em>Subclause</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.osate.sysmlv2.contract.contract.impl.ContractSubclauseImpl
-     * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getContractSubclause()
-     * @generated
-     */
-    EClass CONTRACT_SUBCLAUSE = eINSTANCE.getContractSubclause();
-
-    /**
-     * The meta object literal for the '<em><b>Use Queries</b></em>' reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference CONTRACT_SUBCLAUSE__USE_QUERIES = eINSTANCE.getContractSubclause_UseQueries();
-
-    /**
-     * The meta object literal for the '<em><b>Verify Plans</b></em>' reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference CONTRACT_SUBCLAUSE__VERIFY_PLANS = eINSTANCE.getContractSubclause_VerifyPlans();
 
     /**
      * The meta object literal for the '{@link org.osate.sysmlv2.contract.contract.impl.IStringImpl <em>IString</em>}' class.

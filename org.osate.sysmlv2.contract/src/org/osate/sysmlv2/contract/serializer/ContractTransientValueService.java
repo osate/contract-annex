@@ -28,18 +28,19 @@ package org.osate.sysmlv2.contract.serializer;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.xtext.parsetree.reconstr.impl.DefaultTransientValueService;
-import org.osate.aadl2.Aadl2Package;
-import org.osate.contract.contract.ContractLibrary;
-import org.osate.contract.contract.ContractSubclause;
+import org.omg.sysml.lang.sysml.SysMLPackage;
+import org.osate.sysmlv2.contract.contract.ContractLibrary;
 
 public class ContractTransientValueService extends DefaultTransientValueService {
 	@Override
 	public boolean isTransient(EObject owner, EStructuralFeature feature, int index) {
-		if (owner instanceof ContractLibrary && feature.equals(Aadl2Package.eINSTANCE.getNamedElement_Name())
-				|| owner instanceof ContractSubclause
-						&& feature.equals(Aadl2Package.eINSTANCE.getNamedElement_Name())) {
+		// XXX: Not sure if this is correct
+		if (owner instanceof ContractLibrary && feature.equals(SysMLPackage.eINSTANCE.getElement_Name())) {
 			return true;
 		}
+//		if (owner instanceof ContractLibrary && feature.equals(Aadl2Package.eINSTANCE.getNamedElement_Name())) {
+//			return true;
+//		}
 		return super.isTransient(owner, feature, index);
 	}
 }

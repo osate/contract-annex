@@ -50,7 +50,7 @@ public class ContractParser extends AbstractAntlrParser {
 
 	@Override 
 	protected String getDefaultRuleName() {
-		return "ContractLibrary";
+		return "Root";
 	}
 
 	public ContractGrammarAccess getGrammarAccess() {

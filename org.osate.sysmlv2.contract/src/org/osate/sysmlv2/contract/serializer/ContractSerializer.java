@@ -28,9 +28,8 @@ package org.osate.sysmlv2.contract.serializer;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.serializer.ISerializationContext;
 import org.eclipse.xtext.serializer.impl.Serializer;
-import org.osate.contract.contract.ContractLibrary;
-import org.osate.contract.contract.ContractSubclause;
-import org.osate.contract.services.ContractGrammarAccess;
+import org.osate.sysmlv2.contract.contract.ContractLibrary;
+import org.osate.sysmlv2.contract.services.ContractGrammarAccess;
 
 import com.google.inject.Inject;
 
@@ -44,13 +43,6 @@ public class ContractSerializer extends Serializer {
 		if (semanticObject instanceof ContractLibrary) {
 			for (var context : contextFinder.findByContents(semanticObject, null)) {
 				if (context.getParserRule().equals(grammarAccess.getContractLibraryRule())) {
-					return context;
-				}
-			}
-			return null;
-		} else if (semanticObject instanceof ContractSubclause) {
-			for (var context : contextFinder.findByContents(semanticObject, null)) {
-				if (context.getParserRule().equals(grammarAccess.getContractSubclauseRule())) {
 					return context;
 				}
 			}
