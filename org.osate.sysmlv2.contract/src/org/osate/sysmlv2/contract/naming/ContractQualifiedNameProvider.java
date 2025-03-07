@@ -29,8 +29,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.DefaultDeclarativeQualifiedNameProvider;
 import org.eclipse.xtext.naming.QualifiedName;
-import org.osate.contract.contract.ContractElement;
-import org.osate.contract.contract.ContractLibrary;
+import org.osate.sysmlv2.contract.contract.ContractElement;
+import org.osate.sysmlv2.contract.contract.ContractLibrary;
 
 public class ContractQualifiedNameProvider extends DefaultDeclarativeQualifiedNameProvider {
 	public static final String PREFIX = "contract$";
