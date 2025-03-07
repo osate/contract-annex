@@ -28,8 +28,6 @@
  */
 package org.osate.sysmlv2.contract;
 
-import org.osate.contract.ContractStandaloneSetupGenerated;
-
 /**
  * Initialization support for running Xtext languages without Equinox extension registry.
  */

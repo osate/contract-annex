@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="contract" nsURI="http://www.osate.org/contract/Contract" nsPrefix="contract">
-  <eClassifiers xsi:type="ecore:EClass" name="ContractLibrary" eSuperTypes="platform:/resource/org.osate.aadl2/model/aadl2.ecore#//AnnexLibrary">
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="contract" nsURI="http://www.osate.org/contract/ContractForSysMLv2"
+    nsPrefix="contract">
+  <eClassifiers xsi:type="ecore:EClass" name="ContractLibrary">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="contractElements" upperBound="-1"
         eType="#//ContractElement" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ContractElement" eSuperTypes="platform:/resource/org.osate.aadl2/model/aadl2.ecore#//NamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ContractElement" eSuperTypes="platform:/resource/org.omg.sysml/model/SysML.ecore#//Element"/>
   <eClassifiers xsi:type="ecore:EClass" name="Contract" eSuperTypes="#//ContractElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="domains" unique="false"
         upperBound="-1" eType="#//Domain"/>
@@ -15,7 +17,7 @@
         eType="#//InputAssumption" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="assumptions" upperBound="-1"
         eType="#//AssumptionElement" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="exact" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="exact" eType="ecore:EDataType platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="guarantee" eType="#//Guarantee"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="analyses" upperBound="-1"
@@ -36,7 +38,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Source">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="language" eType="#//Language"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="source" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="source" eType="ecore:EDataType platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="inter" eType="#//IString"
         containment="true"/>
   </eClassifiers>
@@ -53,7 +55,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="Argument" eSuperTypes="#//ContractElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="domains" unique="false"
         upperBound="-1" eType="#//Domain"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="exact" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="exact" eType="ecore:EDataType platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="guarantee" eType="#//Guarantee"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="argumentExpression" eType="#//ArgumentExpression"
@@ -69,7 +71,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VerificationPlan" eSuperTypes="#//ContractElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="componentImplementation"
-        eType="ecore:EClass platform:/resource/org.osate.aadl2/model/aadl2.ecore#//ComponentImplementation"/>
+        eType="ecore:EClass platform:/resource/org.omg.sysml/model/SysML.ecore#//OccurrenceDefinition"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="domains" unique="false"
         upperBound="-1" eType="#//Domain"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="claims" upperBound="-1"
@@ -82,14 +84,14 @@
     <eLiterals name="JAVA" value="1" literal="java"/>
     <eLiterals name="SMT" value="2" literal="smt"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Query" eSuperTypes="platform:/resource/org.osate.aadl2/model/aadl2.ecore#//Element">
+  <eClassifiers xsi:type="ecore:EClass" name="Query">
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//Expression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SingleValDeclaration" eSuperTypes="platform:/resource/org.osate.aadl2/model/aadl2.ecore#//NamedElement #//Query"/>
-  <eClassifiers xsi:type="ecore:EClass" name="TupleName" eSuperTypes="platform:/resource/org.osate.aadl2/model/aadl2.ecore#//NamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SingleValDeclaration" eSuperTypes="platform:/resource/org.omg.sysml/model/SysML.ecore#//Element #//Query"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TupleName" eSuperTypes="platform:/resource/org.omg.sysml/model/SysML.ecore#//Element"/>
   <eClassifiers xsi:type="ecore:EClass" name="Expression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Lambda" eSuperTypes="platform:/resource/org.osate.aadl2/model/aadl2.ecore#//Element">
+  <eClassifiers xsi:type="ecore:EClass" name="Lambda">
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameter" eType="#//Parameter"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="queries" upperBound="-1"
@@ -97,8 +99,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="returnValue" eType="#//Expression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Parameter" eSuperTypes="platform:/resource/org.osate.aadl2/model/aadl2.ecore#//Element"/>
-  <eClassifiers xsi:type="ecore:EClass" name="SingleParameter" eSuperTypes="platform:/resource/org.osate.aadl2/model/aadl2.ecore#//NamedElement #//Parameter"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Parameter"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SingleParameter" eSuperTypes="platform:/resource/org.omg.sysml/model/SysML.ecore#//Element #//Parameter"/>
   <eClassifiers xsi:type="ecore:EClass" name="ContractSubclause">
     <eStructuralFeatures xsi:type="ecore:EReference" name="useQueries" unique="false"
         upperBound="-1" eType="#//Contract"/>
@@ -111,14 +113,14 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IStringPart"/>
   <eClassifiers xsi:type="ecore:EClass" name="IStringLiteral" eSuperTypes="#//IStringPart">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="Predefined">
     <eLiterals name="ERROR" literal="error0"/>
     <eLiterals name="INFO" value="1" literal="info0"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IStringVar" eSuperTypes="#//IStringPart">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="direct" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="direct" eType="ecore:EDataType platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="domain" eType="#//Domain"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="query" eType="#//SingleValDeclaration"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="predefined" eType="#//Predefined"/>
@@ -132,7 +134,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="CodeAssumption" eSuperTypes="#//AssumptionElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="code" eType="#//Source"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="exact" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="exact" eType="ecore:EDataType platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="guarantee" eType="#//Guarantee"
         containment="true"/>
   </eClassifiers>
@@ -162,8 +164,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="MemberCall" eSuperTypes="#//Expression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//Expression"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="right" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeArgument" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="right" eType="ecore:EDataType platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeArgument" eType="ecore:EDataType platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="argument" eType="#//Expression"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="lambda" eType="#//Lambda"
@@ -172,7 +174,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="PropertyLookup" eSuperTypes="#//Expression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//Expression"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="ecore:EClass platform:/resource/org.osate.aadl2/model/aadl2.ecore#//Property"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="ecore:EClass platform:/resource/org.omg.sysml/model/SysML.ecore#//AttributeDefinition"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TupleParameter" eSuperTypes="#//Parameter">
     <eStructuralFeatures xsi:type="ecore:EReference" name="names" upperBound="-1"
@@ -181,10 +183,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="SelfExpression" eSuperTypes="#//Expression"/>
   <eClassifiers xsi:type="ecore:EClass" name="RootExpression" eSuperTypes="#//Expression"/>
   <eClassifiers xsi:type="ecore:EClass" name="StringLiteral" eSuperTypes="#//Expression">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NameReference" eSuperTypes="#//Expression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="reference" eType="ecore:EClass platform:/resource/org.osate.aadl2/model/aadl2.ecore#//NamedElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reference" eType="ecore:EClass platform:/resource/org.omg.sysml/model/SysML.ecore#//Element"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TupleExpression" eSuperTypes="#//Expression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"

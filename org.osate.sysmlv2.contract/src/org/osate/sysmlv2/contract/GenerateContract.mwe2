@@ -23,7 +23,7 @@
  * contributors and others.
  * DM23-0575
  *******************************************************************************/
-module org.osate.contract.GenerateContract
+module org.osate.sysmlv2.contract.GenerateContract
 
 import org.eclipse.emf.mwe.utils.*
 import org.eclipse.xtext.xtext.generator.*
@@ -114,14 +114,15 @@ Workflow {
 		registerGenModelFile = "platform:/resource/org.eclipse.uml2.types/model/Types.genmodel"
 		registerGenModelFile = "platform:/resource/org.eclipse.uml2.uml/model/UML.genmodel"
 		registerGenModelFile = "platform:/resource/org.eclipse.uml2.codegen.ecore/model/GenModel.genmodel"
-		registerGeneratedEPackage = "org.osate.aadl2.Aadl2Package"
-		registerGenModelFile = "platform:/resource/org.osate.aadl2/model/aadl2.genmodel"
+		
+		registerGeneratedEPackage = "org.omg.sysml.lang.sysml.SysMLPackage"
+		registerGenModelFile = "platform:/resource/org.omg.sysml/model/SysML.genmodel"
 	}
 
 	component = XtextGenerator {
 		configuration = {
 			project = StandardProjectConfig {
-				baseName = "org.osate.contract"
+				baseName = "org.osate.sysmlv2.contract"
 				rootPath = rootPath
 				runtimeTest = {
 					enabled = false
@@ -142,7 +143,7 @@ Workflow {
 			}
 		}
 		language = StandardLanguage {
-			name = "org.osate.contract.Contract"
+			name = "org.osate.sysmlv2.contract.Contract"
 			fileExtensions = "contract"
 
 			serializer = {

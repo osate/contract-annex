@@ -3,8 +3,8 @@
 <plugin>
 	<extension point="org.eclipse.emf.ecore.generated_package">
 		<package
-			uri = "http://www.osate.org/contract/Contract"
-			class = "org.osate.contract.contract.ContractPackage"
+			uri = "http://www.osate.org/contract/ContractForSysMLv2"
+			class = "org.osate.sysmlv2.contract.contract.ContractPackage"
 			genModel = "model/generated/Contract.genmodel" />
 	</extension>
 </plugin>

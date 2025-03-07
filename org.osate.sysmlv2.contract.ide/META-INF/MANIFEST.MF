@@ -11,4 +11,6 @@ Require-Bundle: org.osate.contract,
  org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.osate.contract.ide.contentassist.antlr.internal,
- org.osate.contract.ide.contentassist.antlr
+ org.osate.contract.ide.contentassist.antlr,
+ org.osate.sysmlv2.contract.ide.contentassist.antlr.internal,
+ org.osate.sysmlv2.contract.ide.contentassist.antlr

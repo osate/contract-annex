@@ -4,48 +4,48 @@
 	<extension
 		point="org.eclipse.ui.editors">
 		<editor
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
 			contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
 			default="true"
 			extensions="contract"
-			id="org.osate.contract.Contract"
+			id="org.osate.sysmlv2.contract.Contract"
 			name="Contract Editor">
 		</editor>
 	</extension>
 	<extension
 		point="org.eclipse.ui.handlers">
 		<handler
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclarationHandler"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclarationHandler"
 			commandId="org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclaration">
 			<activeWhen>
 				<reference
-					definitionId="org.osate.contract.Contract.Editor.opened">
+					definitionId="org.osate.sysmlv2.contract.Contract.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
 		<handler
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.handler.ValidateActionHandler"
-			commandId="org.osate.contract.Contract.validate">
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.handler.ValidateActionHandler"
+			commandId="org.osate.sysmlv2.contract.Contract.validate">
 			<activeWhen>
 				<reference
-					definitionId="org.osate.contract.Contract.Editor.opened">
+					definitionId="org.osate.sysmlv2.contract.Contract.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
 		<!-- copy qualified name -->
 		<handler
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedNameHandler"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedNameHandler"
 			commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName">
 			<activeWhen>
-				<reference definitionId="org.osate.contract.Contract.Editor.opened" />
+				<reference definitionId="org.osate.sysmlv2.contract.Contract.Editor.opened" />
 			</activeWhen>
 		</handler>
 		<handler
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedNameHandler"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedNameHandler"
 			commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedName">
 			<activeWhen>
 				<and>
-					<reference definitionId="org.osate.contract.Contract.XtextEditor.opened" />
+					<reference definitionId="org.osate.sysmlv2.contract.Contract.XtextEditor.opened" />
 					<iterate>
 						<adapt type="org.eclipse.xtext.ui.editor.outline.IOutlineNode" />
 					</iterate>
@@ -54,22 +54,22 @@
 		</handler>
 	</extension>
 	<extension point="org.eclipse.core.expressions.definitions">
-		<definition id="org.osate.contract.Contract.Editor.opened">
+		<definition id="org.osate.sysmlv2.contract.Contract.Editor.opened">
 			<and>
 				<reference definitionId="isActiveEditorAnInstanceOfXtextEditor"/>
 				<with variable="activeEditor">
 					<test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName"
-						value="org.osate.contract.Contract"
+						value="org.osate.sysmlv2.contract.Contract"
 						forcePluginActivation="true"/>
 				</with>
 			</and>
 		</definition>
-		<definition id="org.osate.contract.Contract.XtextEditor.opened">
+		<definition id="org.osate.sysmlv2.contract.Contract.XtextEditor.opened">
 			<and>
 				<reference definitionId="isXtextEditorActive"/>
 				<with variable="activeEditor">
 					<test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName"
-						value="org.osate.contract.Contract"
+						value="org.osate.sysmlv2.contract.Contract"
 						forcePluginActivation="true"/>
 				</with>
 			</and>
@@ -78,33 +78,33 @@
 	<extension
 			point="org.eclipse.ui.preferencePages">
 		<page
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
-			id="org.osate.contract.Contract"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
+			id="org.osate.sysmlv2.contract.Contract"
 			name="Contract">
-			<keywordReference id="org.osate.contract.ui.keyword_Contract"/>
+			<keywordReference id="org.osate.sysmlv2.contract.ui.keyword_Contract"/>
 		</page>
 		<page
-			category="org.osate.contract.Contract"
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.syntaxcoloring.SyntaxColoringPreferencePage"
-			id="org.osate.contract.Contract.coloring"
+			category="org.osate.sysmlv2.contract.Contract"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.syntaxcoloring.SyntaxColoringPreferencePage"
+			id="org.osate.sysmlv2.contract.Contract.coloring"
 			name="Syntax Coloring">
-			<keywordReference id="org.osate.contract.ui.keyword_Contract"/>
+			<keywordReference id="org.osate.sysmlv2.contract.ui.keyword_Contract"/>
 		</page>
 		<page
-			category="org.osate.contract.Contract"
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.templates.XtextTemplatePreferencePage"
-			id="org.osate.contract.Contract.templates"
+			category="org.osate.sysmlv2.contract.Contract"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.templates.XtextTemplatePreferencePage"
+			id="org.osate.sysmlv2.contract.Contract.templates"
 			name="Templates">
-			<keywordReference id="org.osate.contract.ui.keyword_Contract"/>
+			<keywordReference id="org.osate.sysmlv2.contract.ui.keyword_Contract"/>
 		</page>
 	</extension>
 	<extension
 			point="org.eclipse.ui.propertyPages">
 		<page
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
-			id="org.osate.contract.Contract"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
+			id="org.osate.sysmlv2.contract.Contract"
 			name="Contract">
-			<keywordReference id="org.osate.contract.ui.keyword_Contract"/>
+			<keywordReference id="org.osate.sysmlv2.contract.ui.keyword_Contract"/>
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject"/>
 			</enabledWhen>
@@ -114,14 +114,14 @@
 	<extension
 		point="org.eclipse.ui.keywords">
 		<keyword
-			id="org.osate.contract.ui.keyword_Contract"
+			id="org.osate.sysmlv2.contract.ui.keyword_Contract"
 			label="Contract"/>
 	</extension>
 	<extension
 		point="org.eclipse.ui.commands">
 		<command
 			description="Trigger expensive validation"
-			id="org.osate.contract.Contract.validate"
+			id="org.osate.sysmlv2.contract.Contract.validate"
 			name="Validate">
 		</command>
 		<!-- copy qualified name -->
@@ -142,12 +142,12 @@
 		<menuContribution
 			locationURI="popup:#TextEditorContext?after=group.edit">
 			<command
-				commandId="org.osate.contract.Contract.validate"
+				commandId="org.osate.sysmlv2.contract.Contract.validate"
 				style="push"
 				tooltip="Trigger expensive validation">
 				<visibleWhen checkEnabled="false">
 					<reference
-						definitionId="org.osate.contract.Contract.Editor.opened">
+						definitionId="org.osate.sysmlv2.contract.Contract.Editor.opened">
 					</reference>
 				</visibleWhen>
 			</command>
@@ -157,7 +157,7 @@
 			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
 				style="push" tooltip="Copy Qualified Name">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="org.osate.contract.Contract.Editor.opened" />
+					<reference definitionId="org.osate.sysmlv2.contract.Contract.Editor.opened" />
 				</visibleWhen>
 			</command>
 		</menuContribution>
@@ -165,7 +165,7 @@
 			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
 				style="push" tooltip="Copy Qualified Name">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="org.osate.contract.Contract.Editor.opened" />
+					<reference definitionId="org.osate.sysmlv2.contract.Contract.Editor.opened" />
 				</visibleWhen>
 			</command>
 		</menuContribution>
@@ -174,7 +174,7 @@
 				style="push" tooltip="Copy Qualified Name">
 				<visibleWhen checkEnabled="false">
 					<and>
-						<reference definitionId="org.osate.contract.Contract.XtextEditor.opened" />
+						<reference definitionId="org.osate.sysmlv2.contract.Contract.XtextEditor.opened" />
 						<iterate>
 							<adapt type="org.eclipse.xtext.ui.editor.outline.IOutlineNode" />
 						</iterate>
@@ -187,7 +187,7 @@
 		<menuContribution locationURI="popup:#TextEditorContext?endof=group.find">
 			<command commandId="org.eclipse.xtext.ui.editor.FindReferences">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="org.osate.contract.Contract.Editor.opened">
+					<reference definitionId="org.osate.sysmlv2.contract.Contract.Editor.opened">
 					</reference>
 				</visibleWhen>
 			</command>
@@ -195,11 +195,11 @@
 	</extension>
 	<extension point="org.eclipse.ui.handlers">
 		<handler
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.findrefs.FindReferencesHandler"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.findrefs.FindReferencesHandler"
 			commandId="org.eclipse.xtext.ui.editor.FindReferences">
 			<activeWhen>
 				<reference
-					definitionId="org.osate.contract.Contract.Editor.opened">
+					definitionId="org.osate.sysmlv2.contract.Contract.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
@@ -208,7 +208,7 @@
 		<content-type
 			base-type="org.eclipse.core.runtime.text"
 			file-extensions="contract"
-			id="org.osate.contract.Contract.contenttype"
+			id="org.osate.sysmlv2.contract.Contract.contenttype"
 			name="Contract File"
 			priority="normal">
 		</content-type>
@@ -217,17 +217,17 @@
 	<extension
 		point="org.eclipse.emf.ecore.extension_parser">
 		<parser
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
 			type="contract">
 		</parser>
 	</extension>
 	<extension point="org.eclipse.xtext.extension_resourceServiceProvider">
 		<resourceServiceProvider
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
 			uriExtension="contract">
 		</resourceServiceProvider>
 	</extension>
-	<!-- marker definitions for org.osate.contract.Contract -->
+	<!-- marker definitions for org.osate.sysmlv2.contract.Contract -->
 	<extension
 			id="contract.check.fast"
 			name="Contract Problem"
@@ -251,34 +251,34 @@
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			category="org.osate.contract.Contract"
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.validation.ValidatorPreferencePage"
-			id="org.osate.contract.Contract.validator.preferencePage"
+			category="org.osate.sysmlv2.contract.Contract"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.validation.ValidatorPreferencePage"
+			id="org.osate.sysmlv2.contract.Contract.validator.preferencePage"
 			name="Errors/Warnings">
-			<keywordReference id="org.osate.contract.ui.keyword_Contract"/>
+			<keywordReference id="org.osate.sysmlv2.contract.ui.keyword_Contract"/>
 		</page>
 	</extension>
 	<extension point="org.eclipse.xtext.builder.participant">
 		<participant
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant"
 			fileExtensions="contract"/>
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			category="org.osate.contract.Contract"
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
-			id="org.osate.contract.Contract.compiler.preferencePage"
+			category="org.osate.sysmlv2.contract.Contract"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+			id="org.osate.sysmlv2.contract.Contract.compiler.preferencePage"
 			name="Compiler">
-			<keywordReference id="org.osate.contract.ui.keyword_Contract"/>
+			<keywordReference id="org.osate.sysmlv2.contract.ui.keyword_Contract"/>
 		</page>
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
-			category="org.osate.contract.Contract"
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
-			id="org.osate.contract.Contract.compiler.propertyPage"
+			category="org.osate.sysmlv2.contract.Contract"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+			id="org.osate.sysmlv2.contract.Contract.compiler.propertyPage"
 			name="Compiler">
-			<keywordReference id="org.osate.contract.ui.keyword_Contract"/>
+			<keywordReference id="org.osate.sysmlv2.contract.ui.keyword_Contract"/>
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject"/>
 			</enabledWhen>
@@ -289,20 +289,20 @@
 		<menuContribution locationURI="popup:#TextEditorContext?after=xtext.ui.openDeclaration">
 			<command
 				commandId="org.eclipse.xtext.ui.OpenGeneratedFileCommand"
-				id="org.osate.contract.Contract.OpenGeneratedCode"
+				id="org.osate.sysmlv2.contract.Contract.OpenGeneratedCode"
 				style="push">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="org.osate.contract.Contract.Editor.opened" />
+					<reference definitionId="org.osate.sysmlv2.contract.Contract.Editor.opened" />
 				</visibleWhen>
 			</command>
 		</menuContribution>
 	</extension>
 	<extension point="org.eclipse.ui.handlers">
 		<handler
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.generator.trace.OpenGeneratedFileHandler"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.generator.trace.OpenGeneratedFileHandler"
 			commandId="org.eclipse.xtext.ui.OpenGeneratedFileCommand">
 			<activeWhen>
-				<reference definitionId="org.osate.contract.Contract.Editor.opened" />
+				<reference definitionId="org.osate.sysmlv2.contract.Contract.Editor.opened" />
 			</activeWhen>
 		</handler>
 	</extension>
@@ -310,11 +310,11 @@
 	<extension
 		point="org.eclipse.ui.handlers">
 		<handler
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.outline.quickoutline.ShowQuickOutlineActionHandler"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.outline.quickoutline.ShowQuickOutlineActionHandler"
 			commandId="org.eclipse.xtext.ui.editor.outline.QuickOutline">
 			<activeWhen>
 				<reference
-					definitionId="org.osate.contract.Contract.Editor.opened">
+					definitionId="org.osate.sysmlv2.contract.Contract.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
@@ -334,33 +334,33 @@
 				style="push"
 				tooltip="Open Quick Outline">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="org.osate.contract.Contract.Editor.opened"/>
+					<reference definitionId="org.osate.sysmlv2.contract.Contract.Editor.opened"/>
 				</visibleWhen>
 			</command>
 		</menuContribution>
 	</extension>
-	<!-- quickfix marker resolution generator for org.osate.contract.Contract -->
+	<!-- quickfix marker resolution generator for org.osate.sysmlv2.contract.Contract -->
 	<extension
 			point="org.eclipse.ui.ide.markerResolution">
 		<markerResolutionGenerator
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
-			markerType="org.osate.contract.ui.contract.check.fast">
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+			markerType="org.osate.sysmlv2.contract.ui.contract.check.fast">
 			<attribute
 				name="FIXABLE_KEY"
 				value="true">
 			</attribute>
 		</markerResolutionGenerator>
 		<markerResolutionGenerator
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
-			markerType="org.osate.contract.ui.contract.check.normal">
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+			markerType="org.osate.sysmlv2.contract.ui.contract.check.normal">
 			<attribute
 				name="FIXABLE_KEY"
 				value="true">
 			</attribute>
 		</markerResolutionGenerator>
 		<markerResolutionGenerator
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
-			markerType="org.osate.contract.ui.contract.check.expensive">
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+			markerType="org.osate.sysmlv2.contract.ui.contract.check.expensive">
 			<attribute
 				name="FIXABLE_KEY"
 				value="true">
@@ -370,11 +370,11 @@
 	<!-- Rename Refactoring -->
 	<extension point="org.eclipse.ui.handlers">
 		<handler
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.DefaultRenameElementHandler"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.DefaultRenameElementHandler"
 			commandId="org.eclipse.xtext.ui.refactoring.RenameElement">
 			<activeWhen>
 				<reference
-					definitionId="org.osate.contract.Contract.Editor.opened">
+					definitionId="org.osate.sysmlv2.contract.Contract.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
@@ -386,7 +386,7 @@
 				style="push">
 				<visibleWhen checkEnabled="false">
 					<reference
-						definitionId="org.osate.contract.Contract.Editor.opened">
+						definitionId="org.osate.sysmlv2.contract.Contract.Editor.opened">
 					</reference>
 				</visibleWhen>
 			</command>
@@ -394,34 +394,34 @@
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			category="org.osate.contract.Contract"
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.RefactoringPreferencePage"
-			id="org.osate.contract.Contract.refactoring"
+			category="org.osate.sysmlv2.contract.Contract"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.RefactoringPreferencePage"
+			id="org.osate.sysmlv2.contract.Contract.refactoring"
 			name="Refactoring">
-			<keywordReference id="org.osate.contract.ui.keyword_Contract"/>
+			<keywordReference id="org.osate.sysmlv2.contract.ui.keyword_Contract"/>
 		</page>
 	</extension>
 	<extension point="org.eclipse.compare.contentViewers">
-		<viewer id="org.osate.contract.Contract.compare.contentViewers"
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
+		<viewer id="org.osate.sysmlv2.contract.Contract.compare.contentViewers"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
 			extensions="contract">
 		</viewer>
 		<contentTypeBinding
-			contentTypeId="org.osate.contract.Contract.contenttype"
-			contentViewerId="org.osate.contract.Contract.compare.contentViewers" />
+			contentTypeId="org.osate.sysmlv2.contract.Contract.contenttype"
+			contentViewerId="org.osate.sysmlv2.contract.Contract.compare.contentViewers" />
 	</extension>
 	<extension point="org.eclipse.compare.contentMergeViewers">
-		<viewer id="org.osate.contract.Contract.compare.contentMergeViewers"
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
+		<viewer id="org.osate.sysmlv2.contract.Contract.compare.contentMergeViewers"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
 			extensions="contract" label="Contract Compare">
 		</viewer>
 		<contentTypeBinding
-			contentTypeId="org.osate.contract.Contract.contenttype"
-			contentMergeViewerId="org.osate.contract.Contract.compare.contentMergeViewers" />
+			contentTypeId="org.osate.sysmlv2.contract.Contract.contenttype"
+			contentMergeViewerId="org.osate.sysmlv2.contract.Contract.compare.contentMergeViewers" />
 	</extension>
 	<extension point="org.eclipse.ui.editors.documentProviders">
-		<provider id="org.osate.contract.Contract.editors.documentProviders"
-			class="org.osate.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
+		<provider id="org.osate.sysmlv2.contract.Contract.editors.documentProviders"
+			class="org.osate.sysmlv2.contract.ui.ContractExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
 			extensions="contract">
 		</provider>
 	</extension>

@@ -23,9 +23,9 @@
  * contributors and others.
  * DM23-0575
  *******************************************************************************/
-grammar org.osate.contract.Contract // with org.osate.xtext.aadl2.properties.Properties
+grammar org.osate.sysmlv2.contract.Contract // with org.osate.xtext.aadl2.properties.Properties
 
-generate contract "http://www.osate.org/contract/Contract"
+generate contract "http://www.osate.org/contract/ContractForSysMLv2"
 
 //import "http://aadl.info/AADL/2.0" as aadl2
 

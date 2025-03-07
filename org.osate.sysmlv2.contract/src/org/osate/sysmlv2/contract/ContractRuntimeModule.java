@@ -37,7 +37,6 @@ import org.eclipse.xtext.scoping.IScopeProvider;
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.osate.sysmlv2.modelsupport.scoping.DelegatingEClassGlobalScopeProvider;
-import org.osate.contract.AbstractContractRuntimeModule;
 import org.osate.sysmlv2.contract.conversion.ContractValueConverters;
 import org.osate.sysmlv2.contract.naming.ContractQualifiedNameConverter;
 import org.osate.sysmlv2.contract.naming.ContractQualifiedNameProvider;
