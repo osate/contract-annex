@@ -32,7 +32,7 @@ public final class BooleanType implements Type {
 	}
 
 	@Override
-	public boolean supportsPropertyLookup() {
+	public boolean supportsAttributeLookup() {
 		return false;
 	}
 

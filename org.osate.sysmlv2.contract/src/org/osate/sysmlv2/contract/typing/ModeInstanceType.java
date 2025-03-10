@@ -32,7 +32,7 @@ public final class ModeInstanceType implements Type {
 	}
 
 	@Override
-	public boolean supportsPropertyLookup() {
+	public boolean supportsAttributeLookup() {
 		return false;
 	}
 

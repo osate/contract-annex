@@ -82,10 +82,7 @@ public class ContractScopeProvider extends AbstractContractScopeProvider {
 
 	@Override
 	public IScope getScope(EObject context, EReference reference) {
-		if (reference.equals(ContractPackage.eINSTANCE.getContractSubclause_UseQueries())
-				|| reference.equals(ContractPackage.eINSTANCE.getContractSubclause_VerifyPlans())) {
-			return scopeForContractSubclauseUseQueries(context, reference);
-		} else if (reference.equals(ContractPackage.eINSTANCE.getNameReference_Reference())) {
+		if (reference.equals(ContractPackage.eINSTANCE.getNameReference_Reference())) {
 			return scopeForNameReferenceReference(context);
 		} else if (reference.equals(ContractPackage.eINSTANCE.getIStringVar_Query())) {
 			return scopeForQueryReference(context);

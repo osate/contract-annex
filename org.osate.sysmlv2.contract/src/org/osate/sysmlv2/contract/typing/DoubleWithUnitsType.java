@@ -36,7 +36,7 @@ public final class DoubleWithUnitsType implements Type {
 	}
 
 	@Override
-	public boolean supportsPropertyLookup() {
+	public boolean supportsAttributeLookup() {
 		return false;
 	}
 

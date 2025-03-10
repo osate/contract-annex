@@ -23,7 +23,7 @@ public final class StateInstanceType implements Type {
 	}
 
 	@Override
-	public boolean supportsPropertyLookup() {
+	public boolean supportsAttributeLookup() {
 		return true;
 	}
 

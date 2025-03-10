@@ -97,7 +97,7 @@ public final class SystemInstanceType implements Type {
 	}
 
 	@Override
-	public boolean supportsPropertyLookup() {
+	public boolean supportsAttributeLookup() {
 		return true;
 	}
 

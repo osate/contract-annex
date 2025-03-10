@@ -33,5 +33,5 @@ public interface Type {
 		return Collections.emptyMap();
 	}
 
-	boolean supportsPropertyLookup();
+	boolean supportsAttributeLookup();
 }

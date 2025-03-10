@@ -51,7 +51,7 @@ public final class DoubleRangeType implements Type {
 	}
 
 	@Override
-	public boolean supportsPropertyLookup() {
+	public boolean supportsAttributeLookup() {
 		return false;
 	}
 

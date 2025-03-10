@@ -1,0 +1,98 @@
+package org.osate.sysmlv2.contract.typing.validation;
+
+import com.google.inject.Inject;
+import org.eclipse.xsemantics.runtime.validation.XsemanticsValidatorErrorGenerator;
+import org.eclipse.xtext.validation.Check;
+import org.osate.sysmlv2.contract.contract.AndExpression;
+import org.osate.sysmlv2.contract.contract.Lambda;
+import org.osate.sysmlv2.contract.contract.MemberCall;
+import org.osate.sysmlv2.contract.contract.NotExpression;
+import org.osate.sysmlv2.contract.contract.OrExpression;
+import org.osate.sysmlv2.contract.contract.PropertyLookup;
+import org.osate.sysmlv2.contract.contract.TupleDeclaration;
+import org.osate.sysmlv2.contract.contract.TupleParameter;
+import org.osate.sysmlv2.contract.typing.ContractTypeSystem;
+import org.osate.sysmlv2.contract.validation.AbstractContractValidator;
+
+@SuppressWarnings("all")
+public class ContractTypeSystemValidator extends AbstractContractValidator {
+  @Inject
+  protected XsemanticsValidatorErrorGenerator errorGenerator;
+
+  @Inject
+  protected ContractTypeSystem xsemanticsSystem;
+
+  protected ContractTypeSystem getXsemanticsSystem() {
+    return this.xsemanticsSystem;
+  }
+
+  @Check
+  public void checkOrExpression(final OrExpression expression) {
+    errorGenerator.generateErrors(this,
+    	getXsemanticsSystem().checkOrExpression(expression),
+    		expression);
+  }
+
+  @Check
+  public void checkAndExpression(final AndExpression expression) {
+    errorGenerator.generateErrors(this,
+    	getXsemanticsSystem().checkAndExpression(expression),
+    		expression);
+  }
+
+  @Check
+  public void checkNotExpression(final NotExpression expression) {
+    errorGenerator.generateErrors(this,
+    	getXsemanticsSystem().checkNotExpression(expression),
+    		expression);
+  }
+
+  @Check
+  public void checkMemberCall(final MemberCall expression) {
+    errorGenerator.generateErrors(this,
+    	getXsemanticsSystem().checkMemberCall(expression),
+    		expression);
+  }
+
+  @Check
+  public void checkTypeArgument(final MemberCall expression) {
+    errorGenerator.generateErrors(this,
+    	getXsemanticsSystem().checkTypeArgument(expression),
+    		expression);
+  }
+
+  @Check
+  public void checkArgumentType(final MemberCall expression) {
+    errorGenerator.generateErrors(this,
+    	getXsemanticsSystem().checkArgumentType(expression),
+    		expression);
+  }
+
+  @Check
+  public void checkLambdaReturnType(final Lambda lambda) {
+    errorGenerator.generateErrors(this,
+    	getXsemanticsSystem().checkLambdaReturnType(lambda),
+    		lambda);
+  }
+
+  @Check
+  public void checkPropertyLookup(final PropertyLookup expression) {
+    errorGenerator.generateErrors(this,
+    	getXsemanticsSystem().checkPropertyLookup(expression),
+    		expression);
+  }
+
+  @Check
+  public void checkTupleDeclarationSize(final TupleDeclaration tupleDeclaration) {
+    errorGenerator.generateErrors(this,
+    	getXsemanticsSystem().checkTupleDeclarationSize(tupleDeclaration),
+    		tupleDeclaration);
+  }
+
+  @Check
+  public void checkTupleParameterSize(final TupleParameter tupleParameter) {
+    errorGenerator.generateErrors(this,
+    	getXsemanticsSystem().checkTupleParameterSize(tupleParameter),
+    		tupleParameter);
+  }
+}

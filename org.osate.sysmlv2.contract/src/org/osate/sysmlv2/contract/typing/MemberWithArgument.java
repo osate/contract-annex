@@ -25,7 +25,7 @@
  *******************************************************************************/
 package org.osate.sysmlv2.contract.typing;
 
-import org.osate.contract.contract.Expression;
+import org.osate.sysmlv2.contract.contract.Expression;
 
 /**
  * Generic parameters are expected to be the backing Java types such as {@link List}, {@link Long}, {@link String}, etc.

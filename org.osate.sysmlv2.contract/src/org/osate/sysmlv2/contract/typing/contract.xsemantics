@@ -25,34 +25,34 @@
  *******************************************************************************/
 
 import org.eclipse.xtext.EcoreUtil2
-import org.osate.aadl2.NamedElement
-import org.osate.contract.contract.AndExpression
-import org.osate.contract.contract.ContractPackage
-import org.osate.contract.contract.Expression
-import org.osate.contract.contract.Lambda
-import org.osate.contract.contract.MemberCall
-import org.osate.contract.contract.NameReference
-import org.osate.contract.contract.NotExpression
-import org.osate.contract.contract.OrExpression
-import org.osate.contract.contract.PropertyLookup
-import org.osate.contract.contract.RootExpression
-import org.osate.contract.contract.SelfExpression
-import org.osate.contract.contract.SingleParameter
-import org.osate.contract.contract.SingleValDeclaration
-import org.osate.contract.contract.StringLiteral
-import org.osate.contract.contract.TupleDeclaration
-import org.osate.contract.contract.TupleExpression
-import org.osate.contract.contract.TupleName
-import org.osate.contract.contract.TupleParameter
-import org.osate.contract.validation.AbstractContractValidator
+import org.osate.sysmlv2.contract.contract.AndExpression
+import org.osate.sysmlv2.contract.contract.ContractPackage
+import org.osate.sysmlv2.contract.contract.Expression
+import org.osate.sysmlv2.contract.contract.Lambda
+import org.osate.sysmlv2.contract.contract.MemberCall
+import org.osate.sysmlv2.contract.contract.NameReference
+import org.osate.sysmlv2.contract.contract.NotExpression
+import org.osate.sysmlv2.contract.contract.OrExpression
+import org.osate.sysmlv2.contract.contract.PropertyLookup
+import org.osate.sysmlv2.contract.contract.RootExpression
+import org.osate.sysmlv2.contract.contract.SelfExpression
+import org.osate.sysmlv2.contract.contract.SingleParameter
+import org.osate.sysmlv2.contract.contract.SingleValDeclaration
+import org.osate.sysmlv2.contract.contract.StringLiteral
+import org.osate.sysmlv2.contract.contract.TupleDeclaration
+import org.osate.sysmlv2.contract.contract.TupleExpression
+import org.osate.sysmlv2.contract.contract.TupleName
+import org.osate.sysmlv2.contract.contract.TupleParameter
+import org.osate.sysmlv2.contract.validation.AbstractContractValidator
+import org.omg.sysml.lang.sysml.Element
 
-system org.osate.contract.typing.ContractTypeSystem
+system org.osate.sysmlv2.contract.typing.ContractTypeSystem
 
 validatorExtends AbstractContractValidator
 
 judgments {
 	expressionType |- Expression expression : output Type
-	namedType ||- NamedElement named : output Type
+	namedType ||- Element named : output Type
 }
 
 axiom OrExpression
@@ -88,8 +88,10 @@ rule PropertyLookup
 	G |- PropertyLookup expression : Type type
 from {
 	G |- expression.left : var Type leftType
-	if (leftType.supportsPropertyLookup) {
-		type = new OptionalType(TypeSystemUtils.convertPropertyType(expression.right.propertyType))
+	if (leftType.supportsAttributeLookup) {
+		// XXX: For now...
+		type = BooleanType.INSTANCE;
+//		type = new OptionalType(TypeSystemUtils.convertPropertyType(expression.right.propertyType))
 	}
 }
 
@@ -314,7 +316,7 @@ checkrule CheckPropertyLookup for
 	PropertyLookup expression
 from {
 	empty |- expression.left : var Type leftType
-	if (leftType !== null && !leftType.supportsPropertyLookup) {
+	if (leftType !== null && !leftType.supportsAttributeLookup) {
 		fail
 			error "Cannot lookup property on a " + leftType
 			source expression

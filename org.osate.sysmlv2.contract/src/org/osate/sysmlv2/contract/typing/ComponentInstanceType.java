@@ -99,7 +99,7 @@ public final class ComponentInstanceType implements Type {
 	}
 
 	@Override
-	public boolean supportsPropertyLookup() {
+	public boolean supportsAttributeLookup() {
 		return true;
 	}
 

@@ -55,7 +55,7 @@ public final class LongRangeWithUnitsType implements Type {
 	}
 
 	@Override
-	public boolean supportsPropertyLookup() {
+	public boolean supportsAttributeLookup() {
 		return false;
 	}
 
