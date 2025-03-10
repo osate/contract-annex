@@ -30,7 +30,6 @@ package org.osate.sysmlv2.contract.ui;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtext.ui.editor.hover.IEObjectHoverProvider;
-import org.osate.contract.ui.AbstractContractUiModule;
 import org.osate.sysmlv2.contract.ui.hover.ContractEObjectHoverProvider;
 
 /**

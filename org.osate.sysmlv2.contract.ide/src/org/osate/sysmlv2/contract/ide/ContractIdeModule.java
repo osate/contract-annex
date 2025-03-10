@@ -28,7 +28,7 @@
  */
 package org.osate.sysmlv2.contract.ide;
 
-import org.osate.contract.ide.AbstractContractIdeModule;
+import org.osate.sysmlv2.contract.ide.AbstractContractIdeModule;
 
 /**
  * Use this class to register ide components.

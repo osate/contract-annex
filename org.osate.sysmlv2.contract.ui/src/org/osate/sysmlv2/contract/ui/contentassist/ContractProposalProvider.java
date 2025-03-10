@@ -32,10 +32,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
-import org.osate.contract.contract.MemberCall;
-import org.osate.contract.typing.ContractTypeSystem;
-import org.osate.contract.typing.GenericTypeArgumentRegistry;
-import org.osate.contract.ui.contentassist.AbstractContractProposalProvider;
+import org.osate.sysmlv2.contract.contract.MemberCall;
+import org.osate.sysmlv2.contract.typing.ContractTypeSystem;
+import org.osate.sysmlv2.contract.typing.GenericTypeArgumentRegistry;
 
 import com.google.inject.Inject;
 

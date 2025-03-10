@@ -27,13 +27,11 @@ package org.osate.sysmlv2.contract.ui.hover;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.ui.editor.hover.html.DefaultEObjectHoverProvider;
-import org.osate.aadl2.NamedElement;
-import org.osate.contract.contract.MemberCall;
-import org.osate.contract.contract.RootExpression;
-import org.osate.contract.contract.SelfExpression;
-import org.osate.contract.typing.ComponentInstanceType;
-import org.osate.contract.typing.ContractTypeSystem;
-import org.osate.contract.typing.SystemInstanceType;
+import org.omg.sysml.lang.sysml.Element;
+import org.osate.sysmlv2.contract.contract.MemberCall;
+import org.osate.sysmlv2.contract.contract.SelfExpression;
+import org.osate.sysmlv2.contract.typing.ContractTypeSystem;
+import org.osate.sysmlv2.contract.typing.OccurrenceDefintionType;
 
 import com.google.inject.Inject;
 
@@ -43,11 +41,9 @@ public class ContractEObjectHoverProvider extends DefaultEObjectHoverProvider {
 
 	@Override
 	protected boolean hasHover(EObject o) {
-		if (o instanceof NamedElement named) {
+		if (o instanceof Element named) {
 			return typeSystem.namedType(named).getValue() != null;
 		} else if (o instanceof SelfExpression) {
-			return true;
-		} else if (o instanceof RootExpression) {
 			return true;
 		} else if (o instanceof MemberCall memberCall) {
 			return typeSystem.expressionType(memberCall.getLeft()).getValue() != null
@@ -60,13 +56,11 @@ public class ContractEObjectHoverProvider extends DefaultEObjectHoverProvider {
 	@Override
 	protected String getFirstLine(EObject o) {
 		String label;
-		if (o instanceof NamedElement named) {
+		if (o instanceof Element named) {
 			var type = typeSystem.namedType(named).getValue();
 			label = named.getName() + ": " + type;
 		} else if (o instanceof SelfExpression) {
-			label = "self: " + ComponentInstanceType.INSTANCE;
-		} else if (o instanceof RootExpression) {
-			label = "root: " + SystemInstanceType.INSTANCE;
+			label = "self: " + OccurrenceDefintionType.INSTANCE;
 		} else if (o instanceof MemberCall memberCall) {
 			var leftType = typeSystem.expressionType(memberCall.getLeft()).getValue();
 			var resultType = typeSystem.expressionType(memberCall).getValue();
