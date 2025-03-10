@@ -27,11 +27,9 @@ package org.osate.sysmlv2.contract.typing;
 
 import java.util.List;
 
-import org.osate.aadl2.instance.ComponentInstance;
-
 /**
  * Generic parameters are expected to be the backing Java types such as {@link List}, {@link Long}, {@link String}, etc.
- * For example, when implementing {@code ComponentInstance.name}, the receiver type {@code T} should be
+ * For example, when implementing {@code OccurrenceDefinition.name}, the receiver type {@code T} should be
  * {@link ComponentInstance}. The generic parameters should not be any type that extends from {@link Type}.
  *
  * @param <T> Receiver Java type

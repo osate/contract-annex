@@ -29,17 +29,15 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.osate.aadl2.RealLiteral;
-
 public final class DoubleRangeType implements Type {
 	public static final DoubleRangeType INSTANCE = new DoubleRangeType();
 	private static final Map<String, Member> MEMBERS;
 
 	static {
 		MEMBERS = new LinkedHashMap<>();
-		MEMBERS.put("minimum", new MinimumMember());
-		MEMBERS.put("maximum", new MaximumMember());
-		MEMBERS.put("getDelta", new GetDeltaMember());
+//		MEMBERS.put("minimum", new MinimumMember());
+//		MEMBERS.put("maximum", new MaximumMember());
+//		MEMBERS.put("getDelta", new GetDeltaMember());
 	}
 
 	private DoubleRangeType() {
@@ -60,39 +58,39 @@ public final class DoubleRangeType implements Type {
 		return "DoubleRange";
 	}
 
-	private static class MinimumMember implements SimpleMember<RangeValueHolder, Double> {
-		@Override
-		public Type getReturnType() {
-			return DoubleType.INSTANCE;
-		}
-
-		@Override
-		public Double evaluate(RangeValueHolder receiver) {
-			return ((RealLiteral) receiver.getMinimum()).getValue();
-		}
-	}
-
-	private static class MaximumMember implements SimpleMember<RangeValueHolder, Double> {
-		@Override
-		public Type getReturnType() {
-			return DoubleType.INSTANCE;
-		}
-
-		@Override
-		public Double evaluate(RangeValueHolder receiver) {
-			return ((RealLiteral) receiver.getMaximum()).getValue();
-		}
-	}
-
-	private static class GetDeltaMember implements SimpleMember<RangeValueHolder, Optional<Double>> {
-		@Override
-		public Type getReturnType() {
-			return new OptionalType(DoubleType.INSTANCE);
-		}
-
-		@Override
-		public Optional<Double> evaluate(RangeValueHolder receiver) {
-			return Optional.ofNullable(receiver.getDelta()).map(delta -> ((RealLiteral) delta).getValue());
-		}
-	}
+//	private static class MinimumMember implements SimpleMember<RangeValueHolder, Double> {
+//		@Override
+//		public Type getReturnType() {
+//			return DoubleType.INSTANCE;
+//		}
+//
+//		@Override
+//		public Double evaluate(RangeValueHolder receiver) {
+//			return ((RealLiteral) receiver.getMinimum()).getValue();
+//		}
+//	}
+//
+//	private static class MaximumMember implements SimpleMember<RangeValueHolder, Double> {
+//		@Override
+//		public Type getReturnType() {
+//			return DoubleType.INSTANCE;
+//		}
+//
+//		@Override
+//		public Double evaluate(RangeValueHolder receiver) {
+//			return ((RealLiteral) receiver.getMaximum()).getValue();
+//		}
+//	}
+//
+//	private static class GetDeltaMember implements SimpleMember<RangeValueHolder, Optional<Double>> {
+//		@Override
+//		public Type getReturnType() {
+//			return new OptionalType(DoubleType.INSTANCE);
+//		}
+//
+//		@Override
+//		public Optional<Double> evaluate(RangeValueHolder receiver) {
+//			return Optional.ofNullable(receiver.getDelta()).map(delta -> ((RealLiteral) delta).getValue());
+//		}
+//	}
 }

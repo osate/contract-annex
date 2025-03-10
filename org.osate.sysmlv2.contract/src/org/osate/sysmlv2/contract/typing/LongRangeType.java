@@ -29,17 +29,15 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.osate.aadl2.IntegerLiteral;
-
 public final class LongRangeType implements Type {
 	public static final LongRangeType INSTANCE = new LongRangeType();
 	private static final Map<String, Member> MEMBERS;
 
 	static {
 		MEMBERS = new LinkedHashMap<>();
-		MEMBERS.put("minimum", new MinimumMember());
-		MEMBERS.put("maximum", new MaximumMember());
-		MEMBERS.put("getDelta", new GetDeltaMember());
+//		MEMBERS.put("minimum", new MinimumMember());
+//		MEMBERS.put("maximum", new MaximumMember());
+//		MEMBERS.put("getDelta", new GetDeltaMember());
 	}
 
 	private LongRangeType() {
@@ -59,40 +57,40 @@ public final class LongRangeType implements Type {
 	public String toString() {
 		return "LongRange";
 	}
-
-	private static class MinimumMember implements SimpleMember<RangeValueHolder, Long> {
-		@Override
-		public Type getReturnType() {
-			return LongType.INSTANCE;
-		}
-
-		@Override
-		public Long evaluate(RangeValueHolder receiver) {
-			return ((IntegerLiteral) receiver.getMinimum()).getValue();
-		}
-	}
-
-	private static class MaximumMember implements SimpleMember<RangeValueHolder, Long> {
-		@Override
-		public Type getReturnType() {
-			return LongType.INSTANCE;
-		}
-
-		@Override
-		public Long evaluate(RangeValueHolder receiver) {
-			return ((IntegerLiteral) receiver.getMaximum()).getValue();
-		}
-	}
-
-	private static class GetDeltaMember implements SimpleMember<RangeValueHolder, Optional<Long>> {
-		@Override
-		public Type getReturnType() {
-			return new OptionalType(LongType.INSTANCE);
-		}
-
-		@Override
-		public Optional<Long> evaluate(RangeValueHolder receiver) {
-			return Optional.ofNullable(receiver.getDelta()).map(delta -> ((IntegerLiteral) delta).getValue());
-		}
-	}
+//
+//	private static class MinimumMember implements SimpleMember<RangeValueHolder, Long> {
+//		@Override
+//		public Type getReturnType() {
+//			return LongType.INSTANCE;
+//		}
+//
+//		@Override
+//		public Long evaluate(RangeValueHolder receiver) {
+//			return ((IntegerLiteral) receiver.getMinimum()).getValue();
+//		}
+//	}
+//
+//	private static class MaximumMember implements SimpleMember<RangeValueHolder, Long> {
+//		@Override
+//		public Type getReturnType() {
+//			return LongType.INSTANCE;
+//		}
+//
+//		@Override
+//		public Long evaluate(RangeValueHolder receiver) {
+//			return ((IntegerLiteral) receiver.getMaximum()).getValue();
+//		}
+//	}
+//
+//	private static class GetDeltaMember implements SimpleMember<RangeValueHolder, Optional<Long>> {
+//		@Override
+//		public Type getReturnType() {
+//			return new OptionalType(LongType.INSTANCE);
+//		}
+//
+//		@Override
+//		public Optional<Long> evaluate(RangeValueHolder receiver) {
+//			return Optional.ofNullable(receiver.getDelta()).map(delta -> ((IntegerLiteral) delta).getValue());
+//		}
+//	}
 }

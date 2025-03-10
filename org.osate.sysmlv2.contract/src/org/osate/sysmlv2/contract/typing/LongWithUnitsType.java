@@ -28,29 +28,24 @@ package org.osate.sysmlv2.contract.typing;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.osate.aadl2.IntegerLiteral;
-import org.osate.aadl2.UnitLiteral;
-import org.osate.aadl2.UnitsType;
-import org.osate.contract.contract.Expression;
-
 public final class LongWithUnitsType implements Type {
-	private final UnitsType unitsType;
+//	private final UnitsType unitsType;
 	private final Map<String, Member> members;
 	private final String label;
 
-	public LongWithUnitsType(UnitsType unitsType) {
-		this.unitsType = unitsType;
+	public LongWithUnitsType() { //UnitsType unitsType) {
+//		this.unitsType = unitsType;
 
 		members = new LinkedHashMap<>();
-		members.put("scaledTo", new ScaledToMember());
+//		members.put("scaledTo", new ScaledToMember());
 
-		var genericName = unitsType.hasName() ? unitsType.getQualifiedName() : TypeSystemUtils.generateName(unitsType);
-		label = "LongWithUnits<" + genericName + '>';
+//		var genericName = unitsType.hasName() ? unitsType.getQualifiedName() : TypeSystemUtils.generateName(unitsType);
+		label = "LongWithUnits"; //<" + genericName + '>';
 	}
 
-	public UnitsType getUnitsType() {
-		return unitsType;
-	}
+//	public UnitsType getUnitsType() {
+//		return unitsType;
+//	}
 
 	@Override
 	public Map<String, Member> getMembers() {
@@ -67,17 +62,17 @@ public final class LongWithUnitsType implements Type {
 		return label;
 	}
 
-	private static class ScaledToMember implements MemberWithArgument<IntegerLiteral, Double, UnitLiteral> {
-		@Override
-		public Type getReturnType(Expression argument) {
-			return DoubleType.INSTANCE;
-		}
-
-		@Override
-		public Double evaluate(IntegerLiteral receiver, UnitLiteral argument) {
-			var value = receiver.getValue();
-			var originalUnit = receiver.getUnit();
-			return value * originalUnit.getAbsoluteFactor() / argument.getAbsoluteFactor();
-		}
-	}
+//	private static class ScaledToMember implements MemberWithArgument<IntegerLiteral, Double, UnitLiteral> {
+//		@Override
+//		public Type getReturnType(Expression argument) {
+//			return DoubleType.INSTANCE;
+//		}
+//
+//		@Override
+//		public Double evaluate(IntegerLiteral receiver, UnitLiteral argument) {
+//			var value = receiver.getValue();
+//			var originalUnit = receiver.getUnit();
+//			return value * originalUnit.getAbsoluteFactor() / argument.getAbsoluteFactor();
+//		}
+//	}
 }

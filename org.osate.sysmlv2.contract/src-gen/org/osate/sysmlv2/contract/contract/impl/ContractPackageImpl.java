@@ -73,7 +73,6 @@ import org.osate.sysmlv2.contract.contract.Parameter;
 import org.osate.sysmlv2.contract.contract.Predefined;
 import org.osate.sysmlv2.contract.contract.PropertyLookup;
 import org.osate.sysmlv2.contract.contract.Query;
-import org.osate.sysmlv2.contract.contract.RootExpression;
 import org.osate.sysmlv2.contract.contract.SelfExpression;
 import org.osate.sysmlv2.contract.contract.SingleParameter;
 import org.osate.sysmlv2.contract.contract.SingleValDeclaration;
@@ -358,13 +357,6 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   private EClass selfExpressionEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass rootExpressionEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -1519,17 +1511,6 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   @Override
-  public EClass getRootExpression()
-  {
-    return rootExpressionEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public EClass getStringLiteral()
   {
     return stringLiteralEClass;
@@ -1776,8 +1757,6 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
 
     selfExpressionEClass = createEClass(SELF_EXPRESSION);
 
-    rootExpressionEClass = createEClass(ROOT_EXPRESSION);
-
     stringLiteralEClass = createEClass(STRING_LITERAL);
     createEAttribute(stringLiteralEClass, STRING_LITERAL__VALUE);
 
@@ -1853,7 +1832,6 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     propertyLookupEClass.getESuperTypes().add(this.getExpression());
     tupleParameterEClass.getESuperTypes().add(this.getParameter());
     selfExpressionEClass.getESuperTypes().add(this.getExpression());
-    rootExpressionEClass.getESuperTypes().add(this.getExpression());
     stringLiteralEClass.getESuperTypes().add(this.getExpression());
     nameReferenceEClass.getESuperTypes().add(this.getExpression());
     tupleExpressionEClass.getESuperTypes().add(this.getExpression());
@@ -1991,8 +1969,6 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     initEReference(getTupleParameter_Names(), this.getTupleName(), null, "names", null, 0, -1, TupleParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(selfExpressionEClass, SelfExpression.class, "SelfExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(rootExpressionEClass, RootExpression.class, "RootExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(stringLiteralEClass, StringLiteral.class, "StringLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getStringLiteral_Value(), theEcorePackage.getEString(), "value", null, 0, 1, StringLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

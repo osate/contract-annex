@@ -126,7 +126,6 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
       case ContractPackage.PROPERTY_LOOKUP: return createPropertyLookup();
       case ContractPackage.TUPLE_PARAMETER: return createTupleParameter();
       case ContractPackage.SELF_EXPRESSION: return createSelfExpression();
-      case ContractPackage.ROOT_EXPRESSION: return createRootExpression();
       case ContractPackage.STRING_LITERAL: return createStringLiteral();
       case ContractPackage.NAME_REFERENCE: return createNameReference();
       case ContractPackage.TUPLE_EXPRESSION: return createTupleExpression();
@@ -627,18 +626,6 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
   {
     SelfExpressionImpl selfExpression = new SelfExpressionImpl();
     return selfExpression;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public RootExpression createRootExpression()
-  {
-    RootExpressionImpl rootExpression = new RootExpressionImpl();
-    return rootExpression;
   }
 
   /**

@@ -33,7 +33,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import org.osate.contract.contract.Expression;
+import org.osate.sysmlv2.contract.contract.Expression;
 import org.osate.sysmlv2.contract.tuples.Tuple;
 
 public final class ListType implements Type {

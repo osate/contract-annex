@@ -388,15 +388,6 @@ public interface ContractFactory extends EFactory
   SelfExpression createSelfExpression();
 
   /**
-   * Returns a new object of class '<em>Root Expression</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Root Expression</em>'.
-   * @generated
-   */
-  RootExpression createRootExpression();
-
-  /**
    * Returns a new object of class '<em>String Literal</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

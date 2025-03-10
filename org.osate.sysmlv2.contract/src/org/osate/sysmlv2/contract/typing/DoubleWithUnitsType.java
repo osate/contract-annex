@@ -25,14 +25,12 @@
  *******************************************************************************/
 package org.osate.sysmlv2.contract.typing;
 
-import org.osate.aadl2.UnitsType;
-
 public final class DoubleWithUnitsType implements Type {
 	private final String label;
 
-	public DoubleWithUnitsType(UnitsType unitsType) {
-		var genericName = unitsType.hasName() ? unitsType.getQualifiedName() : TypeSystemUtils.generateName(unitsType);
-		label = "DoubleWithUnits<" + genericName + '>';
+	public DoubleWithUnitsType() { //UnitsType unitsType) {
+//		var genericName = unitsType.hasName() ? unitsType.getQualifiedName() : TypeSystemUtils.generateName(unitsType);
+		label = "DoubleWithUnits"; //<" + genericName + '>';
 	}
 
 	@Override

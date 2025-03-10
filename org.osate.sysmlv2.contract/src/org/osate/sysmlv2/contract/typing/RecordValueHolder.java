@@ -25,28 +25,25 @@
  *******************************************************************************/
 package org.osate.sysmlv2.contract.typing;
 
-import org.osate.aadl2.NamedElement;
-import org.osate.aadl2.RecordValue;
-
 public final class RecordValueHolder {
-	private final RecordValue value;
-	private final NamedElement lookupContext;
-
-	public RecordValueHolder(RecordValue value, NamedElement lookupContext) {
-		this.value = value;
-		this.lookupContext = lookupContext;
-	}
-
-	public RecordValue getValue() {
-		return value;
-	}
-
-	public NamedElement getLookupContext() {
-		return lookupContext;
-	}
-
-	@Override
-	public String toString() {
-		return value.toString();
-	}
+//	private final RecordValue value;
+//	private final NamedElement lookupContext;
+//
+//	public RecordValueHolder(RecordValue value, NamedElement lookupContext) {
+//		this.value = value;
+//		this.lookupContext = lookupContext;
+//	}
+//
+//	public RecordValue getValue() {
+//		return value;
+//	}
+//
+//	public NamedElement getLookupContext() {
+//		return lookupContext;
+//	}
+//
+//	@Override
+//	public String toString() {
+//		return value.toString();
+//	}
 }

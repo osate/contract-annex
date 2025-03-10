@@ -27,34 +27,29 @@ package org.osate.sysmlv2.contract.typing;
 
 import java.util.Optional;
 
-import org.osate.aadl2.NamedElement;
-import org.osate.aadl2.PropertyExpression;
-import org.osate.aadl2.RangeValue;
-import org.osate.pluginsupport.properties.CodeGenUtil;
-
 public final class RangeValueHolder {
-	private final RangeValue value;
-	private final NamedElement lookupContext;
-
-	public RangeValueHolder(RangeValue value, NamedElement lookupContext) {
-		this.value = value;
-		this.lookupContext = lookupContext;
-	}
-
-	@Override
-	public String toString() {
-		return value.toString();
-	}
-
-	public PropertyExpression getMinimum() {
-		return CodeGenUtil.resolveNamedValue(value.getMinimum(), lookupContext, Optional.empty());
-	}
-
-	public PropertyExpression getMaximum() {
-		return CodeGenUtil.resolveNamedValue(value.getMaximum(), lookupContext, Optional.empty());
-	}
-
-	public PropertyExpression getDelta() {
-		return CodeGenUtil.resolveNamedValue(value.getDelta(), lookupContext, Optional.empty());
-	}
+//	private final RangeValue value;
+//	private final NamedElement lookupContext;
+//
+//	public RangeValueHolder(RangeValue value, NamedElement lookupContext) {
+//		this.value = value;
+//		this.lookupContext = lookupContext;
+//	}
+//
+//	@Override
+//	public String toString() {
+//		return value.toString();
+//	}
+//
+//	public PropertyExpression getMinimum() {
+//		return CodeGenUtil.resolveNamedValue(value.getMinimum(), lookupContext, Optional.empty());
+//	}
+//
+//	public PropertyExpression getMaximum() {
+//		return CodeGenUtil.resolveNamedValue(value.getMaximum(), lookupContext, Optional.empty());
+//	}
+//
+//	public PropertyExpression getDelta() {
+//		return CodeGenUtil.resolveNamedValue(value.getDelta(), lookupContext, Optional.empty());
+//	}
 }

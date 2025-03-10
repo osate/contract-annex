@@ -3037,25 +3037,6 @@ public interface ContractPackage extends EPackage
   int SELF_EXPRESSION_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 0;
 
   /**
-   * The meta object id for the '{@link org.osate.sysmlv2.contract.contract.impl.RootExpressionImpl <em>Root Expression</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.osate.sysmlv2.contract.contract.impl.RootExpressionImpl
-   * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getRootExpression()
-   * @generated
-   */
-  int ROOT_EXPRESSION = 38;
-
-  /**
-   * The number of structural features of the '<em>Root Expression</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ROOT_EXPRESSION_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 0;
-
-  /**
    * The meta object id for the '{@link org.osate.sysmlv2.contract.contract.impl.StringLiteralImpl <em>String Literal</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -3063,7 +3044,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getStringLiteral()
    * @generated
    */
-  int STRING_LITERAL = 39;
+  int STRING_LITERAL = 38;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -3091,7 +3072,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getNameReference()
    * @generated
    */
-  int NAME_REFERENCE = 40;
+  int NAME_REFERENCE = 39;
 
   /**
    * The feature id for the '<em><b>Reference</b></em>' reference.
@@ -3119,7 +3100,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getTupleExpression()
    * @generated
    */
-  int TUPLE_EXPRESSION = 41;
+  int TUPLE_EXPRESSION = 40;
 
   /**
    * The feature id for the '<em><b>Elements</b></em>' containment reference list.
@@ -3147,7 +3128,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getLanguage()
    * @generated
    */
-  int LANGUAGE = 42;
+  int LANGUAGE = 41;
 
   /**
    * The meta object id for the '{@link org.osate.sysmlv2.contract.contract.Predefined <em>Predefined</em>}' enum.
@@ -3157,7 +3138,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getPredefined()
    * @generated
    */
-  int PREDEFINED = 43;
+  int PREDEFINED = 42;
 
 
   /**
@@ -4168,16 +4149,6 @@ public interface ContractPackage extends EPackage
   EClass getSelfExpression();
 
   /**
-   * Returns the meta object for class '{@link org.osate.sysmlv2.contract.contract.RootExpression <em>Root Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Root Expression</em>'.
-   * @see org.osate.sysmlv2.contract.contract.RootExpression
-   * @generated
-   */
-  EClass getRootExpression();
-
-  /**
    * Returns the meta object for class '{@link org.osate.sysmlv2.contract.contract.StringLiteral <em>String Literal</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -5118,16 +5089,6 @@ public interface ContractPackage extends EPackage
      * @generated
      */
     EClass SELF_EXPRESSION = eINSTANCE.getSelfExpression();
-
-    /**
-     * The meta object literal for the '{@link org.osate.sysmlv2.contract.contract.impl.RootExpressionImpl <em>Root Expression</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.osate.sysmlv2.contract.contract.impl.RootExpressionImpl
-     * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getRootExpression()
-     * @generated
-     */
-    EClass ROOT_EXPRESSION = eINSTANCE.getRootExpression();
 
     /**
      * The meta object literal for the '{@link org.osate.sysmlv2.contract.contract.impl.StringLiteralImpl <em>String Literal</em>}' class.

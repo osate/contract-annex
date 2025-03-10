@@ -29,24 +29,22 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.osate.aadl2.RealLiteral;
-import org.osate.aadl2.UnitsType;
 
 public final class DoubleRangeWithUnitsType implements Type {
-	private final UnitsType unitsType;
+//	private final UnitsType unitsType;
 	private final Map<String, Member> members;
 	private final String label;
 
-	public DoubleRangeWithUnitsType(UnitsType unitsType) {
-		this.unitsType = unitsType;
+	public DoubleRangeWithUnitsType() { //UnitsType unitsType) {
+//		this.unitsType = unitsType;
 
 		members = new LinkedHashMap<>();
-		members.put("minimum", new MinimumMember());
-		members.put("maximum", new MaximumMember());
-		members.put("getDelta", new GetDeltaMember());
+//		members.put("minimum", new MinimumMember());
+//		members.put("maximum", new MaximumMember());
+//		members.put("getDelta", new GetDeltaMember());
 
-		var genericName = unitsType.hasName() ? unitsType.getQualifiedName() : TypeSystemUtils.generateName(unitsType);
-		label = "DoubleRangeWithUnits<" + genericName + '>';
+//		var genericName = unitsType.hasName() ? unitsType.getQualifiedName() : TypeSystemUtils.generateName(unitsType);
+		label = "DoubleRangeWithUnits"; //<" + genericName + '>';
 	}
 
 	@Override
@@ -64,39 +62,39 @@ public final class DoubleRangeWithUnitsType implements Type {
 		return label;
 	}
 
-	private class MinimumMember implements SimpleMember<RangeValueHolder, RealLiteral> {
-		@Override
-		public Type getReturnType() {
-			return new DoubleWithUnitsType(unitsType);
-		}
-
-		@Override
-		public RealLiteral evaluate(RangeValueHolder receiver) {
-			return (RealLiteral) receiver.getMinimum();
-		}
-	}
-
-	private class MaximumMember implements SimpleMember<RangeValueHolder, RealLiteral> {
-		@Override
-		public Type getReturnType() {
-			return new DoubleWithUnitsType(unitsType);
-		}
-
-		@Override
-		public RealLiteral evaluate(RangeValueHolder receiver) {
-			return (RealLiteral) receiver.getMaximum();
-		}
-	}
-
-	private class GetDeltaMember implements SimpleMember<RangeValueHolder, Optional<RealLiteral>> {
-		@Override
-		public Type getReturnType() {
-			return new OptionalType(new DoubleWithUnitsType(unitsType));
-		}
-
-		@Override
-		public Optional<RealLiteral> evaluate(RangeValueHolder receiver) {
-			return Optional.ofNullable(receiver.getDelta()).map(RealLiteral.class::cast);
-		}
-	}
+//	private class MinimumMember implements SimpleMember<RangeValueHolder, RealLiteral> {
+//		@Override
+//		public Type getReturnType() {
+//			return new DoubleWithUnitsType(unitsType);
+//		}
+//
+//		@Override
+//		public RealLiteral evaluate(RangeValueHolder receiver) {
+//			return (RealLiteral) receiver.getMinimum();
+//		}
+//	}
+//
+//	private class MaximumMember implements SimpleMember<RangeValueHolder, RealLiteral> {
+//		@Override
+//		public Type getReturnType() {
+//			return new DoubleWithUnitsType(unitsType);
+//		}
+//
+//		@Override
+//		public RealLiteral evaluate(RangeValueHolder receiver) {
+//			return (RealLiteral) receiver.getMaximum();
+//		}
+//	}
+//
+//	private class GetDeltaMember implements SimpleMember<RangeValueHolder, Optional<RealLiteral>> {
+//		@Override
+//		public Type getReturnType() {
+//			return new OptionalType(new DoubleWithUnitsType(unitsType));
+//		}
+//
+//		@Override
+//		public Optional<RealLiteral> evaluate(RangeValueHolder receiver) {
+//			return Optional.ofNullable(receiver.getDelta()).map(RealLiteral.class::cast);
+//		}
+//	}
 }

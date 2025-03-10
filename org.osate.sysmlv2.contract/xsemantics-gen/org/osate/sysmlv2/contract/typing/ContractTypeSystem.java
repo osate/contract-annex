@@ -29,7 +29,6 @@ import org.osate.sysmlv2.contract.contract.NameReference;
 import org.osate.sysmlv2.contract.contract.NotExpression;
 import org.osate.sysmlv2.contract.contract.OrExpression;
 import org.osate.sysmlv2.contract.contract.PropertyLookup;
-import org.osate.sysmlv2.contract.contract.RootExpression;
 import org.osate.sysmlv2.contract.contract.SelfExpression;
 import org.osate.sysmlv2.contract.contract.SingleParameter;
 import org.osate.sysmlv2.contract.contract.SingleValDeclaration;
@@ -52,8 +51,6 @@ public class ContractTypeSystem extends XsemanticsRuntimeSystem {
   public static final String PROPERTYLOOKUP = "org.osate.sysmlv2.contract.typing.PropertyLookup";
 
   public static final String SELFEXPRESSION = "org.osate.sysmlv2.contract.typing.SelfExpression";
-
-  public static final String ROOTEXPRESSION = "org.osate.sysmlv2.contract.typing.RootExpression";
 
   public static final String STRINGLITERAL = "org.osate.sysmlv2.contract.typing.StringLiteral";
 
@@ -831,7 +828,7 @@ public class ContractTypeSystem extends XsemanticsRuntimeSystem {
     	addAsSubtrace(_trace_, _subtrace_);
     	return _result_;
     } catch (Exception e_applyRuleSelfExpression) {
-    	expressionTypeThrowException(ruleName("SelfExpression") + stringRepForEnv(G) + " |- " + stringRep(expression) + " : " + "ComponentInstanceType",
+    	expressionTypeThrowException(ruleName("SelfExpression") + stringRepForEnv(G) + " |- " + stringRep(expression) + " : " + "OccurrenceDefintionType",
     		SELFEXPRESSION,
     		e_applyRuleSelfExpression, expression, new ErrorInformation[] {new ErrorInformation(expression)});
     	return null;
@@ -843,36 +840,8 @@ public class ContractTypeSystem extends XsemanticsRuntimeSystem {
     return new Result<Type>(_applyRuleSelfExpression_1(G, expression));
   }
 
-  private ComponentInstanceType _applyRuleSelfExpression_1(final RuleEnvironment G, final SelfExpression expression) throws RuleFailedException {
-    return ComponentInstanceType.INSTANCE;
-  }
-
-  protected Result<Type> expressionTypeImpl(final RuleEnvironment G, final RuleApplicationTrace _trace_, final RootExpression expression) throws RuleFailedException {
-    try {
-    	final RuleApplicationTrace _subtrace_ = newTrace(_trace_);
-    	final Result<Type> _result_ = applyRuleRootExpression(G, _subtrace_, expression);
-    	addToTrace(_trace_, new Provider<Object>() {
-    		public Object get() {
-    			return ruleName("RootExpression") + stringRepForEnv(G) + " |- " + stringRep(expression) + " : " + stringRep(_result_.getFirst());
-    		}
-    	});
-    	addAsSubtrace(_trace_, _subtrace_);
-    	return _result_;
-    } catch (Exception e_applyRuleRootExpression) {
-    	expressionTypeThrowException(ruleName("RootExpression") + stringRepForEnv(G) + " |- " + stringRep(expression) + " : " + "SystemInstanceType",
-    		ROOTEXPRESSION,
-    		e_applyRuleRootExpression, expression, new ErrorInformation[] {new ErrorInformation(expression)});
-    	return null;
-    }
-  }
-
-  protected Result<Type> applyRuleRootExpression(final RuleEnvironment G, final RuleApplicationTrace _trace_, final RootExpression expression) throws RuleFailedException {
-    
-    return new Result<Type>(_applyRuleRootExpression_1(G, expression));
-  }
-
-  private SystemInstanceType _applyRuleRootExpression_1(final RuleEnvironment G, final RootExpression expression) throws RuleFailedException {
-    return SystemInstanceType.INSTANCE;
+  private OccurrenceDefintionType _applyRuleSelfExpression_1(final RuleEnvironment G, final SelfExpression expression) throws RuleFailedException {
+    return OccurrenceDefintionType.INSTANCE;
   }
 
   protected Result<Type> expressionTypeImpl(final RuleEnvironment G, final RuleApplicationTrace _trace_, final StringLiteral expression) throws RuleFailedException {

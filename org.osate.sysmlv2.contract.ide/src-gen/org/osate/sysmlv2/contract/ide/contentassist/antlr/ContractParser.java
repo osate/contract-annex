@@ -133,9 +133,8 @@ public class ContractParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getTerminalExpressionAccess().getGroup_1(), "rule__TerminalExpression__Group_1__0");
 			builder.put(grammarAccess.getTerminalExpressionAccess().getGroup_2(), "rule__TerminalExpression__Group_2__0");
 			builder.put(grammarAccess.getTerminalExpressionAccess().getGroup_3(), "rule__TerminalExpression__Group_3__0");
-			builder.put(grammarAccess.getTerminalExpressionAccess().getGroup_4(), "rule__TerminalExpression__Group_4__0");
-			builder.put(grammarAccess.getTerminalExpressionAccess().getGroup_4_2(), "rule__TerminalExpression__Group_4_2__0");
-			builder.put(grammarAccess.getTerminalExpressionAccess().getGroup_4_2_1(), "rule__TerminalExpression__Group_4_2_1__0");
+			builder.put(grammarAccess.getTerminalExpressionAccess().getGroup_3_2(), "rule__TerminalExpression__Group_3_2__0");
+			builder.put(grammarAccess.getTerminalExpressionAccess().getGroup_3_2_1(), "rule__TerminalExpression__Group_3_2_1__0");
 			builder.put(grammarAccess.getIStringAccess().getGroup_1(), "rule__IString__Group_1__0");
 			builder.put(grammarAccess.getIStringAccess().getGroup_1_2(), "rule__IString__Group_1_2__0");
 			builder.put(grammarAccess.getIStringInterAccess().getGroup(), "rule__IStringInter__Group__0");
@@ -201,9 +200,9 @@ public class ContractParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getParameterAccess().getNamesAssignment_1_2(), "rule__Parameter__NamesAssignment_1_2");
 			builder.put(grammarAccess.getParameterAccess().getNamesAssignment_1_3_1(), "rule__Parameter__NamesAssignment_1_3_1");
 			builder.put(grammarAccess.getSingleParameterAccess().getNameAssignment(), "rule__SingleParameter__NameAssignment");
-			builder.put(grammarAccess.getTerminalExpressionAccess().getValueAssignment_2_1(), "rule__TerminalExpression__ValueAssignment_2_1");
-			builder.put(grammarAccess.getTerminalExpressionAccess().getReferenceAssignment_3_1(), "rule__TerminalExpression__ReferenceAssignment_3_1");
-			builder.put(grammarAccess.getTerminalExpressionAccess().getElementsAssignment_4_2_1_1(), "rule__TerminalExpression__ElementsAssignment_4_2_1_1");
+			builder.put(grammarAccess.getTerminalExpressionAccess().getValueAssignment_1_1(), "rule__TerminalExpression__ValueAssignment_1_1");
+			builder.put(grammarAccess.getTerminalExpressionAccess().getReferenceAssignment_2_1(), "rule__TerminalExpression__ReferenceAssignment_2_1");
+			builder.put(grammarAccess.getTerminalExpressionAccess().getElementsAssignment_3_2_1_1(), "rule__TerminalExpression__ElementsAssignment_3_2_1_1");
 			builder.put(grammarAccess.getIStringAccess().getPartsAssignment_0(), "rule__IString__PartsAssignment_0");
 			builder.put(grammarAccess.getIStringAccess().getPartsAssignment_1_0(), "rule__IString__PartsAssignment_1_0");
 			builder.put(grammarAccess.getIStringAccess().getPartsAssignment_1_1(), "rule__IString__PartsAssignment_1_1");

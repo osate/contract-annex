@@ -34,7 +34,6 @@ import org.osate.sysmlv2.contract.contract.NameReference
 import org.osate.sysmlv2.contract.contract.NotExpression
 import org.osate.sysmlv2.contract.contract.OrExpression
 import org.osate.sysmlv2.contract.contract.PropertyLookup
-import org.osate.sysmlv2.contract.contract.RootExpression
 import org.osate.sysmlv2.contract.contract.SelfExpression
 import org.osate.sysmlv2.contract.contract.SingleParameter
 import org.osate.sysmlv2.contract.contract.SingleValDeclaration
@@ -96,10 +95,11 @@ from {
 }
 
 axiom SelfExpression
-	G |- SelfExpression expression : ComponentInstanceType.INSTANCE
+	G |- SelfExpression expression : OccurrenceDefintionType.INSTANCE
 
-axiom RootExpression
-	G |- RootExpression expression : SystemInstanceType.INSTANCE
+// XXX: No root because there is no instance model
+//axiom RootExpression
+//	G |- RootExpression expression : SystemInstanceType.INSTANCE
 
 axiom StringLiteral
 	G |- StringLiteral expression : StringType.INSTANCE

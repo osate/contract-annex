@@ -29,24 +29,21 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.osate.aadl2.IntegerLiteral;
-import org.osate.aadl2.UnitsType;
-
 public final class LongRangeWithUnitsType implements Type {
-	private final UnitsType unitsType;
+//	private final UnitsType unitsType;
 	private final Map<String, Member> members;
 	private final String label;
 
-	public LongRangeWithUnitsType(UnitsType unitsType) {
-		this.unitsType = unitsType;
+	public LongRangeWithUnitsType() { //UnitsType unitsType) {
+//		this.unitsType = unitsType;
 
 		members = new LinkedHashMap<>();
-		members.put("minimum", new MinimumMember());
-		members.put("maximum", new MaximumMember());
-		members.put("getDelta", new GetDeltaMember());
+//		members.put("minimum", new MinimumMember());
+//		members.put("maximum", new MaximumMember());
+//		members.put("getDelta", new GetDeltaMember());
 
-		var genericName = unitsType.hasName() ? unitsType.getQualifiedName() : TypeSystemUtils.generateName(unitsType);
-		label = "LongRangeWithUnits<" + genericName + '>';
+//		var genericName = unitsType.hasName() ? unitsType.getQualifiedName() : TypeSystemUtils.generateName(unitsType);
+		label = "LongRangeWithUnits"; //<" + genericName + '>';
 	}
 
 	@Override
@@ -64,39 +61,39 @@ public final class LongRangeWithUnitsType implements Type {
 		return label;
 	}
 
-	private class MinimumMember implements SimpleMember<RangeValueHolder, IntegerLiteral> {
-		@Override
-		public Type getReturnType() {
-			return new LongWithUnitsType(unitsType);
-		}
-
-		@Override
-		public IntegerLiteral evaluate(RangeValueHolder receiver) {
-			return (IntegerLiteral) receiver.getMinimum();
-		}
-	}
-
-	private class MaximumMember implements SimpleMember<RangeValueHolder, IntegerLiteral> {
-		@Override
-		public Type getReturnType() {
-			return new LongWithUnitsType(unitsType);
-		}
-
-		@Override
-		public IntegerLiteral evaluate(RangeValueHolder receiver) {
-			return (IntegerLiteral) receiver.getMaximum();
-		}
-	}
-
-	private class GetDeltaMember implements SimpleMember<RangeValueHolder, Optional<IntegerLiteral>> {
-		@Override
-		public Type getReturnType() {
-			return new OptionalType(new LongWithUnitsType(unitsType));
-		}
-
-		@Override
-		public Optional<IntegerLiteral> evaluate(RangeValueHolder receiver) {
-			return Optional.ofNullable(receiver.getDelta()).map(IntegerLiteral.class::cast);
-		}
-	}
+//	private class MinimumMember implements SimpleMember<RangeValueHolder, IntegerLiteral> {
+//		@Override
+//		public Type getReturnType() {
+//			return new LongWithUnitsType(unitsType);
+//		}
+//
+//		@Override
+//		public IntegerLiteral evaluate(RangeValueHolder receiver) {
+//			return (IntegerLiteral) receiver.getMinimum();
+//		}
+//	}
+//
+//	private class MaximumMember implements SimpleMember<RangeValueHolder, IntegerLiteral> {
+//		@Override
+//		public Type getReturnType() {
+//			return new LongWithUnitsType(unitsType);
+//		}
+//
+//		@Override
+//		public IntegerLiteral evaluate(RangeValueHolder receiver) {
+//			return (IntegerLiteral) receiver.getMaximum();
+//		}
+//	}
+//
+//	private class GetDeltaMember implements SimpleMember<RangeValueHolder, Optional<IntegerLiteral>> {
+//		@Override
+//		public Type getReturnType() {
+//			return new OptionalType(new LongWithUnitsType(unitsType));
+//		}
+//
+//		@Override
+//		public Optional<IntegerLiteral> evaluate(RangeValueHolder receiver) {
+//			return Optional.ofNullable(receiver.getDelta()).map(IntegerLiteral.class::cast);
+//		}
+//	}
 }

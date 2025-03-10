@@ -396,14 +396,6 @@ public class ContractSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case ContractPackage.ROOT_EXPRESSION:
-      {
-        RootExpression rootExpression = (RootExpression)theEObject;
-        T result = caseRootExpression(rootExpression);
-        if (result == null) result = caseExpression(rootExpression);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case ContractPackage.STRING_LITERAL:
       {
         StringLiteral stringLiteral = (StringLiteral)theEObject;
@@ -1036,22 +1028,6 @@ public class ContractSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseSelfExpression(SelfExpression object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Root Expression</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Root Expression</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseRootExpression(RootExpression object)
   {
     return null;
   }

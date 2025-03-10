@@ -290,11 +290,6 @@ public class ContractAdapterFactory extends AdapterFactoryImpl
         return createSelfExpressionAdapter();
       }
       @Override
-      public Adapter caseRootExpression(RootExpression object)
-      {
-        return createRootExpressionAdapter();
-      }
-      @Override
       public Adapter caseStringLiteral(StringLiteral object)
       {
         return createStringLiteralAdapter();
@@ -902,21 +897,6 @@ public class ContractAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createSelfExpressionAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.osate.sysmlv2.contract.contract.RootExpression <em>Root Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.osate.sysmlv2.contract.contract.RootExpression
-   * @generated
-   */
-  public Adapter createRootExpressionAdapter()
   {
     return null;
   }

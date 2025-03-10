@@ -262,7 +262,8 @@ SingleParameter:
 
 TerminalExpression returns Expression:
 	{SelfExpression} 'self' |
-	{RootExpression} 'root' |
+// XXX: No instance model so no root
+//	{RootExpression} 'root' |
 	{StringLiteral} value=STRING |
 //	{NameReference} reference=[aadl2::NamedElement] |
 	{NameReference} reference=[sysmlv2::Element] |

@@ -2542,29 +2542,15 @@ ruleTerminalExpression returns [EObject current=null]
 			(
 				{
 					$current = forceCreateModelElement(
-						grammarAccess.getTerminalExpressionAccess().getRootExpressionAction_1_0(),
-						$current);
-				}
-			)
-			otherlv_3='root'
-			{
-				newLeafNode(otherlv_3, grammarAccess.getTerminalExpressionAccess().getRootKeyword_1_1());
-			}
-		)
-		    |
-		(
-			(
-				{
-					$current = forceCreateModelElement(
-						grammarAccess.getTerminalExpressionAccess().getStringLiteralAction_2_0(),
+						grammarAccess.getTerminalExpressionAccess().getStringLiteralAction_1_0(),
 						$current);
 				}
 			)
 			(
 				(
-					lv_value_5_0=RULE_STRING
+					lv_value_3_0=RULE_STRING
 					{
-						newLeafNode(lv_value_5_0, grammarAccess.getTerminalExpressionAccess().getValueSTRINGTerminalRuleCall_2_1_0());
+						newLeafNode(lv_value_3_0, grammarAccess.getTerminalExpressionAccess().getValueSTRINGTerminalRuleCall_1_1_0());
 					}
 					{
 						if ($current==null) {
@@ -2573,7 +2559,7 @@ ruleTerminalExpression returns [EObject current=null]
 						setWithLastConsumed(
 							$current,
 							"value",
-							lv_value_5_0,
+							lv_value_3_0,
 							"org.osate.sysmlv2.contract.Contract.STRING");
 					}
 				)
@@ -2584,7 +2570,7 @@ ruleTerminalExpression returns [EObject current=null]
 			(
 				{
 					$current = forceCreateModelElement(
-						grammarAccess.getTerminalExpressionAccess().getNameReferenceAction_3_0(),
+						grammarAccess.getTerminalExpressionAccess().getNameReferenceAction_2_0(),
 						$current);
 				}
 			)
@@ -2595,46 +2581,46 @@ ruleTerminalExpression returns [EObject current=null]
 							$current = createModelElement(grammarAccess.getTerminalExpressionRule());
 						}
 					}
-					otherlv_7=RULE_ID
+					otherlv_5=RULE_ID
 					{
-						newLeafNode(otherlv_7, grammarAccess.getTerminalExpressionAccess().getReferenceElementCrossReference_3_1_0());
+						newLeafNode(otherlv_5, grammarAccess.getTerminalExpressionAccess().getReferenceElementCrossReference_2_1_0());
 					}
 				)
 			)
 		)
 		    |
 		(
-			otherlv_8='('
+			otherlv_6='('
 			{
-				newLeafNode(otherlv_8, grammarAccess.getTerminalExpressionAccess().getLeftParenthesisKeyword_4_0());
+				newLeafNode(otherlv_6, grammarAccess.getTerminalExpressionAccess().getLeftParenthesisKeyword_3_0());
 			}
 			{
-				newCompositeNode(grammarAccess.getTerminalExpressionAccess().getExpressionParserRuleCall_4_1());
+				newCompositeNode(grammarAccess.getTerminalExpressionAccess().getExpressionParserRuleCall_3_1());
 			}
-			this_Expression_9=ruleExpression
+			this_Expression_7=ruleExpression
 			{
-				$current = $this_Expression_9.current;
+				$current = $this_Expression_7.current;
 				afterParserOrEnumRuleCall();
 			}
 			(
 				(
 					{
 						$current = forceCreateModelElementAndAdd(
-							grammarAccess.getTerminalExpressionAccess().getTupleExpressionElementsAction_4_2_0(),
+							grammarAccess.getTerminalExpressionAccess().getTupleExpressionElementsAction_3_2_0(),
 							$current);
 					}
 				)
 				(
-					otherlv_11=','
+					otherlv_9=','
 					{
-						newLeafNode(otherlv_11, grammarAccess.getTerminalExpressionAccess().getCommaKeyword_4_2_1_0());
+						newLeafNode(otherlv_9, grammarAccess.getTerminalExpressionAccess().getCommaKeyword_3_2_1_0());
 					}
 					(
 						(
 							{
-								newCompositeNode(grammarAccess.getTerminalExpressionAccess().getElementsExpressionParserRuleCall_4_2_1_1_0());
+								newCompositeNode(grammarAccess.getTerminalExpressionAccess().getElementsExpressionParserRuleCall_3_2_1_1_0());
 							}
-							lv_elements_12_0=ruleExpression
+							lv_elements_10_0=ruleExpression
 							{
 								if ($current==null) {
 									$current = createModelElementForParent(grammarAccess.getTerminalExpressionRule());
@@ -2642,7 +2628,7 @@ ruleTerminalExpression returns [EObject current=null]
 								add(
 									$current,
 									"elements",
-									lv_elements_12_0,
+									lv_elements_10_0,
 									"org.osate.sysmlv2.contract.Contract.Expression");
 								afterParserOrEnumRuleCall();
 							}
@@ -2650,9 +2636,9 @@ ruleTerminalExpression returns [EObject current=null]
 					)
 				)+
 			)?
-			otherlv_13=')'
+			otherlv_11=')'
 			{
-				newLeafNode(otherlv_13, grammarAccess.getTerminalExpressionAccess().getRightParenthesisKeyword_4_3());
+				newLeafNode(otherlv_11, grammarAccess.getTerminalExpressionAccess().getRightParenthesisKeyword_3_3());
 			}
 		)
 	)

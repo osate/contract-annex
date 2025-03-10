@@ -174,7 +174,6 @@
         eType="#//TupleName" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SelfExpression" eSuperTypes="#//Expression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="RootExpression" eSuperTypes="#//Expression"/>
   <eClassifiers xsi:type="ecore:EClass" name="StringLiteral" eSuperTypes="#//Expression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
   </eClassifiers>

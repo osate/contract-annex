@@ -136,7 +136,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//TupleParameter/names"/>
     </genClasses>
     <genClasses ecoreClass="Contract.ecore#//SelfExpression"/>
-    <genClasses ecoreClass="Contract.ecore#//RootExpression"/>
     <genClasses ecoreClass="Contract.ecore#//StringLiteral">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//StringLiteral/value"/>
     </genClasses>

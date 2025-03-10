@@ -29,30 +29,30 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.osate.aadl2.BasicProperty;
-import org.osate.contract.contract.Expression;
-import org.osate.contract.contract.NameReference;
-import org.osate.pluginsupport.properties.CodeGenUtil;
+//import org.osate.aadl2.BasicProperty;
+//import org.osate.contract.contract.Expression;
+//import org.osate.contract.contract.NameReference;
+//import org.osate.pluginsupport.properties.CodeGenUtil;
 
 public final class RecordType implements Type {
-	private final org.osate.aadl2.RecordType recordType;
+//	private final org.osate.aadl2.RecordType recordType;
 	private final Map<String, Member> members;
 	private final String label;
 
-	public RecordType(org.osate.aadl2.RecordType recordType) {
-		this.recordType = recordType;
+	public RecordType() {//org.osate.aadl2.RecordType recordType) {
+//		this.recordType = recordType;
 
 		members = new LinkedHashMap<>();
-		members.put("get", new GetMember());
-
-		var genericName = recordType.hasName() ? recordType.getQualifiedName()
-				: TypeSystemUtils.generateName(recordType);
-		label = "Record<" + genericName + '>';
+//		members.put("get", new GetMember());
+//
+//		var genericName = recordType.hasName() ? recordType.getQualifiedName()
+//				: TypeSystemUtils.generateName(recordType);
+		label = "Record"; //<" + genericName + '>';
 	}
 
-	public org.osate.aadl2.RecordType getRecordType() {
-		return recordType;
-	}
+//	public org.osate.aadl2.RecordType getRecordType() {
+//		return recordType;
+//	}
 
 	@Override
 	public Map<String, Member> getMembers() {
@@ -69,28 +69,28 @@ public final class RecordType implements Type {
 		return label;
 	}
 
-	private static class GetMember implements MemberWithArgument<RecordValueHolder, Optional<?>, BasicProperty> {
-		@Override
-		public Type getReturnType(Expression argument) {
-			if (argument instanceof NameReference reference
-					&& reference.getReference() instanceof BasicProperty field) {
-				return new OptionalType(TypeSystemUtils.convertPropertyType(field.getPropertyType()));
-			} else {
-				return null;
-			}
-		}
-
-		@Override
-		public Optional<?> evaluate(RecordValueHolder receiver, BasicProperty argument) {
-			for (var fieldValue : receiver.getValue().getOwnedFieldValues()) {
-				if (fieldValue.getProperty().equals(argument)) {
-					var lookupContext = receiver.getLookupContext();
-					var resolved = CodeGenUtil.resolveNamedValue(fieldValue.getOwnedValue(), lookupContext,
-							Optional.empty());
-					return Optional.of(TypeSystemUtils.convertPropertyValue(resolved, lookupContext));
-				}
-			}
-			return Optional.empty();
-		}
-	}
+//	private static class GetMember implements MemberWithArgument<RecordValueHolder, Optional<?>, BasicProperty> {
+//		@Override
+//		public Type getReturnType(Expression argument) {
+//			if (argument instanceof NameReference reference
+//					&& reference.getReference() instanceof BasicProperty field) {
+//				return new OptionalType(TypeSystemUtils.convertPropertyType(field.getPropertyType()));
+//			} else {
+//				return null;
+//			}
+//		}
+//
+//		@Override
+//		public Optional<?> evaluate(RecordValueHolder receiver, BasicProperty argument) {
+//			for (var fieldValue : receiver.getValue().getOwnedFieldValues()) {
+//				if (fieldValue.getProperty().equals(argument)) {
+//					var lookupContext = receiver.getLookupContext();
+//					var resolved = CodeGenUtil.resolveNamedValue(fieldValue.getOwnedValue(), lookupContext,
+//							Optional.empty());
+//					return Optional.of(TypeSystemUtils.convertPropertyValue(resolved, lookupContext));
+//				}
+//			}
+//			return Optional.empty();
+//		}
+//	}
 }
