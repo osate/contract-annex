@@ -29,8 +29,8 @@
 package org.osate.sysmlv2.contract.ide;
 
 import org.eclipse.xtext.util.Modules2;
-import org.osate.contract.ContractRuntimeModule;
-import org.osate.contract.ContractStandaloneSetup;
+import org.osate.sysmlv2.contract.ContractRuntimeModule;
+import org.osate.sysmlv2.contract.ContractStandaloneSetup;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
