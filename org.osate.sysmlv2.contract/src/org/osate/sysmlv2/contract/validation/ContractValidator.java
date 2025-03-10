@@ -35,24 +35,24 @@ import java.util.stream.Stream;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.validation.Check;
-import org.osate.aadl2.Aadl2Package;
-import org.osate.aadl2.NamedElement;
-import org.osate.contract.contract.Argument;
-import org.osate.contract.contract.ArgumentAssumption;
-import org.osate.contract.contract.ArgumentExpression;
-import org.osate.contract.contract.Contract;
-import org.osate.contract.contract.ContractAssumption;
-import org.osate.contract.contract.ContractElement;
-import org.osate.contract.contract.ContractPackage;
-import org.osate.contract.contract.Guarantee;
-import org.osate.contract.contract.IStringLiteral;
-import org.osate.contract.contract.Lambda;
-import org.osate.contract.contract.Query;
-import org.osate.contract.contract.SingleParameter;
-import org.osate.contract.contract.SingleValDeclaration;
-import org.osate.contract.contract.TupleDeclaration;
-import org.osate.contract.contract.TupleName;
-import org.osate.contract.contract.TupleParameter;
+import org.omg.sysml.lang.sysml.Element;
+import org.omg.sysml.lang.sysml.SysMLPackage;
+import org.osate.sysmlv2.contract.contract.Argument;
+import org.osate.sysmlv2.contract.contract.ArgumentAssumption;
+import org.osate.sysmlv2.contract.contract.ArgumentExpression;
+import org.osate.sysmlv2.contract.contract.Contract;
+import org.osate.sysmlv2.contract.contract.ContractAssumption;
+import org.osate.sysmlv2.contract.contract.ContractElement;
+import org.osate.sysmlv2.contract.contract.ContractPackage;
+import org.osate.sysmlv2.contract.contract.Guarantee;
+import org.osate.sysmlv2.contract.contract.IStringLiteral;
+import org.osate.sysmlv2.contract.contract.Lambda;
+import org.osate.sysmlv2.contract.contract.Query;
+import org.osate.sysmlv2.contract.contract.SingleParameter;
+import org.osate.sysmlv2.contract.contract.SingleValDeclaration;
+import org.osate.sysmlv2.contract.contract.TupleDeclaration;
+import org.osate.sysmlv2.contract.contract.TupleName;
+import org.osate.sysmlv2.contract.contract.TupleParameter;
 import org.osate.sysmlv2.contract.typing.validation.ContractTypeSystemValidator;
 
 /**
@@ -67,7 +67,7 @@ public class ContractValidator extends ContractTypeSystemValidator {
 	}
 
 	@Check
-	public void checkDuplicateName(NamedElement named) {
+	public void checkDuplicateName(Element named) {
 		var name = named.getName();
 		var duplicateFound = false;
 		for (var current = named.eContainer(); !duplicateFound && current != null; current = current.eContainer()) {
@@ -91,7 +91,7 @@ public class ContractValidator extends ContractTypeSystemValidator {
 			}
 		}
 		if (duplicateFound) {
-			error("'" + name + "' is already declared", Aadl2Package.eINSTANCE.getNamedElement_Name());
+			error("'" + name + "' is already declared", SysMLPackage.eINSTANCE.getElement_Name());
 		}
 	}
 
@@ -145,13 +145,13 @@ public class ContractValidator extends ContractTypeSystemValidator {
 		}
 	}
 
-	private static boolean isAlreadyDeclaredInTupleNames(NamedElement named, List<TupleName> tupleNames) {
+	private static boolean isAlreadyDeclaredInTupleNames(Element named, List<TupleName> tupleNames) {
 		return tupleNames.stream()
 				.takeWhile(tupleName -> tupleName != named)
 				.anyMatch(tupleName -> tupleName.getName().equals(named.getName()));
 	}
 
-	private static boolean isAlreadyDeclaredInQueries(NamedElement named, List<Query> queries) {
+	private static boolean isAlreadyDeclaredInQueries(Element named, List<Query> queries) {
 		return queries.stream().takeWhile(query -> !EcoreUtil.isAncestor(query, named)).flatMap(query -> {
 			if (query instanceof SingleValDeclaration singleVal) {
 				return Stream.of(singleVal);
