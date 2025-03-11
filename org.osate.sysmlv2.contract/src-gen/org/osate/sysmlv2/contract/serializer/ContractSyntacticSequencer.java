@@ -168,10 +168,10 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *
 	 * This ambiguous syntax occurs at:
 	 *     assumptions+=AssumptionElement ';'+ ('invocation' | 'analysis') (ambiguity) analyses+=Analysis
+	 *     declaredName=ID '{' ('invocation' | 'analysis') (ambiguity) analyses+=Analysis
 	 *     domains+=[Domain|QPREF] ';'+ ('invocation' | 'analysis') (ambiguity) analyses+=Analysis
 	 *     guarantee=Guarantee ';' ('invocation' | 'analysis') (ambiguity) analyses+=Analysis
 	 *     inputs+=InputAssumption ('invocation' | 'analysis') (ambiguity) analyses+=Analysis
-	 *     name=ID '{' ('invocation' | 'analysis') (ambiguity) analyses+=Analysis
 	 *     queries+=Query ';'+ ('invocation' | 'analysis') (ambiguity) analyses+=Analysis
 	 
 	 * </pre>
@@ -261,9 +261,9 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     ';'*
 	 *
 	 * This ambiguous syntax occurs at:
+	 *     declaredName=ID '{' ('input' 'assumptions')? 'assumptions' (ambiguity) assumptions+=AssumptionElement
 	 *     domains+=[Domain|QPREF] ';'+ ('input' 'assumptions')? 'assumptions' (ambiguity) assumptions+=AssumptionElement
 	 *     inputs+=InputAssumption 'assumptions' (ambiguity) assumptions+=AssumptionElement
-	 *     name=ID '{' ('input' 'assumptions')? 'assumptions' (ambiguity) assumptions+=AssumptionElement
 	 *     queries+=Query ';'+ ('input' 'assumptions')? 'assumptions' (ambiguity) assumptions+=AssumptionElement
 	 
 	 * </pre>
@@ -328,10 +328,10 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *
 	 * This ambiguous syntax occurs at:
 	 *     assumptions+=AssumptionElement ';'+ (ambiguity) ';'* analyses+=Analysis
+	 *     declaredName=ID '{' (ambiguity) ';'* analyses+=Analysis
 	 *     domains+=[Domain|QPREF] ';'+ (ambiguity) ';'* analyses+=Analysis
 	 *     guarantee=Guarantee ';' (ambiguity) ';'* analyses+=Analysis
 	 *     inputs+=InputAssumption (ambiguity) ';'* analyses+=Analysis
-	 *     name=ID '{' (ambiguity) ';'* analyses+=Analysis
 	 *     queries+=Query ';'+ (ambiguity) ';'* analyses+=Analysis
 	 
 	 * </pre>
@@ -346,8 +346,8 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     ('input' 'assumptions')?
 	 *
 	 * This ambiguous syntax occurs at:
+	 *     declaredName=ID '{' (ambiguity) 'assumptions' ';'* assumptions+=AssumptionElement
 	 *     domains+=[Domain|QPREF] ';'+ (ambiguity) 'assumptions' ';'* assumptions+=AssumptionElement
-	 *     name=ID '{' (ambiguity) 'assumptions' ';'* assumptions+=AssumptionElement
 	 *     queries+=Query ';'+ (ambiguity) 'assumptions' ';'* assumptions+=AssumptionElement
 	 
 	 * </pre>
@@ -363,7 +363,7 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *
 	 * This ambiguous syntax occurs at:
 	 *     componentImplementation=[OccurrenceDefinition|QCREF] ';' 'domains' (ambiguity) domains+=[Domain|QPREF]
-	 *     name=ID '{' 'domains' (ambiguity) domains+=[Domain|QPREF]
+	 *     declaredName=ID '{' 'domains' (ambiguity) domains+=[Domain|QPREF]
 	 
 	 * </pre>
 	 */
@@ -402,8 +402,8 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     ';'*
 	 *
 	 * This ambiguous syntax occurs at:
+	 *     declaredName=ID '{' 'queries' (ambiguity) queries+=Query
 	 *     domains+=[Domain|QPREF] ';'+ 'queries' (ambiguity) queries+=Query
-	 *     name=ID '{' 'queries' (ambiguity) queries+=Query
 	 *     parameter=Parameter '-&gt;' (ambiguity) queries+=Query
 	 *     parameter=Parameter '-&gt;' (ambiguity) returnValue=Expression
 	 

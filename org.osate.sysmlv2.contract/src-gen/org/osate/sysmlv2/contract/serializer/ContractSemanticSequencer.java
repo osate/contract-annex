@@ -221,7 +221,7 @@ public class ContractSemanticSequencer extends AbstractDelegatingSemanticSequenc
 	 *
 	 * Constraint:
 	 *     (
-	 *         name=ID 
+	 *         declaredName=ID 
 	 *         domains+=[Domain|QPREF]* 
 	 *         queries+=Query* 
 	 *         inputs+=InputAssumption* 
@@ -341,7 +341,7 @@ public class ContractSemanticSequencer extends AbstractDelegatingSemanticSequenc
 	 *     Argument returns Argument
 	 *
 	 * Constraint:
-	 *     (name=ID domains+=[Domain|QPREF]* (exact?='&lt;=&gt;'? guarantee=Guarantee)? argumentExpression=ArgumentExpression?)
+	 *     (declaredName=ID domains+=[Domain|QPREF]* (exact?='&lt;=&gt;'? guarantee=Guarantee)? argumentExpression=ArgumentExpression?)
 	 * </pre>
 	 */
 	protected void sequence_Argument_Domains_Exact(ISerializationContext context, Argument semanticObject) {
@@ -466,7 +466,7 @@ public class ContractSemanticSequencer extends AbstractDelegatingSemanticSequenc
 	 *     VerificationPlan returns VerificationPlan
 	 *
 	 * Constraint:
-	 *     (name=ID componentImplementation=[OccurrenceDefinition|QCREF] domains+=[Domain|QPREF]* claims+=Source* contracts+=[Contract|QPREF]*)
+	 *     (declaredName=ID componentImplementation=[OccurrenceDefinition|QCREF] domains+=[Domain|QPREF]* claims+=Source* contracts+=[Contract|QPREF]*)
 	 * </pre>
 	 */
 	protected void sequence_Claims_Domains_VerificationPlan(ISerializationContext context, VerificationPlan semanticObject) {
@@ -481,7 +481,7 @@ public class ContractSemanticSequencer extends AbstractDelegatingSemanticSequenc
 	 *     ContractLibrary returns ContractLibrary
 	 *
 	 * Constraint:
-	 *     (name=ID contractElements+=ContractElement*)
+	 *     (declaredName=ID contractElements+=ContractElement*)
 	 * </pre>
 	 */
 	protected void sequence_ContractLibrary(ISerializationContext context, ContractLibrary semanticObject) {
@@ -497,7 +497,7 @@ public class ContractSemanticSequencer extends AbstractDelegatingSemanticSequenc
 	 *     Domain returns Domain
 	 *
 	 * Constraint:
-	 *     (name=ID queries+=Query* code=Source?)
+	 *     (declaredName=ID queries+=Query* code=Source?)
 	 * </pre>
 	 */
 	protected void sequence_Domain_Queries(ISerializationContext context, Domain semanticObject) {
@@ -678,18 +678,18 @@ public class ContractSemanticSequencer extends AbstractDelegatingSemanticSequenc
 	 *     Implementation returns Implementation
 	 *
 	 * Constraint:
-	 *     (name=ID code=Source)
+	 *     (declaredName=ID code=Source)
 	 * </pre>
 	 */
 	protected void sequence_Implementation(ISerializationContext context, Implementation semanticObject) {
 		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, SysMLPackage.Literals.ELEMENT__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, SysMLPackage.Literals.ELEMENT__NAME));
+			if (transientValues.isValueTransient(semanticObject, SysMLPackage.Literals.ELEMENT__DECLARED_NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, SysMLPackage.Literals.ELEMENT__DECLARED_NAME));
 			if (transientValues.isValueTransient(semanticObject, ContractPackage.Literals.IMPLEMENTATION__CODE) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ContractPackage.Literals.IMPLEMENTATION__CODE));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getImplementationAccess().getNameIDTerminalRuleCall_2_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getImplementationAccess().getDeclaredNameIDTerminalRuleCall_2_0(), semanticObject.getDeclaredName());
 		feeder.accept(grammarAccess.getImplementationAccess().getCodeSourceParserRuleCall_4_0(), semanticObject.getCode());
 		feeder.finish();
 	}

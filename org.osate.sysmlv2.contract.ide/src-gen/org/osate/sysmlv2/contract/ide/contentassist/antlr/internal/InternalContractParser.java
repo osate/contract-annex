@@ -5279,31 +5279,31 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__ContractLibrary__Group__1__Impl"
-    // InternalContract.g:1576:1: rule__ContractLibrary__Group__1__Impl : ( ( rule__ContractLibrary__NameAssignment_1 ) ) ;
+    // InternalContract.g:1576:1: rule__ContractLibrary__Group__1__Impl : ( ( rule__ContractLibrary__DeclaredNameAssignment_1 ) ) ;
     public final void rule__ContractLibrary__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:1580:1: ( ( ( rule__ContractLibrary__NameAssignment_1 ) ) )
-            // InternalContract.g:1581:1: ( ( rule__ContractLibrary__NameAssignment_1 ) )
+            // InternalContract.g:1580:1: ( ( ( rule__ContractLibrary__DeclaredNameAssignment_1 ) ) )
+            // InternalContract.g:1581:1: ( ( rule__ContractLibrary__DeclaredNameAssignment_1 ) )
             {
-            // InternalContract.g:1581:1: ( ( rule__ContractLibrary__NameAssignment_1 ) )
-            // InternalContract.g:1582:2: ( rule__ContractLibrary__NameAssignment_1 )
+            // InternalContract.g:1581:1: ( ( rule__ContractLibrary__DeclaredNameAssignment_1 ) )
+            // InternalContract.g:1582:2: ( rule__ContractLibrary__DeclaredNameAssignment_1 )
             {
-             before(grammarAccess.getContractLibraryAccess().getNameAssignment_1()); 
-            // InternalContract.g:1583:2: ( rule__ContractLibrary__NameAssignment_1 )
-            // InternalContract.g:1583:3: rule__ContractLibrary__NameAssignment_1
+             before(grammarAccess.getContractLibraryAccess().getDeclaredNameAssignment_1()); 
+            // InternalContract.g:1583:2: ( rule__ContractLibrary__DeclaredNameAssignment_1 )
+            // InternalContract.g:1583:3: rule__ContractLibrary__DeclaredNameAssignment_1
             {
             pushFollow(FOLLOW_2);
-            rule__ContractLibrary__NameAssignment_1();
+            rule__ContractLibrary__DeclaredNameAssignment_1();
 
             state._fsp--;
 
 
             }
 
-             after(grammarAccess.getContractLibraryAccess().getNameAssignment_1()); 
+             after(grammarAccess.getContractLibraryAccess().getDeclaredNameAssignment_1()); 
 
             }
 
@@ -5612,31 +5612,31 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__Contract__Group__1__Impl"
-    // InternalContract.g:1684:1: rule__Contract__Group__1__Impl : ( ( rule__Contract__NameAssignment_1 ) ) ;
+    // InternalContract.g:1684:1: rule__Contract__Group__1__Impl : ( ( rule__Contract__DeclaredNameAssignment_1 ) ) ;
     public final void rule__Contract__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:1688:1: ( ( ( rule__Contract__NameAssignment_1 ) ) )
-            // InternalContract.g:1689:1: ( ( rule__Contract__NameAssignment_1 ) )
+            // InternalContract.g:1688:1: ( ( ( rule__Contract__DeclaredNameAssignment_1 ) ) )
+            // InternalContract.g:1689:1: ( ( rule__Contract__DeclaredNameAssignment_1 ) )
             {
-            // InternalContract.g:1689:1: ( ( rule__Contract__NameAssignment_1 ) )
-            // InternalContract.g:1690:2: ( rule__Contract__NameAssignment_1 )
+            // InternalContract.g:1689:1: ( ( rule__Contract__DeclaredNameAssignment_1 ) )
+            // InternalContract.g:1690:2: ( rule__Contract__DeclaredNameAssignment_1 )
             {
-             before(grammarAccess.getContractAccess().getNameAssignment_1()); 
-            // InternalContract.g:1691:2: ( rule__Contract__NameAssignment_1 )
-            // InternalContract.g:1691:3: rule__Contract__NameAssignment_1
+             before(grammarAccess.getContractAccess().getDeclaredNameAssignment_1()); 
+            // InternalContract.g:1691:2: ( rule__Contract__DeclaredNameAssignment_1 )
+            // InternalContract.g:1691:3: rule__Contract__DeclaredNameAssignment_1
             {
             pushFollow(FOLLOW_2);
-            rule__Contract__NameAssignment_1();
+            rule__Contract__DeclaredNameAssignment_1();
 
             state._fsp--;
 
 
             }
 
-             after(grammarAccess.getContractAccess().getNameAssignment_1()); 
+             after(grammarAccess.getContractAccess().getDeclaredNameAssignment_1()); 
 
             }
 
@@ -9682,31 +9682,31 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__Implementation__Group__2__Impl"
-    // InternalContract.g:3034:1: rule__Implementation__Group__2__Impl : ( ( rule__Implementation__NameAssignment_2 ) ) ;
+    // InternalContract.g:3034:1: rule__Implementation__Group__2__Impl : ( ( rule__Implementation__DeclaredNameAssignment_2 ) ) ;
     public final void rule__Implementation__Group__2__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:3038:1: ( ( ( rule__Implementation__NameAssignment_2 ) ) )
-            // InternalContract.g:3039:1: ( ( rule__Implementation__NameAssignment_2 ) )
+            // InternalContract.g:3038:1: ( ( ( rule__Implementation__DeclaredNameAssignment_2 ) ) )
+            // InternalContract.g:3039:1: ( ( rule__Implementation__DeclaredNameAssignment_2 ) )
             {
-            // InternalContract.g:3039:1: ( ( rule__Implementation__NameAssignment_2 ) )
-            // InternalContract.g:3040:2: ( rule__Implementation__NameAssignment_2 )
+            // InternalContract.g:3039:1: ( ( rule__Implementation__DeclaredNameAssignment_2 ) )
+            // InternalContract.g:3040:2: ( rule__Implementation__DeclaredNameAssignment_2 )
             {
-             before(grammarAccess.getImplementationAccess().getNameAssignment_2()); 
-            // InternalContract.g:3041:2: ( rule__Implementation__NameAssignment_2 )
-            // InternalContract.g:3041:3: rule__Implementation__NameAssignment_2
+             before(grammarAccess.getImplementationAccess().getDeclaredNameAssignment_2()); 
+            // InternalContract.g:3041:2: ( rule__Implementation__DeclaredNameAssignment_2 )
+            // InternalContract.g:3041:3: rule__Implementation__DeclaredNameAssignment_2
             {
             pushFollow(FOLLOW_2);
-            rule__Implementation__NameAssignment_2();
+            rule__Implementation__DeclaredNameAssignment_2();
 
             state._fsp--;
 
 
             }
 
-             after(grammarAccess.getImplementationAccess().getNameAssignment_2()); 
+             after(grammarAccess.getImplementationAccess().getDeclaredNameAssignment_2()); 
 
             }
 
@@ -10072,31 +10072,31 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__Domain__Group__1__Impl"
-    // InternalContract.g:3169:1: rule__Domain__Group__1__Impl : ( ( rule__Domain__NameAssignment_1 ) ) ;
+    // InternalContract.g:3169:1: rule__Domain__Group__1__Impl : ( ( rule__Domain__DeclaredNameAssignment_1 ) ) ;
     public final void rule__Domain__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:3173:1: ( ( ( rule__Domain__NameAssignment_1 ) ) )
-            // InternalContract.g:3174:1: ( ( rule__Domain__NameAssignment_1 ) )
+            // InternalContract.g:3173:1: ( ( ( rule__Domain__DeclaredNameAssignment_1 ) ) )
+            // InternalContract.g:3174:1: ( ( rule__Domain__DeclaredNameAssignment_1 ) )
             {
-            // InternalContract.g:3174:1: ( ( rule__Domain__NameAssignment_1 ) )
-            // InternalContract.g:3175:2: ( rule__Domain__NameAssignment_1 )
+            // InternalContract.g:3174:1: ( ( rule__Domain__DeclaredNameAssignment_1 ) )
+            // InternalContract.g:3175:2: ( rule__Domain__DeclaredNameAssignment_1 )
             {
-             before(grammarAccess.getDomainAccess().getNameAssignment_1()); 
-            // InternalContract.g:3176:2: ( rule__Domain__NameAssignment_1 )
-            // InternalContract.g:3176:3: rule__Domain__NameAssignment_1
+             before(grammarAccess.getDomainAccess().getDeclaredNameAssignment_1()); 
+            // InternalContract.g:3176:2: ( rule__Domain__DeclaredNameAssignment_1 )
+            // InternalContract.g:3176:3: rule__Domain__DeclaredNameAssignment_1
             {
             pushFollow(FOLLOW_2);
-            rule__Domain__NameAssignment_1();
+            rule__Domain__DeclaredNameAssignment_1();
 
             state._fsp--;
 
 
             }
 
-             after(grammarAccess.getDomainAccess().getNameAssignment_1()); 
+             after(grammarAccess.getDomainAccess().getDeclaredNameAssignment_1()); 
 
             }
 
@@ -10873,31 +10873,31 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__Argument__Group__1__Impl"
-    // InternalContract.g:3439:1: rule__Argument__Group__1__Impl : ( ( rule__Argument__NameAssignment_1 ) ) ;
+    // InternalContract.g:3439:1: rule__Argument__Group__1__Impl : ( ( rule__Argument__DeclaredNameAssignment_1 ) ) ;
     public final void rule__Argument__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:3443:1: ( ( ( rule__Argument__NameAssignment_1 ) ) )
-            // InternalContract.g:3444:1: ( ( rule__Argument__NameAssignment_1 ) )
+            // InternalContract.g:3443:1: ( ( ( rule__Argument__DeclaredNameAssignment_1 ) ) )
+            // InternalContract.g:3444:1: ( ( rule__Argument__DeclaredNameAssignment_1 ) )
             {
-            // InternalContract.g:3444:1: ( ( rule__Argument__NameAssignment_1 ) )
-            // InternalContract.g:3445:2: ( rule__Argument__NameAssignment_1 )
+            // InternalContract.g:3444:1: ( ( rule__Argument__DeclaredNameAssignment_1 ) )
+            // InternalContract.g:3445:2: ( rule__Argument__DeclaredNameAssignment_1 )
             {
-             before(grammarAccess.getArgumentAccess().getNameAssignment_1()); 
-            // InternalContract.g:3446:2: ( rule__Argument__NameAssignment_1 )
-            // InternalContract.g:3446:3: rule__Argument__NameAssignment_1
+             before(grammarAccess.getArgumentAccess().getDeclaredNameAssignment_1()); 
+            // InternalContract.g:3446:2: ( rule__Argument__DeclaredNameAssignment_1 )
+            // InternalContract.g:3446:3: rule__Argument__DeclaredNameAssignment_1
             {
             pushFollow(FOLLOW_2);
-            rule__Argument__NameAssignment_1();
+            rule__Argument__DeclaredNameAssignment_1();
 
             state._fsp--;
 
 
             }
 
-             after(grammarAccess.getArgumentAccess().getNameAssignment_1()); 
+             after(grammarAccess.getArgumentAccess().getDeclaredNameAssignment_1()); 
 
             }
 
@@ -14279,31 +14279,31 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__VerificationPlan__Group__2__Impl"
-    // InternalContract.g:4600:1: rule__VerificationPlan__Group__2__Impl : ( ( rule__VerificationPlan__NameAssignment_2 ) ) ;
+    // InternalContract.g:4600:1: rule__VerificationPlan__Group__2__Impl : ( ( rule__VerificationPlan__DeclaredNameAssignment_2 ) ) ;
     public final void rule__VerificationPlan__Group__2__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:4604:1: ( ( ( rule__VerificationPlan__NameAssignment_2 ) ) )
-            // InternalContract.g:4605:1: ( ( rule__VerificationPlan__NameAssignment_2 ) )
+            // InternalContract.g:4604:1: ( ( ( rule__VerificationPlan__DeclaredNameAssignment_2 ) ) )
+            // InternalContract.g:4605:1: ( ( rule__VerificationPlan__DeclaredNameAssignment_2 ) )
             {
-            // InternalContract.g:4605:1: ( ( rule__VerificationPlan__NameAssignment_2 ) )
-            // InternalContract.g:4606:2: ( rule__VerificationPlan__NameAssignment_2 )
+            // InternalContract.g:4605:1: ( ( rule__VerificationPlan__DeclaredNameAssignment_2 ) )
+            // InternalContract.g:4606:2: ( rule__VerificationPlan__DeclaredNameAssignment_2 )
             {
-             before(grammarAccess.getVerificationPlanAccess().getNameAssignment_2()); 
-            // InternalContract.g:4607:2: ( rule__VerificationPlan__NameAssignment_2 )
-            // InternalContract.g:4607:3: rule__VerificationPlan__NameAssignment_2
+             before(grammarAccess.getVerificationPlanAccess().getDeclaredNameAssignment_2()); 
+            // InternalContract.g:4607:2: ( rule__VerificationPlan__DeclaredNameAssignment_2 )
+            // InternalContract.g:4607:3: rule__VerificationPlan__DeclaredNameAssignment_2
             {
             pushFollow(FOLLOW_2);
-            rule__VerificationPlan__NameAssignment_2();
+            rule__VerificationPlan__DeclaredNameAssignment_2();
 
             state._fsp--;
 
 
             }
 
-             after(grammarAccess.getVerificationPlanAccess().getNameAssignment_2()); 
+             after(grammarAccess.getVerificationPlanAccess().getDeclaredNameAssignment_2()); 
 
             }
 
@@ -23625,9 +23625,9 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
     // $ANTLR end "rule__QCREF__Group_2__1__Impl"
 
 
-    // $ANTLR start "rule__ContractLibrary__NameAssignment_1"
-    // InternalContract.g:7714:1: rule__ContractLibrary__NameAssignment_1 : ( RULE_ID ) ;
-    public final void rule__ContractLibrary__NameAssignment_1() throws RecognitionException {
+    // $ANTLR start "rule__ContractLibrary__DeclaredNameAssignment_1"
+    // InternalContract.g:7714:1: rule__ContractLibrary__DeclaredNameAssignment_1 : ( RULE_ID ) ;
+    public final void rule__ContractLibrary__DeclaredNameAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -23638,9 +23638,9 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
             // InternalContract.g:7719:2: ( RULE_ID )
             // InternalContract.g:7720:3: RULE_ID
             {
-             before(grammarAccess.getContractLibraryAccess().getNameIDTerminalRuleCall_1_0()); 
+             before(grammarAccess.getContractLibraryAccess().getDeclaredNameIDTerminalRuleCall_1_0()); 
             match(input,RULE_ID,FOLLOW_2); 
-             after(grammarAccess.getContractLibraryAccess().getNameIDTerminalRuleCall_1_0()); 
+             after(grammarAccess.getContractLibraryAccess().getDeclaredNameIDTerminalRuleCall_1_0()); 
 
             }
 
@@ -23659,7 +23659,7 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
         }
         return ;
     }
-    // $ANTLR end "rule__ContractLibrary__NameAssignment_1"
+    // $ANTLR end "rule__ContractLibrary__DeclaredNameAssignment_1"
 
 
     // $ANTLR start "rule__ContractLibrary__ContractElementsAssignment_3"
@@ -23703,9 +23703,9 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
     // $ANTLR end "rule__ContractLibrary__ContractElementsAssignment_3"
 
 
-    // $ANTLR start "rule__Contract__NameAssignment_1"
-    // InternalContract.g:7744:1: rule__Contract__NameAssignment_1 : ( RULE_ID ) ;
-    public final void rule__Contract__NameAssignment_1() throws RecognitionException {
+    // $ANTLR start "rule__Contract__DeclaredNameAssignment_1"
+    // InternalContract.g:7744:1: rule__Contract__DeclaredNameAssignment_1 : ( RULE_ID ) ;
+    public final void rule__Contract__DeclaredNameAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -23716,9 +23716,9 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
             // InternalContract.g:7749:2: ( RULE_ID )
             // InternalContract.g:7750:3: RULE_ID
             {
-             before(grammarAccess.getContractAccess().getNameIDTerminalRuleCall_1_0()); 
+             before(grammarAccess.getContractAccess().getDeclaredNameIDTerminalRuleCall_1_0()); 
             match(input,RULE_ID,FOLLOW_2); 
-             after(grammarAccess.getContractAccess().getNameIDTerminalRuleCall_1_0()); 
+             after(grammarAccess.getContractAccess().getDeclaredNameIDTerminalRuleCall_1_0()); 
 
             }
 
@@ -23737,7 +23737,7 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
         }
         return ;
     }
-    // $ANTLR end "rule__Contract__NameAssignment_1"
+    // $ANTLR end "rule__Contract__DeclaredNameAssignment_1"
 
 
     // $ANTLR start "rule__Contract__InputsAssignment_5_2"
@@ -24461,9 +24461,9 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
     // $ANTLR end "rule__Source__InterAssignment_1_1"
 
 
-    // $ANTLR start "rule__Implementation__NameAssignment_2"
-    // InternalContract.g:8030:1: rule__Implementation__NameAssignment_2 : ( RULE_ID ) ;
-    public final void rule__Implementation__NameAssignment_2() throws RecognitionException {
+    // $ANTLR start "rule__Implementation__DeclaredNameAssignment_2"
+    // InternalContract.g:8030:1: rule__Implementation__DeclaredNameAssignment_2 : ( RULE_ID ) ;
+    public final void rule__Implementation__DeclaredNameAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -24474,9 +24474,9 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
             // InternalContract.g:8035:2: ( RULE_ID )
             // InternalContract.g:8036:3: RULE_ID
             {
-             before(grammarAccess.getImplementationAccess().getNameIDTerminalRuleCall_2_0()); 
+             before(grammarAccess.getImplementationAccess().getDeclaredNameIDTerminalRuleCall_2_0()); 
             match(input,RULE_ID,FOLLOW_2); 
-             after(grammarAccess.getImplementationAccess().getNameIDTerminalRuleCall_2_0()); 
+             after(grammarAccess.getImplementationAccess().getDeclaredNameIDTerminalRuleCall_2_0()); 
 
             }
 
@@ -24495,7 +24495,7 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
         }
         return ;
     }
-    // $ANTLR end "rule__Implementation__NameAssignment_2"
+    // $ANTLR end "rule__Implementation__DeclaredNameAssignment_2"
 
 
     // $ANTLR start "rule__Implementation__CodeAssignment_4"
@@ -24539,9 +24539,9 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
     // $ANTLR end "rule__Implementation__CodeAssignment_4"
 
 
-    // $ANTLR start "rule__Domain__NameAssignment_1"
-    // InternalContract.g:8060:1: rule__Domain__NameAssignment_1 : ( RULE_ID ) ;
-    public final void rule__Domain__NameAssignment_1() throws RecognitionException {
+    // $ANTLR start "rule__Domain__DeclaredNameAssignment_1"
+    // InternalContract.g:8060:1: rule__Domain__DeclaredNameAssignment_1 : ( RULE_ID ) ;
+    public final void rule__Domain__DeclaredNameAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -24552,9 +24552,9 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
             // InternalContract.g:8065:2: ( RULE_ID )
             // InternalContract.g:8066:3: RULE_ID
             {
-             before(grammarAccess.getDomainAccess().getNameIDTerminalRuleCall_1_0()); 
+             before(grammarAccess.getDomainAccess().getDeclaredNameIDTerminalRuleCall_1_0()); 
             match(input,RULE_ID,FOLLOW_2); 
-             after(grammarAccess.getDomainAccess().getNameIDTerminalRuleCall_1_0()); 
+             after(grammarAccess.getDomainAccess().getDeclaredNameIDTerminalRuleCall_1_0()); 
 
             }
 
@@ -24573,7 +24573,7 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
         }
         return ;
     }
-    // $ANTLR end "rule__Domain__NameAssignment_1"
+    // $ANTLR end "rule__Domain__DeclaredNameAssignment_1"
 
 
     // $ANTLR start "rule__Domain__CodeAssignment_4_1"
@@ -24617,9 +24617,9 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
     // $ANTLR end "rule__Domain__CodeAssignment_4_1"
 
 
-    // $ANTLR start "rule__Argument__NameAssignment_1"
-    // InternalContract.g:8090:1: rule__Argument__NameAssignment_1 : ( RULE_ID ) ;
-    public final void rule__Argument__NameAssignment_1() throws RecognitionException {
+    // $ANTLR start "rule__Argument__DeclaredNameAssignment_1"
+    // InternalContract.g:8090:1: rule__Argument__DeclaredNameAssignment_1 : ( RULE_ID ) ;
+    public final void rule__Argument__DeclaredNameAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -24630,9 +24630,9 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
             // InternalContract.g:8095:2: ( RULE_ID )
             // InternalContract.g:8096:3: RULE_ID
             {
-             before(grammarAccess.getArgumentAccess().getNameIDTerminalRuleCall_1_0()); 
+             before(grammarAccess.getArgumentAccess().getDeclaredNameIDTerminalRuleCall_1_0()); 
             match(input,RULE_ID,FOLLOW_2); 
-             after(grammarAccess.getArgumentAccess().getNameIDTerminalRuleCall_1_0()); 
+             after(grammarAccess.getArgumentAccess().getDeclaredNameIDTerminalRuleCall_1_0()); 
 
             }
 
@@ -24651,7 +24651,7 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
         }
         return ;
     }
-    // $ANTLR end "rule__Argument__NameAssignment_1"
+    // $ANTLR end "rule__Argument__DeclaredNameAssignment_1"
 
 
     // $ANTLR start "rule__Argument__GuaranteeAssignment_4_2"
@@ -24875,9 +24875,9 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
     // $ANTLR end "rule__ArgumentTerm__NestedAssignment_2"
 
 
-    // $ANTLR start "rule__VerificationPlan__NameAssignment_2"
-    // InternalContract.g:8188:1: rule__VerificationPlan__NameAssignment_2 : ( RULE_ID ) ;
-    public final void rule__VerificationPlan__NameAssignment_2() throws RecognitionException {
+    // $ANTLR start "rule__VerificationPlan__DeclaredNameAssignment_2"
+    // InternalContract.g:8188:1: rule__VerificationPlan__DeclaredNameAssignment_2 : ( RULE_ID ) ;
+    public final void rule__VerificationPlan__DeclaredNameAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -24888,9 +24888,9 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
             // InternalContract.g:8193:2: ( RULE_ID )
             // InternalContract.g:8194:3: RULE_ID
             {
-             before(grammarAccess.getVerificationPlanAccess().getNameIDTerminalRuleCall_2_0()); 
+             before(grammarAccess.getVerificationPlanAccess().getDeclaredNameIDTerminalRuleCall_2_0()); 
             match(input,RULE_ID,FOLLOW_2); 
-             after(grammarAccess.getVerificationPlanAccess().getNameIDTerminalRuleCall_2_0()); 
+             after(grammarAccess.getVerificationPlanAccess().getDeclaredNameIDTerminalRuleCall_2_0()); 
 
             }
 
@@ -24909,7 +24909,7 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
         }
         return ;
     }
-    // $ANTLR end "rule__VerificationPlan__NameAssignment_2"
+    // $ANTLR end "rule__VerificationPlan__DeclaredNameAssignment_2"
 
 
     // $ANTLR start "rule__VerificationPlan__ComponentImplementationAssignment_7"

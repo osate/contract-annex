@@ -65,30 +65,30 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.sysmlv2.contract.Contract.ContractLibrary");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cPackageKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Assignment cDeclaredNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cDeclaredNameIDTerminalRuleCall_1_0 = (RuleCall)cDeclaredNameAssignment_1.eContents().get(0);
 		private final Keyword cSemicolonKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Assignment cContractElementsAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cContractElementsContractElementParserRuleCall_3_0 = (RuleCall)cContractElementsAssignment_3.eContents().get(0);
 		
 		//ContractLibrary:
-		//    'package' name = ID ';'
+		//    'package' declaredName = ID ';'
 		//    contractElements+=ContractElement*
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'package' name = ID ';'
+		//'package' declaredName = ID ';'
 		//contractElements+=ContractElement*
 		public Group getGroup() { return cGroup; }
 		
 		//'package'
 		public Keyword getPackageKeyword_0() { return cPackageKeyword_0; }
 		
-		//name = ID
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		//declaredName = ID
+		public Assignment getDeclaredNameAssignment_1() { return cDeclaredNameAssignment_1; }
 		
 		//ID
-		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		public RuleCall getDeclaredNameIDTerminalRuleCall_1_0() { return cDeclaredNameIDTerminalRuleCall_1_0; }
 		
 		//';'
 		public Keyword getSemicolonKeyword_2() { return cSemicolonKeyword_2; }
@@ -165,8 +165,8 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.sysmlv2.contract.Contract.Contract");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cContractKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Assignment cDeclaredNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cDeclaredNameIDTerminalRuleCall_1_0 = (RuleCall)cDeclaredNameAssignment_1.eContents().get(0);
 		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
 		private final Keyword cDomainsKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
@@ -196,7 +196,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final Keyword cRightCurlyBracketKeyword_9 = (Keyword)cGroup.eContents().get(9);
 		
 		//Contract:
-		//    'contract' name=ID '{'
+		//    'contract' declaredName=ID '{'
 		//    ('domains'
 		//        Domains
 		//    )?
@@ -219,7 +219,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'contract' name=ID '{'
+		//'contract' declaredName=ID '{'
 		//('domains'
 		//    Domains
 		//)?
@@ -244,11 +244,11 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//'contract'
 		public Keyword getContractKeyword_0() { return cContractKeyword_0; }
 		
-		//name=ID
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		//declaredName=ID
+		public Assignment getDeclaredNameAssignment_1() { return cDeclaredNameAssignment_1; }
 		
 		//ID
-		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		public RuleCall getDeclaredNameIDTerminalRuleCall_1_0() { return cDeclaredNameIDTerminalRuleCall_1_0; }
 		
 		//'{'
 		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
@@ -678,21 +678,21 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cContractKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Keyword cImplementationKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cNameIDTerminalRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
+		private final Assignment cDeclaredNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cDeclaredNameIDTerminalRuleCall_2_0 = (RuleCall)cDeclaredNameAssignment_2.eContents().get(0);
 		private final Keyword cLeftCurlyBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		private final Assignment cCodeAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final RuleCall cCodeSourceParserRuleCall_4_0 = (RuleCall)cCodeAssignment_4.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_5 = (Keyword)cGroup.eContents().get(5);
 		
 		//Implementation:
-		//    'contract' 'implementation' name=ID '{'
+		//    'contract' 'implementation' declaredName=ID '{'
 		//        code=Source
 		//    '}'
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'contract' 'implementation' name=ID '{'
+		//'contract' 'implementation' declaredName=ID '{'
 		//    code=Source
 		//'}'
 		public Group getGroup() { return cGroup; }
@@ -703,11 +703,11 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//'implementation'
 		public Keyword getImplementationKeyword_1() { return cImplementationKeyword_1; }
 		
-		//name=ID
-		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
+		//declaredName=ID
+		public Assignment getDeclaredNameAssignment_2() { return cDeclaredNameAssignment_2; }
 		
 		//ID
-		public RuleCall getNameIDTerminalRuleCall_2_0() { return cNameIDTerminalRuleCall_2_0; }
+		public RuleCall getDeclaredNameIDTerminalRuleCall_2_0() { return cDeclaredNameIDTerminalRuleCall_2_0; }
 		
 		//'{'
 		public Keyword getLeftCurlyBracketKeyword_3() { return cLeftCurlyBracketKeyword_3; }
@@ -725,8 +725,8 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.sysmlv2.contract.Contract.Domain");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cDomainKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Assignment cDeclaredNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cDeclaredNameIDTerminalRuleCall_1_0 = (RuleCall)cDeclaredNameAssignment_1.eContents().get(0);
 		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
 		private final Keyword cQueriesKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
@@ -738,7 +738,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final Keyword cRightCurlyBracketKeyword_5 = (Keyword)cGroup.eContents().get(5);
 		
 		//Domain:
-		//    'domain' name=ID '{'
+		//    'domain' declaredName=ID '{'
 		//    ('queries'
 		//        Queries
 		//    )?
@@ -749,7 +749,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'domain' name=ID '{'
+		//'domain' declaredName=ID '{'
 		//('queries'
 		//    Queries
 		//)?
@@ -762,11 +762,11 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//'domain'
 		public Keyword getDomainKeyword_0() { return cDomainKeyword_0; }
 		
-		//name=ID
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		//declaredName=ID
+		public Assignment getDeclaredNameAssignment_1() { return cDeclaredNameAssignment_1; }
 		
 		//ID
-		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		public RuleCall getDeclaredNameIDTerminalRuleCall_1_0() { return cDeclaredNameIDTerminalRuleCall_1_0; }
 		
 		//'{'
 		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
@@ -803,8 +803,8 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.sysmlv2.contract.Contract.Argument");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cArgumentKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Assignment cDeclaredNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cDeclaredNameIDTerminalRuleCall_1_0 = (RuleCall)cDeclaredNameAssignment_1.eContents().get(0);
 		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
 		private final Keyword cDomainsKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
@@ -823,7 +823,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
 		//Argument:
-		//    'argument' name=ID '{'
+		//    'argument' declaredName=ID '{'
 		//    ('domains'
 		//        Domains
 		//    )?
@@ -837,7 +837,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'argument' name=ID '{'
+		//'argument' declaredName=ID '{'
 		//('domains'
 		//    Domains
 		//)?
@@ -853,11 +853,11 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//'argument'
 		public Keyword getArgumentKeyword_0() { return cArgumentKeyword_0; }
 		
-		//name=ID
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		//declaredName=ID
+		public Assignment getDeclaredNameAssignment_1() { return cDeclaredNameAssignment_1; }
 		
 		//ID
-		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		public RuleCall getDeclaredNameIDTerminalRuleCall_1_0() { return cDeclaredNameIDTerminalRuleCall_1_0; }
 		
 		//'{'
 		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
@@ -1166,8 +1166,8 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cVerificationKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Keyword cPlanKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cNameIDTerminalRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
+		private final Assignment cDeclaredNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cDeclaredNameIDTerminalRuleCall_2_0 = (RuleCall)cDeclaredNameAssignment_2.eContents().get(0);
 		private final Keyword cLeftCurlyBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		private final Keyword cComponentKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		private final RuleCall cIDTerminalRuleCall_5 = (RuleCall)cGroup.eContents().get(5);
@@ -1192,7 +1192,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final Keyword cRightCurlyBracketKeyword_12 = (Keyword)cGroup.eContents().get(12);
 		
 		//VerificationPlan:
-		//    'verification' 'plan' name=ID '{'
+		//    'verification' 'plan' declaredName=ID '{'
 		//    'component'
 		////        ID ':' componentImplementation=[aadl2::ComponentImplementation|QCREF] ';'
 		//        ID ':' componentImplementation=[sysmlv2::OccurrenceDefinition|QCREF] ';'
@@ -1209,7 +1209,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//    'verification' 'plan' name=ID '{'
+		//    'verification' 'plan' declaredName=ID '{'
 		//    'component'
 		////        ID ':' componentImplementation=[aadl2::ComponentImplementation|QCREF] ';'
 		//        ID ':' componentImplementation=[sysmlv2::OccurrenceDefinition|QCREF] ';'
@@ -1231,11 +1231,11 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//'plan'
 		public Keyword getPlanKeyword_1() { return cPlanKeyword_1; }
 		
-		//name=ID
-		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
+		//declaredName=ID
+		public Assignment getDeclaredNameAssignment_2() { return cDeclaredNameAssignment_2; }
 		
 		//ID
-		public RuleCall getNameIDTerminalRuleCall_2_0() { return cNameIDTerminalRuleCall_2_0; }
+		public RuleCall getDeclaredNameIDTerminalRuleCall_2_0() { return cDeclaredNameIDTerminalRuleCall_2_0; }
 		
 		//'{'
 		public Keyword getLeftCurlyBracketKeyword_3() { return cLeftCurlyBracketKeyword_3; }
@@ -2528,7 +2528,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	}
 	
 	//ContractLibrary:
-	//    'package' name = ID ';'
+	//    'package' declaredName = ID ';'
 	//    contractElements+=ContractElement*
 	//;
 	public ContractLibraryElements getContractLibraryAccess() {
@@ -2562,7 +2562,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	}
 	
 	//Contract:
-	//    'contract' name=ID '{'
+	//    'contract' declaredName=ID '{'
 	//    ('domains'
 	//        Domains
 	//    )?
@@ -2709,7 +2709,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	}
 	
 	//Implementation:
-	//    'contract' 'implementation' name=ID '{'
+	//    'contract' 'implementation' declaredName=ID '{'
 	//        code=Source
 	//    '}'
 	//;
@@ -2722,7 +2722,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	}
 	
 	//Domain:
-	//    'domain' name=ID '{'
+	//    'domain' declaredName=ID '{'
 	//    ('queries'
 	//        Queries
 	//    )?
@@ -2740,7 +2740,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	}
 	
 	//Argument:
-	//    'argument' name=ID '{'
+	//    'argument' declaredName=ID '{'
 	//    ('domains'
 	//        Domains
 	//    )?
@@ -2832,7 +2832,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	}
 	
 	//VerificationPlan:
-	//    'verification' 'plan' name=ID '{'
+	//    'verification' 'plan' declaredName=ID '{'
 	//    'component'
 	////        ID ':' componentImplementation=[aadl2::ComponentImplementation|QCREF] ';'
 	//        ID ':' componentImplementation=[sysmlv2::OccurrenceDefinition|QCREF] ';'

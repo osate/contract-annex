@@ -38,7 +38,7 @@ Root returns sysmlv2::Element:
 ;
 
 ContractLibrary:
-	'package' name = ID ';'
+	'package' declaredName = ID ';'
 	contractElements+=ContractElement*
 ;
 
@@ -51,7 +51,7 @@ ContractElement:
 ;
 
 Contract:
-	'contract' name=ID '{'
+	'contract' declaredName=ID '{'
 	('domains'
 		Domains
 	)?
@@ -122,13 +122,13 @@ Source:
 ;
 
 Implementation:
-	'contract' 'implementation' name=ID '{'
+	'contract' 'implementation' declaredName=ID '{'
 		code=Source
 	'}'
 ;
 
 Domain:
-	'domain' name=ID '{'
+	'domain' declaredName=ID '{'
 	('queries' 
 		Queries
 	)?
@@ -139,7 +139,7 @@ Domain:
 ;
 
 Argument:
-	'argument' name=ID '{'
+	'argument' declaredName=ID '{'
 	('domains'
 		Domains
 	)?
@@ -190,7 +190,7 @@ fragment ArgumentTerm*:
 ;
 
 VerificationPlan:
-	'verification' 'plan' name=ID '{'
+	'verification' 'plan' declaredName=ID '{'
 	'component'
 //		ID ':' componentImplementation=[aadl2::ComponentImplementation|QCREF] ';'
 		ID ':' componentImplementation=[sysmlv2::OccurrenceDefinition|QCREF] ';'

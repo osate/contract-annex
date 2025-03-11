@@ -1579,9 +1579,9 @@ rule__ContractLibrary__Group__1__Impl
 	}
 :
 (
-	{ before(grammarAccess.getContractLibraryAccess().getNameAssignment_1()); }
-	(rule__ContractLibrary__NameAssignment_1)
-	{ after(grammarAccess.getContractLibraryAccess().getNameAssignment_1()); }
+	{ before(grammarAccess.getContractLibraryAccess().getDeclaredNameAssignment_1()); }
+	(rule__ContractLibrary__DeclaredNameAssignment_1)
+	{ after(grammarAccess.getContractLibraryAccess().getDeclaredNameAssignment_1()); }
 )
 ;
 finally {
@@ -1687,9 +1687,9 @@ rule__Contract__Group__1__Impl
 	}
 :
 (
-	{ before(grammarAccess.getContractAccess().getNameAssignment_1()); }
-	(rule__Contract__NameAssignment_1)
-	{ after(grammarAccess.getContractAccess().getNameAssignment_1()); }
+	{ before(grammarAccess.getContractAccess().getDeclaredNameAssignment_1()); }
+	(rule__Contract__DeclaredNameAssignment_1)
+	{ after(grammarAccess.getContractAccess().getDeclaredNameAssignment_1()); }
 )
 ;
 finally {
@@ -3037,9 +3037,9 @@ rule__Implementation__Group__2__Impl
 	}
 :
 (
-	{ before(grammarAccess.getImplementationAccess().getNameAssignment_2()); }
-	(rule__Implementation__NameAssignment_2)
-	{ after(grammarAccess.getImplementationAccess().getNameAssignment_2()); }
+	{ before(grammarAccess.getImplementationAccess().getDeclaredNameAssignment_2()); }
+	(rule__Implementation__DeclaredNameAssignment_2)
+	{ after(grammarAccess.getImplementationAccess().getDeclaredNameAssignment_2()); }
 )
 ;
 finally {
@@ -3172,9 +3172,9 @@ rule__Domain__Group__1__Impl
 	}
 :
 (
-	{ before(grammarAccess.getDomainAccess().getNameAssignment_1()); }
-	(rule__Domain__NameAssignment_1)
-	{ after(grammarAccess.getDomainAccess().getNameAssignment_1()); }
+	{ before(grammarAccess.getDomainAccess().getDeclaredNameAssignment_1()); }
+	(rule__Domain__DeclaredNameAssignment_1)
+	{ after(grammarAccess.getDomainAccess().getDeclaredNameAssignment_1()); }
 )
 ;
 finally {
@@ -3442,9 +3442,9 @@ rule__Argument__Group__1__Impl
 	}
 :
 (
-	{ before(grammarAccess.getArgumentAccess().getNameAssignment_1()); }
-	(rule__Argument__NameAssignment_1)
-	{ after(grammarAccess.getArgumentAccess().getNameAssignment_1()); }
+	{ before(grammarAccess.getArgumentAccess().getDeclaredNameAssignment_1()); }
+	(rule__Argument__DeclaredNameAssignment_1)
+	{ after(grammarAccess.getArgumentAccess().getDeclaredNameAssignment_1()); }
 )
 ;
 finally {
@@ -4603,9 +4603,9 @@ rule__VerificationPlan__Group__2__Impl
 	}
 :
 (
-	{ before(grammarAccess.getVerificationPlanAccess().getNameAssignment_2()); }
-	(rule__VerificationPlan__NameAssignment_2)
-	{ after(grammarAccess.getVerificationPlanAccess().getNameAssignment_2()); }
+	{ before(grammarAccess.getVerificationPlanAccess().getDeclaredNameAssignment_2()); }
+	(rule__VerificationPlan__DeclaredNameAssignment_2)
+	{ after(grammarAccess.getVerificationPlanAccess().getDeclaredNameAssignment_2()); }
 )
 ;
 finally {
@@ -7711,15 +7711,15 @@ finally {
 }
 
 
-rule__ContractLibrary__NameAssignment_1
+rule__ContractLibrary__DeclaredNameAssignment_1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getContractLibraryAccess().getNameIDTerminalRuleCall_1_0()); }
+		{ before(grammarAccess.getContractLibraryAccess().getDeclaredNameIDTerminalRuleCall_1_0()); }
 		RULE_ID
-		{ after(grammarAccess.getContractLibraryAccess().getNameIDTerminalRuleCall_1_0()); }
+		{ after(grammarAccess.getContractLibraryAccess().getDeclaredNameIDTerminalRuleCall_1_0()); }
 	)
 ;
 finally {
@@ -7741,15 +7741,15 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Contract__NameAssignment_1
+rule__Contract__DeclaredNameAssignment_1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getContractAccess().getNameIDTerminalRuleCall_1_0()); }
+		{ before(grammarAccess.getContractAccess().getDeclaredNameIDTerminalRuleCall_1_0()); }
 		RULE_ID
-		{ after(grammarAccess.getContractAccess().getNameIDTerminalRuleCall_1_0()); }
+		{ after(grammarAccess.getContractAccess().getDeclaredNameIDTerminalRuleCall_1_0()); }
 	)
 ;
 finally {
@@ -8027,15 +8027,15 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Implementation__NameAssignment_2
+rule__Implementation__DeclaredNameAssignment_2
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getImplementationAccess().getNameIDTerminalRuleCall_2_0()); }
+		{ before(grammarAccess.getImplementationAccess().getDeclaredNameIDTerminalRuleCall_2_0()); }
 		RULE_ID
-		{ after(grammarAccess.getImplementationAccess().getNameIDTerminalRuleCall_2_0()); }
+		{ after(grammarAccess.getImplementationAccess().getDeclaredNameIDTerminalRuleCall_2_0()); }
 	)
 ;
 finally {
@@ -8057,15 +8057,15 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Domain__NameAssignment_1
+rule__Domain__DeclaredNameAssignment_1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getDomainAccess().getNameIDTerminalRuleCall_1_0()); }
+		{ before(grammarAccess.getDomainAccess().getDeclaredNameIDTerminalRuleCall_1_0()); }
 		RULE_ID
-		{ after(grammarAccess.getDomainAccess().getNameIDTerminalRuleCall_1_0()); }
+		{ after(grammarAccess.getDomainAccess().getDeclaredNameIDTerminalRuleCall_1_0()); }
 	)
 ;
 finally {
@@ -8087,15 +8087,15 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Argument__NameAssignment_1
+rule__Argument__DeclaredNameAssignment_1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getArgumentAccess().getNameIDTerminalRuleCall_1_0()); }
+		{ before(grammarAccess.getArgumentAccess().getDeclaredNameIDTerminalRuleCall_1_0()); }
 		RULE_ID
-		{ after(grammarAccess.getArgumentAccess().getNameIDTerminalRuleCall_1_0()); }
+		{ after(grammarAccess.getArgumentAccess().getDeclaredNameIDTerminalRuleCall_1_0()); }
 	)
 ;
 finally {
@@ -8185,15 +8185,15 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__VerificationPlan__NameAssignment_2
+rule__VerificationPlan__DeclaredNameAssignment_2
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getVerificationPlanAccess().getNameIDTerminalRuleCall_2_0()); }
+		{ before(grammarAccess.getVerificationPlanAccess().getDeclaredNameIDTerminalRuleCall_2_0()); }
 		RULE_ID
-		{ after(grammarAccess.getVerificationPlanAccess().getNameIDTerminalRuleCall_2_0()); }
+		{ after(grammarAccess.getVerificationPlanAccess().getDeclaredNameIDTerminalRuleCall_2_0()); }
 	)
 ;
 finally {
