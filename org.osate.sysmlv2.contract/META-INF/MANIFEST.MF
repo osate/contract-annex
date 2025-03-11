@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Automatic-Module-Name: org.osate.contract
+Automatic-Module-Name: org.osate.sysmlv2.contract
 Bundle-ManifestVersion: 2
 Bundle-Name: Contract Language for SysMLv2
 Bundle-Vendor: CMU/SEI
