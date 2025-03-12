@@ -1,17 +1,12 @@
 package VerificationPlans; 
 
-verification plan verifySynchronizationSeparate {
-	component
-		s: Airbus330::FlightSystem.twoSensors; 
+verification plan verifySchedualability {
 	domains
 		FlowSynchronizationContract::schedulability; 
-		FlowSynchronizationContract::synchronization;
 	claims
-		`And([E2ESamplingJitter[i] <= E2ESamplingJitterTolerance[i]
-			for i in range(len(E2ESamplingJitter))])`;
-		`And([E2EResponses[i] <= E2ELatencies[i] for i in
-			range(len(E2EResponses))])`;
+		`And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
 	contracts
-		FlowSynchronizationContract::SamplingSynchronizationContract;
-		FlowSynchronizationContract::EndToEndDelayedCommunicationContract;
+		FlowSynchronizationContract::RMPrioritiesContract;
+		FlowSynchronizationContract::RMAHarmonicBoundContract;
+		FlowSynchronizationContract::RMANonHarmonicBoundContract;
 }
