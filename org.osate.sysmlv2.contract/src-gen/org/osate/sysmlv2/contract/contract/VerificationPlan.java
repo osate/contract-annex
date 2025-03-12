@@ -27,8 +27,6 @@ package org.osate.sysmlv2.contract.contract;
 
 import org.eclipse.emf.common.util.EList;
 
-import org.omg.sysml.lang.sysml.OccurrenceDefinition;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Verification Plan</b></em>'.
@@ -38,7 +36,6 @@ import org.omg.sysml.lang.sysml.OccurrenceDefinition;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.osate.sysmlv2.contract.contract.VerificationPlan#getComponentImplementation <em>Component Implementation</em>}</li>
  *   <li>{@link org.osate.sysmlv2.contract.contract.VerificationPlan#getDomains <em>Domains</em>}</li>
  *   <li>{@link org.osate.sysmlv2.contract.contract.VerificationPlan#getClaims <em>Claims</em>}</li>
  *   <li>{@link org.osate.sysmlv2.contract.contract.VerificationPlan#getContracts <em>Contracts</em>}</li>
@@ -50,28 +47,6 @@ import org.omg.sysml.lang.sysml.OccurrenceDefinition;
  */
 public interface VerificationPlan extends ContractElement
 {
-  /**
-   * Returns the value of the '<em><b>Component Implementation</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Component Implementation</em>' reference.
-   * @see #setComponentImplementation(OccurrenceDefinition)
-   * @see org.osate.sysmlv2.contract.contract.ContractPackage#getVerificationPlan_ComponentImplementation()
-   * @model
-   * @generated
-   */
-  OccurrenceDefinition getComponentImplementation();
-
-  /**
-   * Sets the value of the '{@link org.osate.sysmlv2.contract.contract.VerificationPlan#getComponentImplementation <em>Component Implementation</em>}' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Component Implementation</em>' reference.
-   * @see #getComponentImplementation()
-   * @generated
-   */
-  void setComponentImplementation(OccurrenceDefinition value);
-
   /**
    * Returns the value of the '<em><b>Domains</b></em>' reference list.
    * The list contents are of type {@link org.osate.sysmlv2.contract.contract.Domain}.

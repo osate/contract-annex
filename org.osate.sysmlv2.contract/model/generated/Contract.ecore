@@ -69,8 +69,6 @@
         eType="#//ArgumentExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VerificationPlan" eSuperTypes="#//ContractElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="componentImplementation"
-        eType="ecore:EClass platform:/resource/org.omg.sysml/model/SysML.ecore#//OccurrenceDefinition"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="domains" unique="false"
         upperBound="-1" eType="#//Domain"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="claims" upperBound="-1"

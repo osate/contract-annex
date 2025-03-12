@@ -39,7 +39,7 @@ public class ContractParser extends AbstractAntlrParser {
 
 	@Override
 	protected void setInitialHiddenTokens(XtextTokenStream tokenStream) {
-		tokenStream.setInitialHiddenTokens();
+		tokenStream.setInitialHiddenTokens("RULE_WS", "RULE_SL_COMMENT");
 	}
 	
 

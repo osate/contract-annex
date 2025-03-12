@@ -62,9 +62,9 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected AbstractElementAlias match_Queries_SemicolonKeyword_1_p;
 	protected AbstractElementAlias match_TerminalExpression_LeftParenthesisKeyword_3_0_a;
 	protected AbstractElementAlias match_TerminalExpression_LeftParenthesisKeyword_3_0_p;
-	protected AbstractElementAlias match_VerificationPlan_SemicolonKeyword_11_1_1_a;
-	protected AbstractElementAlias match_VerificationPlan_SemicolonKeyword_11_1_1_p;
-	protected AbstractElementAlias match_VerificationPlan___ContractsKeyword_11_0_SemicolonKeyword_11_1_1_a__q;
+	protected AbstractElementAlias match_VerificationPlan_SemicolonKeyword_6_1_1_a;
+	protected AbstractElementAlias match_VerificationPlan_SemicolonKeyword_6_1_1_p;
+	protected AbstractElementAlias match_VerificationPlan___ContractsKeyword_6_0_SemicolonKeyword_6_1_1_a__q;
 	
 	@Inject
 	protected void init(IGrammarAccess access) {
@@ -86,30 +86,16 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 		match_Queries_SemicolonKeyword_1_p = new TokenAlias(true, false, grammarAccess.getQueriesAccess().getSemicolonKeyword_1());
 		match_TerminalExpression_LeftParenthesisKeyword_3_0_a = new TokenAlias(true, true, grammarAccess.getTerminalExpressionAccess().getLeftParenthesisKeyword_3_0());
 		match_TerminalExpression_LeftParenthesisKeyword_3_0_p = new TokenAlias(true, false, grammarAccess.getTerminalExpressionAccess().getLeftParenthesisKeyword_3_0());
-		match_VerificationPlan_SemicolonKeyword_11_1_1_a = new TokenAlias(true, true, grammarAccess.getVerificationPlanAccess().getSemicolonKeyword_11_1_1());
-		match_VerificationPlan_SemicolonKeyword_11_1_1_p = new TokenAlias(true, false, grammarAccess.getVerificationPlanAccess().getSemicolonKeyword_11_1_1());
-		match_VerificationPlan___ContractsKeyword_11_0_SemicolonKeyword_11_1_1_a__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getVerificationPlanAccess().getContractsKeyword_11_0()), new TokenAlias(true, true, grammarAccess.getVerificationPlanAccess().getSemicolonKeyword_11_1_1()));
+		match_VerificationPlan_SemicolonKeyword_6_1_1_a = new TokenAlias(true, true, grammarAccess.getVerificationPlanAccess().getSemicolonKeyword_6_1_1());
+		match_VerificationPlan_SemicolonKeyword_6_1_1_p = new TokenAlias(true, false, grammarAccess.getVerificationPlanAccess().getSemicolonKeyword_6_1_1());
+		match_VerificationPlan___ContractsKeyword_6_0_SemicolonKeyword_6_1_1_a__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getVerificationPlanAccess().getContractsKeyword_6_0()), new TokenAlias(true, true, grammarAccess.getVerificationPlanAccess().getSemicolonKeyword_6_1_1()));
 	}
 	
 	@Override
 	protected String getUnassignedRuleCallToken(EObject semanticObject, RuleCall ruleCall, INode node) {
-		if (ruleCall.getRule() == grammarAccess.getIDRule())
-			return getIDToken(semanticObject, ruleCall, node);
 		return "";
 	}
 	
-	/**
-	 * terminal ID:	('a'..'z'
-	 *         |'A'..'Z'
-	 *         ) ( ('_')? ('a'..'z'
-	 *         |'A'..'Z'
-	 *         |'0'..'9'))*;
-	 */
-	protected String getIDToken(EObject semanticObject, RuleCall ruleCall, INode node) {
-		if (node != null)
-			return getTokenText(node);
-		return "";
-	}
 	
 	@Override
 	protected void emitUnassignedTokens(EObject semanticObject, ISynTransition transition, INode fromNode, INode toNode) {
@@ -151,12 +137,12 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_TerminalExpression_LeftParenthesisKeyword_3_0_a(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_TerminalExpression_LeftParenthesisKeyword_3_0_p.equals(syntax))
 				emit_TerminalExpression_LeftParenthesisKeyword_3_0_p(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_VerificationPlan_SemicolonKeyword_11_1_1_a.equals(syntax))
-				emit_VerificationPlan_SemicolonKeyword_11_1_1_a(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_VerificationPlan_SemicolonKeyword_11_1_1_p.equals(syntax))
-				emit_VerificationPlan_SemicolonKeyword_11_1_1_p(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_VerificationPlan___ContractsKeyword_11_0_SemicolonKeyword_11_1_1_a__q.equals(syntax))
-				emit_VerificationPlan___ContractsKeyword_11_0_SemicolonKeyword_11_1_1_a__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_VerificationPlan_SemicolonKeyword_6_1_1_a.equals(syntax))
+				emit_VerificationPlan_SemicolonKeyword_6_1_1_a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_VerificationPlan_SemicolonKeyword_6_1_1_p.equals(syntax))
+				emit_VerificationPlan_SemicolonKeyword_6_1_1_p(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_VerificationPlan___ContractsKeyword_6_0_SemicolonKeyword_6_1_1_a__q.equals(syntax))
+				emit_VerificationPlan___ContractsKeyword_6_0_SemicolonKeyword_6_1_1_a__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else acceptNodes(getLastNavigableState(), syntaxNodes);
 		}
 	}
@@ -296,7 +282,7 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     ';'*
 	 *
 	 * This ambiguous syntax occurs at:
-	 *     componentImplementation=[OccurrenceDefinition|QCREF] ';' 'claims' (ambiguity) claims+=Source
+	 *     declaredName=ID '{' 'claims' (ambiguity) claims+=Source
 	 *     domains+=[Domain|QPREF] ';'+ 'claims' (ambiguity) claims+=Source
 	 
 	 * </pre>
@@ -362,7 +348,6 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     ';'*
 	 *
 	 * This ambiguous syntax occurs at:
-	 *     componentImplementation=[OccurrenceDefinition|QCREF] ';' 'domains' (ambiguity) domains+=[Domain|QPREF]
 	 *     declaredName=ID '{' 'domains' (ambiguity) domains+=[Domain|QPREF]
 	 
 	 * </pre>
@@ -486,12 +471,12 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *
 	 * This ambiguous syntax occurs at:
 	 *     claims+=Source ';'+ 'contracts' (ambiguity) contracts+=[Contract|QPREF]
-	 *     componentImplementation=[OccurrenceDefinition|QCREF] ';' 'contracts' (ambiguity) contracts+=[Contract|QPREF]
+	 *     declaredName=ID '{' 'contracts' (ambiguity) contracts+=[Contract|QPREF]
 	 *     domains+=[Domain|QPREF] ';'+ 'contracts' (ambiguity) contracts+=[Contract|QPREF]
 	 
 	 * </pre>
 	 */
-	protected void emit_VerificationPlan_SemicolonKeyword_11_1_1_a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_VerificationPlan_SemicolonKeyword_6_1_1_a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -506,7 +491,7 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	 
 	 * </pre>
 	 */
-	protected void emit_VerificationPlan_SemicolonKeyword_11_1_1_p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_VerificationPlan_SemicolonKeyword_6_1_1_p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -517,12 +502,12 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *
 	 * This ambiguous syntax occurs at:
 	 *     claims+=Source ';'+ (ambiguity) '}' (rule end)
-	 *     componentImplementation=[OccurrenceDefinition|QCREF] ';' (ambiguity) '}' (rule end)
+	 *     declaredName=ID '{' (ambiguity) '}' (rule end)
 	 *     domains+=[Domain|QPREF] ';'+ (ambiguity) '}' (rule end)
 	 
 	 * </pre>
 	 */
-	protected void emit_VerificationPlan___ContractsKeyword_11_0_SemicolonKeyword_11_1_1_a__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_VerificationPlan___ContractsKeyword_6_0_SemicolonKeyword_6_1_1_a__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

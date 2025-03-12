@@ -108,10 +108,10 @@ public class ContractParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getArgumentTermAccess().getGroup_0(), "rule__ArgumentTerm__Group_0__0");
 			builder.put(grammarAccess.getArgumentTermAccess().getGroup_1(), "rule__ArgumentTerm__Group_1__0");
 			builder.put(grammarAccess.getVerificationPlanAccess().getGroup(), "rule__VerificationPlan__Group__0");
-			builder.put(grammarAccess.getVerificationPlanAccess().getGroup_9(), "rule__VerificationPlan__Group_9__0");
-			builder.put(grammarAccess.getVerificationPlanAccess().getGroup_10(), "rule__VerificationPlan__Group_10__0");
-			builder.put(grammarAccess.getVerificationPlanAccess().getGroup_11(), "rule__VerificationPlan__Group_11__0");
-			builder.put(grammarAccess.getVerificationPlanAccess().getGroup_11_1(), "rule__VerificationPlan__Group_11_1__0");
+			builder.put(grammarAccess.getVerificationPlanAccess().getGroup_4(), "rule__VerificationPlan__Group_4__0");
+			builder.put(grammarAccess.getVerificationPlanAccess().getGroup_5(), "rule__VerificationPlan__Group_5__0");
+			builder.put(grammarAccess.getVerificationPlanAccess().getGroup_6(), "rule__VerificationPlan__Group_6__0");
+			builder.put(grammarAccess.getVerificationPlanAccess().getGroup_6_1(), "rule__VerificationPlan__Group_6_1__0");
 			builder.put(grammarAccess.getClaimsAccess().getGroup(), "rule__Claims__Group__0");
 			builder.put(grammarAccess.getQueryAccess().getGroup_1(), "rule__Query__Group_1__0");
 			builder.put(grammarAccess.getQueryAccess().getGroup_1_4(), "rule__Query__Group_1_4__0");
@@ -178,8 +178,7 @@ public class ContractParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getArgumentTermAccess().getArgumentsAssignment_1_1(), "rule__ArgumentTerm__ArgumentsAssignment_1_1");
 			builder.put(grammarAccess.getArgumentTermAccess().getNestedAssignment_2(), "rule__ArgumentTerm__NestedAssignment_2");
 			builder.put(grammarAccess.getVerificationPlanAccess().getDeclaredNameAssignment_2(), "rule__VerificationPlan__DeclaredNameAssignment_2");
-			builder.put(grammarAccess.getVerificationPlanAccess().getComponentImplementationAssignment_7(), "rule__VerificationPlan__ComponentImplementationAssignment_7");
-			builder.put(grammarAccess.getVerificationPlanAccess().getContractsAssignment_11_1_0(), "rule__VerificationPlan__ContractsAssignment_11_1_0");
+			builder.put(grammarAccess.getVerificationPlanAccess().getContractsAssignment_6_1_0(), "rule__VerificationPlan__ContractsAssignment_6_1_0");
 			builder.put(grammarAccess.getClaimsAccess().getClaimsAssignment_0(), "rule__Claims__ClaimsAssignment_0");
 			builder.put(grammarAccess.getQueryAccess().getNamesAssignment_1_3(), "rule__Query__NamesAssignment_1_3");
 			builder.put(grammarAccess.getQueryAccess().getNamesAssignment_1_4_1(), "rule__Query__NamesAssignment_1_4_1");
@@ -240,7 +239,7 @@ public class ContractParser extends AbstractContentAssistParser {
 
 	@Override
 	protected String[] getInitialHiddenTokens() {
-		return new String[] {  };
+		return new String[] { "RULE_WS", "RULE_SL_COMMENT" };
 	}
 
 	public ContractGrammarAccess getGrammarAccess() {

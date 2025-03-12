@@ -23,7 +23,7 @@
  * contributors and others.
  * DM23-0575
  *******************************************************************************/
-grammar org.osate.sysmlv2.contract.Contract // with org.osate.xtext.aadl2.properties.Properties
+grammar org.osate.sysmlv2.contract.Contract hidden(WS, SL_COMMENT) // with org.osate.xtext.aadl2.properties.Properties
 
 generate contract "http://www.osate.org/contract/ContractForSysMLv2"
 
@@ -191,9 +191,9 @@ fragment ArgumentTerm*:
 
 VerificationPlan:
 	'verification' 'plan' declaredName=ID '{'
-	'component'
-//		ID ':' componentImplementation=[aadl2::ComponentImplementation|QCREF] ';'
-		ID ':' componentImplementation=[sysmlv2::OccurrenceDefinition|QCREF] ';'
+//	'component'
+////		ID ':' componentImplementation=[aadl2::ComponentImplementation|QCREF] ';'
+//		ID ':' componentImplementation=[sysmlv2::OccurrenceDefinition|QCREF] ';'
 	('domains'
 		Domains
 	)?
@@ -374,3 +374,5 @@ terminal ID:	('a'..'z'
         ) ( ('_')? ('a'..'z'
         |'A'..'Z'
         |'0'..'9'))*;
+
+terminal WS			: (' '|'\t'|'\r'|'\n')+;

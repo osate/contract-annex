@@ -1608,76 +1608,44 @@ ruleVerificationPlan returns [EObject current=null]
 		{
 			newLeafNode(otherlv_3, grammarAccess.getVerificationPlanAccess().getLeftCurlyBracketKeyword_3());
 		}
-		otherlv_4='component'
-		{
-			newLeafNode(otherlv_4, grammarAccess.getVerificationPlanAccess().getComponentKeyword_4());
-		}
-		this_ID_5=RULE_ID
-		{
-			newLeafNode(this_ID_5, grammarAccess.getVerificationPlanAccess().getIDTerminalRuleCall_5());
-		}
-		otherlv_6=':'
-		{
-			newLeafNode(otherlv_6, grammarAccess.getVerificationPlanAccess().getColonKeyword_6());
-		}
 		(
-			(
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getVerificationPlanRule());
-					}
-				}
-				{
-					newCompositeNode(grammarAccess.getVerificationPlanAccess().getComponentImplementationOccurrenceDefinitionCrossReference_7_0());
-				}
-				ruleQCREF
-				{
-					afterParserOrEnumRuleCall();
-				}
-			)
-		)
-		otherlv_8=';'
-		{
-			newLeafNode(otherlv_8, grammarAccess.getVerificationPlanAccess().getSemicolonKeyword_8());
-		}
-		(
-			otherlv_9='domains'
+			otherlv_4='domains'
 			{
-				newLeafNode(otherlv_9, grammarAccess.getVerificationPlanAccess().getDomainsKeyword_9_0());
+				newLeafNode(otherlv_4, grammarAccess.getVerificationPlanAccess().getDomainsKeyword_4_0());
 			}
 			{
 				if ($current==null) {
 					$current = createModelElement(grammarAccess.getVerificationPlanRule());
 				}
-				newCompositeNode(grammarAccess.getVerificationPlanAccess().getDomainsParserRuleCall_9_1());
+				newCompositeNode(grammarAccess.getVerificationPlanAccess().getDomainsParserRuleCall_4_1());
 			}
-			this_Domains_10=ruleDomains[$current]
+			this_Domains_5=ruleDomains[$current]
 			{
-				$current = $this_Domains_10.current;
+				$current = $this_Domains_5.current;
 				afterParserOrEnumRuleCall();
 			}
 		)?
 		(
-			otherlv_11='claims'
+			otherlv_6='claims'
 			{
-				newLeafNode(otherlv_11, grammarAccess.getVerificationPlanAccess().getClaimsKeyword_10_0());
+				newLeafNode(otherlv_6, grammarAccess.getVerificationPlanAccess().getClaimsKeyword_5_0());
 			}
 			{
 				if ($current==null) {
 					$current = createModelElement(grammarAccess.getVerificationPlanRule());
 				}
-				newCompositeNode(grammarAccess.getVerificationPlanAccess().getClaimsParserRuleCall_10_1());
+				newCompositeNode(grammarAccess.getVerificationPlanAccess().getClaimsParserRuleCall_5_1());
 			}
-			this_Claims_12=ruleClaims[$current]
+			this_Claims_7=ruleClaims[$current]
 			{
-				$current = $this_Claims_12.current;
+				$current = $this_Claims_7.current;
 				afterParserOrEnumRuleCall();
 			}
 		)?
 		(
-			otherlv_13='contracts'
+			otherlv_8='contracts'
 			{
-				newLeafNode(otherlv_13, grammarAccess.getVerificationPlanAccess().getContractsKeyword_11_0());
+				newLeafNode(otherlv_8, grammarAccess.getVerificationPlanAccess().getContractsKeyword_6_0());
 			}
 			(
 				(
@@ -1688,7 +1656,7 @@ ruleVerificationPlan returns [EObject current=null]
 							}
 						}
 						{
-							newCompositeNode(grammarAccess.getVerificationPlanAccess().getContractsContractCrossReference_11_1_0_0());
+							newCompositeNode(grammarAccess.getVerificationPlanAccess().getContractsContractCrossReference_6_1_0_0());
 						}
 						ruleQPREF
 						{
@@ -1696,15 +1664,15 @@ ruleVerificationPlan returns [EObject current=null]
 						}
 					)
 				)?
-				otherlv_15=';'
+				otherlv_10=';'
 				{
-					newLeafNode(otherlv_15, grammarAccess.getVerificationPlanAccess().getSemicolonKeyword_11_1_1());
+					newLeafNode(otherlv_10, grammarAccess.getVerificationPlanAccess().getSemicolonKeyword_6_1_1());
 				}
 			)*
 		)?
-		otherlv_16='}'
+		otherlv_11='}'
 		{
-			newLeafNode(otherlv_16, grammarAccess.getVerificationPlanAccess().getRightCurlyBracketKeyword_12());
+			newLeafNode(otherlv_11, grammarAccess.getVerificationPlanAccess().getRightCurlyBracketKeyword_7());
 		}
 	)
 ;
@@ -3051,60 +3019,6 @@ ruleQPREF returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
 	)
 ;
 
-// Entry rule entryRuleQCREF
-entryRuleQCREF returns [String current=null]:
-	{ newCompositeNode(grammarAccess.getQCREFRule()); }
-	iv_ruleQCREF=ruleQCREF
-	{ $current=$iv_ruleQCREF.current.getText(); }
-	EOF;
-
-// Rule QCREF
-ruleQCREF returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		(
-			this_ID_0=RULE_ID
-			{
-				$current.merge(this_ID_0);
-			}
-			{
-				newLeafNode(this_ID_0, grammarAccess.getQCREFAccess().getIDTerminalRuleCall_0_0());
-			}
-			kw='::'
-			{
-				$current.merge(kw);
-				newLeafNode(kw, grammarAccess.getQCREFAccess().getColonColonKeyword_0_1());
-			}
-		)*
-		this_ID_2=RULE_ID
-		{
-			$current.merge(this_ID_2);
-		}
-		{
-			newLeafNode(this_ID_2, grammarAccess.getQCREFAccess().getIDTerminalRuleCall_1());
-		}
-		(
-			kw='.'
-			{
-				$current.merge(kw);
-				newLeafNode(kw, grammarAccess.getQCREFAccess().getFullStopKeyword_2_0());
-			}
-			this_ID_4=RULE_ID
-			{
-				$current.merge(this_ID_4);
-			}
-			{
-				newLeafNode(this_ID_4, grammarAccess.getQCREFAccess().getIDTerminalRuleCall_2_1());
-			}
-		)?
-	)
-;
-
 // Rule Language
 ruleLanguage returns [Enumerator current=null]
 @init {
@@ -3184,3 +3098,5 @@ RULE_SL_COMMENT : '--' ~(('\n'|'\r'))* ('\r'? '\n')?;
 RULE_STRING : ('"' ('\\' ('b'|'t'|'n'|'f'|'r'|'u'|'"'|'\''|'\\')|~(('\\'|'"')))* '"'|'\'' ('\\' ('b'|'t'|'n'|'f'|'r'|'u'|'"'|'\''|'\\')|~(('\\'|'\'')))* '\'');
 
 RULE_ID : ('a'..'z'|'A'..'Z') ('_'? ('a'..'z'|'A'..'Z'|'0'..'9'))*;
+
+RULE_WS : (' '|'\t'|'\r'|'\n')+;
