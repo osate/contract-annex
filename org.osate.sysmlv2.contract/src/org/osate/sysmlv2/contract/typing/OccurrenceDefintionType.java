@@ -42,6 +42,8 @@ public final class OccurrenceDefintionType implements Type {
 	static {
 		MEMBERS = new LinkedHashMap<>();
 		MEMBERS.put("name", new NameMember());
+		MEMBERS.put("allUsages", new AllUsagesMember());
+		MEMBERS.put("isThread", new IsThreadMember());
 //		MEMBERS.put("category", new CategoryMember());
 //		MEMBERS.put("subcomponents", new SubcomponentsMember());
 //		MEMBERS.put("allSubcomponents", new AllSubcomponentsMember());
@@ -106,6 +108,40 @@ public final class OccurrenceDefintionType implements Type {
 		@Override
 		public String evaluate(OccurrenceDefinition receiver) {
 			return receiver.getName();
+		}
+	}
+	
+	private static class AllUsagesMember implements SimpleMember<OccurrenceDefinition, List<OccurrenceDefinition>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(OccurrenceDefintionType.INSTANCE);
+		}
+	
+		@Override
+		public List<OccurrenceDefinition> evaluate(OccurrenceDefinition receiver) {
+			var result = new ArrayList<OccurrenceDefinition>();
+			
+			// TODO!
+//			receiver.eAllContents().forEachRemaining(element -> {
+//				if (element instanceof ComponentInstance subcomponent) {
+//					result.add(subcomponent);
+//				}
+//			});
+			return result;
+		}
+	}
+	
+	private static class IsThreadMember implements SimpleMember<OccurrenceDefinition, Boolean> {
+		@Override
+		public Type getReturnType() {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(OccurrenceDefinition receiver) {
+			// TODO
+			return true;
+//			return receiver.getCategory() == ComponentCategory.THREAD;
 		}
 	}
 

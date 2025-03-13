@@ -1386,28 +1386,28 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.sysmlv2.contract.Contract.SingleValDeclaration");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cValKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Assignment cDeclaredNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cDeclaredNameIDTerminalRuleCall_1_0 = (RuleCall)cDeclaredNameAssignment_1.eContents().get(0);
 		private final Keyword cEqualsSignKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Assignment cValueAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cValueExpressionParserRuleCall_3_0 = (RuleCall)cValueAssignment_3.eContents().get(0);
 		
 		//SingleValDeclaration:
-		//    'val' name=ID '=' value=Expression
+		//    'val' declaredName=ID '=' value=Expression
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'val' name=ID '=' value=Expression
+		//'val' declaredName=ID '=' value=Expression
 		public Group getGroup() { return cGroup; }
 		
 		//'val'
 		public Keyword getValKeyword_0() { return cValKeyword_0; }
 		
-		//name=ID
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		//declaredName=ID
+		public Assignment getDeclaredNameAssignment_1() { return cDeclaredNameAssignment_1; }
 		
 		//ID
-		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		public RuleCall getDeclaredNameIDTerminalRuleCall_1_0() { return cDeclaredNameIDTerminalRuleCall_1_0; }
 		
 		//'='
 		public Keyword getEqualsSignKeyword_2() { return cEqualsSignKeyword_2; }
@@ -1420,19 +1420,19 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	}
 	public class TupleNameElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.sysmlv2.contract.Contract.TupleName");
-		private final Assignment cNameAssignment = (Assignment)rule.eContents().get(1);
-		private final RuleCall cNameIDTerminalRuleCall_0 = (RuleCall)cNameAssignment.eContents().get(0);
+		private final Assignment cDeclaredNameAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cDeclaredNameIDTerminalRuleCall_0 = (RuleCall)cDeclaredNameAssignment.eContents().get(0);
 		
 		//TupleName:
-		//    name=ID
+		//    declaredName=ID
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//name=ID
-		public Assignment getNameAssignment() { return cNameAssignment; }
+		//declaredName=ID
+		public Assignment getDeclaredNameAssignment() { return cDeclaredNameAssignment; }
 		
 		//ID
-		public RuleCall getNameIDTerminalRuleCall_0() { return cNameIDTerminalRuleCall_0; }
+		public RuleCall getDeclaredNameIDTerminalRuleCall_0() { return cDeclaredNameIDTerminalRuleCall_0; }
 	}
 	public class ExpressionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.sysmlv2.contract.Contract.Expression");
@@ -1772,19 +1772,19 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	}
 	public class SingleParameterElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.sysmlv2.contract.Contract.SingleParameter");
-		private final Assignment cNameAssignment = (Assignment)rule.eContents().get(1);
-		private final RuleCall cNameIDTerminalRuleCall_0 = (RuleCall)cNameAssignment.eContents().get(0);
+		private final Assignment cDeclaredNameAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cDeclaredNameIDTerminalRuleCall_0 = (RuleCall)cDeclaredNameAssignment.eContents().get(0);
 		
 		//SingleParameter:
-		//    name=ID
+		//    declaredName=ID
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//name=ID
-		public Assignment getNameAssignment() { return cNameAssignment; }
+		//declaredName=ID
+		public Assignment getDeclaredNameAssignment() { return cDeclaredNameAssignment; }
 		
 		//ID
-		public RuleCall getNameIDTerminalRuleCall_0() { return cNameIDTerminalRuleCall_0; }
+		public RuleCall getDeclaredNameIDTerminalRuleCall_0() { return cDeclaredNameIDTerminalRuleCall_0; }
 	}
 	public class TerminalExpressionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.sysmlv2.contract.Contract.TerminalExpression");
@@ -2866,7 +2866,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	}
 	
 	//SingleValDeclaration:
-	//    'val' name=ID '=' value=Expression
+	//    'val' declaredName=ID '=' value=Expression
 	//;
 	public SingleValDeclarationElements getSingleValDeclarationAccess() {
 		return pSingleValDeclaration;
@@ -2877,7 +2877,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	}
 	
 	//TupleName:
-	//    name=ID
+	//    declaredName=ID
 	//;
 	public TupleNameElements getTupleNameAccess() {
 		return pTupleName;
@@ -2959,7 +2959,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	}
 	
 	//SingleParameter:
-	//    name=ID
+	//    declaredName=ID
 	//;
 	public SingleParameterElements getSingleParameterAccess() {
 		return pSingleParameter;

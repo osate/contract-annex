@@ -4721,12 +4721,12 @@ public class InternalContractParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleSingleValDeclaration"
-    // InternalContract.g:1840:1: ruleSingleValDeclaration returns [EObject current=null] : (otherlv_0= 'val' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= '=' ( (lv_value_3_0= ruleExpression ) ) ) ;
+    // InternalContract.g:1840:1: ruleSingleValDeclaration returns [EObject current=null] : (otherlv_0= 'val' ( (lv_declaredName_1_0= RULE_ID ) ) otherlv_2= '=' ( (lv_value_3_0= ruleExpression ) ) ) ;
     public final EObject ruleSingleValDeclaration() throws RecognitionException {
         EObject current = null;
 
         Token otherlv_0=null;
-        Token lv_name_1_0=null;
+        Token lv_declaredName_1_0=null;
         Token otherlv_2=null;
         EObject lv_value_3_0 = null;
 
@@ -4735,25 +4735,25 @@ public class InternalContractParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalContract.g:1846:2: ( (otherlv_0= 'val' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= '=' ( (lv_value_3_0= ruleExpression ) ) ) )
-            // InternalContract.g:1847:2: (otherlv_0= 'val' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= '=' ( (lv_value_3_0= ruleExpression ) ) )
+            // InternalContract.g:1846:2: ( (otherlv_0= 'val' ( (lv_declaredName_1_0= RULE_ID ) ) otherlv_2= '=' ( (lv_value_3_0= ruleExpression ) ) ) )
+            // InternalContract.g:1847:2: (otherlv_0= 'val' ( (lv_declaredName_1_0= RULE_ID ) ) otherlv_2= '=' ( (lv_value_3_0= ruleExpression ) ) )
             {
-            // InternalContract.g:1847:2: (otherlv_0= 'val' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= '=' ( (lv_value_3_0= ruleExpression ) ) )
-            // InternalContract.g:1848:3: otherlv_0= 'val' ( (lv_name_1_0= RULE_ID ) ) otherlv_2= '=' ( (lv_value_3_0= ruleExpression ) )
+            // InternalContract.g:1847:2: (otherlv_0= 'val' ( (lv_declaredName_1_0= RULE_ID ) ) otherlv_2= '=' ( (lv_value_3_0= ruleExpression ) ) )
+            // InternalContract.g:1848:3: otherlv_0= 'val' ( (lv_declaredName_1_0= RULE_ID ) ) otherlv_2= '=' ( (lv_value_3_0= ruleExpression ) )
             {
             otherlv_0=(Token)match(input,42,FOLLOW_3); 
 
             			newLeafNode(otherlv_0, grammarAccess.getSingleValDeclarationAccess().getValKeyword_0());
             		
-            // InternalContract.g:1852:3: ( (lv_name_1_0= RULE_ID ) )
-            // InternalContract.g:1853:4: (lv_name_1_0= RULE_ID )
+            // InternalContract.g:1852:3: ( (lv_declaredName_1_0= RULE_ID ) )
+            // InternalContract.g:1853:4: (lv_declaredName_1_0= RULE_ID )
             {
-            // InternalContract.g:1853:4: (lv_name_1_0= RULE_ID )
-            // InternalContract.g:1854:5: lv_name_1_0= RULE_ID
+            // InternalContract.g:1853:4: (lv_declaredName_1_0= RULE_ID )
+            // InternalContract.g:1854:5: lv_declaredName_1_0= RULE_ID
             {
-            lv_name_1_0=(Token)match(input,RULE_ID,FOLLOW_49); 
+            lv_declaredName_1_0=(Token)match(input,RULE_ID,FOLLOW_49); 
 
-            					newLeafNode(lv_name_1_0, grammarAccess.getSingleValDeclarationAccess().getNameIDTerminalRuleCall_1_0());
+            					newLeafNode(lv_declaredName_1_0, grammarAccess.getSingleValDeclarationAccess().getDeclaredNameIDTerminalRuleCall_1_0());
             				
 
             					if (current==null) {
@@ -4761,8 +4761,8 @@ public class InternalContractParser extends AbstractInternalAntlrParser {
             					}
             					setWithLastConsumed(
             						current,
-            						"name",
-            						lv_name_1_0,
+            						"declaredName",
+            						lv_declaredName_1_0,
             						"org.osate.sysmlv2.contract.Contract.ID");
             				
 
@@ -4865,28 +4865,28 @@ public class InternalContractParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleTupleName"
-    // InternalContract.g:1904:1: ruleTupleName returns [EObject current=null] : ( (lv_name_0_0= RULE_ID ) ) ;
+    // InternalContract.g:1904:1: ruleTupleName returns [EObject current=null] : ( (lv_declaredName_0_0= RULE_ID ) ) ;
     public final EObject ruleTupleName() throws RecognitionException {
         EObject current = null;
 
-        Token lv_name_0_0=null;
+        Token lv_declaredName_0_0=null;
 
 
         	enterRule();
 
         try {
-            // InternalContract.g:1910:2: ( ( (lv_name_0_0= RULE_ID ) ) )
-            // InternalContract.g:1911:2: ( (lv_name_0_0= RULE_ID ) )
+            // InternalContract.g:1910:2: ( ( (lv_declaredName_0_0= RULE_ID ) ) )
+            // InternalContract.g:1911:2: ( (lv_declaredName_0_0= RULE_ID ) )
             {
-            // InternalContract.g:1911:2: ( (lv_name_0_0= RULE_ID ) )
-            // InternalContract.g:1912:3: (lv_name_0_0= RULE_ID )
+            // InternalContract.g:1911:2: ( (lv_declaredName_0_0= RULE_ID ) )
+            // InternalContract.g:1912:3: (lv_declaredName_0_0= RULE_ID )
             {
-            // InternalContract.g:1912:3: (lv_name_0_0= RULE_ID )
-            // InternalContract.g:1913:4: lv_name_0_0= RULE_ID
+            // InternalContract.g:1912:3: (lv_declaredName_0_0= RULE_ID )
+            // InternalContract.g:1913:4: lv_declaredName_0_0= RULE_ID
             {
-            lv_name_0_0=(Token)match(input,RULE_ID,FOLLOW_2); 
+            lv_declaredName_0_0=(Token)match(input,RULE_ID,FOLLOW_2); 
 
-            				newLeafNode(lv_name_0_0, grammarAccess.getTupleNameAccess().getNameIDTerminalRuleCall_0());
+            				newLeafNode(lv_declaredName_0_0, grammarAccess.getTupleNameAccess().getDeclaredNameIDTerminalRuleCall_0());
             			
 
             				if (current==null) {
@@ -4894,8 +4894,8 @@ public class InternalContractParser extends AbstractInternalAntlrParser {
             				}
             				setWithLastConsumed(
             					current,
-            					"name",
-            					lv_name_0_0,
+            					"declaredName",
+            					lv_declaredName_0_0,
             					"org.osate.sysmlv2.contract.Contract.ID");
             			
 
@@ -6242,28 +6242,28 @@ public class InternalContractParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleSingleParameter"
-    // InternalContract.g:2452:1: ruleSingleParameter returns [EObject current=null] : ( (lv_name_0_0= RULE_ID ) ) ;
+    // InternalContract.g:2452:1: ruleSingleParameter returns [EObject current=null] : ( (lv_declaredName_0_0= RULE_ID ) ) ;
     public final EObject ruleSingleParameter() throws RecognitionException {
         EObject current = null;
 
-        Token lv_name_0_0=null;
+        Token lv_declaredName_0_0=null;
 
 
         	enterRule();
 
         try {
-            // InternalContract.g:2458:2: ( ( (lv_name_0_0= RULE_ID ) ) )
-            // InternalContract.g:2459:2: ( (lv_name_0_0= RULE_ID ) )
+            // InternalContract.g:2458:2: ( ( (lv_declaredName_0_0= RULE_ID ) ) )
+            // InternalContract.g:2459:2: ( (lv_declaredName_0_0= RULE_ID ) )
             {
-            // InternalContract.g:2459:2: ( (lv_name_0_0= RULE_ID ) )
-            // InternalContract.g:2460:3: (lv_name_0_0= RULE_ID )
+            // InternalContract.g:2459:2: ( (lv_declaredName_0_0= RULE_ID ) )
+            // InternalContract.g:2460:3: (lv_declaredName_0_0= RULE_ID )
             {
-            // InternalContract.g:2460:3: (lv_name_0_0= RULE_ID )
-            // InternalContract.g:2461:4: lv_name_0_0= RULE_ID
+            // InternalContract.g:2460:3: (lv_declaredName_0_0= RULE_ID )
+            // InternalContract.g:2461:4: lv_declaredName_0_0= RULE_ID
             {
-            lv_name_0_0=(Token)match(input,RULE_ID,FOLLOW_2); 
+            lv_declaredName_0_0=(Token)match(input,RULE_ID,FOLLOW_2); 
 
-            				newLeafNode(lv_name_0_0, grammarAccess.getSingleParameterAccess().getNameIDTerminalRuleCall_0());
+            				newLeafNode(lv_declaredName_0_0, grammarAccess.getSingleParameterAccess().getDeclaredNameIDTerminalRuleCall_0());
             			
 
             				if (current==null) {
@@ -6271,8 +6271,8 @@ public class InternalContractParser extends AbstractInternalAntlrParser {
             				}
             				setWithLastConsumed(
             					current,
-            					"name",
-            					lv_name_0_0,
+            					"declaredName",
+            					lv_declaredName_0_0,
             					"org.osate.sysmlv2.contract.Contract.ID");
             			
 

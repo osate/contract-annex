@@ -29,7 +29,7 @@ generate contract "http://www.osate.org/contract/ContractForSysMLv2"
 
 //import "http://aadl.info/AADL/2.0" as aadl2
 
-import "https://www.omg.org/spec/SysML/20240201" as sysmlv2
+import "https://www.omg.org/spec/SysML/20250201" as sysmlv2
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
 // Need this rule so I can force ContractLibrary to be an Element
@@ -220,11 +220,11 @@ Query:
 ;
 
 SingleValDeclaration:
-	'val' name=ID '=' value=Expression
+	'val' declaredName=ID '=' value=Expression
 ;
 
 TupleName:
-	name=ID
+	declaredName=ID
 ;
 
 Expression:
@@ -257,7 +257,7 @@ Parameter:
 ;
 
 SingleParameter:
-	name=ID
+	declaredName=ID
 ;
 
 TerminalExpression returns Expression:

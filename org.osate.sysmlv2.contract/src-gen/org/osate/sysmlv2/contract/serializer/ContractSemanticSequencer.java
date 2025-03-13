@@ -788,16 +788,16 @@ public class ContractSemanticSequencer extends AbstractDelegatingSemanticSequenc
 	 *     SingleParameter returns SingleParameter
 	 *
 	 * Constraint:
-	 *     name=ID
+	 *     declaredName=ID
 	 * </pre>
 	 */
 	protected void sequence_SingleParameter(ISerializationContext context, SingleParameter semanticObject) {
 		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, SysMLPackage.Literals.ELEMENT__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, SysMLPackage.Literals.ELEMENT__NAME));
+			if (transientValues.isValueTransient(semanticObject, SysMLPackage.Literals.ELEMENT__DECLARED_NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, SysMLPackage.Literals.ELEMENT__DECLARED_NAME));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getSingleParameterAccess().getNameIDTerminalRuleCall_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getSingleParameterAccess().getDeclaredNameIDTerminalRuleCall_0(), semanticObject.getDeclaredName());
 		feeder.finish();
 	}
 	
@@ -810,18 +810,18 @@ public class ContractSemanticSequencer extends AbstractDelegatingSemanticSequenc
 	 *     SingleValDeclaration returns SingleValDeclaration
 	 *
 	 * Constraint:
-	 *     (name=ID value=Expression)
+	 *     (declaredName=ID value=Expression)
 	 * </pre>
 	 */
 	protected void sequence_SingleValDeclaration(ISerializationContext context, SingleValDeclaration semanticObject) {
 		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, SysMLPackage.Literals.ELEMENT__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, SysMLPackage.Literals.ELEMENT__NAME));
+			if (transientValues.isValueTransient(semanticObject, SysMLPackage.Literals.ELEMENT__DECLARED_NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, SysMLPackage.Literals.ELEMENT__DECLARED_NAME));
 			if (transientValues.isValueTransient(semanticObject, ContractPackage.Literals.QUERY__VALUE) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ContractPackage.Literals.QUERY__VALUE));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getSingleValDeclarationAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getSingleValDeclarationAccess().getDeclaredNameIDTerminalRuleCall_1_0(), semanticObject.getDeclaredName());
 		feeder.accept(grammarAccess.getSingleValDeclarationAccess().getValueExpressionParserRuleCall_3_0(), semanticObject.getValue());
 		feeder.finish();
 	}
@@ -952,16 +952,16 @@ public class ContractSemanticSequencer extends AbstractDelegatingSemanticSequenc
 	 *     TupleName returns TupleName
 	 *
 	 * Constraint:
-	 *     name=ID
+	 *     declaredName=ID
 	 * </pre>
 	 */
 	protected void sequence_TupleName(ISerializationContext context, TupleName semanticObject) {
 		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, SysMLPackage.Literals.ELEMENT__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, SysMLPackage.Literals.ELEMENT__NAME));
+			if (transientValues.isValueTransient(semanticObject, SysMLPackage.Literals.ELEMENT__DECLARED_NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, SysMLPackage.Literals.ELEMENT__DECLARED_NAME));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getTupleNameAccess().getNameIDTerminalRuleCall_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getTupleNameAccess().getDeclaredNameIDTerminalRuleCall_0(), semanticObject.getDeclaredName());
 		feeder.finish();
 	}
 	

@@ -682,9 +682,9 @@ ruleTupleName
 	}
 	:
 	(
-		{ before(grammarAccess.getTupleNameAccess().getNameAssignment()); }
-		(rule__TupleName__NameAssignment)
-		{ after(grammarAccess.getTupleNameAccess().getNameAssignment()); }
+		{ before(grammarAccess.getTupleNameAccess().getDeclaredNameAssignment()); }
+		(rule__TupleName__DeclaredNameAssignment)
+		{ after(grammarAccess.getTupleNameAccess().getDeclaredNameAssignment()); }
 	)
 ;
 finally {
@@ -857,9 +857,9 @@ ruleSingleParameter
 	}
 	:
 	(
-		{ before(grammarAccess.getSingleParameterAccess().getNameAssignment()); }
-		(rule__SingleParameter__NameAssignment)
-		{ after(grammarAccess.getSingleParameterAccess().getNameAssignment()); }
+		{ before(grammarAccess.getSingleParameterAccess().getDeclaredNameAssignment()); }
+		(rule__SingleParameter__DeclaredNameAssignment)
+		{ after(grammarAccess.getSingleParameterAccess().getDeclaredNameAssignment()); }
 	)
 ;
 finally {
@@ -5314,9 +5314,9 @@ rule__SingleValDeclaration__Group__1__Impl
 	}
 :
 (
-	{ before(grammarAccess.getSingleValDeclarationAccess().getNameAssignment_1()); }
-	(rule__SingleValDeclaration__NameAssignment_1)
-	{ after(grammarAccess.getSingleValDeclarationAccess().getNameAssignment_1()); }
+	{ before(grammarAccess.getSingleValDeclarationAccess().getDeclaredNameAssignment_1()); }
+	(rule__SingleValDeclaration__DeclaredNameAssignment_1)
+	{ after(grammarAccess.getSingleValDeclarationAccess().getDeclaredNameAssignment_1()); }
 )
 ;
 finally {
@@ -7930,15 +7930,15 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__SingleValDeclaration__NameAssignment_1
+rule__SingleValDeclaration__DeclaredNameAssignment_1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getSingleValDeclarationAccess().getNameIDTerminalRuleCall_1_0()); }
+		{ before(grammarAccess.getSingleValDeclarationAccess().getDeclaredNameIDTerminalRuleCall_1_0()); }
 		RULE_ID
-		{ after(grammarAccess.getSingleValDeclarationAccess().getNameIDTerminalRuleCall_1_0()); }
+		{ after(grammarAccess.getSingleValDeclarationAccess().getDeclaredNameIDTerminalRuleCall_1_0()); }
 	)
 ;
 finally {
@@ -7960,15 +7960,15 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__TupleName__NameAssignment
+rule__TupleName__DeclaredNameAssignment
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getTupleNameAccess().getNameIDTerminalRuleCall_0()); }
+		{ before(grammarAccess.getTupleNameAccess().getDeclaredNameIDTerminalRuleCall_0()); }
 		RULE_ID
-		{ after(grammarAccess.getTupleNameAccess().getNameIDTerminalRuleCall_0()); }
+		{ after(grammarAccess.getTupleNameAccess().getDeclaredNameIDTerminalRuleCall_0()); }
 	)
 ;
 finally {
@@ -8159,15 +8159,15 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__SingleParameter__NameAssignment
+rule__SingleParameter__DeclaredNameAssignment
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getSingleParameterAccess().getNameIDTerminalRuleCall_0()); }
+		{ before(grammarAccess.getSingleParameterAccess().getDeclaredNameIDTerminalRuleCall_0()); }
 		RULE_ID
-		{ after(grammarAccess.getSingleParameterAccess().getNameIDTerminalRuleCall_0()); }
+		{ after(grammarAccess.getSingleParameterAccess().getDeclaredNameIDTerminalRuleCall_0()); }
 	)
 ;
 finally {

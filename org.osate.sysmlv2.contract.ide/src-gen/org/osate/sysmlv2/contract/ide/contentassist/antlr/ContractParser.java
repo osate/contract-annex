@@ -183,9 +183,9 @@ public class ContractParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getQueryAccess().getNamesAssignment_1_3(), "rule__Query__NamesAssignment_1_3");
 			builder.put(grammarAccess.getQueryAccess().getNamesAssignment_1_4_1(), "rule__Query__NamesAssignment_1_4_1");
 			builder.put(grammarAccess.getQueryAccess().getValueAssignment_1_7(), "rule__Query__ValueAssignment_1_7");
-			builder.put(grammarAccess.getSingleValDeclarationAccess().getNameAssignment_1(), "rule__SingleValDeclaration__NameAssignment_1");
+			builder.put(grammarAccess.getSingleValDeclarationAccess().getDeclaredNameAssignment_1(), "rule__SingleValDeclaration__DeclaredNameAssignment_1");
 			builder.put(grammarAccess.getSingleValDeclarationAccess().getValueAssignment_3(), "rule__SingleValDeclaration__ValueAssignment_3");
-			builder.put(grammarAccess.getTupleNameAccess().getNameAssignment(), "rule__TupleName__NameAssignment");
+			builder.put(grammarAccess.getTupleNameAccess().getDeclaredNameAssignment(), "rule__TupleName__DeclaredNameAssignment");
 			builder.put(grammarAccess.getExpressionAccess().getRightAssignment_1_2(), "rule__Expression__RightAssignment_1_2");
 			builder.put(grammarAccess.getAndExpressionAccess().getRightAssignment_1_2(), "rule__AndExpression__RightAssignment_1_2");
 			builder.put(grammarAccess.getNotExpressionAccess().getOperandAssignment_1_2(), "rule__NotExpression__OperandAssignment_1_2");
@@ -198,7 +198,7 @@ public class ContractParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getLambdaAccess().getReturnValueAssignment_4(), "rule__Lambda__ReturnValueAssignment_4");
 			builder.put(grammarAccess.getParameterAccess().getNamesAssignment_1_2(), "rule__Parameter__NamesAssignment_1_2");
 			builder.put(grammarAccess.getParameterAccess().getNamesAssignment_1_3_1(), "rule__Parameter__NamesAssignment_1_3_1");
-			builder.put(grammarAccess.getSingleParameterAccess().getNameAssignment(), "rule__SingleParameter__NameAssignment");
+			builder.put(grammarAccess.getSingleParameterAccess().getDeclaredNameAssignment(), "rule__SingleParameter__DeclaredNameAssignment");
 			builder.put(grammarAccess.getTerminalExpressionAccess().getValueAssignment_1_1(), "rule__TerminalExpression__ValueAssignment_1_1");
 			builder.put(grammarAccess.getTerminalExpressionAccess().getReferenceAssignment_2_1(), "rule__TerminalExpression__ReferenceAssignment_2_1");
 			builder.put(grammarAccess.getTerminalExpressionAccess().getElementsAssignment_3_2_1_1(), "rule__TerminalExpression__ElementsAssignment_3_2_1_1");

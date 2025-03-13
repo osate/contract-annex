@@ -1851,9 +1851,9 @@ ruleSingleValDeclaration returns [EObject current=null]
 		}
 		(
 			(
-				lv_name_1_0=RULE_ID
+				lv_declaredName_1_0=RULE_ID
 				{
-					newLeafNode(lv_name_1_0, grammarAccess.getSingleValDeclarationAccess().getNameIDTerminalRuleCall_1_0());
+					newLeafNode(lv_declaredName_1_0, grammarAccess.getSingleValDeclarationAccess().getDeclaredNameIDTerminalRuleCall_1_0());
 				}
 				{
 					if ($current==null) {
@@ -1861,8 +1861,8 @@ ruleSingleValDeclaration returns [EObject current=null]
 					}
 					setWithLastConsumed(
 						$current,
-						"name",
-						lv_name_1_0,
+						"declaredName",
+						lv_declaredName_1_0,
 						"org.osate.sysmlv2.contract.Contract.ID");
 				}
 			)
@@ -1910,9 +1910,9 @@ ruleTupleName returns [EObject current=null]
 }:
 	(
 		(
-			lv_name_0_0=RULE_ID
+			lv_declaredName_0_0=RULE_ID
 			{
-				newLeafNode(lv_name_0_0, grammarAccess.getTupleNameAccess().getNameIDTerminalRuleCall_0());
+				newLeafNode(lv_declaredName_0_0, grammarAccess.getTupleNameAccess().getDeclaredNameIDTerminalRuleCall_0());
 			}
 			{
 				if ($current==null) {
@@ -1920,8 +1920,8 @@ ruleTupleName returns [EObject current=null]
 				}
 				setWithLastConsumed(
 					$current,
-					"name",
-					lv_name_0_0,
+					"declaredName",
+					lv_declaredName_0_0,
 					"org.osate.sysmlv2.contract.Contract.ID");
 			}
 		)
@@ -2458,9 +2458,9 @@ ruleSingleParameter returns [EObject current=null]
 }:
 	(
 		(
-			lv_name_0_0=RULE_ID
+			lv_declaredName_0_0=RULE_ID
 			{
-				newLeafNode(lv_name_0_0, grammarAccess.getSingleParameterAccess().getNameIDTerminalRuleCall_0());
+				newLeafNode(lv_declaredName_0_0, grammarAccess.getSingleParameterAccess().getDeclaredNameIDTerminalRuleCall_0());
 			}
 			{
 				if ($current==null) {
@@ -2468,8 +2468,8 @@ ruleSingleParameter returns [EObject current=null]
 				}
 				setWithLastConsumed(
 					$current,
-					"name",
-					lv_name_0_0,
+					"declaredName",
+					lv_declaredName_0_0,
 					"org.osate.sysmlv2.contract.Contract.ID");
 			}
 		)

@@ -107,7 +107,7 @@ def allThreadsBoundToSingleProcessor(bindings,error0):
 
 domain schedulability {
 	queries
-		val threads = root.allSubcomponents.filter { 
+		val threads = self.allUsages.filter { 
 			s -> s.isThread
 		};
 		val names = threads.map {
@@ -135,22 +135,22 @@ domain schedulability {
 			t -> t#Dispatch_Protocol
 		};
 		-- only threads in flows?
-		val threadCount = root.allSubcomponents.map{t -> t.isThread}.size;
-		val threadToProcessorBindings = threads.map { t -> (t, t.name, t#Actual_Processor_Binding) };
-		val boundThreads = root.allSubcomponents
-				.filter { s -> s.isProcessor }
-				.map { p -> 
-						val ts = p.processorBindingSources
-								.filter { s -> s.isThread }
-								.map { t ->
-										val period = t#Period.map { v -> v.scaledTo(ms)};
-										val wcet = t#Compute_Execution_Time.map {cet -> cet.maximum.scaledTo(ms)};
-										val prio = t#Priority;
-										val deadline = t#Deadline.map { v -> v.scaledTo(ms)};
-										(t, t.name, period, wcet, prio, deadline)
-								};
-						(p, p.name, ts)
-				};
+		val threadCount = threads.size;
+--		val threadToProcessorBindings = threads.map { t -> (t, t.name, t#Actual_Processor_Binding) };
+--		val boundThreads = root.allSubcomponents
+--				.filter { s -> s.isProcessor }
+--				.map { p -> 
+--						val ts = p.processorBindingSources
+--								.filter { s -> s.isThread }
+--								.map { t ->
+--										val period = t#Period.map { v -> v.scaledTo(ms)};
+--										val wcet = t#Compute_Execution_Time.map {cet -> cet.maximum.scaledTo(ms)};
+--										val prio = t#Priority;
+--										val deadline = t#Deadline.map { v -> v.scaledTo(ms)};
+--										(t, t.name, period, wcet, prio, deadline)
+--								};
+--						(p, p.name, ts)
+--				};
 		
 	declarations 
 		'''
