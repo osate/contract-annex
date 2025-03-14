@@ -9,7 +9,7 @@ import org.eclipse.xtext.resource.IResourceServiceProvider;
 public class DelegatingEClassGlobalScopeProvider implements IDelegatingEClassGlobalScopeProvider {
 
 	static IEClassGlobalScopeProvider delegate = IResourceServiceProvider.Registry.INSTANCE
-			.getResourceServiceProvider(URI.createFileURI("dummy.contract")).get(IEClassGlobalScopeProvider.class);
+			.getResourceServiceProvider(URI.createFileURI("dummy.sysml")).get(IEClassGlobalScopeProvider.class);
 
 	@Override
 	public IEClassGlobalScopeProvider getDelegate() {

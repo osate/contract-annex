@@ -406,6 +406,15 @@ public interface ContractFactory extends EFactory
   NameReference createNameReference();
 
   /**
+   * Returns a new object of class '<em>Usage Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Usage Expression</em>'.
+   * @generated
+   */
+  UsageExpression createUsageExpression();
+
+  /**
    * Returns a new object of class '<em>Tuple Expression</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

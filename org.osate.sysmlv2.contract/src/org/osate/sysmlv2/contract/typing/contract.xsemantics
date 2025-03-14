@@ -44,6 +44,7 @@ import org.osate.sysmlv2.contract.contract.TupleName
 import org.osate.sysmlv2.contract.contract.TupleParameter
 import org.osate.sysmlv2.contract.validation.AbstractContractValidator
 import org.omg.sysml.lang.sysml.Element
+import org.osate.sysmlv2.contract.contract.UsageExpression
 
 system org.osate.sysmlv2.contract.typing.ContractTypeSystem
 
@@ -88,8 +89,6 @@ rule PropertyLookup
 from {
 	G |- expression.left : var Type leftType
 	if (leftType.supportsAttributeLookup) {
-		// XXX: For now...
-//		type = new OptionalType(BooleanType.INSTANCE);
 		type = new OptionalType(TypeSystemUtils.convertPropertyType(expression.right))
 	}
 }
@@ -123,6 +122,19 @@ from {
 		G ||- named : type
 	}
 }
+
+rule UsageExpression
+	G |- UsageExpression expression : Type type
+from {
+	val usage = expression.usage
+	if (!usage.eIsProxy) {
+		type = TypeSystemUtils.typeOfUsage(usage);
+		if (type === null) {
+			fail error "Reference to unsupported usage" source expression
+		}
+	}
+}
+
 
 rule SingleValDeclaration
 	G ||- SingleValDeclaration named : Type type

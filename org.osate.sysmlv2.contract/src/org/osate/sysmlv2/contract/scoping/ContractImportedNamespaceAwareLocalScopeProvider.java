@@ -25,24 +25,29 @@
  *******************************************************************************/
 package org.osate.sysmlv2.contract.scoping;
 
+import java.util.List;
+
+import org.eclipse.xtext.naming.QualifiedName;
+import org.eclipse.xtext.scoping.impl.ImportNormalizer;
 import org.eclipse.xtext.scoping.impl.ImportedNamespaceAwareLocalScopeProvider;
+import org.eclipse.xtext.util.IResourceScopeCache;
+
+import com.google.inject.Inject;
 
 /* I don't think I need this SysMLv2 because the projects are required to explicitly create a 
  * project dependency on the SysMLv2 library.
  */
 public class ContractImportedNamespaceAwareLocalScopeProvider extends ImportedNamespaceAwareLocalScopeProvider {
+	// SIPrefixes
+	
 //	@Inject
 //	private IResourceScopeCache cache = IResourceScopeCache.NullImpl.INSTANCE;
-//
+
 //	@Override
 //	protected List<ImportNormalizer> getImplicitImports(boolean ignoreCase) {
-//		var normalizers = new ArrayList<ImportNormalizer>();
-//		for (var propertySetName : AadlUtil.getPredeclaredPropertySetNames()) {
-//			normalizers.add(new ImportNormalizer(QualifiedName.create(propertySetName), true, ignoreCase));
-//		}
-//		return normalizers;
+//		return List.of(new ImportNormalizer(QualifiedName.create("SIPrefixes"), true, ignoreCase));
 //	}
-//
+
 //	@Override
 //	protected ISelectable getAllDescriptions(Resource resource) {
 //		return cache.get("internalGetAllDescriptions-contract", resource, () -> internalGetAllDescriptions(resource));

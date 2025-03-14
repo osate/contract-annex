@@ -82,6 +82,7 @@ import org.osate.sysmlv2.contract.contract.TupleDeclaration;
 import org.osate.sysmlv2.contract.contract.TupleExpression;
 import org.osate.sysmlv2.contract.contract.TupleName;
 import org.osate.sysmlv2.contract.contract.TupleParameter;
+import org.osate.sysmlv2.contract.contract.UsageExpression;
 import org.osate.sysmlv2.contract.contract.VerificationPlan;
 
 /**
@@ -371,6 +372,13 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   private EClass nameReferenceEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass usageExpressionEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -1544,6 +1552,28 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   @Override
+  public EClass getUsageExpression()
+  {
+    return usageExpressionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getUsageExpression_Usage()
+  {
+    return (EReference)usageExpressionEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getTupleExpression()
   {
     return tupleExpressionEClass;
@@ -1751,6 +1781,9 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     nameReferenceEClass = createEClass(NAME_REFERENCE);
     createEReference(nameReferenceEClass, NAME_REFERENCE__REFERENCE);
 
+    usageExpressionEClass = createEClass(USAGE_EXPRESSION);
+    createEReference(usageExpressionEClass, USAGE_EXPRESSION__USAGE);
+
     tupleExpressionEClass = createEClass(TUPLE_EXPRESSION);
     createEReference(tupleExpressionEClass, TUPLE_EXPRESSION__ELEMENTS);
 
@@ -1822,6 +1855,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     selfExpressionEClass.getESuperTypes().add(this.getExpression());
     stringLiteralEClass.getESuperTypes().add(this.getExpression());
     nameReferenceEClass.getESuperTypes().add(this.getExpression());
+    usageExpressionEClass.getESuperTypes().add(this.getExpression());
     tupleExpressionEClass.getESuperTypes().add(this.getExpression());
 
     // Initialize classes and features; add operations and parameters
@@ -1962,6 +1996,9 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
 
     initEClass(nameReferenceEClass, NameReference.class, "NameReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getNameReference_Reference(), theSysMLPackage.getElement(), null, "reference", null, 0, 1, NameReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(usageExpressionEClass, UsageExpression.class, "UsageExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getUsageExpression_Usage(), theSysMLPackage.getUsage(), null, "usage", null, 0, 1, UsageExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(tupleExpressionEClass, TupleExpression.class, "TupleExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getTupleExpression_Elements(), this.getExpression(), null, "elements", null, 0, -1, TupleExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

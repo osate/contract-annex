@@ -128,6 +128,7 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
       case ContractPackage.SELF_EXPRESSION: return createSelfExpression();
       case ContractPackage.STRING_LITERAL: return createStringLiteral();
       case ContractPackage.NAME_REFERENCE: return createNameReference();
+      case ContractPackage.USAGE_EXPRESSION: return createUsageExpression();
       case ContractPackage.TUPLE_EXPRESSION: return createTupleExpression();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -650,6 +651,18 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
   {
     NameReferenceImpl nameReference = new NameReferenceImpl();
     return nameReference;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public UsageExpression createUsageExpression()
+  {
+    UsageExpressionImpl usageExpression = new UsageExpressionImpl();
+    return usageExpression;
   }
 
   /**

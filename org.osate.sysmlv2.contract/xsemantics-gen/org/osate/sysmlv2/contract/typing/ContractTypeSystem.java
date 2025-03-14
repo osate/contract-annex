@@ -20,6 +20,7 @@ import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.util.PolymorphicDispatcher;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.omg.sysml.lang.sysml.Element;
+import org.omg.sysml.lang.sysml.Usage;
 import org.osate.sysmlv2.contract.contract.AndExpression;
 import org.osate.sysmlv2.contract.contract.ContractPackage;
 import org.osate.sysmlv2.contract.contract.Expression;
@@ -37,6 +38,7 @@ import org.osate.sysmlv2.contract.contract.TupleDeclaration;
 import org.osate.sysmlv2.contract.contract.TupleExpression;
 import org.osate.sysmlv2.contract.contract.TupleName;
 import org.osate.sysmlv2.contract.contract.TupleParameter;
+import org.osate.sysmlv2.contract.contract.UsageExpression;
 
 @SuppressWarnings("all")
 public class ContractTypeSystem extends XsemanticsRuntimeSystem {
@@ -57,6 +59,8 @@ public class ContractTypeSystem extends XsemanticsRuntimeSystem {
   public static final String TUPLEEXPRESSION = "org.osate.sysmlv2.contract.typing.TupleExpression";
 
   public static final String NAMEREFERENCE = "org.osate.sysmlv2.contract.typing.NameReference";
+
+  public static final String USAGEEXPRESSION = "org.osate.sysmlv2.contract.typing.UsageExpression";
 
   public static final String SINGLEVALDECLARATION = "org.osate.sysmlv2.contract.typing.SingleValDeclaration";
 
@@ -944,6 +948,42 @@ public class ContractTypeSystem extends XsemanticsRuntimeSystem {
       checkAssignableTo(result.getFirst(), Type.class);
       type = (Type) result.getFirst();
       
+    }
+    return new Result<Type>(type);
+  }
+
+  protected Result<Type> expressionTypeImpl(final RuleEnvironment G, final RuleApplicationTrace _trace_, final UsageExpression expression) throws RuleFailedException {
+    try {
+    	final RuleApplicationTrace _subtrace_ = newTrace(_trace_);
+    	final Result<Type> _result_ = applyRuleUsageExpression(G, _subtrace_, expression);
+    	addToTrace(_trace_, new Provider<Object>() {
+    		public Object get() {
+    			return ruleName("UsageExpression") + stringRepForEnv(G) + " |- " + stringRep(expression) + " : " + stringRep(_result_.getFirst());
+    		}
+    	});
+    	addAsSubtrace(_trace_, _subtrace_);
+    	return _result_;
+    } catch (Exception e_applyRuleUsageExpression) {
+    	expressionTypeThrowException(ruleName("UsageExpression") + stringRepForEnv(G) + " |- " + stringRep(expression) + " : " + "Type",
+    		USAGEEXPRESSION,
+    		e_applyRuleUsageExpression, expression, new ErrorInformation[] {new ErrorInformation(expression)});
+    	return null;
+    }
+  }
+
+  protected Result<Type> applyRuleUsageExpression(final RuleEnvironment G, final RuleApplicationTrace _trace_, final UsageExpression expression) throws RuleFailedException {
+    Type type = null; // output parameter
+    final Usage usage = expression.getUsage();
+    boolean _eIsProxy = usage.eIsProxy();
+    boolean _not = (!_eIsProxy);
+    if (_not) {
+      type = TypeSystemUtils.typeOfUsage(usage);
+      if ((type == null)) {
+        /* fail error "Reference to unsupported usage" source expression */
+        String error = "Reference to unsupported usage";
+        EObject source = expression;
+        throwForExplicitFail(error, new ErrorInformation(source, null));
+      }
     }
     return new Result<Type>(type);
   }

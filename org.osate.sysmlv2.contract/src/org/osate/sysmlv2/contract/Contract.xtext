@@ -267,6 +267,7 @@ TerminalExpression returns Expression:
 	{StringLiteral} value=STRING |
 //	{NameReference} reference=[aadl2::NamedElement] |
 	{NameReference} reference=[sysmlv2::Element] |
+	{UsageExpression} '@' usage = [sysmlv2::Usage|QPREF] |
 	/*
 	 * Handles both parentheses and tuples. Combining these is necessary to avoid a left recursion problem. The
 	 * following doesn't work:

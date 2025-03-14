@@ -178,6 +178,9 @@
   <eClassifiers xsi:type="ecore:EClass" name="NameReference" eSuperTypes="#//Expression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="reference" eType="ecore:EClass platform:/resource/org.omg.sysml/model/SysML.ecore#//Element"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UsageExpression" eSuperTypes="#//Expression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="usage" eType="ecore:EClass platform:/resource/org.omg.sysml/model/SysML.ecore#//Usage"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TupleExpression" eSuperTypes="#//Expression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
         eType="#//Expression" containment="true"/>

@@ -29,24 +29,73 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import org.omg.sysml.lang.sysml.AttributeDefinition;
+import org.omg.sysml.lang.sysml.Usage;
 
 
 public final class TypeSystemUtils {
+	public static final String SEPARATOR = "::";
+
+	public static final String AADL_LIB = "AADL";
+	public static final String AADL_PROPERTY = AADL_LIB + SEPARATOR + "Property";
+	
+	public static final String AADL_PROJECT_LIB = "AADL_Project";
+	public static final String TIME = AADL_PROJECT_LIB + SEPARATOR + "Time";
+	public static final String TIME_RANGE = AADL_PROJECT_LIB + SEPARATOR + "Time_Range";
+	public static final String SUPPORTED_DISPATCH_PROTOCOLS = AADL_PROJECT_LIB + SEPARATOR + "Supported_Dispatch_Protocols";
+
+	public static final String SCALAR_VALUES_LIB = "ScalarValues";
+	public static final String LONG = SCALAR_VALUES_LIB + SEPARATOR + "Integer";
+	
+	public static final String MEASUREMENT_REFERENCES_LIB = "MeasurementReferences";
+	public static final String UNIT_PREFIX = MEASUREMENT_REFERENCES_LIB + SEPARATOR + "UnitPrefix";
+	
+	
+	
 	private TypeSystemUtils() {
 	}
 
 	public static Type convertPropertyType(final AttributeDefinition attrDef) {
 		final Type t;
-		if (attrDef.specializesFromLibrary("AADL::Property")) {
-			for (var x : attrDef. allSupertypes()) { System.out.println (x.getDeclaredName()); }
-
-			t = BooleanType.INSTANCE;
+		if (attrDef.specializesFromLibrary(AADL_PROPERTY)) {
+			System.out.println("Attribute def: " + attrDef.getQualifiedName());
+			System.out.println("  supertypes");
+			for (var x : attrDef.supertypes(true)) {
+				System.out.println ("    " + x.getQualifiedName());
+			}
+			System.out.println("  all supertypes");
+			for (var x : attrDef.allSupertypes()) {
+				System.out.println ("    " + x.getQualifiedName());
+			}
+			System.out.println();
+			
+			if (attrDef.specializesFromLibrary(TIME)) {
+				t = TimeType.INSTANCE;
+			} else if (attrDef.specializesFromLibrary(TIME_RANGE)) {
+				t = TimeRangeType.INSTANCE;
+			} else if (attrDef.specializesFromLibrary(SUPPORTED_DISPATCH_PROTOCOLS)) {
+				t = SupportedDispatchProtocolsType.INSTANCE;
+			} else if (attrDef.specializesFromLibrary(LONG)) {
+				t = LongType.INSTANCE;
+			} else {
+				throw new RuntimeException("Unknown type for attribute definition '" +
+						attrDef.getQualifiedName() + "'");
+			}
+//			
+//			t = BooleanType.INSTANCE;
 		} else {
 			throw new RuntimeException("Attribute definition '" +
-					attrDef.getDeclaredName() +
+					attrDef.getQualifiedName() +
 					"' does not specialize 'AADL::Property'");
 		}
 		return t;
+	}
+	
+	public static Type typeOfUsage(final Usage usage) {
+		if (usage.specializesFromLibrary(UNIT_PREFIX)) {
+			return UnitType.INSTANCE;
+		} else {
+			return null;
+		}
 	}
 
 	//

@@ -1802,15 +1802,21 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final CrossReference cReferenceElementCrossReference_2_1_0 = (CrossReference)cReferenceAssignment_2_1.eContents().get(0);
 		private final RuleCall cReferenceElementIDTerminalRuleCall_2_1_0_1 = (RuleCall)cReferenceElementCrossReference_2_1_0.eContents().get(1);
 		private final Group cGroup_3 = (Group)cAlternatives.eContents().get(3);
-		private final Keyword cLeftParenthesisKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
-		private final RuleCall cExpressionParserRuleCall_3_1 = (RuleCall)cGroup_3.eContents().get(1);
-		private final Group cGroup_3_2 = (Group)cGroup_3.eContents().get(2);
-		private final Action cTupleExpressionElementsAction_3_2_0 = (Action)cGroup_3_2.eContents().get(0);
-		private final Group cGroup_3_2_1 = (Group)cGroup_3_2.eContents().get(1);
-		private final Keyword cCommaKeyword_3_2_1_0 = (Keyword)cGroup_3_2_1.eContents().get(0);
-		private final Assignment cElementsAssignment_3_2_1_1 = (Assignment)cGroup_3_2_1.eContents().get(1);
-		private final RuleCall cElementsExpressionParserRuleCall_3_2_1_1_0 = (RuleCall)cElementsAssignment_3_2_1_1.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_3_3 = (Keyword)cGroup_3.eContents().get(3);
+		private final Action cUsageExpressionAction_3_0 = (Action)cGroup_3.eContents().get(0);
+		private final Keyword cCommercialAtKeyword_3_1 = (Keyword)cGroup_3.eContents().get(1);
+		private final Assignment cUsageAssignment_3_2 = (Assignment)cGroup_3.eContents().get(2);
+		private final CrossReference cUsageUsageCrossReference_3_2_0 = (CrossReference)cUsageAssignment_3_2.eContents().get(0);
+		private final RuleCall cUsageUsageQPREFParserRuleCall_3_2_0_1 = (RuleCall)cUsageUsageCrossReference_3_2_0.eContents().get(1);
+		private final Group cGroup_4 = (Group)cAlternatives.eContents().get(4);
+		private final Keyword cLeftParenthesisKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
+		private final RuleCall cExpressionParserRuleCall_4_1 = (RuleCall)cGroup_4.eContents().get(1);
+		private final Group cGroup_4_2 = (Group)cGroup_4.eContents().get(2);
+		private final Action cTupleExpressionElementsAction_4_2_0 = (Action)cGroup_4_2.eContents().get(0);
+		private final Group cGroup_4_2_1 = (Group)cGroup_4_2.eContents().get(1);
+		private final Keyword cCommaKeyword_4_2_1_0 = (Keyword)cGroup_4_2_1.eContents().get(0);
+		private final Assignment cElementsAssignment_4_2_1_1 = (Assignment)cGroup_4_2_1.eContents().get(1);
+		private final RuleCall cElementsExpressionParserRuleCall_4_2_1_1_0 = (RuleCall)cElementsAssignment_4_2_1_1.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_4_3 = (Keyword)cGroup_4.eContents().get(3);
 		
 		//TerminalExpression returns Expression:
 		//    {SelfExpression} 'self' |
@@ -1819,6 +1825,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//    {StringLiteral} value=STRING |
 		////    {NameReference} reference=[aadl2::NamedElement] |
 		//    {NameReference} reference=[sysmlv2::Element] |
+		//    {UsageExpression} '@' usage = [sysmlv2::Usage|QPREF] |
 		//    /*
 		//     * Handles both parentheses and tuples. Combining these is necessary to avoid a left recursion problem. The
 		//     * following doesn't work:
@@ -1836,6 +1843,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//    {StringLiteral} value=STRING |
 		////    {NameReference} reference=[aadl2::NamedElement] |
 		//    {NameReference} reference=[sysmlv2::Element] |
+		//    {UsageExpression} '@' usage = [sysmlv2::Usage|QPREF] |
 		//    /*
 		//     * Handles both parentheses and tuples. Combining these is necessary to avoid a left recursion problem. The
 		//     * following doesn't work:
@@ -1888,6 +1896,24 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//ID
 		public RuleCall getReferenceElementIDTerminalRuleCall_2_1_0_1() { return cReferenceElementIDTerminalRuleCall_2_1_0_1; }
 		
+		//{UsageExpression} '@' usage = [sysmlv2::Usage|QPREF]
+		public Group getGroup_3() { return cGroup_3; }
+		
+		//{UsageExpression}
+		public Action getUsageExpressionAction_3_0() { return cUsageExpressionAction_3_0; }
+		
+		//'@'
+		public Keyword getCommercialAtKeyword_3_1() { return cCommercialAtKeyword_3_1; }
+		
+		//usage = [sysmlv2::Usage|QPREF]
+		public Assignment getUsageAssignment_3_2() { return cUsageAssignment_3_2; }
+		
+		//[sysmlv2::Usage|QPREF]
+		public CrossReference getUsageUsageCrossReference_3_2_0() { return cUsageUsageCrossReference_3_2_0; }
+		
+		//QPREF
+		public RuleCall getUsageUsageQPREFParserRuleCall_3_2_0_1() { return cUsageUsageQPREFParserRuleCall_3_2_0_1; }
+		
 		///*
 		// * Handles both parentheses and tuples. Combining these is necessary to avoid a left recursion problem. The
 		// * following doesn't work:
@@ -1896,7 +1922,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		// * '(' Expression ')'
 		// */
 		//'(' Expression ({TupleExpression.elements+=current} (',' elements+=Expression)+)? ')'
-		public Group getGroup_3() { return cGroup_3; }
+		public Group getGroup_4() { return cGroup_4; }
 		
 		///*
 		// * Handles both parentheses and tuples. Combining these is necessary to avoid a left recursion problem. The
@@ -1906,31 +1932,31 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		// * '(' Expression ')'
 		// */
 		//'('
-		public Keyword getLeftParenthesisKeyword_3_0() { return cLeftParenthesisKeyword_3_0; }
+		public Keyword getLeftParenthesisKeyword_4_0() { return cLeftParenthesisKeyword_4_0; }
 		
 		//Expression
-		public RuleCall getExpressionParserRuleCall_3_1() { return cExpressionParserRuleCall_3_1; }
+		public RuleCall getExpressionParserRuleCall_4_1() { return cExpressionParserRuleCall_4_1; }
 		
 		//({TupleExpression.elements+=current} (',' elements+=Expression)+)?
-		public Group getGroup_3_2() { return cGroup_3_2; }
+		public Group getGroup_4_2() { return cGroup_4_2; }
 		
 		//{TupleExpression.elements+=current}
-		public Action getTupleExpressionElementsAction_3_2_0() { return cTupleExpressionElementsAction_3_2_0; }
+		public Action getTupleExpressionElementsAction_4_2_0() { return cTupleExpressionElementsAction_4_2_0; }
 		
 		//(',' elements+=Expression)+
-		public Group getGroup_3_2_1() { return cGroup_3_2_1; }
+		public Group getGroup_4_2_1() { return cGroup_4_2_1; }
 		
 		//','
-		public Keyword getCommaKeyword_3_2_1_0() { return cCommaKeyword_3_2_1_0; }
+		public Keyword getCommaKeyword_4_2_1_0() { return cCommaKeyword_4_2_1_0; }
 		
 		//elements+=Expression
-		public Assignment getElementsAssignment_3_2_1_1() { return cElementsAssignment_3_2_1_1; }
+		public Assignment getElementsAssignment_4_2_1_1() { return cElementsAssignment_4_2_1_1; }
 		
 		//Expression
-		public RuleCall getElementsExpressionParserRuleCall_3_2_1_1_0() { return cElementsExpressionParserRuleCall_3_2_1_1_0; }
+		public RuleCall getElementsExpressionParserRuleCall_4_2_1_1_0() { return cElementsExpressionParserRuleCall_4_2_1_1_0; }
 		
 		//')'
-		public Keyword getRightParenthesisKeyword_3_3() { return cRightParenthesisKeyword_3_3; }
+		public Keyword getRightParenthesisKeyword_4_3() { return cRightParenthesisKeyword_4_3; }
 	}
 	public class IStringElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.sysmlv2.contract.Contract.IString");
@@ -2976,6 +3002,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	//    {StringLiteral} value=STRING |
 	////    {NameReference} reference=[aadl2::NamedElement] |
 	//    {NameReference} reference=[sysmlv2::Element] |
+	//    {UsageExpression} '@' usage = [sysmlv2::Usage|QPREF] |
 	//    /*
 	//     * Handles both parentheses and tuples. Combining these is necessary to avoid a left recursion problem. The
 	//     * following doesn't work:

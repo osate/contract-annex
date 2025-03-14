@@ -3084,6 +3084,34 @@ public interface ContractPackage extends EPackage
   int NAME_REFERENCE_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 1;
 
   /**
+   * The meta object id for the '{@link org.osate.sysmlv2.contract.contract.impl.UsageExpressionImpl <em>Usage Expression</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.osate.sysmlv2.contract.contract.impl.UsageExpressionImpl
+   * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getUsageExpression()
+   * @generated
+   */
+  int USAGE_EXPRESSION = 40;
+
+  /**
+   * The feature id for the '<em><b>Usage</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int USAGE_EXPRESSION__USAGE = EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Usage Expression</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int USAGE_EXPRESSION_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
    * The meta object id for the '{@link org.osate.sysmlv2.contract.contract.impl.TupleExpressionImpl <em>Tuple Expression</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -3091,7 +3119,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getTupleExpression()
    * @generated
    */
-  int TUPLE_EXPRESSION = 40;
+  int TUPLE_EXPRESSION = 41;
 
   /**
    * The feature id for the '<em><b>Elements</b></em>' containment reference list.
@@ -3119,7 +3147,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getLanguage()
    * @generated
    */
-  int LANGUAGE = 41;
+  int LANGUAGE = 42;
 
   /**
    * The meta object id for the '{@link org.osate.sysmlv2.contract.contract.Predefined <em>Predefined</em>}' enum.
@@ -3129,7 +3157,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getPredefined()
    * @generated
    */
-  int PREDEFINED = 42;
+  int PREDEFINED = 43;
 
 
   /**
@@ -4171,6 +4199,27 @@ public interface ContractPackage extends EPackage
   EReference getNameReference_Reference();
 
   /**
+   * Returns the meta object for class '{@link org.osate.sysmlv2.contract.contract.UsageExpression <em>Usage Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Usage Expression</em>'.
+   * @see org.osate.sysmlv2.contract.contract.UsageExpression
+   * @generated
+   */
+  EClass getUsageExpression();
+
+  /**
+   * Returns the meta object for the reference '{@link org.osate.sysmlv2.contract.contract.UsageExpression#getUsage <em>Usage</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Usage</em>'.
+   * @see org.osate.sysmlv2.contract.contract.UsageExpression#getUsage()
+   * @see #getUsageExpression()
+   * @generated
+   */
+  EReference getUsageExpression_Usage();
+
+  /**
    * Returns the meta object for class '{@link org.osate.sysmlv2.contract.contract.TupleExpression <em>Tuple Expression</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -5097,6 +5146,24 @@ public interface ContractPackage extends EPackage
      * @generated
      */
     EReference NAME_REFERENCE__REFERENCE = eINSTANCE.getNameReference_Reference();
+
+    /**
+     * The meta object literal for the '{@link org.osate.sysmlv2.contract.contract.impl.UsageExpressionImpl <em>Usage Expression</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.osate.sysmlv2.contract.contract.impl.UsageExpressionImpl
+     * @see org.osate.sysmlv2.contract.contract.impl.ContractPackageImpl#getUsageExpression()
+     * @generated
+     */
+    EClass USAGE_EXPRESSION = eINSTANCE.getUsageExpression();
+
+    /**
+     * The meta object literal for the '<em><b>Usage</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference USAGE_EXPRESSION__USAGE = eINSTANCE.getUsageExpression_Usage();
 
     /**
      * The meta object literal for the '{@link org.osate.sysmlv2.contract.contract.impl.TupleExpressionImpl <em>Tuple Expression</em>}' class.

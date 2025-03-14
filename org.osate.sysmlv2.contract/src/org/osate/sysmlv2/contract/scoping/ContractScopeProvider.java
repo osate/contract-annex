@@ -104,37 +104,37 @@ public class ContractScopeProvider extends AbstractContractScopeProvider {
 	}
 
 	private IScope scopeForNameReferenceReference(EObject context) {
-		/*
-		 * Special handling for LongWithUnits.scaledTo() and Record.get(). Scoping looks up the names of the argument
-		 * based on the type of the left side of the MemberCall expression.
-		 */
-		if (context instanceof NameReference nameReference
-				&& nameReference.eContainer() instanceof MemberCall memberCall
-				&& memberCall.getArgument() == nameReference) {
-			// TODO: Return to this later.
-//			if (memberCall.getRight().equals("scaledTo") && typeSystem.expressionType(memberCall.getLeft())
-//					.getValue() instanceof LongWithUnitsType leftType) {
-//				var descriptions = new ArrayList<IEObjectDescription>();
-//				for (var literal : leftType.getUnitsType().getOwnedLiterals()) {
-//					descriptions.add(EObjectDescription.create(literal.getName(), literal));
-//				}
-//				return new SimpleScope(descriptions, true);
-//			} else if (memberCall.getRight().equals("is")
-//					&& typeSystem.expressionType(memberCall.getLeft()).getValue() instanceof EnumerationType leftType) {
-//				var descriptions = new ArrayList<IEObjectDescription>();
-//				for (var literal : leftType.getEnumerationType().getOwnedLiterals()) {
-//					descriptions.add(EObjectDescription.create(literal.getName(), literal));
-//				}
-//				return new SimpleScope(descriptions, true);
-//			} else if (memberCall.getRight().equals("get")
-//					&& typeSystem.expressionType(memberCall.getLeft()).getValue() instanceof RecordType leftType) {
-//				var descriptions = new ArrayList<IEObjectDescription>();
-//				for (var field : leftType.getRecordType().getOwnedFields()) {
-//					descriptions.add(EObjectDescription.create(field.getName(), field));
-//				}
-//				return new SimpleScope(descriptions, true);
-//			}
-		}
+//		/*
+//		 * Special handling for LongWithUnits.scaledTo() and Record.get(). Scoping looks up the names of the argument
+//		 * based on the type of the left side of the MemberCall expression.
+//		 */
+//		if (context instanceof NameReference nameReference
+//				&& nameReference.eContainer() instanceof MemberCall memberCall
+//				&& memberCall.getArgument() == nameReference) {
+//			// TODO: Return to this later.
+////			if (memberCall.getRight().equals("scaledTo") && typeSystem.expressionType(memberCall.getLeft())
+////					.getValue() instanceof LongWithUnitsType leftType) {
+////				var descriptions = new ArrayList<IEObjectDescription>();
+////				for (var literal : leftType.getUnitsType().getOwnedLiterals()) {
+////					descriptions.add(EObjectDescription.create(literal.getName(), literal));
+////				}
+////				return new SimpleScope(descriptions, true);
+////			} else if (memberCall.getRight().equals("is")
+////					&& typeSystem.expressionType(memberCall.getLeft()).getValue() instanceof EnumerationType leftType) {
+////				var descriptions = new ArrayList<IEObjectDescription>();
+////				for (var literal : leftType.getEnumerationType().getOwnedLiterals()) {
+////					descriptions.add(EObjectDescription.create(literal.getName(), literal));
+////				}
+////				return new SimpleScope(descriptions, true);
+////			} else if (memberCall.getRight().equals("get")
+////					&& typeSystem.expressionType(memberCall.getLeft()).getValue() instanceof RecordType leftType) {
+////				var descriptions = new ArrayList<IEObjectDescription>();
+////				for (var field : leftType.getRecordType().getOwnedFields()) {
+////					descriptions.add(EObjectDescription.create(field.getName(), field));
+////				}
+////				return new SimpleScope(descriptions, true);
+////			}
+//		}
 		var names = new ArrayList<Element>();
 		for (var current = context.eContainer(); current != null; current = current.eContainer()) {
 			if (current instanceof Lambda lambda) {
