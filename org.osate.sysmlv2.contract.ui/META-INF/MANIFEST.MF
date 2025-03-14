@@ -18,7 +18,7 @@ Require-Bundle: org.osate.sysmlv2.contract,
  org.eclipse.xtext.builder,
  org.eclipse.xsemantics.runtime,
  org.eclipse.ease,
- org.omg.sysml;bundle-version="0.48.0"
+ org.omg.sysml
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.osate.sysmlv2.contract.ui.internal,

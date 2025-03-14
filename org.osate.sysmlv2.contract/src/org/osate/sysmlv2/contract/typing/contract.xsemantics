@@ -89,8 +89,8 @@ from {
 	G |- expression.left : var Type leftType
 	if (leftType.supportsAttributeLookup) {
 		// XXX: For now...
-		type = BooleanType.INSTANCE;
-//		type = new OptionalType(TypeSystemUtils.convertPropertyType(expression.right.propertyType))
+//		type = new OptionalType(BooleanType.INSTANCE);
+		type = new OptionalType(TypeSystemUtils.convertPropertyType(expression.right))
 	}
 }
 

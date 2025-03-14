@@ -37,7 +37,7 @@ public abstract class AbstractContractValidator extends AbstractDeclarativeValid
 	protected List<EPackage> getEPackages() {
 		List<EPackage> result = new ArrayList<EPackage>();
 		result.add(org.osate.sysmlv2.contract.contract.ContractPackage.eINSTANCE);
-		result.add(EPackage.Registry.INSTANCE.getEPackage("https://www.omg.org/spec/SysML/20250201"));
+		result.add(EPackage.Registry.INSTANCE.getEPackage("https://www.omg.org/spec/SysML/20240201"));
 		return result;
 	}
 }

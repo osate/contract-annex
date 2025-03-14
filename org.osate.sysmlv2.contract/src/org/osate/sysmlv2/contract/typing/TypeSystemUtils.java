@@ -28,11 +28,28 @@ package org.osate.sysmlv2.contract.typing;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import org.omg.sysml.lang.sysml.AttributeDefinition;
+
 
 public final class TypeSystemUtils {
 	private TypeSystemUtils() {
 	}
-//
+
+	public static Type convertPropertyType(final AttributeDefinition attrDef) {
+		final Type t;
+		if (attrDef.specializesFromLibrary("AADL::Property")) {
+			for (var x : attrDef. allSupertypes()) { System.out.println (x.getDeclaredName()); }
+
+			t = BooleanType.INSTANCE;
+		} else {
+			throw new RuntimeException("Attribute definition '" +
+					attrDef.getDeclaredName() +
+					"' does not specialize 'AADL::Property'");
+		}
+		return t;
+	}
+
+	//
 //	public static Type convertPropertyType(PropertyType propertyType) {
 //		if (propertyType instanceof AadlBoolean) {
 //			return BooleanType.INSTANCE;

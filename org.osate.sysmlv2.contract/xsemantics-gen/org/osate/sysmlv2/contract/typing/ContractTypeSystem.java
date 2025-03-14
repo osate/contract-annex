@@ -811,7 +811,9 @@ public class ContractTypeSystem extends XsemanticsRuntimeSystem {
     
     boolean _supportsAttributeLookup = leftType.supportsAttributeLookup();
     if (_supportsAttributeLookup) {
-      type = BooleanType.INSTANCE;
+      Type _convertPropertyType = TypeSystemUtils.convertPropertyType(expression.getRight());
+      OptionalType _optionalType = new OptionalType(_convertPropertyType);
+      type = _optionalType;
     }
     return new Result<Type>(type);
   }
