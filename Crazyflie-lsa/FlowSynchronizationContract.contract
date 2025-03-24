@@ -138,6 +138,30 @@ domain schedulability {
 		-- only threads in flows?
 		val threadCount = threads.size;
 --		val threadToProcessorBindings = threads.map { t -> (t, t.name, t#Actual_Processor_Binding) };
+		val threadToProcessorBindings = 
+			self.actualProcessorBindings.map { a -> (a.sw, a.sw.name, a.hw) };
+		val boundThreads = self.allUsages
+				.filter { s -> s.isProcessor }
+				.map { p ->
+					val threadsBoundToP = self.actualProcessorBindings
+						.filter { a -> a.hw.equals(p) }
+						.map { a -> a.sw };
+					val threadTuples = threadsBoundToP
+						.map { t ->
+							val period = t#Timing_Properties::Period.map {   
+								v -> v --v.scaledTo(@SIPrefixes::milli)
+							};
+							val wcet = t#Timing_Properties::Compute_Execution_Time.map {
+								cet -> cet --cet.maximum.scaledTo(@SIPrefixes::milli)
+							};
+							val prio = t#Thread_Properties::Priority;
+							val deadline  = t#Timing_Properties::Deadline.map {
+								d -> d --d.scaledTo(@SIPrefixes::milli)
+							};
+							(t, t.name, period, wcet, prio, deadline)
+						};
+					(p, p.name, threadTuples)
+				};
 --		val boundThreads = root.allSubcomponents
 --				.filter { s -> s.isProcessor }
 --				.map { p -> 
