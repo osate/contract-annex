@@ -32,7 +32,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.omg.sysml.lang.sysml.AllocationUsage;
 import org.omg.sysml.lang.sysml.OccurrenceDefinition;
+import org.osate.sysmlv2.contract.contract.Expression;
 
 
 public final class OccurrenceDefintionType implements Type {
@@ -44,6 +46,9 @@ public final class OccurrenceDefintionType implements Type {
 		MEMBERS.put("name", new NameMember());
 		MEMBERS.put("allUsages", new AllUsagesMember());
 		MEMBERS.put("isThread", new IsThreadMember());
+		MEMBERS.put("isProcessor", new isProcessorMember());
+		MEMBERS.put("actualProcessorBindings", new ActualProcessorBindingsMember());
+		MEMBERS.put("equals", new EqualsMember());
 //		MEMBERS.put("category", new CategoryMember());
 //		MEMBERS.put("subcomponents", new SubcomponentsMember());
 //		MEMBERS.put("allSubcomponents", new AllSubcomponentsMember());
@@ -99,6 +104,20 @@ public final class OccurrenceDefintionType implements Type {
 		return "OccurrenceDefinition";
 	}
 
+	private static class EqualsMember implements MemberWithArgument<OccurrenceDefinition, Boolean, OccurrenceDefinition> {
+
+		@Override
+		public Type getReturnType(Expression argument) {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(OccurrenceDefinition receiver, OccurrenceDefinition argument) {
+			return receiver.equals(argument);
+		}
+		
+	}
+	
 	private static class NameMember implements SimpleMember<OccurrenceDefinition, String> {
 		@Override
 		public Type getReturnType() {
@@ -141,6 +160,34 @@ public final class OccurrenceDefintionType implements Type {
 		public Boolean evaluate(OccurrenceDefinition receiver) {
 			// TODO
 			return true;
+//			return receiver.getCategory() == ComponentCategory.THREAD;
+		}
+	}
+	
+	private static class isProcessorMember implements SimpleMember<OccurrenceDefinition, Boolean> {
+		@Override
+		public Type getReturnType() {
+			return BooleanType.INSTANCE;
+		}
+
+		@Override
+		public Boolean evaluate(OccurrenceDefinition receiver) {
+			// TODO
+			return true;
+//			return receiver.getCategory() == ComponentCategory.THREAD;
+		}
+	}
+	
+	private static class ActualProcessorBindingsMember implements SimpleMember<OccurrenceDefinition, List<AllocationUsage>> {
+		@Override
+		public Type getReturnType() {
+			return new ListType(ActualProcessorBindingsType.INSTANCE);
+		}
+
+		@Override
+		public List<AllocationUsage> evaluate(OccurrenceDefinition receiver) {
+			// TODO
+			return null;
 //			return receiver.getCategory() == ComponentCategory.THREAD;
 		}
 	}
