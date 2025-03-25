@@ -25,13 +25,9 @@
  *******************************************************************************/
 package org.osate.sysmlv2.contract.evaluation.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -39,7 +35,6 @@ import org.eclipse.xsemantics.runtime.RuleEnvironment;
 import org.eclipse.xsemantics.runtime.RuleEnvironmentEntry;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode;
-import org.omg.sysml.lang.sysml.OccurrenceDefinition;
 import org.osate.sysmlv2.contract.contract.VerificationPlan;
 import org.osate.sysmlv2.contract.typing.ContractInterpreter;
 
@@ -53,21 +48,10 @@ public class EvaluationHandler extends AbstractHandler {
 		var selection = (EObjectNode) HandlerUtil.getCurrentStructuredSelection(event).getFirstElement();
 		final URI eObjectURI = selection.getEObjectURI();
 		VerificationPlan vp = (VerificationPlan) new ResourceSetImpl().getEObject(eObjectURI, true);
-		OccurrenceDefinition def = vp.getOccurrenceDefinition();
 		
-		System.out.println(def);
-		
-////		if (selection instanceof IFile file) {
-////			var resource = new ResourceSetImpl().getResource(OsateResourceUtil.toResourceURI(file), true);
-////			component = (SystemInstance) resource.getContents().get(0);
-////		} else 
-//		if (selection instanceof EObjectURIWrapper wrapper) {
-//			component = (OccurrenceDefinition) new ResourceSetImpl().getEObject(wrapper.getUri(), true);
-//		} else {
-//			throw new ExecutionException("Unexpected selection: " + selection);
-//		}
-//
-//		executeQueries(component);
+		System.out.println(vp);
+
+		executeQueries(vp);
 //		component.eAllContents().forEachRemaining(element -> {
 //			if (element instanceof ComponentInstance subcomponent) {
 //				executeQueries(subcomponent);
@@ -77,38 +61,17 @@ public class EvaluationHandler extends AbstractHandler {
 		return null;
 	}
 
-//	private void executeQueries(ComponentInstance component) {
-//		var classifier = component.getComponentClassifier();
-//		if (classifier != null) {
-//			var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", component));
-//			for (var subclause : getAllAnnexSubclauses(classifier)) {
-//				if (subclause instanceof DefaultAnnexSubclause defaultSubclause
-//						&& defaultSubclause.getParsedAnnexSubclause() instanceof ContractSubclause contractSubclause) {
-//					for (var contract : contractSubclause.getUseQueries()) {
-//						for (var query : contract.getQueries()) {
-//							var result = interpreter.evaluateQuery(environment, query);
-//							if (result.failed()) {
-//								System.out.println(result.getRuleFailedException());
-//							} else {
-//								result.getValue().forEach((name, value) -> System.out.println(name + ": " + value));
-//							}
-//						}
-//					}
-//				}
-//			}
-//		}
-//	}
-
-//	private static List<AnnexSubclause> getAllAnnexSubclauses(Classifier classifier) {
-//		var subclauses = new ArrayList<AnnexSubclause>();
-//		for (var currentClassifier : classifier.getSelfPlusAllExtended()) {
-//			subclauses.addAll(currentClassifier.getOwnedAnnexSubclauses());
-//		}
-//		if (classifier instanceof ComponentImplementation implementation) {
-//			for (var currentClassifier : implementation.getType().getSelfPlusAllExtended()) {
-//				subclauses.addAll(currentClassifier.getOwnedAnnexSubclauses());
-//			}
-//		}
-//		return subclauses;
-//	}
+	private void executeQueries(final VerificationPlan vp) {
+		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", vp.getOccurrenceDefinition()));
+		for (var contract : vp.getContracts()) {
+			for (var query : contract.getQueries()) {
+				var result = interpreter.evaluateQuery(environment, query);
+				if (result.failed()) {
+					System.out.println(result.getRuleFailedException());
+				} else {
+					result.getValue().forEach((name, value) -> System.out.println(name + ": " + value));
+				}
+			}
+		}
+	}
 }
