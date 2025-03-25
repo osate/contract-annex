@@ -4690,9 +4690,9 @@ rule__VerificationPlan__Group__5__Impl
 	}
 :
 (
-	{ before(grammarAccess.getVerificationPlanAccess().getOccurenceDefinitionAssignment_5()); }
-	(rule__VerificationPlan__OccurenceDefinitionAssignment_5)
-	{ after(grammarAccess.getVerificationPlanAccess().getOccurenceDefinitionAssignment_5()); }
+	{ before(grammarAccess.getVerificationPlanAccess().getOccurrenceDefinitionAssignment_5()); }
+	(rule__VerificationPlan__OccurrenceDefinitionAssignment_5)
+	{ after(grammarAccess.getVerificationPlanAccess().getOccurrenceDefinitionAssignment_5()); }
 )
 ;
 finally {
@@ -8233,19 +8233,19 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__VerificationPlan__OccurenceDefinitionAssignment_5
+rule__VerificationPlan__OccurrenceDefinitionAssignment_5
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getVerificationPlanAccess().getOccurenceDefinitionOccurrenceDefinitionCrossReference_5_0()); }
+		{ before(grammarAccess.getVerificationPlanAccess().getOccurrenceDefinitionOccurrenceDefinitionCrossReference_5_0()); }
 		(
-			{ before(grammarAccess.getVerificationPlanAccess().getOccurenceDefinitionOccurrenceDefinitionQCREFParserRuleCall_5_0_1()); }
+			{ before(grammarAccess.getVerificationPlanAccess().getOccurrenceDefinitionOccurrenceDefinitionQCREFParserRuleCall_5_0_1()); }
 			ruleQCREF
-			{ after(grammarAccess.getVerificationPlanAccess().getOccurenceDefinitionOccurrenceDefinitionQCREFParserRuleCall_5_0_1()); }
+			{ after(grammarAccess.getVerificationPlanAccess().getOccurrenceDefinitionOccurrenceDefinitionQCREFParserRuleCall_5_0_1()); }
 		)
-		{ after(grammarAccess.getVerificationPlanAccess().getOccurenceDefinitionOccurrenceDefinitionCrossReference_5_0()); }
+		{ after(grammarAccess.getVerificationPlanAccess().getOccurrenceDefinitionOccurrenceDefinitionCrossReference_5_0()); }
 	)
 ;
 finally {

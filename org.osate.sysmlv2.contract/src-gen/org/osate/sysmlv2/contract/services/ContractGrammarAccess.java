@@ -1170,9 +1170,9 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final RuleCall cDeclaredNameIDTerminalRuleCall_2_0 = (RuleCall)cDeclaredNameAssignment_2.eContents().get(0);
 		private final Keyword cLeftCurlyBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		private final Keyword cComponentKeyword_4 = (Keyword)cGroup.eContents().get(4);
-		private final Assignment cOccurenceDefinitionAssignment_5 = (Assignment)cGroup.eContents().get(5);
-		private final CrossReference cOccurenceDefinitionOccurrenceDefinitionCrossReference_5_0 = (CrossReference)cOccurenceDefinitionAssignment_5.eContents().get(0);
-		private final RuleCall cOccurenceDefinitionOccurrenceDefinitionQCREFParserRuleCall_5_0_1 = (RuleCall)cOccurenceDefinitionOccurrenceDefinitionCrossReference_5_0.eContents().get(1);
+		private final Assignment cOccurrenceDefinitionAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final CrossReference cOccurrenceDefinitionOccurrenceDefinitionCrossReference_5_0 = (CrossReference)cOccurrenceDefinitionAssignment_5.eContents().get(0);
+		private final RuleCall cOccurrenceDefinitionOccurrenceDefinitionQCREFParserRuleCall_5_0_1 = (RuleCall)cOccurrenceDefinitionOccurrenceDefinitionCrossReference_5_0.eContents().get(1);
 		private final Keyword cSemicolonKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		private final Group cGroup_7 = (Group)cGroup.eContents().get(7);
 		private final Keyword cDomainsKeyword_7_0 = (Keyword)cGroup_7.eContents().get(0);
@@ -1192,7 +1192,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//VerificationPlan:
 		//    'verification' 'plan' declaredName=ID '{'
 		//    'component'
-		//        occurenceDefinition = [sysmlv2::OccurrenceDefinition|QCREF] ';'
+		//        occurrenceDefinition = [sysmlv2::OccurrenceDefinition|QCREF] ';'
 		//    ('domains'
 		//        Domains
 		//    )?
@@ -1208,7 +1208,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		
 		//'verification' 'plan' declaredName=ID '{'
 		//'component'
-		//    occurenceDefinition = [sysmlv2::OccurrenceDefinition|QCREF] ';'
+		//    occurrenceDefinition = [sysmlv2::OccurrenceDefinition|QCREF] ';'
 		//('domains'
 		//    Domains
 		//)?
@@ -1239,14 +1239,14 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//'component'
 		public Keyword getComponentKeyword_4() { return cComponentKeyword_4; }
 		
-		//occurenceDefinition = [sysmlv2::OccurrenceDefinition|QCREF]
-		public Assignment getOccurenceDefinitionAssignment_5() { return cOccurenceDefinitionAssignment_5; }
+		//occurrenceDefinition = [sysmlv2::OccurrenceDefinition|QCREF]
+		public Assignment getOccurrenceDefinitionAssignment_5() { return cOccurrenceDefinitionAssignment_5; }
 		
 		//[sysmlv2::OccurrenceDefinition|QCREF]
-		public CrossReference getOccurenceDefinitionOccurrenceDefinitionCrossReference_5_0() { return cOccurenceDefinitionOccurrenceDefinitionCrossReference_5_0; }
+		public CrossReference getOccurrenceDefinitionOccurrenceDefinitionCrossReference_5_0() { return cOccurrenceDefinitionOccurrenceDefinitionCrossReference_5_0; }
 		
 		//QCREF
-		public RuleCall getOccurenceDefinitionOccurrenceDefinitionQCREFParserRuleCall_5_0_1() { return cOccurenceDefinitionOccurrenceDefinitionQCREFParserRuleCall_5_0_1; }
+		public RuleCall getOccurrenceDefinitionOccurrenceDefinitionQCREFParserRuleCall_5_0_1() { return cOccurrenceDefinitionOccurrenceDefinitionQCREFParserRuleCall_5_0_1; }
 		
 		//';'
 		public Keyword getSemicolonKeyword_6() { return cSemicolonKeyword_6; }
@@ -2851,7 +2851,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	//VerificationPlan:
 	//    'verification' 'plan' declaredName=ID '{'
 	//    'component'
-	//        occurenceDefinition = [sysmlv2::OccurrenceDefinition|QCREF] ';'
+	//        occurrenceDefinition = [sysmlv2::OccurrenceDefinition|QCREF] ';'
 	//    ('domains'
 	//        Domains
 	//    )?

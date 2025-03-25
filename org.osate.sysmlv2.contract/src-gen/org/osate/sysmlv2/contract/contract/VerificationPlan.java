@@ -38,7 +38,7 @@ import org.omg.sysml.lang.sysml.OccurrenceDefinition;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.osate.sysmlv2.contract.contract.VerificationPlan#getOccurenceDefinition <em>Occurence Definition</em>}</li>
+ *   <li>{@link org.osate.sysmlv2.contract.contract.VerificationPlan#getOccurrenceDefinition <em>Occurrence Definition</em>}</li>
  *   <li>{@link org.osate.sysmlv2.contract.contract.VerificationPlan#getDomains <em>Domains</em>}</li>
  *   <li>{@link org.osate.sysmlv2.contract.contract.VerificationPlan#getClaims <em>Claims</em>}</li>
  *   <li>{@link org.osate.sysmlv2.contract.contract.VerificationPlan#getContracts <em>Contracts</em>}</li>
@@ -51,26 +51,26 @@ import org.omg.sysml.lang.sysml.OccurrenceDefinition;
 public interface VerificationPlan extends ContractElement
 {
   /**
-   * Returns the value of the '<em><b>Occurence Definition</b></em>' reference.
+   * Returns the value of the '<em><b>Occurrence Definition</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Occurence Definition</em>' reference.
-   * @see #setOccurenceDefinition(OccurrenceDefinition)
-   * @see org.osate.sysmlv2.contract.contract.ContractPackage#getVerificationPlan_OccurenceDefinition()
+   * @return the value of the '<em>Occurrence Definition</em>' reference.
+   * @see #setOccurrenceDefinition(OccurrenceDefinition)
+   * @see org.osate.sysmlv2.contract.contract.ContractPackage#getVerificationPlan_OccurrenceDefinition()
    * @model
    * @generated
    */
-  OccurrenceDefinition getOccurenceDefinition();
+  OccurrenceDefinition getOccurrenceDefinition();
 
   /**
-   * Sets the value of the '{@link org.osate.sysmlv2.contract.contract.VerificationPlan#getOccurenceDefinition <em>Occurence Definition</em>}' reference.
+   * Sets the value of the '{@link org.osate.sysmlv2.contract.contract.VerificationPlan#getOccurrenceDefinition <em>Occurrence Definition</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Occurence Definition</em>' reference.
-   * @see #getOccurenceDefinition()
+   * @param value the new value of the '<em>Occurrence Definition</em>' reference.
+   * @see #getOccurrenceDefinition()
    * @generated
    */
-  void setOccurenceDefinition(OccurrenceDefinition value);
+  void setOccurrenceDefinition(OccurrenceDefinition value);
 
   /**
    * Returns the value of the '<em><b>Domains</b></em>' reference list.

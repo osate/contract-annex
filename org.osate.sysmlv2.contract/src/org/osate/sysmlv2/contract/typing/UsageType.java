@@ -25,25 +25,10 @@
  *******************************************************************************/
 package org.osate.sysmlv2.contract.typing;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+public final class UsageType implements Type {
+	public static final UsageType INSTANCE = new UsageType();
 
-public final class TimeType implements Type {
-	public static final TimeType INSTANCE = new TimeType();
-	private static final Map<String, Member> MEMBERS;
-
-	static {
-		MEMBERS = new LinkedHashMap<>();
-		// getters for the value / unit / unit conversion
-//		MEMBERS.put("scaledTo", ScaledToMember());
-	}
-
-	public TimeType() {
-	}
-
-	@Override
-	public Map<String, Member> getMembers() {
-		return MEMBERS;
+	private UsageType() {
 	}
 
 	@Override
@@ -53,32 +38,6 @@ public final class TimeType implements Type {
 
 	@Override
 	public String toString() {
-		return "Time";
+		return "Usage";
 	}
-
-	
-//	private static class GetMember implements MemberWithArgument<RecordValueHolder, Optional<?>, BasicProperty> {
-//		@Override
-//		public Type getReturnType(Expression argument) {
-//			if (argument instanceof NameReference reference
-//					&& reference.getReference() instanceof BasicProperty field) {
-//				return new OptionalType(TypeSystemUtils.convertPropertyType(field.getPropertyType()));
-//			} else {
-//				return null;
-//			}
-//		}
-//
-//		@Override
-//		public Optional<?> evaluate(RecordValueHolder receiver, BasicProperty argument) {
-//			for (var fieldValue : receiver.getValue().getOwnedFieldValues()) {
-//				if (fieldValue.getProperty().equals(argument)) {
-//					var lookupContext = receiver.getLookupContext();
-//					var resolved = CodeGenUtil.resolveNamedValue(fieldValue.getOwnedValue(), lookupContext,
-//							Optional.empty());
-//					return Optional.of(TypeSystemUtils.convertPropertyValue(resolved, lookupContext));
-//				}
-//			}
-//			return Optional.empty();
-//		}
-//	}
 }

@@ -57,7 +57,7 @@ import org.osate.sysmlv2.contract.contract.VerificationPlan;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.osate.sysmlv2.contract.contract.impl.VerificationPlanImpl#getOccurenceDefinition <em>Occurence Definition</em>}</li>
+ *   <li>{@link org.osate.sysmlv2.contract.contract.impl.VerificationPlanImpl#getOccurrenceDefinition <em>Occurrence Definition</em>}</li>
  *   <li>{@link org.osate.sysmlv2.contract.contract.impl.VerificationPlanImpl#getDomains <em>Domains</em>}</li>
  *   <li>{@link org.osate.sysmlv2.contract.contract.impl.VerificationPlanImpl#getClaims <em>Claims</em>}</li>
  *   <li>{@link org.osate.sysmlv2.contract.contract.impl.VerificationPlanImpl#getContracts <em>Contracts</em>}</li>
@@ -68,14 +68,14 @@ import org.osate.sysmlv2.contract.contract.VerificationPlan;
 public class VerificationPlanImpl extends ContractElementImpl implements VerificationPlan
 {
   /**
-   * The cached value of the '{@link #getOccurenceDefinition() <em>Occurence Definition</em>}' reference.
+   * The cached value of the '{@link #getOccurrenceDefinition() <em>Occurrence Definition</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getOccurenceDefinition()
+   * @see #getOccurrenceDefinition()
    * @generated
    * @ordered
    */
-  protected OccurrenceDefinition occurenceDefinition;
+  protected OccurrenceDefinition occurrenceDefinition;
 
   /**
    * The cached value of the '{@link #getDomains() <em>Domains</em>}' reference list.
@@ -134,19 +134,19 @@ public class VerificationPlanImpl extends ContractElementImpl implements Verific
    * @generated
    */
   @Override
-  public OccurrenceDefinition getOccurenceDefinition()
+  public OccurrenceDefinition getOccurrenceDefinition()
   {
-    if (occurenceDefinition != null && occurenceDefinition.eIsProxy())
+    if (occurrenceDefinition != null && occurrenceDefinition.eIsProxy())
     {
-      InternalEObject oldOccurenceDefinition = (InternalEObject)occurenceDefinition;
-      occurenceDefinition = (OccurrenceDefinition)eResolveProxy(oldOccurenceDefinition);
-      if (occurenceDefinition != oldOccurenceDefinition)
+      InternalEObject oldOccurrenceDefinition = (InternalEObject)occurrenceDefinition;
+      occurrenceDefinition = (OccurrenceDefinition)eResolveProxy(oldOccurrenceDefinition);
+      if (occurrenceDefinition != oldOccurrenceDefinition)
       {
         if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, ContractPackage.VERIFICATION_PLAN__OCCURENCE_DEFINITION, oldOccurenceDefinition, occurenceDefinition));
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, ContractPackage.VERIFICATION_PLAN__OCCURRENCE_DEFINITION, oldOccurrenceDefinition, occurrenceDefinition));
       }
     }
-    return occurenceDefinition;
+    return occurrenceDefinition;
   }
 
   /**
@@ -154,9 +154,9 @@ public class VerificationPlanImpl extends ContractElementImpl implements Verific
    * <!-- end-user-doc -->
    * @generated
    */
-  public OccurrenceDefinition basicGetOccurenceDefinition()
+  public OccurrenceDefinition basicGetOccurrenceDefinition()
   {
-    return occurenceDefinition;
+    return occurrenceDefinition;
   }
 
   /**
@@ -165,12 +165,12 @@ public class VerificationPlanImpl extends ContractElementImpl implements Verific
    * @generated
    */
   @Override
-  public void setOccurenceDefinition(OccurrenceDefinition newOccurenceDefinition)
+  public void setOccurrenceDefinition(OccurrenceDefinition newOccurrenceDefinition)
   {
-    OccurrenceDefinition oldOccurenceDefinition = occurenceDefinition;
-    occurenceDefinition = newOccurenceDefinition;
+    OccurrenceDefinition oldOccurrenceDefinition = occurrenceDefinition;
+    occurrenceDefinition = newOccurrenceDefinition;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.VERIFICATION_PLAN__OCCURENCE_DEFINITION, oldOccurenceDefinition, occurenceDefinition));
+      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.VERIFICATION_PLAN__OCCURRENCE_DEFINITION, oldOccurrenceDefinition, occurrenceDefinition));
   }
 
   /**
@@ -244,9 +244,9 @@ public class VerificationPlanImpl extends ContractElementImpl implements Verific
   {
     switch (featureID)
     {
-      case ContractPackage.VERIFICATION_PLAN__OCCURENCE_DEFINITION:
-        if (resolve) return getOccurenceDefinition();
-        return basicGetOccurenceDefinition();
+      case ContractPackage.VERIFICATION_PLAN__OCCURRENCE_DEFINITION:
+        if (resolve) return getOccurrenceDefinition();
+        return basicGetOccurrenceDefinition();
       case ContractPackage.VERIFICATION_PLAN__DOMAINS:
         return getDomains();
       case ContractPackage.VERIFICATION_PLAN__CLAIMS:
@@ -268,8 +268,8 @@ public class VerificationPlanImpl extends ContractElementImpl implements Verific
   {
     switch (featureID)
     {
-      case ContractPackage.VERIFICATION_PLAN__OCCURENCE_DEFINITION:
-        setOccurenceDefinition((OccurrenceDefinition)newValue);
+      case ContractPackage.VERIFICATION_PLAN__OCCURRENCE_DEFINITION:
+        setOccurrenceDefinition((OccurrenceDefinition)newValue);
         return;
       case ContractPackage.VERIFICATION_PLAN__DOMAINS:
         getDomains().clear();
@@ -297,8 +297,8 @@ public class VerificationPlanImpl extends ContractElementImpl implements Verific
   {
     switch (featureID)
     {
-      case ContractPackage.VERIFICATION_PLAN__OCCURENCE_DEFINITION:
-        setOccurenceDefinition((OccurrenceDefinition)null);
+      case ContractPackage.VERIFICATION_PLAN__OCCURRENCE_DEFINITION:
+        setOccurrenceDefinition((OccurrenceDefinition)null);
         return;
       case ContractPackage.VERIFICATION_PLAN__DOMAINS:
         getDomains().clear();
@@ -323,8 +323,8 @@ public class VerificationPlanImpl extends ContractElementImpl implements Verific
   {
     switch (featureID)
     {
-      case ContractPackage.VERIFICATION_PLAN__OCCURENCE_DEFINITION:
-        return occurenceDefinition != null;
+      case ContractPackage.VERIFICATION_PLAN__OCCURRENCE_DEFINITION:
+        return occurrenceDefinition != null;
       case ContractPackage.VERIFICATION_PLAN__DOMAINS:
         return domains != null && !domains.isEmpty();
       case ContractPackage.VERIFICATION_PLAN__CLAIMS:

@@ -1,6 +1,7 @@
 package VerificationPlans; 
 
 verification plan verifySchedualability {
+	component Crazyflie_Flattened::Crazyflie_Platform_Flattened;
 	domains
 		FlowSynchronizationContract::schedulability; 
 	claims

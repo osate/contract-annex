@@ -179,7 +179,7 @@ public class ContractParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getArgumentTermAccess().getArgumentsAssignment_1_1(), "rule__ArgumentTerm__ArgumentsAssignment_1_1");
 			builder.put(grammarAccess.getArgumentTermAccess().getNestedAssignment_2(), "rule__ArgumentTerm__NestedAssignment_2");
 			builder.put(grammarAccess.getVerificationPlanAccess().getDeclaredNameAssignment_2(), "rule__VerificationPlan__DeclaredNameAssignment_2");
-			builder.put(grammarAccess.getVerificationPlanAccess().getOccurenceDefinitionAssignment_5(), "rule__VerificationPlan__OccurenceDefinitionAssignment_5");
+			builder.put(grammarAccess.getVerificationPlanAccess().getOccurrenceDefinitionAssignment_5(), "rule__VerificationPlan__OccurrenceDefinitionAssignment_5");
 			builder.put(grammarAccess.getVerificationPlanAccess().getContractsAssignment_9_1_0(), "rule__VerificationPlan__ContractsAssignment_9_1_0");
 			builder.put(grammarAccess.getClaimsAccess().getClaimsAssignment_0(), "rule__Claims__ClaimsAssignment_0");
 			builder.put(grammarAccess.getQueryAccess().getNamesAssignment_1_3(), "rule__Query__NamesAssignment_1_3");

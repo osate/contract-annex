@@ -283,7 +283,7 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *
 	 * This ambiguous syntax occurs at:
 	 *     domains+=[Domain|QPREF] ';'+ 'claims' (ambiguity) claims+=Source
-	 *     occurenceDefinition=[OccurrenceDefinition|QCREF] ';' 'claims' (ambiguity) claims+=Source
+	 *     occurrenceDefinition=[OccurrenceDefinition|QCREF] ';' 'claims' (ambiguity) claims+=Source
 	 
 	 * </pre>
 	 */
@@ -349,7 +349,7 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *
 	 * This ambiguous syntax occurs at:
 	 *     declaredName=ID '{' 'domains' (ambiguity) domains+=[Domain|QPREF]
-	 *     occurenceDefinition=[OccurrenceDefinition|QCREF] ';' 'domains' (ambiguity) domains+=[Domain|QPREF]
+	 *     occurrenceDefinition=[OccurrenceDefinition|QCREF] ';' 'domains' (ambiguity) domains+=[Domain|QPREF]
 	 
 	 * </pre>
 	 */
@@ -475,7 +475,7 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * This ambiguous syntax occurs at:
 	 *     claims+=Source ';'+ 'contracts' (ambiguity) contracts+=[Contract|QPREF]
 	 *     domains+=[Domain|QPREF] ';'+ 'contracts' (ambiguity) contracts+=[Contract|QPREF]
-	 *     occurenceDefinition=[OccurrenceDefinition|QCREF] ';' 'contracts' (ambiguity) contracts+=[Contract|QPREF]
+	 *     occurrenceDefinition=[OccurrenceDefinition|QCREF] ';' 'contracts' (ambiguity) contracts+=[Contract|QPREF]
 	 
 	 * </pre>
 	 */
@@ -506,7 +506,7 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * This ambiguous syntax occurs at:
 	 *     claims+=Source ';'+ (ambiguity) '}' (rule end)
 	 *     domains+=[Domain|QPREF] ';'+ (ambiguity) '}' (rule end)
-	 *     occurenceDefinition=[OccurrenceDefinition|QCREF] ';' (ambiguity) '}' (rule end)
+	 *     occurrenceDefinition=[OccurrenceDefinition|QCREF] ';' (ambiguity) '}' (rule end)
 	 
 	 * </pre>
 	 */

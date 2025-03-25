@@ -30,28 +30,15 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            id="org.osate.contract.evaluation.ui.evaluateQueries"
+            id="org.osate.sysmlv2.contract.evaluation.ui.evaluateQueries"
             name="Debug: Evaluate Queries">
-      </command>
-      <command
-            id="org.osate.contract.evaluation.ui.generateYamlGsn"
-            name="Generate YAML-GSN">
       </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
             class="org.osate.sysmlv2.contract.evaluation.ui.EvaluationHandler"
-            commandId="org.osate.contract.evaluation.ui.evaluateQueries">
-         <enabledWhen>
-            <reference
-                  definitionId="org.osate.ui.definition.isInstanceFileOrComponentInstanceSelected">
-            </reference>
-         </enabledWhen>
-      </handler>
-      <handler
-            class="org.osate.sysmlv2.contract.evaluation.ui.GenerateYamlGsnHandler"
-            commandId="org.osate.contract.evaluation.ui.generateYamlGsn">
+            commandId="org.osate.sysmlv2.contract.evaluation.ui.evaluateQueries">
          <enabledWhen>
             <with
                   variable="selection">
@@ -70,17 +57,18 @@
                      </adapt>
                   </iterate>
                </and>
-            </with></enabledWhen>
+            </with>
+          </enabledWhen>
       </handler>
    </extension>
-   <extension
+   <!--extension
          point="org.eclipse.ui.commands">
       <command
-            id="org.osate.contract.executePlan"
+            id="org.osate.sysmlv2.contract.executePlan"
             name="Execute Verificaton Plans">
       </command>
       <command
-            id="org.osate.contract.checkPlan"
+            id="org.osate.sysmlv2.contract.checkPlan"
             name="Check Verification Plan Completeness">
       </command>
    </extension>
@@ -88,7 +76,7 @@
          point="org.eclipse.ui.handlers">
       <handler
             class="org.osate.sysmlv2.contract.evaluation.ui.ExecutePlanHandler"
-            commandId="org.osate.contract.executePlan">
+            commandId="org.osate.sysmlv2.contract.executePlan">
          <enabledWhen>
             <reference
                   definitionId="org.osate.ui.definition.isInstanceFileOrComponentInstanceSelected">
@@ -97,21 +85,21 @@
       </handler>
       <handler
             class="org.osate.sysmlv2.contract.evaluation.ui.CheckPlanHandler"
-            commandId="org.osate.contract.checkPlan">
+            commandId="org.osate.sysmlv2.contract.checkPlan">
          <enabledWhen>
             <reference
                   definitionId="org.osate.ui.definition.isInstanceFileOrComponentInstanceSelected">
             </reference>
          </enabledWhen>
       </handler>
-   </extension>
-   <extension
+   </extension-->
+   <!--extension
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
             locationURI="menu:org.osate.ui.analysesMenu?after=third_party">
          <menu
-               id="org.osate.contract.menu"
+               id="org.osate.sysmlv2.contract.menu"
                label="Analysis Contracts">
             <command
                   commandId="org.osate.contract.executePlan"
@@ -127,24 +115,24 @@
             allPopups="false"
             locationURI="popup:org.osate.ui.analysesNavigatorPopup?after=third_party">
          <menu
-               id="org.osate.contract.menu"
+               id="org.osate.sysmlv2.contract.menu"
                label="Analysis Contracts">
             <command
-                  commandId="org.osate.contract.executePlan"
+                  commandId="org.osate.sysmlv2..contract.executePlan"
                   style="push">
                <visibleWhen
                      checkEnabled="true">
                </visibleWhen>
             </command>
             <command
-                  commandId="org.osate.contract.checkPlan"
+                  commandId="org.osate.sysmlv2.contract.checkPlan"
                   style="push">
                <visibleWhen
                      checkEnabled="true">
                </visibleWhen>
             </command>
             <command
-                  commandId="org.osate.contract.evaluation.ui.evaluateQueries"
+                  commandId="org.osate.sysmlv2.contract.evaluation.ui.evaluateQueries"
                   style="push">
                <visibleWhen
                     checkEnabled="true">
@@ -153,18 +141,25 @@
             
          </menu>
       </menuContribution>
-      <menuContribution
-            allPopups="false"
-            locationURI="popup:org.osate.xtext.aadl2.ui.outline?after=additions">
-         <command
-               commandId="org.osate.contract.evaluation.ui.generateYamlGsn"
-               style="push">
-            <visibleWhen
-                  checkEnabled="true">
-            </visibleWhen>
-         </command>
-      </menuContribution>
-   </extension>
+   </extension-->
+
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution locationURI="popup:org.eclipse.xtext.ui.outline?after=additions">
+			<command commandId="org.osate.sysmlv2.contract.evaluation.ui.evaluateQueries"
+				style="push" tooltip="Copy Qualified Name">
+				<visibleWhen checkEnabled="false">
+					<and>
+						<reference definitionId="org.osate.sysmlv2.contract.Contract.XtextEditor.opened" />
+						<iterate>
+							<adapt type="org.eclipse.xtext.ui.editor.outline.IOutlineNode" />
+						</iterate>
+					</and>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+	</extension>
+
+   
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester

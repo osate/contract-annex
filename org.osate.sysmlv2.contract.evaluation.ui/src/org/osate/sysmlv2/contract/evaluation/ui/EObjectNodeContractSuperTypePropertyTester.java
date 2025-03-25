@@ -2,7 +2,7 @@ package org.osate.sysmlv2.contract.evaluation.ui;
 
 import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode;
-import org.osate.contract.contract.ContractPackage;
+import org.osate.sysmlv2.contract.contract.ContractPackage;
 
 public class EObjectNodeContractSuperTypePropertyTester extends PropertyTester {
 	@Override

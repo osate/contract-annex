@@ -470,7 +470,7 @@ public class ContractSemanticSequencer extends AbstractDelegatingSemanticSequenc
 	 *     VerificationPlan returns VerificationPlan
 	 *
 	 * Constraint:
-	 *     (declaredName=ID occurenceDefinition=[OccurrenceDefinition|QCREF] domains+=[Domain|QPREF]* claims+=Source* contracts+=[Contract|QPREF]*)
+	 *     (declaredName=ID occurrenceDefinition=[OccurrenceDefinition|QCREF] domains+=[Domain|QPREF]* claims+=Source* contracts+=[Contract|QPREF]*)
 	 * </pre>
 	 */
 	protected void sequence_Claims_Domains_VerificationPlan(ISerializationContext context, VerificationPlan semanticObject) {

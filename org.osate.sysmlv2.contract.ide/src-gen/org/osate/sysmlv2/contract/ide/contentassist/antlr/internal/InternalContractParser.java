@@ -14546,31 +14546,31 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__VerificationPlan__Group__5__Impl"
-    // InternalContract.g:4687:1: rule__VerificationPlan__Group__5__Impl : ( ( rule__VerificationPlan__OccurenceDefinitionAssignment_5 ) ) ;
+    // InternalContract.g:4687:1: rule__VerificationPlan__Group__5__Impl : ( ( rule__VerificationPlan__OccurrenceDefinitionAssignment_5 ) ) ;
     public final void rule__VerificationPlan__Group__5__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalContract.g:4691:1: ( ( ( rule__VerificationPlan__OccurenceDefinitionAssignment_5 ) ) )
-            // InternalContract.g:4692:1: ( ( rule__VerificationPlan__OccurenceDefinitionAssignment_5 ) )
+            // InternalContract.g:4691:1: ( ( ( rule__VerificationPlan__OccurrenceDefinitionAssignment_5 ) ) )
+            // InternalContract.g:4692:1: ( ( rule__VerificationPlan__OccurrenceDefinitionAssignment_5 ) )
             {
-            // InternalContract.g:4692:1: ( ( rule__VerificationPlan__OccurenceDefinitionAssignment_5 ) )
-            // InternalContract.g:4693:2: ( rule__VerificationPlan__OccurenceDefinitionAssignment_5 )
+            // InternalContract.g:4692:1: ( ( rule__VerificationPlan__OccurrenceDefinitionAssignment_5 ) )
+            // InternalContract.g:4693:2: ( rule__VerificationPlan__OccurrenceDefinitionAssignment_5 )
             {
-             before(grammarAccess.getVerificationPlanAccess().getOccurenceDefinitionAssignment_5()); 
-            // InternalContract.g:4694:2: ( rule__VerificationPlan__OccurenceDefinitionAssignment_5 )
-            // InternalContract.g:4694:3: rule__VerificationPlan__OccurenceDefinitionAssignment_5
+             before(grammarAccess.getVerificationPlanAccess().getOccurrenceDefinitionAssignment_5()); 
+            // InternalContract.g:4694:2: ( rule__VerificationPlan__OccurrenceDefinitionAssignment_5 )
+            // InternalContract.g:4694:3: rule__VerificationPlan__OccurrenceDefinitionAssignment_5
             {
             pushFollow(FOLLOW_2);
-            rule__VerificationPlan__OccurenceDefinitionAssignment_5();
+            rule__VerificationPlan__OccurrenceDefinitionAssignment_5();
 
             state._fsp--;
 
 
             }
 
-             after(grammarAccess.getVerificationPlanAccess().getOccurenceDefinitionAssignment_5()); 
+             after(grammarAccess.getVerificationPlanAccess().getOccurrenceDefinitionAssignment_5()); 
 
             }
 
@@ -25024,9 +25024,9 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
     // $ANTLR end "rule__VerificationPlan__DeclaredNameAssignment_2"
 
 
-    // $ANTLR start "rule__VerificationPlan__OccurenceDefinitionAssignment_5"
-    // InternalContract.g:8236:1: rule__VerificationPlan__OccurenceDefinitionAssignment_5 : ( ( ruleQCREF ) ) ;
-    public final void rule__VerificationPlan__OccurenceDefinitionAssignment_5() throws RecognitionException {
+    // $ANTLR start "rule__VerificationPlan__OccurrenceDefinitionAssignment_5"
+    // InternalContract.g:8236:1: rule__VerificationPlan__OccurrenceDefinitionAssignment_5 : ( ( ruleQCREF ) ) ;
+    public final void rule__VerificationPlan__OccurrenceDefinitionAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -25037,21 +25037,21 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
             // InternalContract.g:8241:2: ( ( ruleQCREF ) )
             // InternalContract.g:8242:3: ( ruleQCREF )
             {
-             before(grammarAccess.getVerificationPlanAccess().getOccurenceDefinitionOccurrenceDefinitionCrossReference_5_0()); 
+             before(grammarAccess.getVerificationPlanAccess().getOccurrenceDefinitionOccurrenceDefinitionCrossReference_5_0()); 
             // InternalContract.g:8243:3: ( ruleQCREF )
             // InternalContract.g:8244:4: ruleQCREF
             {
-             before(grammarAccess.getVerificationPlanAccess().getOccurenceDefinitionOccurrenceDefinitionQCREFParserRuleCall_5_0_1()); 
+             before(grammarAccess.getVerificationPlanAccess().getOccurrenceDefinitionOccurrenceDefinitionQCREFParserRuleCall_5_0_1()); 
             pushFollow(FOLLOW_2);
             ruleQCREF();
 
             state._fsp--;
 
-             after(grammarAccess.getVerificationPlanAccess().getOccurenceDefinitionOccurrenceDefinitionQCREFParserRuleCall_5_0_1()); 
+             after(grammarAccess.getVerificationPlanAccess().getOccurrenceDefinitionOccurrenceDefinitionQCREFParserRuleCall_5_0_1()); 
 
             }
 
-             after(grammarAccess.getVerificationPlanAccess().getOccurenceDefinitionOccurrenceDefinitionCrossReference_5_0()); 
+             after(grammarAccess.getVerificationPlanAccess().getOccurrenceDefinitionOccurrenceDefinitionCrossReference_5_0()); 
 
             }
 
@@ -25070,7 +25070,7 @@ public class InternalContractParser extends AbstractInternalContentAssistParser 
         }
         return ;
     }
-    // $ANTLR end "rule__VerificationPlan__OccurenceDefinitionAssignment_5"
+    // $ANTLR end "rule__VerificationPlan__OccurrenceDefinitionAssignment_5"
 
 
     // $ANTLR start "rule__VerificationPlan__ContractsAssignment_9_1_0"

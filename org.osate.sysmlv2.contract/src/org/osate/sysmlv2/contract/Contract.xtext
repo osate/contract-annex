@@ -192,7 +192,7 @@ fragment ArgumentTerm*:
 VerificationPlan:
 	'verification' 'plan' declaredName=ID '{'
 	'component'
-		occurenceDefinition = [sysmlv2::OccurrenceDefinition|QCREF] ';'
+		occurrenceDefinition = [sysmlv2::OccurrenceDefinition|QCREF] ';'
 	('domains'
 		Domains
 	)?

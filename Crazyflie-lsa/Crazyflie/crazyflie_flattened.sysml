@@ -1,4 +1,4 @@
-package 'Crazyflie Flattened' {
+package Crazyflie_Flattened {
 
 	private import AADL::*;
 	

@@ -4119,7 +4119,7 @@ public class InternalContractParser extends AbstractInternalAntlrParser {
             					}
             				
 
-            					newCompositeNode(grammarAccess.getVerificationPlanAccess().getOccurenceDefinitionOccurrenceDefinitionCrossReference_5_0());
+            					newCompositeNode(grammarAccess.getVerificationPlanAccess().getOccurrenceDefinitionOccurrenceDefinitionCrossReference_5_0());
             				
             pushFollow(FOLLOW_4);
             ruleQCREF();

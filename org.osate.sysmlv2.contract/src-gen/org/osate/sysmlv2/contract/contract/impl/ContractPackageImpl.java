@@ -881,7 +881,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   @Override
-  public EReference getVerificationPlan_OccurenceDefinition()
+  public EReference getVerificationPlan_OccurrenceDefinition()
   {
     return (EReference)verificationPlanEClass.getEStructuralFeatures().get(0);
   }
@@ -1703,7 +1703,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     createEReference(argumentExpressionEClass, ARGUMENT_EXPRESSION__NESTED);
 
     verificationPlanEClass = createEClass(VERIFICATION_PLAN);
-    createEReference(verificationPlanEClass, VERIFICATION_PLAN__OCCURENCE_DEFINITION);
+    createEReference(verificationPlanEClass, VERIFICATION_PLAN__OCCURRENCE_DEFINITION);
     createEReference(verificationPlanEClass, VERIFICATION_PLAN__DOMAINS);
     createEReference(verificationPlanEClass, VERIFICATION_PLAN__CLAIMS);
     createEReference(verificationPlanEClass, VERIFICATION_PLAN__CONTRACTS);
@@ -1920,7 +1920,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     initEReference(getArgumentExpression_Nested(), this.getArgumentExpression(), null, "nested", null, 0, -1, ArgumentExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(verificationPlanEClass, VerificationPlan.class, "VerificationPlan", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getVerificationPlan_OccurenceDefinition(), theSysMLPackage.getOccurrenceDefinition(), null, "occurenceDefinition", null, 0, 1, VerificationPlan.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getVerificationPlan_OccurrenceDefinition(), theSysMLPackage.getOccurrenceDefinition(), null, "occurrenceDefinition", null, 0, 1, VerificationPlan.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getVerificationPlan_Domains(), this.getDomain(), null, "domains", null, 0, -1, VerificationPlan.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getVerificationPlan_Claims(), this.getSource(), null, "claims", null, 0, -1, VerificationPlan.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getVerificationPlan_Contracts(), this.getContract(), null, "contracts", null, 0, -1, VerificationPlan.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
