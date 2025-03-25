@@ -1671,13 +1671,22 @@ public interface ContractPackage extends EPackage
   int VERIFICATION_PLAN__IS_LIBRARY_ELEMENT = CONTRACT_ELEMENT__IS_LIBRARY_ELEMENT;
 
   /**
+   * The feature id for the '<em><b>Occurence Definition</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VERIFICATION_PLAN__OCCURENCE_DEFINITION = CONTRACT_ELEMENT_FEATURE_COUNT + 0;
+
+  /**
    * The feature id for the '<em><b>Domains</b></em>' reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int VERIFICATION_PLAN__DOMAINS = CONTRACT_ELEMENT_FEATURE_COUNT + 0;
+  int VERIFICATION_PLAN__DOMAINS = CONTRACT_ELEMENT_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Claims</b></em>' containment reference list.
@@ -1686,7 +1695,7 @@ public interface ContractPackage extends EPackage
    * @generated
    * @ordered
    */
-  int VERIFICATION_PLAN__CLAIMS = CONTRACT_ELEMENT_FEATURE_COUNT + 1;
+  int VERIFICATION_PLAN__CLAIMS = CONTRACT_ELEMENT_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>Contracts</b></em>' reference list.
@@ -1695,7 +1704,7 @@ public interface ContractPackage extends EPackage
    * @generated
    * @ordered
    */
-  int VERIFICATION_PLAN__CONTRACTS = CONTRACT_ELEMENT_FEATURE_COUNT + 2;
+  int VERIFICATION_PLAN__CONTRACTS = CONTRACT_ELEMENT_FEATURE_COUNT + 3;
 
   /**
    * The number of structural features of the '<em>Verification Plan</em>' class.
@@ -1704,7 +1713,7 @@ public interface ContractPackage extends EPackage
    * @generated
    * @ordered
    */
-  int VERIFICATION_PLAN_FEATURE_COUNT = CONTRACT_ELEMENT_FEATURE_COUNT + 3;
+  int VERIFICATION_PLAN_FEATURE_COUNT = CONTRACT_ELEMENT_FEATURE_COUNT + 4;
 
   /**
    * The meta object id for the '{@link org.osate.sysmlv2.contract.contract.impl.QueryImpl <em>Query</em>}' class.
@@ -3555,6 +3564,17 @@ public interface ContractPackage extends EPackage
   EClass getVerificationPlan();
 
   /**
+   * Returns the meta object for the reference '{@link org.osate.sysmlv2.contract.contract.VerificationPlan#getOccurenceDefinition <em>Occurence Definition</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Occurence Definition</em>'.
+   * @see org.osate.sysmlv2.contract.contract.VerificationPlan#getOccurenceDefinition()
+   * @see #getVerificationPlan()
+   * @generated
+   */
+  EReference getVerificationPlan_OccurenceDefinition();
+
+  /**
    * Returns the meta object for the reference list '{@link org.osate.sysmlv2.contract.contract.VerificationPlan#getDomains <em>Domains</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -4604,6 +4624,14 @@ public interface ContractPackage extends EPackage
      * @generated
      */
     EClass VERIFICATION_PLAN = eINSTANCE.getVerificationPlan();
+
+    /**
+     * The meta object literal for the '<em><b>Occurence Definition</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference VERIFICATION_PLAN__OCCURENCE_DEFINITION = eINSTANCE.getVerificationPlan_OccurenceDefinition();
 
     /**
      * The meta object literal for the '<em><b>Domains</b></em>' reference list feature.

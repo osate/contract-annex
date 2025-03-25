@@ -1608,44 +1608,68 @@ ruleVerificationPlan returns [EObject current=null]
 		{
 			newLeafNode(otherlv_3, grammarAccess.getVerificationPlanAccess().getLeftCurlyBracketKeyword_3());
 		}
+		otherlv_4='component'
+		{
+			newLeafNode(otherlv_4, grammarAccess.getVerificationPlanAccess().getComponentKeyword_4());
+		}
 		(
-			otherlv_4='domains'
+			(
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getVerificationPlanRule());
+					}
+				}
+				{
+					newCompositeNode(grammarAccess.getVerificationPlanAccess().getOccurenceDefinitionOccurrenceDefinitionCrossReference_5_0());
+				}
+				ruleQCREF
+				{
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_6=';'
+		{
+			newLeafNode(otherlv_6, grammarAccess.getVerificationPlanAccess().getSemicolonKeyword_6());
+		}
+		(
+			otherlv_7='domains'
 			{
-				newLeafNode(otherlv_4, grammarAccess.getVerificationPlanAccess().getDomainsKeyword_4_0());
+				newLeafNode(otherlv_7, grammarAccess.getVerificationPlanAccess().getDomainsKeyword_7_0());
 			}
 			{
 				if ($current==null) {
 					$current = createModelElement(grammarAccess.getVerificationPlanRule());
 				}
-				newCompositeNode(grammarAccess.getVerificationPlanAccess().getDomainsParserRuleCall_4_1());
+				newCompositeNode(grammarAccess.getVerificationPlanAccess().getDomainsParserRuleCall_7_1());
 			}
-			this_Domains_5=ruleDomains[$current]
+			this_Domains_8=ruleDomains[$current]
 			{
-				$current = $this_Domains_5.current;
+				$current = $this_Domains_8.current;
 				afterParserOrEnumRuleCall();
 			}
 		)?
 		(
-			otherlv_6='claims'
+			otherlv_9='claims'
 			{
-				newLeafNode(otherlv_6, grammarAccess.getVerificationPlanAccess().getClaimsKeyword_5_0());
+				newLeafNode(otherlv_9, grammarAccess.getVerificationPlanAccess().getClaimsKeyword_8_0());
 			}
 			{
 				if ($current==null) {
 					$current = createModelElement(grammarAccess.getVerificationPlanRule());
 				}
-				newCompositeNode(grammarAccess.getVerificationPlanAccess().getClaimsParserRuleCall_5_1());
+				newCompositeNode(grammarAccess.getVerificationPlanAccess().getClaimsParserRuleCall_8_1());
 			}
-			this_Claims_7=ruleClaims[$current]
+			this_Claims_10=ruleClaims[$current]
 			{
-				$current = $this_Claims_7.current;
+				$current = $this_Claims_10.current;
 				afterParserOrEnumRuleCall();
 			}
 		)?
 		(
-			otherlv_8='contracts'
+			otherlv_11='contracts'
 			{
-				newLeafNode(otherlv_8, grammarAccess.getVerificationPlanAccess().getContractsKeyword_6_0());
+				newLeafNode(otherlv_11, grammarAccess.getVerificationPlanAccess().getContractsKeyword_9_0());
 			}
 			(
 				(
@@ -1656,7 +1680,7 @@ ruleVerificationPlan returns [EObject current=null]
 							}
 						}
 						{
-							newCompositeNode(grammarAccess.getVerificationPlanAccess().getContractsContractCrossReference_6_1_0_0());
+							newCompositeNode(grammarAccess.getVerificationPlanAccess().getContractsContractCrossReference_9_1_0_0());
 						}
 						ruleQPREF
 						{
@@ -1664,15 +1688,15 @@ ruleVerificationPlan returns [EObject current=null]
 						}
 					)
 				)?
-				otherlv_10=';'
+				otherlv_13=';'
 				{
-					newLeafNode(otherlv_10, grammarAccess.getVerificationPlanAccess().getSemicolonKeyword_6_1_1());
+					newLeafNode(otherlv_13, grammarAccess.getVerificationPlanAccess().getSemicolonKeyword_9_1_1());
 				}
 			)*
 		)?
-		otherlv_11='}'
+		otherlv_14='}'
 		{
-			newLeafNode(otherlv_11, grammarAccess.getVerificationPlanAccess().getRightCurlyBracketKeyword_7());
+			newLeafNode(otherlv_14, grammarAccess.getVerificationPlanAccess().getRightCurlyBracketKeyword_10());
 		}
 	)
 ;
@@ -3044,6 +3068,60 @@ ruleQPREF returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
 			}
 			{
 				newLeafNode(this_ID_2, grammarAccess.getQPREFAccess().getIDTerminalRuleCall_1_1());
+			}
+		)?
+	)
+;
+
+// Entry rule entryRuleQCREF
+entryRuleQCREF returns [String current=null]:
+	{ newCompositeNode(grammarAccess.getQCREFRule()); }
+	iv_ruleQCREF=ruleQCREF
+	{ $current=$iv_ruleQCREF.current.getText(); }
+	EOF;
+
+// Rule QCREF
+ruleQCREF returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			this_ID_0=RULE_ID
+			{
+				$current.merge(this_ID_0);
+			}
+			{
+				newLeafNode(this_ID_0, grammarAccess.getQCREFAccess().getIDTerminalRuleCall_0_0());
+			}
+			kw='::'
+			{
+				$current.merge(kw);
+				newLeafNode(kw, grammarAccess.getQCREFAccess().getColonColonKeyword_0_1());
+			}
+		)*
+		this_ID_2=RULE_ID
+		{
+			$current.merge(this_ID_2);
+		}
+		{
+			newLeafNode(this_ID_2, grammarAccess.getQCREFAccess().getIDTerminalRuleCall_1());
+		}
+		(
+			kw='.'
+			{
+				$current.merge(kw);
+				newLeafNode(kw, grammarAccess.getQCREFAccess().getFullStopKeyword_2_0());
+			}
+			this_ID_4=RULE_ID
+			{
+				$current.merge(this_ID_4);
+			}
+			{
+				newLeafNode(this_ID_4, grammarAccess.getQCREFAccess().getIDTerminalRuleCall_2_1());
 			}
 		)?
 	)

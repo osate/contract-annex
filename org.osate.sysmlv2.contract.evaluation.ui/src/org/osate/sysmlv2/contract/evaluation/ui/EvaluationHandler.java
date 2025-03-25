@@ -38,16 +38,8 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.xsemantics.runtime.RuleEnvironment;
 import org.eclipse.xsemantics.runtime.RuleEnvironmentEntry;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
-import org.osate.aadl2.AnnexSubclause;
-import org.osate.aadl2.Classifier;
-import org.osate.aadl2.ComponentImplementation;
-import org.osate.aadl2.DefaultAnnexSubclause;
-import org.osate.aadl2.instance.ComponentInstance;
-import org.osate.aadl2.instance.SystemInstance;
-import org.osate.aadl2.modelsupport.EObjectURIWrapper;
-import org.osate.aadl2.modelsupport.resources.OsateResourceUtil;
-import org.osate.contract.contract.ContractSubclause;
-import org.osate.contract.typing.ContractInterpreter;
+import org.omg.sysml.lang.sysml.OccurrenceDefinition;
+import org.osate.sysmlv2.contract.typing.ContractInterpreter;
 
 public class EvaluationHandler extends AbstractHandler {
 	private final ContractInterpreter interpreter = IResourceServiceProvider.Registry.INSTANCE
@@ -57,12 +49,13 @@ public class EvaluationHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		var selection = HandlerUtil.getCurrentStructuredSelection(event).getFirstElement();
-		ComponentInstance component;
-		if (selection instanceof IFile file) {
-			var resource = new ResourceSetImpl().getResource(OsateResourceUtil.toResourceURI(file), true);
-			component = (SystemInstance) resource.getContents().get(0);
-		} else if (selection instanceof EObjectURIWrapper wrapper) {
-			component = (ComponentInstance) new ResourceSetImpl().getEObject(wrapper.getUri(), true);
+		OccurrenceDefinition component;
+//		if (selection instanceof IFile file) {
+//			var resource = new ResourceSetImpl().getResource(OsateResourceUtil.toResourceURI(file), true);
+//			component = (SystemInstance) resource.getContents().get(0);
+//		} else 
+		if (selection instanceof EObjectURIWrapper wrapper) {
+			component = (OccurrenceDefinition) new ResourceSetImpl().getEObject(wrapper.getUri(), true);
 		} else {
 			throw new ExecutionException("Unexpected selection: " + selection);
 		}

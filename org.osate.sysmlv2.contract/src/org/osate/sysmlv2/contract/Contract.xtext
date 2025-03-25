@@ -191,9 +191,8 @@ fragment ArgumentTerm*:
 
 VerificationPlan:
 	'verification' 'plan' declaredName=ID '{'
-//	'component'
-////		ID ':' componentImplementation=[aadl2::ComponentImplementation|QCREF] ';'
-//		ID ':' componentImplementation=[sysmlv2::OccurrenceDefinition|QCREF] ';'
+	'component'
+		occurenceDefinition = [sysmlv2::OccurrenceDefinition|QCREF] ';'
 	('domains'
 		Domains
 	)?

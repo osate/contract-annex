@@ -115,22 +115,22 @@ domain schedulability {
 			t-> t.name
 		};
 		val periods = threads.map {
-			t -> t#Timing_Properties::Period.map {   
-				p -> p.scaledTo(@SIPrefixes::milli)
-			}
+			t -> t#Timing_Properties::Period --.map {   
+--				p -> p.scaledTo(@SIPrefixes::milli)
+--			}
 		};
 		val priorities = threads.map {
 			t -> t#Thread_Properties::Priority  
 		};
 		val deadlines = threads.map {
-			t -> t#Timing_Properties::Deadline.map {
-				p -> p.scaledTo(@SIPrefixes::milli)
-			}
+			t -> t#Timing_Properties::Deadline --.map {
+--				p -> p.scaledTo(@SIPrefixes::milli)
+--			}
 		};
 		val wcets = threads.map {
-			t -> t#Timing_Properties::Compute_Execution_Time.map {
-				cet -> cet.maximum.scaledTo(@SIPrefixes::milli)
-			}
+			t -> t#Timing_Properties::Compute_Execution_Time --.map {
+--				cet -> cet.maximum.scaledTo(@SIPrefixes::milli)
+--			}
 		};
 		val protocols = threads.map {
 			t -> t#Thread_Properties::Dispatch_Protocol

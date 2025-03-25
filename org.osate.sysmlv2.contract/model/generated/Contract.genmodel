@@ -62,6 +62,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//ArgumentExpression/nested"/>
     </genClasses>
     <genClasses ecoreClass="Contract.ecore#//VerificationPlan">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//VerificationPlan/occurenceDefinition"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//VerificationPlan/domains"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//VerificationPlan/claims"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//VerificationPlan/contracts"/>

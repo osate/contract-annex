@@ -27,6 +27,7 @@ package org.osate.sysmlv2.contract.contract.impl;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
@@ -34,9 +35,13 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
+import org.omg.sysml.lang.sysml.OccurrenceDefinition;
 
 import org.osate.sysmlv2.contract.contract.Contract;
 import org.osate.sysmlv2.contract.contract.ContractPackage;
@@ -52,6 +57,7 @@ import org.osate.sysmlv2.contract.contract.VerificationPlan;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link org.osate.sysmlv2.contract.contract.impl.VerificationPlanImpl#getOccurenceDefinition <em>Occurence Definition</em>}</li>
  *   <li>{@link org.osate.sysmlv2.contract.contract.impl.VerificationPlanImpl#getDomains <em>Domains</em>}</li>
  *   <li>{@link org.osate.sysmlv2.contract.contract.impl.VerificationPlanImpl#getClaims <em>Claims</em>}</li>
  *   <li>{@link org.osate.sysmlv2.contract.contract.impl.VerificationPlanImpl#getContracts <em>Contracts</em>}</li>
@@ -61,6 +67,16 @@ import org.osate.sysmlv2.contract.contract.VerificationPlan;
  */
 public class VerificationPlanImpl extends ContractElementImpl implements VerificationPlan
 {
+  /**
+   * The cached value of the '{@link #getOccurenceDefinition() <em>Occurence Definition</em>}' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getOccurenceDefinition()
+   * @generated
+   * @ordered
+   */
+  protected OccurrenceDefinition occurenceDefinition;
+
   /**
    * The cached value of the '{@link #getDomains() <em>Domains</em>}' reference list.
    * <!-- begin-user-doc -->
@@ -110,6 +126,51 @@ public class VerificationPlanImpl extends ContractElementImpl implements Verific
   protected EClass eStaticClass()
   {
     return ContractPackage.Literals.VERIFICATION_PLAN;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public OccurrenceDefinition getOccurenceDefinition()
+  {
+    if (occurenceDefinition != null && occurenceDefinition.eIsProxy())
+    {
+      InternalEObject oldOccurenceDefinition = (InternalEObject)occurenceDefinition;
+      occurenceDefinition = (OccurrenceDefinition)eResolveProxy(oldOccurenceDefinition);
+      if (occurenceDefinition != oldOccurenceDefinition)
+      {
+        if (eNotificationRequired())
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, ContractPackage.VERIFICATION_PLAN__OCCURENCE_DEFINITION, oldOccurenceDefinition, occurenceDefinition));
+      }
+    }
+    return occurenceDefinition;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public OccurrenceDefinition basicGetOccurenceDefinition()
+  {
+    return occurenceDefinition;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setOccurenceDefinition(OccurrenceDefinition newOccurenceDefinition)
+  {
+    OccurrenceDefinition oldOccurenceDefinition = occurenceDefinition;
+    occurenceDefinition = newOccurenceDefinition;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.VERIFICATION_PLAN__OCCURENCE_DEFINITION, oldOccurenceDefinition, occurenceDefinition));
   }
 
   /**
@@ -183,6 +244,9 @@ public class VerificationPlanImpl extends ContractElementImpl implements Verific
   {
     switch (featureID)
     {
+      case ContractPackage.VERIFICATION_PLAN__OCCURENCE_DEFINITION:
+        if (resolve) return getOccurenceDefinition();
+        return basicGetOccurenceDefinition();
       case ContractPackage.VERIFICATION_PLAN__DOMAINS:
         return getDomains();
       case ContractPackage.VERIFICATION_PLAN__CLAIMS:
@@ -204,6 +268,9 @@ public class VerificationPlanImpl extends ContractElementImpl implements Verific
   {
     switch (featureID)
     {
+      case ContractPackage.VERIFICATION_PLAN__OCCURENCE_DEFINITION:
+        setOccurenceDefinition((OccurrenceDefinition)newValue);
+        return;
       case ContractPackage.VERIFICATION_PLAN__DOMAINS:
         getDomains().clear();
         getDomains().addAll((Collection<? extends Domain>)newValue);
@@ -230,6 +297,9 @@ public class VerificationPlanImpl extends ContractElementImpl implements Verific
   {
     switch (featureID)
     {
+      case ContractPackage.VERIFICATION_PLAN__OCCURENCE_DEFINITION:
+        setOccurenceDefinition((OccurrenceDefinition)null);
+        return;
       case ContractPackage.VERIFICATION_PLAN__DOMAINS:
         getDomains().clear();
         return;
@@ -253,6 +323,8 @@ public class VerificationPlanImpl extends ContractElementImpl implements Verific
   {
     switch (featureID)
     {
+      case ContractPackage.VERIFICATION_PLAN__OCCURENCE_DEFINITION:
+        return occurenceDefinition != null;
       case ContractPackage.VERIFICATION_PLAN__DOMAINS:
         return domains != null && !domains.isEmpty();
       case ContractPackage.VERIFICATION_PLAN__CLAIMS:
