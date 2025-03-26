@@ -28,14 +28,21 @@ package org.osate.sysmlv2.contract.typing;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.omg.sysml.lang.sysml.AttributeUsage;
+import org.omg.sysml.lang.sysml.FeatureReferenceExpression;
+import org.omg.sysml.lang.sysml.FeatureValue;
+import org.omg.sysml.lang.sysml.LiteralInteger;
+import org.omg.sysml.lang.sysml.LiteralRational;
+import org.omg.sysml.lang.sysml.OperatorExpression;
+import org.osate.sysmlv2.contract.contract.Expression;
+
 public final class TimeType implements Type {
 	public static final TimeType INSTANCE = new TimeType();
 	private static final Map<String, Member> MEMBERS;
 
 	static {
 		MEMBERS = new LinkedHashMap<>();
-		// getters for the value / unit / unit conversion
-//		MEMBERS.put("scaledTo", ScaledToMember());
+		MEMBERS.put("scaledTo", new ScaledToMember());
 	}
 
 	public TimeType() {
@@ -56,29 +63,56 @@ public final class TimeType implements Type {
 		return "Time";
 	}
 
+	private static class ScaledToMember implements MemberWithArgument<FeatureValue, Double, AttributeUsage> {
+		@Override
+		public Type getReturnType(final Expression argument) {
+			return DoubleType.INSTANCE;
+		}
 	
-//	private static class GetMember implements MemberWithArgument<RecordValueHolder, Optional<?>, BasicProperty> {
-//		@Override
-//		public Type getReturnType(Expression argument) {
-//			if (argument instanceof NameReference reference
-//					&& reference.getReference() instanceof BasicProperty field) {
-//				return new OptionalType(TypeSystemUtils.convertPropertyType(field.getPropertyType()));
-//			} else {
-//				return null;
-//			}
-//		}
-//
-//		@Override
-//		public Optional<?> evaluate(RecordValueHolder receiver, BasicProperty argument) {
-//			for (var fieldValue : receiver.getValue().getOwnedFieldValues()) {
-//				if (fieldValue.getProperty().equals(argument)) {
-//					var lookupContext = receiver.getLookupContext();
-//					var resolved = CodeGenUtil.resolveNamedValue(fieldValue.getOwnedValue(), lookupContext,
-//							Optional.empty());
-//					return Optional.of(TypeSystemUtils.convertPropertyValue(resolved, lookupContext));
-//				}
-//			}
-//			return Optional.empty();
-//		}
-//	}
+		@Override
+		public Double evaluate(final FeatureValue featureValue, final AttributeUsage unitUsage) {
+			/*
+			 * Assumes the following patter in the attribute usage:
+			 * 
+			 *   :>> Period = 500 [micro * s];
+			 *   
+			 * Note: Currently does not support just "1 [s]", would have to use "1000 [milli * s]" 
+			 */
+			if (featureValue.getValue() instanceof OperatorExpression operatorExpression
+					&& operatorExpression.getOperator().equals("[")
+					&& operatorExpression.getOperand().size() == 2
+					&& operatorExpression.getOperand().get(0) instanceof LiteralInteger literal) {
+				final int coefficient = literal.getValue();
+				
+				if (operatorExpression.getOperand().get(1) instanceof OperatorExpression operatorExpression2
+						&& operatorExpression2.getOperator().equals("*")
+						&& operatorExpression2.getOperand().size() == 2
+						&& operatorExpression2.getOperand().get(1) instanceof FeatureReferenceExpression featureReference
+						&& featureReference.getReferent().getQualifiedName().equals("SI::second")
+						&& operatorExpression2.getOperand().get(0) instanceof FeatureReferenceExpression featureReference2
+						&& featureReference2.getReferent() instanceof AttributeUsage attrUsage) {
+					final double sourceFactor = getConversionFactor(attrUsage);
+					final double destFactor = getConversionFactor(unitUsage);
+					return Double.valueOf(coefficient * (sourceFactor / destFactor));
+				}
+			}
+			throw new IllegalArgumentException(
+					"Attribute usage does not follow pattern: '::> attr = <value> [<prefix> * s]'");
+		}
+		
+		public static double getConversionFactor(final AttributeUsage attrUsage) {
+			for (var fm: attrUsage.getOwnedFeatureMembership()) {
+				var ownedF = fm.getOwnedMemberFeature();
+				if (ownedF.effectiveName().equals("conversionFactor")) {
+					for (var relationship : ownedF.getOwnedRelationship()) {
+						if (relationship instanceof FeatureValue featureValue10) {
+							var factor = ((LiteralRational) featureValue10.getValue()).getValue();
+							return factor;
+						}
+					}
+				}
+			}
+			throw new IllegalArgumentException("Cannot find 'conversionFactor' in attribute usage");
+		}
+	}
 }

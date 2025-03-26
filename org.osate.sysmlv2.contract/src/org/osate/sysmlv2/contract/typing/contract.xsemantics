@@ -96,10 +96,6 @@ from {
 axiom SelfExpression
 	G |- SelfExpression expression : OccurrenceDefintionType.INSTANCE
 
-// XXX: No root because there is no instance model
-//axiom RootExpression
-//	G |- RootExpression expression : SystemInstanceType.INSTANCE
-
 axiom StringLiteral
 	G |- StringLiteral expression : StringType.INSTANCE
 

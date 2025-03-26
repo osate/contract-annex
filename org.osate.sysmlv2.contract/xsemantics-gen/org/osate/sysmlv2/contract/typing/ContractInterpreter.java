@@ -21,6 +21,7 @@ import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.omg.sysml.lang.sysml.Element;
 import org.omg.sysml.lang.sysml.OccurrenceDefinition;
+import org.omg.sysml.lang.sysml.Usage;
 import org.osate.sysmlv2.contract.contract.AndExpression;
 import org.osate.sysmlv2.contract.contract.Expression;
 import org.osate.sysmlv2.contract.contract.Lambda;
@@ -39,6 +40,7 @@ import org.osate.sysmlv2.contract.contract.TupleDeclaration;
 import org.osate.sysmlv2.contract.contract.TupleExpression;
 import org.osate.sysmlv2.contract.contract.TupleName;
 import org.osate.sysmlv2.contract.contract.TupleParameter;
+import org.osate.sysmlv2.contract.contract.UsageExpression;
 import org.osate.sysmlv2.contract.tuples.Tuple;
 
 @SuppressWarnings("all")
@@ -62,6 +64,8 @@ public class ContractInterpreter extends XsemanticsRuntimeSystem {
   public static final String EVALUATESTRINGLITERAL = "org.osate.sysmlv2.contract.typing.EvaluateStringLiteral";
 
   public static final String EVALUATETUPLEEXPRESSION = "org.osate.sysmlv2.contract.typing.EvaluateTupleExpression";
+
+  public static final String EVALUATEUSAGEEXPRESSION = "org.osate.sysmlv2.contract.typing.EvaluateUsageExpression";
 
   public static final String EVALUATENAMEREFERENCE = "org.osate.sysmlv2.contract.typing.EvaluateNameReference";
 
@@ -483,7 +487,7 @@ public class ContractInterpreter extends XsemanticsRuntimeSystem {
     checkAssignableTo(result_1.getFirst(), Element.class);
     lookupContext = (Element) result_1.getFirst();
     
-    result = Optional.<Boolean>of(Boolean.TRUE);
+    result = InterpreterUtils.lookupAttributeValue(((OccurrenceDefinition) lookupContext), expression.getRight());
     return new Result<Object>(result);
   }
 
@@ -583,6 +587,35 @@ public class ContractInterpreter extends XsemanticsRuntimeSystem {
     Tuple _tuple = new Tuple(elementResults);
     result = _tuple;
     return new Result<Object>(result);
+  }
+
+  protected Result<Object> evaluateExpressionImpl(final RuleEnvironment G, final RuleApplicationTrace _trace_, final UsageExpression expression) throws RuleFailedException {
+    try {
+    	final RuleApplicationTrace _subtrace_ = newTrace(_trace_);
+    	final Result<Object> _result_ = applyRuleEvaluateUsageExpression(G, _subtrace_, expression);
+    	addToTrace(_trace_, new Provider<Object>() {
+    		public Object get() {
+    			return ruleName("EvaluateUsageExpression") + stringRepForEnv(G) + " |- " + stringRep(expression) + " ~> " + stringRep(_result_.getFirst());
+    		}
+    	});
+    	addAsSubtrace(_trace_, _subtrace_);
+    	return _result_;
+    } catch (Exception e_applyRuleEvaluateUsageExpression) {
+    	evaluateExpressionThrowException(ruleName("EvaluateUsageExpression") + stringRepForEnv(G) + " |- " + stringRep(expression) + " ~> " + "Usage",
+    		EVALUATEUSAGEEXPRESSION,
+    		e_applyRuleEvaluateUsageExpression, expression, new ErrorInformation[] {new ErrorInformation(expression)});
+    	return null;
+    }
+  }
+
+  protected Result<Object> applyRuleEvaluateUsageExpression(final RuleEnvironment G, final RuleApplicationTrace _trace_, final UsageExpression expression) throws RuleFailedException {
+    
+    return new Result<Object>(_applyRuleEvaluateUsageExpression_1(G, expression));
+  }
+
+  private Usage _applyRuleEvaluateUsageExpression_1(final RuleEnvironment G, final UsageExpression expression) throws RuleFailedException {
+    Usage _usage = expression.getUsage();
+    return _usage;
   }
 
   protected Result<Object> evaluateExpressionImpl(final RuleEnvironment G, final RuleApplicationTrace _trace_, final NameReference expression) throws RuleFailedException {

@@ -27,10 +27,13 @@ package org.osate.sysmlv2.contract.typing;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.omg.sysml.lang.sysml.AllocationUsage;
 import org.omg.sysml.lang.sysml.OccurrenceDefinition;
@@ -38,6 +41,9 @@ import org.osate.sysmlv2.contract.contract.Expression;
 
 
 public final class OccurrenceDefintionType implements Type {
+	private static final String AADL_THREAD = "AADL::Thread";
+	private static final String AADL_PROCESSOR = "AADL::Processor";
+	
 	public static final OccurrenceDefintionType INSTANCE = new OccurrenceDefintionType();
 	private static final Map<String, Member> MEMBERS;
 
@@ -130,6 +136,7 @@ public final class OccurrenceDefintionType implements Type {
 		}
 	}
 	
+	/* Gets all the definitions of all the usages rooted at the given definition. */
 	private static class AllUsagesMember implements SimpleMember<OccurrenceDefinition, List<OccurrenceDefinition>> {
 		@Override
 		public Type getReturnType() {
@@ -137,15 +144,30 @@ public final class OccurrenceDefintionType implements Type {
 		}
 	
 		@Override
-		public List<OccurrenceDefinition> evaluate(OccurrenceDefinition receiver) {
+		public List<OccurrenceDefinition> evaluate(final OccurrenceDefinition receiver) {
+			final Set<OccurrenceDefinition> visited = new HashSet<>();
 			var result = new ArrayList<OccurrenceDefinition>();
 			
-			// TODO!
-//			receiver.eAllContents().forEachRemaining(element -> {
-//				if (element instanceof ComponentInstance subcomponent) {
-//					result.add(subcomponent);
-//				}
-//			});
+			final List<OccurrenceDefinition> toVisit = new LinkedList<>();
+			toVisit.add(receiver);
+			while (!toVisit.isEmpty()) {
+				var def = toVisit.remove(0);
+				if (!visited.contains(def)) {
+					visited.add(def);
+					
+					for (var usage : def.getOwnedUsage()) {
+//						System.out.println("USAGE " + usage.effectiveName());
+						for (var d : usage.getDefinition()) {
+//							System.out.println("  d = " + d.getDeclaredName());
+							if (d instanceof OccurrenceDefinition occurDef) {
+								result.add(occurDef);
+								toVisit.add(occurDef);
+							}
+						}
+					}
+				}				
+			}
+			
 			return result;
 		}
 	}
@@ -157,10 +179,9 @@ public final class OccurrenceDefintionType implements Type {
 		}
 
 		@Override
-		public Boolean evaluate(OccurrenceDefinition receiver) {
-			// TODO
-			return true;
-//			return receiver.getCategory() == ComponentCategory.THREAD;
+		public Boolean evaluate(final OccurrenceDefinition receiver) {
+			/* Return true if the occrrenceDefinition extends from AADL::Thread */
+			return receiver.specializesFromLibrary(AADL_THREAD);
 		}
 	}
 	
@@ -172,9 +193,7 @@ public final class OccurrenceDefintionType implements Type {
 
 		@Override
 		public Boolean evaluate(OccurrenceDefinition receiver) {
-			// TODO
-			return true;
-//			return receiver.getCategory() == ComponentCategory.THREAD;
+			return receiver.specializesFromLibrary(AADL_PROCESSOR);
 		}
 	}
 	

@@ -47,6 +47,7 @@ import org.osate.sysmlv2.contract.contract.TupleParameter
 import org.osate.sysmlv2.contract.tuples.Tuple
 import org.omg.sysml.lang.sysml.Element
 import org.omg.sysml.lang.sysml.OccurrenceDefinition
+import org.osate.sysmlv2.contract.contract.UsageExpression
 
 system org.osate.sysmlv2.contract.typing.ContractInterpreter
 
@@ -143,11 +144,12 @@ from {
 	}
 }
 
+// Need to look up stuff like this: Period = 1000 [micro * s];
 rule EvaluatePropertyLookup
 	G |- PropertyLookup expression ~> Optional<?> result
 from {
 	G |- expression.left ~> var Element lookupContext
-	result = Optional.of(Boolean.TRUE)
+	result = InterpreterUtils.lookupAttributeValue(lookupContext as OccurrenceDefinition, expression.right)
 	// TODO: Fix later
 //	try {
 //		val value = CodeGenUtil.lookupProperty(expression.right, lookupContext, Optional.^empty)
@@ -162,12 +164,27 @@ from {
 //	}
 }
 
+
+//rule EvaluatePropertyLookup
+//	G |- PropertyLookup expression ~> Optional<?> result
+//from {
+//	G |- expression.left ~> var NamedElement lookupContext
+//	try {
+//		val value = CodeGenUtil.lookupProperty(expression.right, lookupContext, Optional.^empty)
+//		val resolved = CodeGenUtil.resolveNamedValue(value, lookupContext, Optional.^empty)
+//		result = Optional.of(TypeSystemUtils.convertPropertyValue(resolved, lookupContext))
+//	} catch (PropertyNotPresentException e) {
+//		result = Optional.^empty
+//	} catch (PropertyDoesNotApplyToHolderException e) {
+//		result = Optional.^empty
+//	} catch (PropertyIsModalException e) {
+//		result = Optional.^empty
+//	}
+//}
+
+
 axiom EvaluateSelfExpression
 	G |- SelfExpression expression ~> env(G, "self", OccurrenceDefinition)
-
-// XXX: No root because there is no instance model.
-//axiom EvaluateRootExpression
-//	G |- RootExpression expression ~> EcoreUtil2.getContainerOfType(env(G, "self", ComponentInstance), SystemInstance)
 
 axiom EvaluateStringLiteral
 	G |- StringLiteral expression ~> expression.value
@@ -182,6 +199,9 @@ from {
 	}
 	result = new Tuple(elementResults)
 }
+
+axiom EvaluateUsageExpression
+	G |- UsageExpression expression ~> expression.usage
 
 rule EvaluateNameReference
 	G |- NameReference expression ~> Object result

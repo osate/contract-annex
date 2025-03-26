@@ -28,6 +28,7 @@ package org.osate.sysmlv2.contract.evaluation.ui;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -35,6 +36,7 @@ import org.eclipse.xsemantics.runtime.RuleEnvironment;
 import org.eclipse.xsemantics.runtime.RuleEnvironmentEntry;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode;
+import org.osate.sysmlv2.contract.contract.Query;
 import org.osate.sysmlv2.contract.contract.VerificationPlan;
 import org.osate.sysmlv2.contract.typing.ContractInterpreter;
 
@@ -51,7 +53,7 @@ public class EvaluationHandler extends AbstractHandler {
 		
 		System.out.println(vp);
 
-		executeQueries(vp);
+		executeAllQueries(vp);
 //		component.eAllContents().forEachRemaining(element -> {
 //			if (element instanceof ComponentInstance subcomponent) {
 //				executeQueries(subcomponent);
@@ -61,16 +63,24 @@ public class EvaluationHandler extends AbstractHandler {
 		return null;
 	}
 
-	private void executeQueries(final VerificationPlan vp) {
+	private void executeAllQueries(final VerificationPlan vp) {
 		var environment = new RuleEnvironment(new RuleEnvironmentEntry("self", vp.getOccurrenceDefinition()));
 		for (var contract : vp.getContracts()) {
-			for (var query : contract.getQueries()) {
-				var result = interpreter.evaluateQuery(environment, query);
-				if (result.failed()) {
-					System.out.println(result.getRuleFailedException());
-				} else {
-					result.getValue().forEach((name, value) -> System.out.println(name + ": " + value));
-				}
+			EList<Query> queries = contract.getQueries();
+			executeLocalQueries(environment, queries);
+			for (var domain : vp.getDomains()) {
+				executeLocalQueries(environment, domain.getQueries());
+			}
+		}
+	}
+
+	private void executeLocalQueries(RuleEnvironment environment, EList<Query> queries) {
+		for (var query : queries) {
+			var result = interpreter.evaluateQuery(environment, query);
+			if (result.failed()) {
+				System.out.println(result.getRuleFailedException());
+			} else {
+				result.getValue().forEach((name, value) -> System.out.println(name + ": " + value));
 			}
 		}
 	}
