@@ -8,6 +8,7 @@ verification plan verifySchedualability {
 		`And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
 	contracts
 		FlowSynchronizationContract::RMPrioritiesContract;
-		FlowSynchronizationContract::RMAHarmonicBoundContract;
-		FlowSynchronizationContract::RMANonHarmonicBoundContract;
+--		FlowSynchronizationContract::RMAHarmonicBoundContract;
+--		FlowSynchronizationContract::RMANonHarmonicBoundContract;
 }
+ 

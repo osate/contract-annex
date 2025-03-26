@@ -25,9 +25,6 @@
  *******************************************************************************/
 package org.osate.sysmlv2.contract.typing;
 
-import java.util.ArrayList;
-import java.util.Optional;
-
 import org.omg.sysml.lang.sysml.AttributeDefinition;
 import org.omg.sysml.lang.sysml.Usage;
 
@@ -57,16 +54,16 @@ public final class TypeSystemUtils {
 	public static Type convertPropertyType(final AttributeDefinition attrDef) {
 		final Type t;
 		if (attrDef.specializesFromLibrary(AADL_PROPERTY)) {
-			System.out.println("Attribute def: " + attrDef.getQualifiedName());
-			System.out.println("  supertypes");
-			for (var x : attrDef.supertypes(true)) {
-				System.out.println ("    " + x.getQualifiedName());
-			}
-			System.out.println("  all supertypes");
-			for (var x : attrDef.allSupertypes()) {
-				System.out.println ("    " + x.getQualifiedName());
-			}
-			System.out.println();
+//			System.out.println("Attribute def: " + attrDef.getQualifiedName());
+//			System.out.println("  supertypes");
+//			for (var x : attrDef.supertypes(true)) {
+//				System.out.println ("    " + x.getQualifiedName());
+//			}
+//			System.out.println("  all supertypes");
+//			for (var x : attrDef.allSupertypes()) {
+//				System.out.println ("    " + x.getQualifiedName());
+//			}
+//			System.out.println();
 			
 			if (attrDef.specializesFromLibrary(TIME)) {
 				t = TimeType.INSTANCE;
@@ -75,7 +72,7 @@ public final class TypeSystemUtils {
 			} else if (attrDef.specializesFromLibrary(SUPPORTED_DISPATCH_PROTOCOLS)) {
 				t = SupportedDispatchProtocolsType.INSTANCE;
 			} else if (attrDef.specializesFromLibrary(LONG)) {
-				t = LongType.INSTANCE;
+				t = PriorityType.INSTANCE;
 			} else {
 				throw new RuntimeException("Unknown type for attribute definition '" +
 						attrDef.getQualifiedName() + "'");

@@ -10,11 +10,11 @@ public final class InterpreterUtils {
 	private InterpreterUtils() { super(); }
 	
 	public static Optional<FeatureValue> lookupAttributeValue(final OccurrenceDefinition component, final AttributeDefinition attribute) {
-		System.out.println("component = " + component.getDeclaredName());
+//		System.out.println("component = " + component.getDeclaredName());
 		for (var refUsage : component.getOwnedReference()) {
-			System.out.println("- owned ref = " + refUsage.effectiveName());
+//			System.out.println("- owned ref = " + refUsage.effectiveName());
 			for (var usageDef : refUsage.getDefinition()) {
-				System.out.println("+ def = " + usageDef.effectiveName());
+//				System.out.println("+ def = " + usageDef.effectiveName());
 				if (usageDef.equals(attribute)) {
 					// Found it!
 					for (var relationship : refUsage.getOwnedRelationship()) {
