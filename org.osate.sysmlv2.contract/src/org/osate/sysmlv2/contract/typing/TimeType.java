@@ -63,21 +63,22 @@ public final class TimeType implements Type {
 		return "Time";
 	}
 
-	private static class ScaledToMember implements MemberWithArgument<FeatureValue, Double, AttributeUsage> {
+	private static class ScaledToMember implements MemberWithArgument<AttributeValueHolder, Double, AttributeUsage> {
 		@Override
 		public Type getReturnType(final Expression argument) {
 			return DoubleType.INSTANCE;
 		}
 	
 		@Override
-		public Double evaluate(final FeatureValue featureValue, final AttributeUsage unitUsage) {
+		public Double evaluate(final AttributeValueHolder avh, final AttributeUsage unitUsage) {
 			/*
-			 * Assumes the following patter in the attribute usage:
+			 * Assumes the following pattern in the attribute usage:
 			 * 
 			 *   :>> Period = 500 [micro * s];
 			 *   
 			 * Note: Currently does not support just "1 [s]", would have to use "1000 [milli * s]" 
 			 */
+			final FeatureValue featureValue = (FeatureValue) avh.getElement();
 			if (featureValue.getValue() instanceof OperatorExpression operatorExpression
 					&& operatorExpression.getOperator().equals("[")
 					&& operatorExpression.getOperand().size() == 2

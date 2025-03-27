@@ -27,6 +27,13 @@ package org.osate.sysmlv2.contract.typing;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
+
+import org.omg.sysml.lang.sysml.FeatureMembership;
+import org.omg.sysml.lang.sysml.FeatureValue;
+import org.omg.sysml.lang.sysml.LiteralInteger;
+import org.omg.sysml.lang.sysml.OperatorExpression;
+import org.omg.sysml.lang.sysml.ReferenceUsage;
 
 public final class TimeRangeType implements Type {
 	public static final TimeRangeType INSTANCE = new TimeRangeType();
@@ -34,7 +41,7 @@ public final class TimeRangeType implements Type {
 
 	static {
 		MEMBERS = new LinkedHashMap<>();
-		// getters for the value / unit / unit conversion
+		MEMBERS.put("maximum", new MaximumMember());
 	}
 
 	public TimeRangeType() {
@@ -55,28 +62,37 @@ public final class TimeRangeType implements Type {
 		return "TimeRange";
 	}
 
-//	private static class GetMember implements MemberWithArgument<RecordValueHolder, Optional<?>, BasicProperty> {
-//		@Override
-//		public Type getReturnType(Expression argument) {
-//			if (argument instanceof NameReference reference
-//					&& reference.getReference() instanceof BasicProperty field) {
-//				return new OptionalType(TypeSystemUtils.convertPropertyType(field.getPropertyType()));
-//			} else {
-//				return null;
-//			}
-//		}
-//
-//		@Override
-//		public Optional<?> evaluate(RecordValueHolder receiver, BasicProperty argument) {
-//			for (var fieldValue : receiver.getValue().getOwnedFieldValues()) {
-//				if (fieldValue.getProperty().equals(argument)) {
-//					var lookupContext = receiver.getLookupContext();
-//					var resolved = CodeGenUtil.resolveNamedValue(fieldValue.getOwnedValue(), lookupContext,
-//							Optional.empty());
-//					return Optional.of(TypeSystemUtils.convertPropertyValue(resolved, lookupContext));
-//				}
-//			}
-//			return Optional.empty();
-//		}
-//	}
+	private static class MaximumMember implements SimpleMember<AttributeValueHolder, AttributeValueHolder> {
+		@Override
+		public Type getReturnType() {
+			return TimeType.INSTANCE;
+		}
+	
+		@Override
+		public AttributeValueHolder evaluate(final AttributeValueHolder timeRange) {
+			/*
+			 * Assumes the following pattern in the attribute usage:
+			 * 
+			 * :>> Compute_Execution_Time {
+			 *    :>> minimum = 10 [micro * s];
+			 *    :>> maximum = 20 [micro * s];
+		     * }
+			 */
+			var refUsage = (ReferenceUsage) timeRange.getElement();
+			for (var relationship : refUsage.getOwnedRelationship()) {
+				if (relationship instanceof FeatureMembership fm) {
+					if (fm.getMemberElement() instanceof ReferenceUsage nestedRefUsage
+							&& nestedRefUsage.effectiveName().equals("maximum")) {
+						for (var nestedRelationship : nestedRefUsage.getOwnedRelationship()) {
+							if (nestedRelationship instanceof FeatureValue featureValue) {
+								return new AttributeValueHolder(featureValue);
+							}
+						}						
+					}
+				}
+			}
+			throw new IllegalArgumentException(
+					"Attribute usage does not follow pattern: '::> attr = <value> [<prefix> * s]'");
+		}
+	}
 }

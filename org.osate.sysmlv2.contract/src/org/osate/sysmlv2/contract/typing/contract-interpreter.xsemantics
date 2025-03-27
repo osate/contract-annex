@@ -148,8 +148,9 @@ from {
 rule EvaluatePropertyLookup
 	G |- PropertyLookup expression ~> Optional<?> result
 from {
+	val propType = typeSystem.expressionType(expression).value
 	G |- expression.left ~> var Element lookupContext
-	result = InterpreterUtils.lookupAttributeValue(lookupContext as OccurrenceDefinition, expression.right)
+	result = InterpreterUtils.lookupAttributeValue(lookupContext as OccurrenceDefinition, expression.right, propType)
 	// TODO: Fix later
 //	try {
 //		val value = CodeGenUtil.lookupProperty(expression.right, lookupContext, Optional.^empty)

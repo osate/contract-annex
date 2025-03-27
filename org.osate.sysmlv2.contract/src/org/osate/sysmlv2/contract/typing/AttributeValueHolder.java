@@ -25,59 +25,16 @@
  *******************************************************************************/
 package org.osate.sysmlv2.contract.typing;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import org.omg.sysml.lang.sysml.Element;
 
-import org.omg.sysml.lang.sysml.FeatureValue;
-import org.omg.sysml.lang.sysml.LiteralInteger;
-
-public final class PriorityType implements Type {
-	public static final PriorityType INSTANCE = new PriorityType();
-	private static final Map<String, Member> MEMBERS;
-
-	static {
-		MEMBERS = new LinkedHashMap<>();
-		MEMBERS.put("value", new ValueMember());
-	}
-
-	public PriorityType() {
-	}
-
-	@Override
-	public Map<String, Member> getMembers() {
-		return MEMBERS;
-	}
-
-	@Override
-	public boolean supportsAttributeLookup() {
-		return false;
-	}
-
-	@Override
-	public String toString() {
-		return "Priority";
-	}
-
-	private static class ValueMember implements SimpleMember<AttributeValueHolder, Long> {
-		@Override
-		public Type getReturnType() {
-			return LongType.INSTANCE;
-		}
+public final class AttributeValueHolder {
+	private final Element sysmlElement;
 	
-		@Override
-		public Long evaluate(final AttributeValueHolder avh) {
-			/*
-			 * Assumes the following patter in the attribute usage:
-			 * 
-			 *   :>> Period = 500 [micro * s];
-			 *   
-			 * Note: Currently does not support just "1 [s]", would have to use "1000 [milli * s]" 
-			 */
-			var featureValue = (FeatureValue) avh.getElement();
-			if (featureValue.getValue() instanceof LiteralInteger litInt) {
-				return Long.valueOf(litInt.getValue());
-			}
-			throw new IllegalArgumentException("Feature value is not an integer literal");
-		}
+	public AttributeValueHolder(final Element element) {
+		sysmlElement = element;
+	}
+	
+	public Element getElement() {
+		return sysmlElement;
 	}
 }

@@ -480,6 +480,7 @@ public class ContractInterpreter extends XsemanticsRuntimeSystem {
 
   protected Result<Object> applyRuleEvaluatePropertyLookup(final RuleEnvironment G, final RuleApplicationTrace _trace_, final PropertyLookup expression) throws RuleFailedException {
     Optional<?> result = null; // output parameter
+    final Type propType = this.typeSystem.expressionType(expression).getValue();
     /* G |- expression.left ~> var Element lookupContext */
     Expression _left = expression.getLeft();
     Element lookupContext = null;
@@ -487,7 +488,7 @@ public class ContractInterpreter extends XsemanticsRuntimeSystem {
     checkAssignableTo(result_1.getFirst(), Element.class);
     lookupContext = (Element) result_1.getFirst();
     
-    result = InterpreterUtils.lookupAttributeValue(((OccurrenceDefinition) lookupContext), expression.getRight());
+    result = InterpreterUtils.lookupAttributeValue(((OccurrenceDefinition) lookupContext), expression.getRight(), propType);
     return new Result<Object>(result);
   }
 
