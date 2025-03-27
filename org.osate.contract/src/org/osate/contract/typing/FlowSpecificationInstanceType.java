@@ -33,7 +33,7 @@ public final class FlowSpecificationInstanceType implements Type {
 
 	@Override
 	public boolean supportsPropertyLookup() {
-		return false;
+		return true;
 	}
 
 	@Override
