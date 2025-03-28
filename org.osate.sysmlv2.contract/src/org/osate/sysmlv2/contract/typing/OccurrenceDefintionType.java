@@ -26,16 +26,15 @@
 package org.osate.sysmlv2.contract.typing;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 import org.omg.sysml.lang.sysml.AllocationUsage;
+import org.omg.sysml.lang.sysml.FeatureMembership;
 import org.omg.sysml.lang.sysml.OccurrenceDefinition;
 import org.osate.sysmlv2.contract.contract.Expression;
 
@@ -43,6 +42,7 @@ import org.osate.sysmlv2.contract.contract.Expression;
 public final class OccurrenceDefintionType implements Type {
 	private static final String AADL_THREAD = "AADL::Thread";
 	private static final String AADL_PROCESSOR = "AADL::Processor";
+	private static final String ACTUAL_PROCESSOR_BINDING = "Deployment_Properties::Actual_Processor_Binding";
 	
 	public static final OccurrenceDefintionType INSTANCE = new OccurrenceDefintionType();
 	private static final Map<String, Member> MEMBERS;
@@ -204,10 +204,17 @@ public final class OccurrenceDefintionType implements Type {
 		}
 
 		@Override
-		public List<AllocationUsage> evaluate(OccurrenceDefinition receiver) {
-			// TODO
-			return null;
-//			return receiver.getCategory() == ComponentCategory.THREAD;
+		public List<AllocationUsage> evaluate(final OccurrenceDefinition receiver) {
+			final List<AllocationUsage> result = new LinkedList<>();
+			for (var r : receiver.getOwnedRelationship()) {
+				if (r instanceof FeatureMembership fm
+						&& fm.getMemberElement() instanceof AllocationUsage aUsage
+						&& aUsage.specializesFromLibrary(ACTUAL_PROCESSOR_BINDING)) {
+					result.add(aUsage);
+				}
+						
+			}
+			return result;
 		}
 	}
 

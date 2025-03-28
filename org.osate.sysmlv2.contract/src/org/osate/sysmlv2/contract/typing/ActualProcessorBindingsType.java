@@ -29,7 +29,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.omg.sysml.lang.sysml.AllocationUsage;
+import org.omg.sysml.lang.sysml.Feature;
 import org.omg.sysml.lang.sysml.OccurrenceDefinition;
+import org.omg.sysml.lang.sysml.PartUsage;
+import org.omg.sysml.lang.sysml.SysMLPackage;
+import org.osate.sysmlv2.modelsupport.scoping.SysMLv2GlobalScopeUtil;
 
 
 public final class ActualProcessorBindingsType implements Type {
@@ -60,6 +64,24 @@ public final class ActualProcessorBindingsType implements Type {
 		return "ActualProcessorBindings";
 	}
 
+	private static OccurrenceDefinition getReferencedOccurrenceDefinition(final AllocationUsage receiver, final String endFeatureName) {
+		for (var endFeature : receiver.getEndFeature()) {
+			if (endFeature.getDeclaredName().equals(endFeatureName)) {
+				// Get qualified name of the last named part reference
+				var referencedFeature = endFeature.getOwnedReferenceSubsetting().getReferencedFeature();
+				var featureChain = referencedFeature.getOwnedFeatureChaining();
+				var qualifiedName = (featureChain.size() > 0)
+						? featureChain.get(featureChain.size() - 1).getChainingFeature().getQualifiedName()
+								: referencedFeature.getQualifiedName();
+//				System.out.println("qname = " + qualifiedName);
+				final PartUsage swPartUsage = SysMLv2GlobalScopeUtil.getLocal(
+						referencedFeature, SysMLPackage.eINSTANCE.getConnector_ConnectorEnd(), qualifiedName);
+				return (OccurrenceDefinition) swPartUsage.getDefinition().get(0);				
+			}
+		}
+		throw new IllegalArgumentException("Thread allocation does not follow pattern");
+	}
+	
 	private static class SwMember implements SimpleMember<AllocationUsage, OccurrenceDefinition> {
 		@Override
 		public Type getReturnType() {
@@ -67,20 +89,20 @@ public final class ActualProcessorBindingsType implements Type {
 		}
 
 		@Override
-		public OccurrenceDefinition evaluate(AllocationUsage receiver) {
-			return null;
+		public OccurrenceDefinition evaluate(final AllocationUsage receiver) {
+			return getReferencedOccurrenceDefinition(receiver, "sw");
 		}
 	}
-	
+
 	private static class HwMember implements SimpleMember<AllocationUsage, OccurrenceDefinition> {
 		@Override
 		public Type getReturnType() {
 			return OccurrenceDefintionType.INSTANCE;
 		}
-	
+
 		@Override
-		public OccurrenceDefinition evaluate(AllocationUsage receiver) {
-			return null;
+		public OccurrenceDefinition evaluate(final AllocationUsage receiver) {
+			return getReferencedOccurrenceDefinition(receiver, "hw");
 		}
 	}
 }
