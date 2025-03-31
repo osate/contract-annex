@@ -36,6 +36,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.xsemantics.runtime.RuleEnvironment;
 import org.eclipse.xsemantics.runtime.RuleEnvironmentEntry;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
+import org.omg.sysml.lang.sysml.OccurrenceDefinition;
 import org.osate.sysmlv2.contract.contract.IString;
 import org.osate.sysmlv2.contract.contract.IStringLiteral;
 import org.osate.sysmlv2.contract.contract.IStringVar;
@@ -57,7 +58,7 @@ public class JavaHelper {
 	private JavaHelper() {
 	}
 
-	public boolean callJava(ComponentInstance context, IString is, List<String> error, List<String> info) {
+	public boolean callJava(OccurrenceDefinition context, IString is, List<String> error, List<String> info) {
 		var env = new RuleEnvironment(new RuleEnvironmentEntry("self", context));
 		String name = "";
 		List<Object> args = new ArrayList<>();

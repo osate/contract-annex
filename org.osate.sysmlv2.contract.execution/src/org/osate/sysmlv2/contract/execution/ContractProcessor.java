@@ -25,7 +25,6 @@
  *******************************************************************************/
 package org.osate.sysmlv2.contract.execution;
 
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -35,6 +34,7 @@ import java.util.Set;
 import org.eclipse.ease.service.EngineDescription;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.util.Strings;
+import org.omg.sysml.lang.sysml.OccurrenceDefinition;
 import org.osate.sysmlv2.contract.contract.Argument;
 import org.osate.sysmlv2.contract.contract.ArgumentAnd;
 import org.osate.sysmlv2.contract.contract.ArgumentAssumption;
@@ -60,7 +60,7 @@ public class ContractProcessor {
 
 	protected ScriptRunner pyRunner;
 
-	protected ComponentInstance context;
+	protected OccurrenceDefinition context;
 
 	protected Set<Contract> addedContracts = new HashSet<>();
 
@@ -74,20 +74,22 @@ public class ContractProcessor {
 
 	private List<String> info = new ArrayList<>();
 
-	private final Iterable<VerificationPlan> plans;
-
-	public ContractProcessor(ComponentInstance context, Iterable<VerificationPlan> plans,
-			EngineDescription description) {
-		this.context = context;
-		this.plans = plans;
+	private final VerificationPlan vp;
+	private final PythonHelper pythonHelper;
+	
+	public ContractProcessor(final VerificationPlan vp, final EngineDescription description) {
+		this.context = vp.getOccurrenceDefinition();
+		this.vp = vp;
+		this.pythonHelper = new PythonHelper();
+		
 		error.add("");
 		info.add("");
 		pyBuilder = newPythonBuilder(context);
-		pyRunner = new ScriptRunner(description, error, info);
+		pyRunner = new ScriptRunner(description, pythonHelper, error, info);
 	}
 
-	private PythonBuilder newPythonBuilder(ComponentInstance context) {
-		return new PythonBuilder(context, error, info);
+	private PythonBuilder newPythonBuilder(OccurrenceDefinition context) {
+		return new PythonBuilder(pythonHelper, context, error, info);
 	}
 
 	public void smtVerificationPlan(VerificationPlan plan, boolean checkCompleteness) {
@@ -117,7 +119,7 @@ public class ContractProcessor {
 		}
 		for (var contract : plan.getContracts()) {
 			var expr = smtContract(contract);
-			pyBuilder.addCode("# contract " + contract.getFullName());
+			pyBuilder.addCode("# contract " + contract.getQualifiedName());
 			addCode(expr);
 		}
 		/**
@@ -129,7 +131,7 @@ public class ContractProcessor {
 			for (int i = 0; i < deferredArguments.size(); i++) {
 				var a = deferredArguments.get(i);
 				processedArguments.add(a);
-				pyBuilder.addCode("# argument " + a.getFullName());
+				pyBuilder.addCode("# argument " + a.getQualifiedName());
 				var expr = smtArgument(a);
 				addCode(expr);
 			}
@@ -141,7 +143,7 @@ public class ContractProcessor {
 			for (int i = 0; i < deferredContracts.size(); i++) {
 				var c = deferredContracts.get(i);
 				processedContracts.add(c);
-				pyBuilder.addCode("# contract " + c.getFullName());
+				pyBuilder.addCode("# contract " + c.getQualifiedName());
 				var expr = smtContract(c);
 				addCode(expr);
 			}
@@ -444,76 +446,18 @@ public class ContractProcessor {
 	}
 
 	public void processVerificationPlans(boolean checkCompleteness) {
-		for (var plan : plans) {
-			smtVerificationPlan(plan, checkCompleteness);
+		smtVerificationPlan(vp, checkCompleteness);
 
-			var pyCode = pyBuilder.getScript();
+		var pyCode = pyBuilder.getScript();
 
-			int i = 1;
-			try (var s = new Scanner(pyCode)) {
-				while (s.hasNextLine()) {
-					System.out.println(i + s.nextLine());
-					i += 1;
-				}
-			}
-
-			pyRunner.run(pyCode, pyBuilder.getVariables());
-		}
-	}
-
-	@Deprecated(forRemoval = true)
-	public void processVerificationPlan(ComponentInstance component, boolean checkCompleteness) {
-		var classifier = component.getComponentClassifier();
-
-		if (classifier != null) {
-			for (var subclause : getAllAnnexSubclauses(classifier)) {
-				if (subclause instanceof DefaultAnnexSubclause defaultSubclause
-						&& defaultSubclause.getParsedAnnexSubclause() instanceof ContractSubclause contractSubclause) {
-					for (var plan : contractSubclause.getVerifyPlans()) {
-						smtVerificationPlan(plan, checkCompleteness);
-
-						var pyCode = pyBuilder.getScript();
-
-						int i = 1;
-						try (var s = new Scanner(pyCode)) {
-							while (s.hasNextLine()) {
-								System.out.println(i + s.nextLine());
-								i += 1;
-							}
-						}
-
-
-						/**
-						 * Dio: This is only for debugging in my own laptop with
-						 * hardwired directories
-						 */
-
-						try {
-							FileWriter writer = new FileWriter("/home/dionisio/etmac-workspace/smt/evalsmt3.py");
-							writer.append(pyCode);
-							writer.close();
-						} catch (Exception writerException) {
-							// System.out.println("Not in Dio's machine. Not writing debugging python program");
-						}
-
-						pyRunner.run(pyCode, pyBuilder.getVariables());
-					}
-				}
+		int i = 1;
+		try (var s = new Scanner(pyCode)) {
+			while (s.hasNextLine()) {
+				System.out.println(i + s.nextLine());
+				i += 1;
 			}
 		}
-	}
 
-	private static List<AnnexSubclause> getAllAnnexSubclauses(Classifier classifier) {
-		var subclauses = new ArrayList<AnnexSubclause>();
-		for (var currentClassifier : classifier.getSelfPlusAllExtended()) {
-			subclauses.addAll(currentClassifier.getOwnedAnnexSubclauses());
-		}
-		if (classifier instanceof ComponentImplementation implementation) {
-			for (var currentClassifier : implementation.getType().getSelfPlusAllExtended()) {
-				subclauses.addAll(currentClassifier.getOwnedAnnexSubclauses());
-			}
-		}
-		return subclauses;
+		pyRunner.run(pyCode, pyBuilder.getVariables());
 	}
-
 }

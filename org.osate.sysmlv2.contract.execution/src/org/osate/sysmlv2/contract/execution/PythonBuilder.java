@@ -33,6 +33,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.xtext.util.Strings;
+import org.omg.sysml.lang.sysml.OccurrenceDefinition;
 import org.osate.sysmlv2.contract.contract.ContractLibrary;
 import org.osate.sysmlv2.contract.contract.Domain;
 import org.osate.sysmlv2.contract.contract.Implementation;
@@ -43,21 +44,21 @@ public class PythonBuilder {
 
 	protected boolean z3Import = false;
 
-	protected Set<ContractLibrary> addedLibraries = new HashSet<>();
+	protected final Set<ContractLibrary> addedLibraries = new HashSet<>();
 
-	protected Set<Domain> addedDomains = new HashSet<>();
+	protected final Set<Domain> addedDomains = new HashSet<>();
 
-	protected StringBuilder implementations = new StringBuilder();
+	protected final StringBuilder implementations = new StringBuilder();
 
-	protected StringBuilder domains = new StringBuilder();
+	protected final StringBuilder domains = new StringBuilder();
 
-	protected StringBuilder script = new StringBuilder();
+	protected final StringBuilder script = new StringBuilder();
 
-	protected Map<String, Object> variables = new HashMap<>();
+	protected final Map<String, Object> variables = new HashMap<>();
 
-	private ComponentInstance context;
+	protected final OccurrenceDefinition context;
 
-	private PythonHelper python;
+	protected final PythonHelper python;
 
 	private JavaHelper java;
 
@@ -67,11 +68,11 @@ public class PythonBuilder {
 
 	int indent = 0;
 
-	PythonBuilder(ComponentInstance context, List<String> error, List<String> info) {
+	PythonBuilder(final PythonHelper ph, final OccurrenceDefinition context, final List<String> error, final List<String> info) {
 		this.context = context;
 		this.error = error;
 		this.info = info;
-		python = PythonHelper.get();
+		python = ph;
 		java = JavaHelper.get();
 		variables.put("to_java", python.getInstanceObjectMapper());
 	}

@@ -27,49 +27,32 @@ package org.osate.sysmlv2.contract.execution;
 
 import java.util.HashMap;
 
+import org.omg.sysml.lang.sysml.Element;
+
 public class InstanceObjectIDMapper {
-
-	private SystemInstance root;
-
-	private HashMap<InstanceObject, Integer> io2id = new HashMap<>();
-
-	private HashMap<Integer, InstanceObject> id2io = new HashMap<>();
-
-	private static InstanceObjectIDMapper mapper = null;
-
-	public static InstanceObjectIDMapper getMapper(SystemInstance root) {
-		if (mapper != null && mapper.root == root) {
-			return mapper;
-		}
-		mapper = new InstanceObjectIDMapper(root);
-		return mapper;
+	private final HashMap<Element, Integer> io2id = new HashMap<>();
+	private final HashMap<Integer, Element> id2io = new HashMap<>();
+	private int nextId = 0;
+	
+	public InstanceObjectIDMapper() {
+		super();
 	}
-
-	private InstanceObjectIDMapper(SystemInstance root) {
-		this.root = root;
-		int id = 0;
-		// aadl resource may contain additional root objects for instantiated referenced classifiers
-		var iter = root.eResource().getAllContents();
-		while (iter.hasNext()) {
-			var e = iter.next();
-
-			if (e instanceof InstanceObject io) {
-				if (!io2id.containsKey(io)) {
-					io2id.put(io, id);
-					id2io.put(id, io);
-					id += 1;
-				}
-			} else {
-				iter.prune();
-			}
+	
+	public Integer getID(final Element io) {
+		Integer v = io2id.get(io);
+		if (v == null) {
+			final int id = nextId;
+			io2id.put(io, id);
+			id2io.put(id, io);
+			nextId += 1;
+			return id;
+		} else {
+			return v;
 		}
 	}
 
-	public Integer getID(InstanceObject io) {
-		return io2id.get(io);
-	}
-
-	public InstanceObject getInstanceObject(Integer id) {
+	public Element getInstanceObject(final Integer id) {
+		// Should only get back id's from Python that we put into it?
 		return id2io.get(id);
 	}
 

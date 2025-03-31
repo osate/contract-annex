@@ -5,6 +5,7 @@ Bundle-Name: Contract Language for SysMLv2
 Bundle-Vendor: CMU/SEI
 Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: org.osate.sysmlv2.contract;singleton:=true
+Bundle-Activator: org.osate.sysmlv2.contract.Activator
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
  org.eclipse.ui.ide;bundle-version="[3.16.0,4.0.0)";visibility:=reexport,
@@ -20,21 +21,24 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.core.commands;bundle-version="3.11.200",
  org.eclipse.uml2.types;bundle-version="2.5.0",
  org.eclipse.uml2.uml;bundle-version="5.5.0",
- org.omg.sysml
+ org.omg.sysml,
+ org.eclipse.core.runtime;bundle-version="3.30.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.osate.sysmlv2.contract,
+ org.osate.sysmlv2.contract.contract,
+ org.osate.sysmlv2.contract.contract.impl,
+ org.osate.sysmlv2.contract.contract.util,
  org.osate.sysmlv2.contract.generator,
+ org.osate.sysmlv2.contract.parser.antlr,
+ org.osate.sysmlv2.contract.parser.antlr.internal,
  org.osate.sysmlv2.contract.scoping,
  org.osate.sysmlv2.contract.serializer,
+ org.osate.sysmlv2.contract.services,
  org.osate.sysmlv2.contract.tuples,
  org.osate.sysmlv2.contract.typing,
  org.osate.sysmlv2.contract.validation,
- org.osate.sysmlv2.contract.contract,
- org.osate.sysmlv2.contract.parser.antlr,
- org.osate.sysmlv2.contract.services,
- org.osate.sysmlv2.contract.contract.util,
- org.osate.sysmlv2.contract.parser.antlr.internal,
- org.osate.sysmlv2.contract.contract.impl
+ org.osate.sysmlv2.modelsupport,
+ org.osate.sysmlv2.modelsupport.errorreporting
 Import-Package: org.apache.log4j
 Bundle-ClassPath: .,
  lib/ST-4.3.4.jar

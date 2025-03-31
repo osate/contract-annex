@@ -3,7 +3,15 @@ package org.osate.sysmlv2.contract.execution;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import org.omg.sysml.lang.sysml.Element;
+import org.osate.sysmlv2.modelsupport.SysMlv2Constants;
+import org.osate.sysmlv2.modelsupport.errorreporting.AnalysisErrorReporterManager;
+import org.osate.sysmlv2.modelsupport.errorreporting.MarkerAnalysisErrorReporter;
+
 public class ExperimentalErrorParser {
+
+	AnalysisErrorReporterManager errManager = new AnalysisErrorReporterManager(
+			new MarkerAnalysisErrorReporter.Factory(SysMlv2Constants.SYSMLOBJECTMARKER));
 
 	public class ErrorPair {
 		public Element element;
@@ -19,37 +27,28 @@ public class ExperimentalErrorParser {
 		return new ExperimentalErrorParser();
 	}
 
-	PythonHelper phelper = PythonHelper.get();
-	AnalysisErrorReporterManager errManager = new AnalysisErrorReporterManager(
-			new MarkerAnalysisErrorReporter.Factory(AadlConstants.AADLOBJECTMARKER));
-
-
-	public InstanceObject getObjectInstanceFromId(int id) {
-		return phelper.getInstanceObjectMapper().getInstanceObject(id);
-	}
-
-	public void markErrors(String errString) {
-		ArrayList<ExperimentalErrorParser.ErrorPair> errors = parseErrors(null, errString);
+	public void markErrors(PythonHelper pythonHelper, String errString) {
+		ArrayList<ExperimentalErrorParser.ErrorPair> errors = parseErrors(pythonHelper, errString);
 		for (ErrorPair pair : errors) {
 			errManager.error(pair.element, pair.error);
 		}
 	}
 
-	public void markUnfulfilledObjectives(String errString) {
-		ArrayList<ExperimentalErrorParser.ErrorPair> errors = parseErrors(null, errString);
+	public void markUnfulfilledObjectives(PythonHelper pythonHelper, String errString) {
+		ArrayList<ExperimentalErrorParser.ErrorPair> errors = parseErrors(pythonHelper, errString);
 		for (ErrorPair pair : errors) {
 			errManager.error(pair.element, pair.error + " Unfulfilled. Not enough details to satisfy all assumptions");
 		}
 	}
 
-	public void markInfo(String errString) {
-		ArrayList<ExperimentalErrorParser.ErrorPair> errors = parseErrors(null, errString);
+	public void markInfo(PythonHelper pythonHelper, String errString) {
+		ArrayList<ExperimentalErrorParser.ErrorPair> errors = parseErrors(pythonHelper, errString);
 		for (ErrorPair pair : errors) {
 			errManager.info(pair.element, pair.error);
 		}
 	}
 
-	public ArrayList<ErrorPair> parseErrors(Element root, String errString) {
+	public ArrayList<ErrorPair> parseErrors(PythonHelper pythonHelper, String errString) {
 
 		ArrayList<ErrorPair> errors = new ArrayList<ErrorPair>();
 
@@ -86,13 +85,13 @@ public class ExperimentalErrorParser {
 				continue;
 			}
 
-			InstanceObject instance = (InstanceObject) root;
+			Element instance = null;
 			String errMessage = token;
 			if (token.contains("{")) {
 				String ref = token.substring(token.indexOf("{") + 1, token.indexOf("}"));
 				errMessage = token.substring(token.indexOf("}") + 1);
 				int index = Integer.parseInt(ref);
-				instance = getObjectInstanceFromId(index);
+				instance = pythonHelper.getInstanceObjectMapper().getInstanceObject(index);
 			}
 			errors.add(new ErrorPair(instance, contractName + ":" + errMessage));
 		}

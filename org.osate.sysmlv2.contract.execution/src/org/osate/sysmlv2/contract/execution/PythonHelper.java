@@ -34,6 +34,8 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.xsemantics.runtime.RuleEnvironment;
 import org.eclipse.xsemantics.runtime.RuleEnvironmentEntry;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
+import org.omg.sysml.lang.sysml.Element;
+import org.omg.sysml.lang.sysml.OccurrenceDefinition;
 import org.osate.sysmlv2.contract.contract.IString;
 import org.osate.sysmlv2.contract.contract.IStringLiteral;
 import org.osate.sysmlv2.contract.contract.IStringVar;
@@ -42,18 +44,11 @@ import org.osate.sysmlv2.contract.tuples.Tuple;
 import org.osate.sysmlv2.contract.typing.ContractInterpreter;
 
 public class PythonHelper {
-
-	private static final PythonHelper INSTANCE = new PythonHelper();
-
-	private ContractInterpreter queryInterpreter = IResourceServiceProvider.Registry.INSTANCE
+	private final ContractInterpreter queryInterpreter = IResourceServiceProvider.Registry.INSTANCE
 			.getResourceServiceProvider(URI.createFileURI("dummy.contract"))
 			.get(ContractInterpreter.class);
 
-	private InstanceObjectIDMapper ioid = null;
-
-	public static PythonHelper get() {
-		return INSTANCE;
-	}
+	private InstanceObjectIDMapper ioid = new InstanceObjectIDMapper();
 
 	public InstanceObjectIDMapper getInstanceObjectMapper() {
 		return ioid;
@@ -62,12 +57,9 @@ public class PythonHelper {
 	public PythonHelper() {
 	}
 
-	public String interpolateIString(ComponentInstance context, IString is, Map<String, Object> variables) {
+	public String interpolateIString(OccurrenceDefinition context, IString is, Map<String, Object> variables) {
 		var env = new RuleEnvironment(new RuleEnvironmentEntry("self", context));
 		var sb = new StringBuilder();
-
-		var root = (SystemInstance) context.eResource().getContents().get(0);
-		ioid = InstanceObjectIDMapper.getMapper(root);
 
 		for (var part : is.getParts()) {
 			if (part instanceof IStringLiteral literal) {
@@ -122,9 +114,9 @@ public class PythonHelper {
 			result = l.toString();
 		} else if (o instanceof Double d) {
 			result = d.toString();
-		} else if (o instanceof EnumerationLiteral e) {
-			result = "'" + e.getName() + "'";
-		} else if (o instanceof InstanceObject io) {
+//		} else if (o instanceof EnumerationLiteral e) {
+//			result = "'" + e.getName() + "'";
+		} else if (o instanceof Element io) {
 			result = ioid.getID(io).toString();
 		} else if (o instanceof List<?> list) {
 			result = list.stream()//

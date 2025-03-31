@@ -32,13 +32,14 @@ import org.eclipse.ease.ScriptResult;
 import org.eclipse.ease.service.EngineDescription;
 
 public class ScriptRunner {
-
+	private PythonHelper pythonHelper;
 	private EngineDescription engineDescription;
 
 	private List<String> error;
 	private List<String> info;
 
-	public ScriptRunner(EngineDescription description, List<String> error, List<String> info) {
+	public ScriptRunner(EngineDescription description, PythonHelper pythonHelper, List<String> error, List<String> info) {
+		this.pythonHelper = pythonHelper;
 		engineDescription = description;
 		this.error = error;
 		this.info = info;
@@ -69,13 +70,13 @@ public class ScriptRunner {
 			if (!res) {
 				System.out.println("Error Explanations: " + error);
 				ExperimentalErrorParser errorParser = ExperimentalErrorParser.getParser();
-				errorParser.markErrors(error.get(0));
+				errorParser.markErrors(pythonHelper, error.get(0));
 				if (error.get(0).trim().length() == 0) {
-					errorParser.markUnfulfilledObjectives(info.get(0));
+					errorParser.markUnfulfilledObjectives(pythonHelper, info.get(0));
 				}
 			} else {
 				ExperimentalErrorParser errorParser = ExperimentalErrorParser.getParser();
-				errorParser.markInfo(info.get(0));
+				errorParser.markInfo(pythonHelper, info.get(0));
 			}
 
 			System.out.println("Result is " + res);

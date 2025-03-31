@@ -50,16 +50,7 @@ public class EvaluationHandler extends AbstractHandler {
 		var selection = (EObjectNode) HandlerUtil.getCurrentStructuredSelection(event).getFirstElement();
 		final URI eObjectURI = selection.getEObjectURI();
 		VerificationPlan vp = (VerificationPlan) new ResourceSetImpl().getEObject(eObjectURI, true);
-		
-		System.out.println(vp);
-
 		executeAllQueries(vp);
-//		component.eAllContents().forEachRemaining(element -> {
-//			if (element instanceof ComponentInstance subcomponent) {
-//				executeQueries(subcomponent);
-//			}
-//		});
-
 		return null;
 	}
 
