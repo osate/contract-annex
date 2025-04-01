@@ -1,0 +1,1536 @@
+package PubSubAnalysis
+public
+	annex contract {**
+
+	contract implementation E2ELatency {`
+import sys
+import math
+if sys.version_info.major<=2:
+  from gurobipy import *
+else:
+  import gurobipy
+  from gurobipy import GRB
+
+# Explanation for case
+EXPLANATION_FOR_CASE_PROPERTY_SATISFIED = 0
+EXPLANATION_FOR_CASE_PROPERTY_VIOLATED  = 1
+EXPLANATION_FOR_CASE_PROPERTY_UNDECIDED = 2
+
+# Type of explanation
+TYPE_OF_EXPLANATION_TEXTUAL             = 0
+TYPE_OF_EXPLANATION_NUMBERS             = 1
+
+# Types of intervals used when we solve the MILP in the function computet
+COMPUTET_DETAILED_PATH_ELEMENT_TT     = 0
+COMPUTET_DETAILED_PATH_ELEMENT_PP     = 1
+COMPUTET_DETAILED_PATH_ELEMENT_HEP    = 2
+COMPUTET_DETAILED_PATH_ELEMENT_VICTIM = 3
+
+DEADLINE_EXPLANATION           = 0
+  # This explains why a deadline was met or missed
+COMPONENT_OVERLOAD_EXPLANATION = 1
+  # This explains why a component was overloaded (i.e., new requests some in faster than processed)
+PROCESSOR_OVERLOAD_EXPLANATION = 2
+  # This explains why a sequence of components caused overload on a single processor
+  # (i.e., new requests some in faster than processed)
+
+# print_explanation_data_print_explanation_to_console = False
+print_explanation_data_print_explanation_to_console = True
+
+def create_1D_matrix(dim1):
+  temp_matrix = [None] * dim1 
+  return temp_matrix
+
+def create_2D_matrix(dim1,dim2):
+  temp_matrix = [None] * dim1 
+  for index_dim1 in range(0,dim1):
+    temp_matrix[index_dim1] = [None] * dim2 
+  return temp_matrix
+
+def create_3D_matrix(dim1,dim2,dim3):
+  temp_matrix = [None] * dim1 
+  for index_dim1 in range(0,dim1):
+    temp_matrix[index_dim1] = [None] * dim2 
+    for index_dim2 in range(0,dim2):
+      temp_matrix[index_dim1][index_dim2] = [None] * dim3 
+  return temp_matrix
+
+def create_4D_matrix(dim1,dim2,dim3,dim4):
+  temp_matrix = [None] * dim1 
+  for index_dim1 in range(0,dim1):
+    temp_matrix[index_dim1] = [None] * dim2 
+    for index_dim2 in range(0,dim2):
+      temp_matrix[index_dim1][index_dim2] = [None] * dim3 
+      for index_dim3 in range(0,dim3):
+        temp_matrix[index_dim1][index_dim2][index_dim3] = [None] * dim4 
+  return temp_matrix
+
+def split_line_into_two_lines(a_line,n_char): 
+  list_of_indices = []
+  for index in range(0,n_char):
+    if a_line[index].isspace():
+      list_of_indices.append(index)  
+  sel_list = [index for index in list_of_indices if index<n_char]
+  if len(sel_list)>=1:
+    index_to_use = max(sel_list)
+  else:
+    list_of_indices = []
+    for index in range(0,n_char):
+      list_of_indices.append(index)  
+    sel_list = [index for index in list_of_indices if index<n_char]
+    if len(sel_list)>=1:
+      index_to_use = max(sel_list)
+    else:          
+      index_to_use = len(a_line) // 2
+  a_line1 = a_line[0:index_to_use]
+  a_line2 = a_line[index_to_use+1:len(a_line)]
+  return a_line1,a_line2    
+
+def break_lines_of_list_of_strings(a_list_of_strings,n_char):
+  guaranteed_all_strings_are_sufficiently_short = False
+  while (not guaranteed_all_strings_are_sufficiently_short):
+    index_of_line_to_break = -1
+    index = 0
+    while (index<len(a_list_of_strings)) and (index_of_line_to_break==-1):
+      if len(a_list_of_strings[index])>=160:
+        index_of_line_to_break = index
+      else:
+        index = index+1
+    if (index_of_line_to_break==-1):
+      guaranteed_all_strings_are_sufficiently_short = True
+    else:
+      guaranteed_all_strings_are_sufficiently_short = False
+      a_line = a_list_of_strings[index_of_line_to_break]
+      a_line1,a_line2 = split_line_into_two_lines(a_line,160) 
+      a_list_of_strings[index_of_line_to_break] = a_line1
+      a_list_of_strings.insert(index_of_line_to_break+1,a_line2)
+
+def get_single_string_for_output_from_list_of_strings(a_list_of_strings):
+  single_string_for_output = ""
+  for index in range(0,len(a_list_of_strings)):
+    a_line = a_list_of_strings[index]
+    single_string_for_output = single_string_for_output + a_line
+    if index<len(a_list_of_strings)-1:
+      single_string_for_output = single_string_for_output + "\n"
+  return single_string_for_output
+
+class explanation_data_for_item:
+    def __init__(self):
+      self.deadline_explanation_or_component_overload_explanation_or_processor_overload_explanation = \
+        DEADLINE_EXPLANATION
+      # These fields are used for the case that:
+      #   self.deadline_explanation_or_component_overload_explanation_or_processor_overload_explanation = \
+      #   DEADLINE_EXPLANATION
+      self.deadline_id = -1
+      self.explanation_for_case = -1            # EXPLANATION_FOR_CASE_PROPERTY_SATISFIED,
+                                                # EXPLANATION_FOR_CASE_PROPERTY_VIOLATED,
+                                                # EXPLANATION_FOR_CASE_PROPERTY_UNDECIDED
+      self.type_of_explanation  = -1            # TYPE_OF_EXPLANATION_TEXTUAL
+      self.list_of_strings_for_explanation = [] # this is used for textual for Uppaal
+      self.r = -1.0                             # this is used for request-based schedulability analysis
+      self.path = []                            # this is used for request-based schedulability analysis
+      self.subpaths = []                        # this is used for request-based schedulability analysis
+      self.rsubpaths = []                       # this is used for request-based schedulability analysis
+      # These fields are used for the case that:
+      #   self.deadline_explanation_or_component_overload_explanation_or_processor_overload_explanation = \
+      #  COMPONENT_OVERLOAD_EXPLANATION
+      self.component_overload_explanation_component_id = -1
+      self.component_overload_explanation_wcet_of_component_id = -1
+      self.component_overload_explanation_orig_component_id = -1               
+      self.component_overload_explanation_mit_of_orig_component_id = -1
+      # These fields are used for the case that:
+      #   self.deadline_explanation_or_component_overload_explanation_or_processor_overload_explanation = \
+      #   PROCESSOR_OVERLOAD_EXPLANATION
+      self.processor_overload_explanation_processor_id = -1
+      self.processor_overload_explanation_component_ids = []
+      self.processor_overload_explanation_sum_wcet_of_component_ids = -1
+      self.processor_overload_explanation_orig_component_id = -1               
+      self.processor_overload_explanation_mit_of_orig_component_id = -1               
+      
+    def set_explanation_data_for_item_property_violated(self,deadline_id,list_of_strings_for_explanation):
+      self.deadline_id                     = deadline_id
+      self.explanation_for_case            = EXPLANATION_FOR_CASE_PROPERTY_VIOLATED
+      self.type_of_explanation             = TYPE_OF_EXPLANATION_TEXTUAL
+      self.list_of_strings_for_explanation = list_of_strings_for_explanation
+
+    def get_explanation_list_of_strings_explanation_data_for_item(self):
+      new_lines = []
+      if self.deadline_explanation_or_component_overload_explanation_or_processor_overload_explanation==DEADLINE_EXPLANATION:   
+        if ((self.explanation_for_case==EXPLANATION_FOR_CASE_PROPERTY_SATISFIED) and \
+            (self.type_of_explanation==TYPE_OF_EXPLANATION_NUMBERS)):
+          deadline_id = self.deadline_id
+          r           = self.r
+          path        = self.path
+          # new_lines = []
+          temps = "Deadline " + str(deadline_id) + " has path " + str(path) + \
+                        " and its upper bound on response time is " + f"{r:10.6f}"
+          new_lines.append(temps)
+          temps = "  Further explanation is as follows:"
+          new_lines.append(temps)
+          for index in range(0,len(self.list_of_strings_for_explanation)):
+            a_line = self.list_of_strings_for_explanation[index]
+            temps = "    "+a_line
+            new_lines.append(temps)
+        elif ((self.explanation_for_case==EXPLANATION_FOR_CASE_PROPERTY_VIOLATED) and \
+            (self.type_of_explanation==TYPE_OF_EXPLANATION_TEXTUAL)):
+          if self.deadline_id==-1:
+            temps = "Deadline miss:"
+            new_lines.append(temps)
+          else:
+            temps = "Deadline miss for deadline "+f"{self.deadline_id:10.6f}"+":"
+            new_lines.append(temps)
+          for index in range(0,len(self.list_of_strings_for_explanation)):
+            a_line = self.list_of_strings_for_explanation[index]
+            temps = "  "+a_line
+            new_lines.append(temps)
+      elif self.deadline_explanation_or_component_overload_explanation_or_processor_overload_explanation==COMPONENT_OVERLOAD_EXPLANATION:   
+        temps = "Component "+str(self.component_overload_explanation_component_id) + \
+                " gets overloaded because it has WCET " + f"{self.component_overload_explanation_wcet_of_component_id:10.6f}" + \
+                " and it is triggered by component "+str(self.component_overload_explanation_orig_component_id) + \
+                " which has MIT " + f"{self.component_overload_explanation_mit_of_orig_component_id:10.6f}"
+        new_lines.append(temps)
+      elif self.deadline_explanation_or_component_overload_explanation_or_processor_overload_explanation==PROCESSOR_OVERLOAD_EXPLANATION:   
+        temps = "Processor " + str(self.processor_overload_explanation_processor_id) + " is overloaded because component " + str(self.processor_overload_explanation_orig_component_id) + " triggers " + \
+                "components " + str(self.processor_overload_explanation_component_ids) + " and the MIT of the triggering component is " + \
+                f"{self.processor_overload_explanation_mit_of_orig_component_id:10.6f}" + " and the cumulative execution time of the triggered components is " + f"{self.processor_overload_explanation_sum_wcet_of_component_ids:10.6f}"
+        new_lines.append(temps)
+      return new_lines
+
+class explanation_data:
+    def __init__(self):
+      self.explanation_data_for_items = set()
+      self.full_explanation_list_of_strings = []
+
+    def set_full_explanation_list_of_strings_to_empty(self):
+      self.full_explanation_list_of_strings = []
+
+    def add_new_lines_to_full_explanation_list_of_strings(self,add_new_lines):
+      if add_new_lines!=None:
+        self.full_explanation_list_of_strings.extend(add_new_lines)
+
+    def print_to_console(self,single_string_for_output):
+      print(single_string_for_output)
+    
+    def print_explanation_data(self):
+      self.set_full_explanation_list_of_strings_to_empty()
+      explanation_data_for_items_as_list = list(self.explanation_data_for_items)   
+      explanation_data_for_items_as_list_sorted =sorted(explanation_data_for_items_as_list,key=lambda it: it.deadline_id)
+      for an_explanation_data_for_item in explanation_data_for_items_as_list_sorted:
+        new_lines = an_explanation_data_for_item.get_explanation_list_of_strings_explanation_data_for_item()
+        self.add_new_lines_to_full_explanation_list_of_strings(new_lines)
+      break_lines_of_list_of_strings(self.full_explanation_list_of_strings,160)
+      single_string_for_output = \
+        get_single_string_for_output_from_list_of_strings(self.full_explanation_list_of_strings)
+      if print_explanation_data_print_explanation_to_console:
+        self.print_to_console(single_string_for_output)
+
+def orig(has_externally_specified_mit,triggered_by_predecessor,component_id):
+  while not has_externally_specified_mit[component_id-1]:
+    component_id = triggered_by_predecessor[component_id-1]
+  return component_id
+
+class execution_behavior:
+    def __init__(self):
+      self.wcet                                       = -1.0
+      self.active_queue_reads_from_active             = False
+      self.active_queue_from_component                = None
+      self.passive_queues_number_of_queues_read       = -1
+      self.passive_queues_per_read_number_of_messages = []
+      self.passive_queues_per_read_from_component     = []
+
+    def set_execution_behavior(self, \
+      new_wcet, \
+      new_active_queue_reads_from_active, \
+      new_active_queue_from_component, \
+      new_passive_queues_number_of_queues_read, \
+      new_passive_queues_per_read_number_of_messages, \
+      new_passive_queues_per_read_from_component
+      ):
+      self.wcet                                       = new_wcet
+      self.active_queue_reads_from_active             = new_active_queue_reads_from_active
+      self.active_queue_from_component                = new_active_queue_from_component
+      self.passive_queues_number_of_queues_read       = new_passive_queues_number_of_queues_read
+      self.passive_queues_per_read_number_of_messages = new_passive_queues_per_read_number_of_messages
+      self.passive_queues_per_read_from_component     = new_passive_queues_per_read_from_component
+
+class execution_behaviors_for_component:
+    def __init__(self):
+      self.nexecutionbehaviors = -1
+      self.executionbehaviors = []
+
+def create_list_of_execution_behaviors_for_components(l):
+  list_of_execution_behaviors_for_component = [None] * len(l)
+  for component_id in range(1,len(l)+1):
+    new_component_id               = l[component_id-1][0]
+    new_list_of_executionbehaviors = l[component_id-1][1]
+    if new_component_id!=component_id:
+      print("Error in create_list_of_execution_behaviors_for_components.") 
+      print("new_component_id!=component_id")     
+      exit(-1)
+    an_execution_behaviors_for_component = execution_behaviors_for_component()
+    an_execution_behaviors_for_component.nexecutionbehaviors = len(new_list_of_executionbehaviors)
+    an_execution_behaviors_for_component.executionbehaviors = [None] * an_execution_behaviors_for_component.nexecutionbehaviors
+    for execution_behavior_id in range(1,an_execution_behaviors_for_component.nexecutionbehaviors+1):
+      new_data_for_execution_behavior =  new_list_of_executionbehaviors[execution_behavior_id-1]
+      new_wcet                                        = new_data_for_execution_behavior[0]
+      new_active_queue_reads_from_active              = new_data_for_execution_behavior[1]
+      new_active_queue_from_component                 = new_data_for_execution_behavior[2]
+      new_passive_queues_number_of_queues_read        = new_data_for_execution_behavior[3]
+      new_passive_queues_per_read_number_of_messages  = new_data_for_execution_behavior[4]
+      new_passive_queues_per_read_from_component      = new_data_for_execution_behavior[5]
+      an_execution_behavior = execution_behavior()
+      an_execution_behavior.set_execution_behavior( \
+        new_wcet,new_active_queue_reads_from_active, \
+        new_active_queue_from_component,new_passive_queues_number_of_queues_read, \
+        new_passive_queues_per_read_number_of_messages,new_passive_queues_per_read_from_component)
+      an_execution_behaviors_for_component.executionbehaviors[execution_behavior_id-1] = an_execution_behavior
+    list_of_execution_behaviors_for_component[component_id-1] = an_execution_behaviors_for_component
+  return list_of_execution_behaviors_for_component    
+
+def getdefaultsystem1():
+  nmodules    =  3
+  nexecutives =  3
+  ncomponents = 17
+  ndeadlines  =  2
+  nprocessors =  3
+  module_name         = ["Signal processing module upper", \
+                         "Signal processing module lower", \
+                         "Mission controller module"]
+  executive_name      = ["Executive for signal processing module upper", \
+                         "Executive for signal processing module lower", \
+                         "Executive for mission controller module"]
+  executive_priority = [3,2,1]
+  # executive_proc = [3,2,1]
+  executive_proc = [1,1,2]
+  executive_pollingperiod = [0.000010,0.000010,0.000010]
+  component_name      = ["Gimal servo driver", \
+                         "MMW sensor driver", \
+                         "IIR sensor driver", \
+                         "SAL sensor driver", \
+                         "MMW signal processing", \
+                         "IIR signal processing", \
+                         "SAL signal processing", \
+                         "Multimode target like object processing", \
+                         "Seeker manager", \
+                         "Aimpoint manager", \
+                         "Tracker", \
+                         "Target state estimator", \
+                         "Guidance", \
+                         "Navigation", \
+                         "Autopilot", \
+                         "IMU driver", \
+                         "CAS driver"]
+  belongs_to_module    = [1,1,2,2,1,2,2,2,1,1,2,3,3,3,3,3,3]
+  served_by_executive  = [1,1,2,2,1,2,2,2,1,1,2,3,3,3,3,3,3]
+  has_externally_specified_mit = \
+    [False,True,True,True,False,False,False,False,False,False,False,False,False,False,False, True,False]
+  minimum_inter_arrival_time = \
+    [None,0.100,0.100,0.200,None,None,None,None,None,None,None,None,None,None,None,0.001,None]
+  maximum_inter_arrival_time = \
+    [None,0.110,0.100,0.200,None,None,None,None,None,None,None,None,None,None,None,0.001,None]
+  triggered_by_predecessor = [9,None,None,None,2,3,4,7,8,11,8,11,12,16,16,None,15]
+  execution_time = [0.000050,0.000050,0.000050,0.000050,0.010,0.010,0.010,0.010,0.010,0.010,0.010,0.010,0.010,0.000050,0.000050,0.000050,0.000050]
+  list_of_execution_behaviors_for_component = create_list_of_execution_behaviors_for_components([
+    ( 1,[ (0.000050,True,9,0,[],[])
+        ] ),
+    ( 2,[ (0.000050,False,None,0,[],[])
+        ] ),
+    ( 3,[ (0.000050,False,None,0,[],[])
+        ] ),
+    ( 4,[ (0.000050,False,None,0,[],[])
+        ] ),
+    ( 5,[ (0.01,True,2,0,[],[])
+        ] ),
+    ( 6,[ (0.01,True,3,0,[],[])
+        ] ),
+    ( 7,[ (0.01,True,4,0,[],[])
+        ] ),
+    ( 8,[ (0.01,True,7,0,[], []),
+          (0.01,True,7,1,[2],[6])
+        ] ),
+    ( 9,[ (0.01,True,14,0,[] ,[]),
+          (0.01,True,14,1,[1],[8]),
+          (0.01,True,14,1,[1],[10]),
+          (0.01,True,14,1,[1],[12])
+        ] ),
+    (10,[ (0.01,True,11,0,[],[])
+        ] ),
+    (11,[ (0.01,True,8,0,[],[])
+        ] ),
+    (12,[ (0.01,True,11,0,[],   []),
+          (0.01,True,11,1,[1],  [10]),
+          (0.01,True,11,1,[200],  [14]),
+          (0.01,True,11,2,[1,200],[10,14]),
+        ] ),
+    (13,[ (0.01,True,12,0,[], []),
+          (0.01,True,12,1,[200],[14])
+        ] ),
+    (14,[ (0.000050,True,16,0,[],[])
+        ] ),
+    (15,[ (0.000050,True,16,0,[], []),
+          (0.000050,True,16,1,[1],[13])
+        ] ),
+    (16,[ (0.000050,False,None,0,[],[])
+        ] ),
+    (17,[ (0.000050,True,15,0,[],[])
+        ] )
+  ])
+  deadline_value = [0.300,0.300]
+  deadline_from  = [4,4]
+  deadline_to    = [11,7]
+  deadline_path  = [[4,7,8,11],[4,7]]
+  return nmodules,nexecutives,ncomponents,ndeadlines,nprocessors, \
+         module_name,executive_name,executive_priority,executive_proc,executive_pollingperiod, \
+         component_name,belongs_to_module,served_by_executive, \
+         has_externally_specified_mit,minimum_inter_arrival_time,maximum_inter_arrival_time, \
+         triggered_by_predecessor,execution_time, \
+         list_of_execution_behaviors_for_component, \
+         deadline_value,deadline_from,deadline_to,deadline_path
+
+def getdefaultsystem2():
+  nmodules    =  2
+  nexecutives =  2
+  ncomponents =  8
+  ndeadlines  =  2
+  nprocessors =  3
+  module_name         = ["Module upper", \
+                         "Module lower"]
+  executive_name      = ["Executive for module upper", \
+                         "Executive for module lower"]
+  executive_priority = [2,1]
+  # executive_proc = [2,1]
+  executive_proc = [1,1]
+  executive_pollingperiod = [0.000010,0.000010]
+  component_name      = ["Image processing", \
+                         "network output handler", \
+                         "Calibrate", \
+                         "Network input handler", \
+                         "State change handler", \
+                         "Automatic controller", \
+                         "Manual controller", \
+                         "Blaster controller"]
+  belongs_to_module    = [1,1,1,1,1,2,2,2]
+  served_by_executive  = [1,1,1,1,1,2,2,2]
+  has_externally_specified_mit = \
+    [True, False,False,False,False,True ,False,False]
+  minimum_inter_arrival_time = \
+    [0.033,None , None, None,None ,0.025,None, None ]
+  maximum_inter_arrival_time = \
+    [0.034,None , None, None,None ,0.025,None, None ]
+  triggered_by_predecessor = [None,1,4,2,4,None,5,6]
+  execution_time = [0.000050,0.000050,0.000050,0.000050,0.000050,0.000050,0.000050,0.000050]
+
+
+  #  node num. (exectime, Triggered by queue, msg sender of active queue, # of passive queues read, [num msgs read],[sender of passive queue])
+  # 8,(0.000050,True,6,1,[1],[7])
+
+  list_of_execution_behaviors_for_component = create_list_of_execution_behaviors_for_components([
+    ( 1,[ (0.000050,False,None,0,[],[])
+        ] ),
+    ( 2,[ (0.000050,True,1,0,[],[])
+        ] ),
+    ( 3,[ (0.000050,True,4,0,[],[])
+        ] ),
+    ( 4,[ (0.000050,True,2,0,[],[])
+        ] ),
+    ( 5,[ (0.000050,True,4,0,[],[])
+        ] ),
+    ( 6,[ (0.000050,False,None,1,[1],[5])
+        ] ),
+    ( 7,[ (0.000050,True,5,0,[],[])
+        ] ),
+    ( 8,[ (0.000050,True,6,0,[], []),
+          (0.000050,True,6,1,[1],[7])
+        ] )
+  ])
+  deadline_value = [0.300,0.300]
+  deadline_from  = [1,6]
+  deadline_to    = [8,8]
+  deadline_path  = [[1,2,4,5,6,8],[6,8]]
+  return nmodules,nexecutives,ncomponents,ndeadlines,nprocessors, \
+         module_name,executive_name,executive_priority,executive_proc,executive_pollingperiod, \
+         component_name,belongs_to_module,served_by_executive, \
+         has_externally_specified_mit,minimum_inter_arrival_time,maximum_inter_arrival_time, \
+         triggered_by_predecessor,execution_time, \
+         list_of_execution_behaviors_for_component, \
+         deadline_value,deadline_from,deadline_to,deadline_path
+
+def getdefaultsystem():
+  # return getdefaultsystem1() # This is missile
+  return getdefaultsystem2()  # This is gencannon
+
+def compute_vp1(ncomponents,has_externally_specified_mit,triggered_by_predecessor):
+  vp1 = set()
+  for component_id1 in range(1,ncomponents+1):
+    for component_id2 in range(1,ncomponents+1):
+      if (component_id1==orig(has_externally_specified_mit,triggered_by_predecessor,component_id2)):
+        vp1.add((component_id1,component_id2))
+  return vp1 
+
+def compute_vp2(ncomponents,ndeadlines,deadline_from,deadline_to):
+  vp2 = set()
+  for component_id1 in range(1,ncomponents+1):
+    for component_id2 in range(1,ncomponents+1):
+      if (any((component_id1==deadline_from[deadline_id-1] and component_id2==deadline_to[deadline_id-1]) for deadline_id in range(1,ndeadlines+1))):
+        vp2.add((component_id1,component_id2))
+  return vp2 
+
+def compute_vp3(ncomponents,has_externally_specified_mit,triggered_by_predecessor):
+  vp3 = set()
+  for component_id1 in range(1,ncomponents+1):
+    for component_id2 in range(1,ncomponents+1):
+      if (component_id1!=component_id2):
+        if not has_externally_specified_mit[component_id2-1]:
+          if component_id1==triggered_by_predecessor[component_id2-1]:
+            vp3.add((component_id1,component_id2))
+  return vp3 
+
+def get_execution_behaviors_that_read_from_given_component( \
+  component_id1,component_id2,list_of_execution_behaviors_for_component):
+  list_of_execution_behaviors_id                 = []
+  list_of_execution_behaviors_number_of_messages = []
+  for execution_behavior_id in range(1,list_of_execution_behaviors_for_component[component_id2-1].nexecutionbehaviors+1):
+    an_execution_behavior = \
+      list_of_execution_behaviors_for_component[component_id2-1].executionbehaviors[execution_behavior_id-1]
+    found       = False
+    found_value = -1
+    for iter3 in range(1,an_execution_behavior.passive_queues_number_of_queues_read+1):
+      if an_execution_behavior.passive_queues_per_read_from_component[iter3-1]==component_id1:
+        new_value = an_execution_behavior.passive_queues_per_read_number_of_messages[iter3-1]
+        if found:
+          print("Error get_execution_behaviors_that_read_from_given_component. New value when we have already found one.")
+          exit(-1)
+        else:
+          found       = True
+          found_value = new_value 
+    if found:
+      list_of_execution_behaviors_id.append(                execution_behavior_id)
+      list_of_execution_behaviors_number_of_messages.append(found_value          )
+  return list_of_execution_behaviors_id,list_of_execution_behaviors_number_of_messages
+
+def there_is_a_passive_queue( \
+  component_id1,component_id2,list_of_execution_behaviors_for_component):
+  list_of_execution_behaviors_id,list_of_execution_behaviors_number_of_messages = \
+  get_execution_behaviors_that_read_from_given_component( \
+    component_id1,component_id2,list_of_execution_behaviors_for_component)
+  return len(list_of_execution_behaviors_id)>=1
+
+def get_components_with_passive_queue_to( \
+  component_id2,ncomponents,list_of_execution_behaviors_for_component):
+  ret_components = set()
+  for component_id1 in range(1,ncomponents+1):
+    if there_is_a_passive_queue( \
+      component_id1,component_id2,list_of_execution_behaviors_for_component):
+        ret_components.add(component_id1)
+  return ret_components
+
+def compute_vp4(ncomponents,list_of_execution_behaviors_for_component):
+  vp4 = set()
+  for component_id1 in range(1,ncomponents+1):
+    for component_id2 in range(1,ncomponents+1):
+      if (component_id1!=component_id2):
+        if there_is_a_passive_queue( \
+           component_id1,component_id2,list_of_execution_behaviors_for_component):
+          vp4.add((component_id1,component_id2))                   
+  return vp4 
+
+def get_nmsg_for_passive_queue(component_id1,component_id2,list_of_execution_behaviors_for_component):
+  list_of_execution_behaviors_id,list_of_execution_behaviors_number_of_messages = \
+  get_execution_behaviors_that_read_from_given_component( \
+    component_id1,component_id2,list_of_execution_behaviors_for_component)
+  if len(list_of_execution_behaviors_id)<=0:
+    print("Error in get_nmsg_for_passive_queue. len(list_of_execution_behaviors_id)<=0")
+    exit(-1)
+  if len(list_of_execution_behaviors_number_of_messages)<=0:
+    print("Error in get_nmsg_for_passive_queue. len(list_of_execution_behaviors_number_of_messages)<=0")
+    exit(-1)   
+  # return max(list_of_execution_behaviors_number_of_messages)
+  return min(list_of_execution_behaviors_number_of_messages)
+
+def MAXIT_MIT_condition(vp4, \
+    has_externally_specified_mit,minimum_inter_arrival_time,maximum_inter_arrival_time,triggered_by_predecessor, \
+    list_of_execution_behaviors_for_component):
+  for (component_id1,component_id2) in vp4:
+    orig_component_id1 = orig(has_externally_specified_mit,triggered_by_predecessor,component_id1)
+    orig_component_id2 = orig(has_externally_specified_mit,triggered_by_predecessor,component_id2)
+    lhs = maximum_inter_arrival_time[orig_component_id2-1]
+    nmsg = get_nmsg_for_passive_queue(component_id1,component_id2,list_of_execution_behaviors_for_component)
+    rhs = nmsg * minimum_inter_arrival_time[orig_component_id1-1]
+    if lhs>rhs:
+      print("MAXIT_MIT_condition for passive queue from "+str(component_id1)+" to " + str(component_id2) +" is false.")
+      print("This is not necessarily an error but we want to bring your attention to it.")
+      print("component_id1")
+      print(component_id1)
+      print("component_id2")
+      print(component_id2)
+      print("orig_component_id1")
+      print(orig_component_id1)
+      print("orig_component_id2")
+      print(orig_component_id2)
+      print("lhs")
+      print(lhs)
+      print("nmsg")
+      print(nmsg)
+      print("rhs")
+      print(rhs)
+      exit(-1)
+      return False
+  return True
+
+def comp_path_vp1(component_id1,component_id2,triggered_by_predecessor):
+  path = [] 
+  cur = component_id2
+  while (cur!=component_id1):
+    path.insert(0,cur)
+    cur = triggered_by_predecessor[cur-1]
+  path.insert(0,cur)
+  return path
+
+def comp_path_vp2(component_id1,component_id2,ndeadlines,deadline_from,deadline_to,deadline_path):
+  for deadline_id in range(1,ndeadlines+1):
+    if deadline_from[deadline_id-1]==component_id1 and deadline_to[deadline_id-1]==component_id2:
+      return deadline_path[deadline_id-1]      
+  print("Error in comp_path_vp2. Could not find path.")
+  exit(-1)
+  
+def compute_respects_all_deadlines(t,ndeadlines,deadline_value,deadline_from,deadline_to):
+  return all(t[deadline_from[deadline_id-1]-1][deadline_to[deadline_id-1]-1] <= deadline_value[deadline_id-1] for deadline_id in range(1,ndeadlines+1))
+
+def get_computet_detailed_path(component_id1,component_id2,path,has_externally_specified_mit,triggered_by_predecessor):
+  computet_detailed_path = []
+  for index in range(0,len(path[component_id1-1][component_id2-1])):
+    current_component_id = path[component_id1-1][component_id2-1][index]
+    if has_externally_specified_mit[current_component_id-1] and index>0:
+      detailed_path_element = (COMPUTET_DETAILED_PATH_ELEMENT_TT,current_component_id)
+      computet_detailed_path.append(detailed_path_element)        
+    detailed_path_element = (COMPUTET_DETAILED_PATH_ELEMENT_PP,current_component_id)
+    computet_detailed_path.append(detailed_path_element)
+    detailed_path_element = (COMPUTET_DETAILED_PATH_ELEMENT_HEP,current_component_id)
+    computet_detailed_path.append(detailed_path_element)
+    detailed_path_element = (COMPUTET_DETAILED_PATH_ELEMENT_VICTIM,current_component_id)
+    computet_detailed_path.append(detailed_path_element)
+  return computet_detailed_path
+
+def computet_add_variables( \
+      computet_detailed_path,component_id1,component_id2,t,UBql,vp3,vp4, \
+      nexecutives,ncomponents,nprocessors, \
+      executive_priority,executive_proc,executive_pollingperiod, \
+      served_by_executive, \
+      has_externally_specified_mit,minimum_inter_arrival_time,maximum_inter_arrival_time, \
+      triggered_by_predecessor,execution_time, \
+      list_of_execution_behaviors_for_component, \
+      m):
+  maxl = len(computet_detailed_path)
+  dur_vars = create_1D_matrix(maxl)
+  for l in range(1,maxl+1):
+    varname = "durU"+str(l)
+    dur_vars[l-1] = m.addVar(name=varname,vtype=GRB.CONTINUOUS)
+  nreads_vars = create_2D_matrix(ncomponents,ncomponents)
+  for (w1,w2) in vp3.union(vp4):
+    varname = "nreads_"+str(w1)+"_"+str(w2)
+    nreads_vars[w1-1][w2-1] = m.addVar(name=varname,vtype=GRB.INTEGER)
+  UBwrites_vars = create_2D_matrix(ncomponents,ncomponents)
+  for (w1,w2) in vp3.union(vp4):
+    varname = "UBwrites_"+str(w1)+"_"+str(w2)
+    UBwrites_vars[w1-1][w2-1] = m.addVar(name=varname,vtype=GRB.INTEGER)
+  njobs_vars = create_1D_matrix(ncomponents)
+  for w in range(1,ncomponents+1):
+    varname = "njobs_"+str(w)
+    njobs_vars[w-1] = m.addVar(name=varname,vtype=GRB.INTEGER)
+  max_nexecutionbehaviors = \
+    max({list_of_execution_behaviors_for_component[w-1].nexecutionbehaviors \
+         for w in range(1,ncomponents+1)})
+  njobseb_vars = create_2D_matrix(ncomponents,max_nexecutionbehaviors)
+  for w in range(1,ncomponents+1):
+    for execution_behavior_id in \
+    range(1,list_of_execution_behaviors_for_component[w-1].nexecutionbehaviors+1):    
+      varname = "njobseb_"+str(w)+"_"+str(execution_behavior_id)
+      njobseb_vars[w-1][execution_behavior_id-1] = m.addVar(name=varname,vtype=GRB.INTEGER)
+  max_nexecutionbehaviors = \
+    max({list_of_execution_behaviors_for_component[w-1].nexecutionbehaviors \
+         for w in range(1,ncomponents+1)})
+  exec_vars = create_3D_matrix(ncomponents,max_nexecutionbehaviors,maxl)
+  for w in range(1,ncomponents+1):
+    for execution_behavior_id in \
+    range(1,list_of_execution_behaviors_for_component[w-1].nexecutionbehaviors+1):
+      for l in range(1,maxl+1):
+        varname = "exec_"+str(w)+"_"+str(execution_behavior_id)+"U"+str(l)
+        exec_vars[w-1][execution_behavior_id-1][l-1] = m.addVar(name=varname,vtype=GRB.CONTINUOUS)
+  max_nexecutionbehaviors = \
+    max({list_of_execution_behaviors_for_component[w-1].nexecutionbehaviors \
+         for w in range(1,ncomponents+1)}) 
+  seleb_vars = create_3D_matrix(ncomponents,max_nexecutionbehaviors,maxl)
+  for w in range(1,ncomponents+1):
+    for execution_behavior_id in \
+    range(1,list_of_execution_behaviors_for_component[w-1].nexecutionbehaviors+1):
+      for l in range(1,maxl+1):
+        detailed_path_element = computet_detailed_path[l-1]
+        if detailed_path_element[0]==COMPUTET_DETAILED_PATH_ELEMENT_VICTIM and \
+           detailed_path_element[1]==w: 
+          varname = "seleb_"+str(w)+"_"+str(execution_behavior_id)+"U"+str(l)
+          seleb_vars[w-1][execution_behavior_id-1][l-1] = m.addVar(name=varname,vtype=GRB.BINARY)
+  victimdur_vars = create_1D_matrix(maxl)
+  for l in range(1,maxl+1):
+    type_of_computet_detailed_path_element = computet_detailed_path[l-1][0]
+    w                                      = computet_detailed_path[l-1][1]
+    if type_of_computet_detailed_path_element==COMPUTET_DETAILED_PATH_ELEMENT_VICTIM:
+      varname = "victimdurU"+str(l)
+      victimdur_vars[l-1] = m.addVar(name=varname,vtype=GRB.CONTINUOUS)
+  return dur_vars,nreads_vars,UBwrites_vars,njobs_vars,njobseb_vars,exec_vars,seleb_vars,victimdur_vars
+
+def computet_add_objective( \
+      computet_detailed_path,component_id1,component_id2,t,UBql,vp3,vp4, \
+      nexecutives,ncomponents,nprocessors, \
+      executive_priority,executive_proc,executive_pollingperiod, \
+      served_by_executive, \
+      has_externally_specified_mit,minimum_inter_arrival_time,maximum_inter_arrival_time, \
+      triggered_by_predecessor,execution_time, \
+      list_of_execution_behaviors_for_component, \
+      m,
+      dur_vars,nreads_vars,UBwrites_vars,njobs_vars,njobseb_vars,exec_vars,seleb_vars,victimdur_vars):
+  maxl = len(computet_detailed_path)
+  m.setObjective(sum(dur_vars[l-1] for l in range(1,maxl+1)),GRB.MAXIMIZE)
+
+def get_hp_components_for_this_component_id(component_id,ncomponents,
+      executive_priority,executive_proc,served_by_executive):
+  return {a_component_id for a_component_id in range(1,ncomponents+1) if \
+          (executive_proc[served_by_executive[a_component_id-1]-1]==executive_proc[served_by_executive[component_id-1]-1]) \
+          and \
+          (executive_priority[served_by_executive[a_component_id-1]-1]>=executive_priority[served_by_executive[component_id-1]-1]) \
+         }
+
+def get_ep_components_for_this_component_id(component_id,ncomponents,
+      executive_priority,executive_proc,served_by_executive):
+  return {a_component_id for a_component_id in range(1,ncomponents+1) if \
+          (executive_proc[served_by_executive[a_component_id-1]-1]==executive_proc[served_by_executive[component_id-1]-1]) \
+          and \
+          (executive_priority[served_by_executive[a_component_id-1]-1]==executive_priority[served_by_executive[component_id-1]-1]) \
+         }
+
+def computet_add_constraints( \
+      computet_detailed_path,component_id1,component_id2,t,UBql,vp3,vp4, \
+      nexecutives,ncomponents,nprocessors, \
+      executive_priority,executive_proc,executive_pollingperiod, \
+      served_by_executive, \
+      has_externally_specified_mit,minimum_inter_arrival_time,maximum_inter_arrival_time, \
+      triggered_by_predecessor,execution_time, \
+      list_of_execution_behaviors_for_component, \
+      m,
+      dur_vars,nreads_vars,UBwrites_vars,njobs_vars,njobseb_vars,exec_vars,seleb_vars,victimdur_vars):
+  maxl = len(computet_detailed_path)
+  for (w1,w2) in vp3.union(vp4):
+    m.addConstr(nreads_vars[w1-1][w2-1] <= \
+                UBwrites_vars[w1-1][w2-1] + UBql[w1-1][w2-1])
+  for (w1,w2) in vp3.union(vp4):
+    m.addConstr(UBwrites_vars[w1-1][w2-1] == njobs_vars[w1-1])
+  for w in range(1,ncomponents+1):
+    m.addConstr(njobs_vars[w-1] == \
+                sum(njobseb_vars[w-1][execution_behavior_id-1] \
+                for execution_behavior_id in \
+                range(1,list_of_execution_behaviors_for_component[w-1].nexecutionbehaviors+1)))
+  for (w1,w2) in vp3.union(vp4):
+    list_of_execution_behaviors_id,list_of_execution_behaviors_number_of_messages = \
+    get_execution_behaviors_that_read_from_given_component( \
+      w1,w2,list_of_execution_behaviors_for_component)
+    m.addConstr(sum(list_of_execution_behaviors_number_of_messages[index] * \
+      njobseb_vars[w2-1][list_of_execution_behaviors_id[index]-1] for index in \
+      range(0,len(list_of_execution_behaviors_id))) \
+      == \
+      nreads_vars[w1-1][w2-1])
+  for l in range(1,maxl+1):
+    type_of_computet_detailed_path_element = computet_detailed_path[l-1][0]
+    w                                      = computet_detailed_path[l-1][1]
+    if type_of_computet_detailed_path_element==COMPUTET_DETAILED_PATH_ELEMENT_TT:
+      m.addConstr(dur_vars[l-1] == maximum_inter_arrival_time[w-1])
+  for l in range(1,maxl+1):
+    type_of_computet_detailed_path_element = computet_detailed_path[l-1][0]
+    w                                      = computet_detailed_path[l-1][1]
+    if type_of_computet_detailed_path_element==COMPUTET_DETAILED_PATH_ELEMENT_PP:
+      m.addConstr(dur_vars[l-1] == executive_pollingperiod[served_by_executive[w-1]-1])
+  for l in range(1,maxl+1):
+    type_of_computet_detailed_path_element = computet_detailed_path[l-1][0]
+    w                                      = computet_detailed_path[l-1][1]
+    if type_of_computet_detailed_path_element==COMPUTET_DETAILED_PATH_ELEMENT_HEP:
+      hp_components = \
+        get_hp_components_for_this_component_id(w,ncomponents,executive_priority,executive_proc,served_by_executive)
+      ep_components = \
+        get_ep_components_for_this_component_id(w,ncomponents,executive_priority,executive_proc,served_by_executive)
+      hep_components               = hp_components.union(ep_components)
+      hep_components_except_l_comp = hep_components.difference({w})
+      m.addConstr(dur_vars[l-1] == \
+
+        sum(sum(exec_vars[a_component_id-1][execution_behavior_id-1][l-1] for execution_behavior_id in \
+    range(1,list_of_execution_behaviors_for_component[a_component_id-1].nexecutionbehaviors+1)) for a_component_id in hep_components_except_l_comp) \
+      )
+  for l in range(1,maxl+1):
+    type_of_computet_detailed_path_element = computet_detailed_path[l-1][0]
+    w                                      = computet_detailed_path[l-1][1]
+    if type_of_computet_detailed_path_element==COMPUTET_DETAILED_PATH_ELEMENT_VICTIM:
+      hp_components = \
+        get_hp_components_for_this_component_id(w,ncomponents,executive_priority,executive_proc,served_by_executive)
+      ep_components = \
+        get_ep_components_for_this_component_id(w,ncomponents,executive_priority,executive_proc,served_by_executive)
+      hep_components               = hp_components.union(ep_components)
+      hep_components_except_l_comp = hep_components.difference({w})
+      m.addConstr(dur_vars[l-1] == \
+        sum(sum(exec_vars[a_component_id-1][execution_behavior_id-1][l-1] for execution_behavior_id in \
+    range(1,list_of_execution_behaviors_for_component[a_component_id-1].nexecutionbehaviors+1)) for a_component_id in hp_components) \
+        + \
+        victimdur_vars[l-1] \
+     )
+  for l in range(1,maxl+1):
+    type_of_computet_detailed_path_element = computet_detailed_path[l-1][0]
+    w                                      = computet_detailed_path[l-1][1]
+    if type_of_computet_detailed_path_element==COMPUTET_DETAILED_PATH_ELEMENT_VICTIM:
+      for execution_behavior_id in \
+      range(1,list_of_execution_behaviors_for_component[w-1].nexecutionbehaviors+1):
+        m.addGenConstrIndicator( \
+          seleb_vars[w-1][execution_behavior_id-1][l-1], 1, \
+          0<=victimdur_vars[l-1])
+        m.addGenConstrIndicator( \
+          seleb_vars[w-1][execution_behavior_id-1][l-1], 1, \
+          victimdur_vars[l-1]<=list_of_execution_behaviors_for_component[w-1].executionbehaviors[execution_behavior_id-1].wcet)
+  for l in range(1,maxl+1):
+    type_of_computet_detailed_path_element = computet_detailed_path[l-1][0]
+    w                                      = computet_detailed_path[l-1][1]
+    if type_of_computet_detailed_path_element==COMPUTET_DETAILED_PATH_ELEMENT_VICTIM:
+      m.addConstr( \
+        sum( \
+        seleb_vars[w-1][execution_behavior_id-1][l-1] \
+        for execution_behavior_id in \
+        range(1,list_of_execution_behaviors_for_component[w-1].nexecutionbehaviors+1)) \
+        == 1)
+  for w in range(1,ncomponents+1):
+    l_values = {l for l in range(1,maxl+1) if
+                  (computet_detailed_path[l-1][0]==COMPUTET_DETAILED_PATH_ELEMENT_VICTIM) and \
+                  (computet_detailed_path[l-1][1]==w) \
+               }
+    if len(l_values)>=1:
+      for execution_behavior_id in \
+      range(1,list_of_execution_behaviors_for_component[w-1].nexecutionbehaviors+1):
+        m.addConstr(sum(seleb_vars[w-1][execution_behavior_id-1][l-1] for l in l_values) \
+          <= njobseb_vars[w-1][execution_behavior_id-1])
+  for w in range(1,ncomponents+1):
+    for execution_behavior_id in \
+    range(1,list_of_execution_behaviors_for_component[w-1].nexecutionbehaviors+1):
+      m.addConstr(sum(exec_vars[w-1][execution_behavior_id-1][l-1] for l in range(1,maxl+1)) \
+        <= list_of_execution_behaviors_for_component[w-1].executionbehaviors[execution_behavior_id-1].wcet*njobseb_vars[w-1][execution_behavior_id-1])
+  for w in range(1,ncomponents+1):
+    orig_w = orig(has_externally_specified_mit,triggered_by_predecessor,w)
+    Jw = t[orig_w-1][w-1]
+    rhs = math.ceil((t[component_id1-1][component_id2-1]+Jw)/minimum_inter_arrival_time[orig_w-1])
+    m.addConstr(njobs_vars[w-1] <= rhs)
+
+def create_explanation_for_newt_from_gurobi_solution( \
+      computet_detailed_path,component_id1,component_id2,t,UBql,vp3,vp4, \
+      nexecutives,ncomponents,nprocessors, \
+      executive_priority,executive_proc,executive_pollingperiod, \
+      served_by_executive, \
+      has_externally_specified_mit,minimum_inter_arrival_time,maximum_inter_arrival_time, \
+      triggered_by_predecessor,execution_time, \
+      list_of_execution_behaviors_for_component, \
+      m,
+      dur_vars,nreads_vars,UBwrites_vars,njobs_vars,njobseb_vars,exec_vars,seleb_vars,victimdur_vars):
+  maxl = len(computet_detailed_path)
+  explanation_for_newt_list_of_strings = []
+  for l in range(1,maxl+1):
+    type_of_computet_detailed_path_element = computet_detailed_path[l-1][0]
+    w                                      = computet_detailed_path[l-1][1]
+    start_time  = sum(dur_vars[lprime-1].X for lprime in range(1,l)) 
+    finish_time = sum(dur_vars[lprime-1].X for lprime in range(1,l+1)) 
+    if type_of_computet_detailed_path_element==COMPUTET_DETAILED_PATH_ELEMENT_TT:
+      new_str = "From time " + f"{start_time:10.6f}" + " to time " + f"{finish_time:10.9f}" + ": " + \
+                "Waiting for component " + str(w) + " " + \
+                "(with MAXIT " + str(maximum_inter_arrival_time[w-1]) + ") " +  \
+                "to arrive"
+    elif type_of_computet_detailed_path_element==COMPUTET_DETAILED_PATH_ELEMENT_PP:
+      new_str = "From time " + f"{start_time:10.6f}" + " to time " + f"{finish_time:10.6f}" + ": " + \
+                "Waiting for executive " + str(served_by_executive[w-1]) + " " + \
+                "(with polling period " + str(executive_pollingperiod[served_by_executive[w-1]-1]) + ") " +  \
+                "to poll queue"
+    elif type_of_computet_detailed_path_element==COMPUTET_DETAILED_PATH_ELEMENT_HEP:
+      new_str = "From time " + f"{start_time:10.6f}" + " to time " + f"{finish_time:10.6f}" + ": " + \
+                "Executing components with priority higher than or equal to the priority of component " + str(w) + " " + \
+                "on processor " +  str(executive_proc[served_by_executive[w-1]-1])
+    elif type_of_computet_detailed_path_element==COMPUTET_DETAILED_PATH_ELEMENT_VICTIM:
+      new_str = "From time " + f"{start_time:10.6f}" + " to time " + f"{finish_time:10.6f}" + ": " + \
+                "Executing component " + str(w) + " " + \
+                "on processor " +  str(executive_proc[served_by_executive[w-1]-1]) + " " + \
+                "and this execution is not preempted by other components on same executive"
+    explanation_for_newt_list_of_strings.append(new_str)    
+  return explanation_for_newt_list_of_strings
+
+def computet(component_id1,component_id2,path,t,UBql,vp3,vp4, \
+      nexecutives,ncomponents,nprocessors, \
+      executive_priority,executive_proc,executive_pollingperiod, \
+      served_by_executive, \
+      has_externally_specified_mit,minimum_inter_arrival_time,maximum_inter_arrival_time, \
+      triggered_by_predecessor,execution_time, \
+      list_of_execution_behaviors_for_component):
+  m = gurobipy.Model("computet")
+  computet_detailed_path = \
+    get_computet_detailed_path(component_id1,component_id2,path,has_externally_specified_mit,triggered_by_predecessor)
+  dur_vars,nreads_vars,UBwrites_vars,njobs_vars,njobseb_vars,exec_vars,seleb_vars,victimdur_vars = \
+  computet_add_variables( \
+      computet_detailed_path,component_id1,component_id2,t,UBql,vp3,vp4, \
+      nexecutives,ncomponents,nprocessors, \
+      executive_priority,executive_proc,executive_pollingperiod, \
+      served_by_executive, \
+      has_externally_specified_mit,minimum_inter_arrival_time,maximum_inter_arrival_time, \
+      triggered_by_predecessor,execution_time, \
+      list_of_execution_behaviors_for_component, \
+      m)
+  computet_add_objective( \
+      computet_detailed_path,component_id1,component_id2,t,UBql,vp3,vp4, \
+      nexecutives,ncomponents,nprocessors, \
+      executive_priority,executive_proc,executive_pollingperiod, \
+      served_by_executive, \
+      has_externally_specified_mit,minimum_inter_arrival_time,maximum_inter_arrival_time, \
+      triggered_by_predecessor,execution_time, \
+      list_of_execution_behaviors_for_component, \
+      m,
+      dur_vars,nreads_vars,UBwrites_vars,njobs_vars,njobseb_vars,exec_vars,seleb_vars,victimdur_vars)
+  computet_add_constraints( \
+      computet_detailed_path,component_id1,component_id2,t,UBql,vp3,vp4, \
+      nexecutives,ncomponents,nprocessors, \
+      executive_priority,executive_proc,executive_pollingperiod, \
+      served_by_executive, \
+      has_externally_specified_mit,minimum_inter_arrival_time,maximum_inter_arrival_time, \
+      triggered_by_predecessor,execution_time, \
+      list_of_execution_behaviors_for_component, \
+      m,
+      dur_vars,nreads_vars,UBwrites_vars,njobs_vars,njobseb_vars,exec_vars,seleb_vars,victimdur_vars)
+  m.update()
+  m.write('lp_formulation.lp') # this is not strictly needed but it helps if we want to trace execution
+  m.optimize()
+  m.update() 
+  if (m.status==GRB.OPTIMAL):
+    m.write('lp_formulation.sol') # this is not strictly needed but it helps if we want to trace execution
+    explanation_for_newt_list_of_strings = \
+    create_explanation_for_newt_from_gurobi_solution( \
+      computet_detailed_path,component_id1,component_id2,t,UBql,vp3,vp4, \
+      nexecutives,ncomponents,nprocessors, \
+      executive_priority,executive_proc,executive_pollingperiod, \
+      served_by_executive, \
+      has_externally_specified_mit,minimum_inter_arrival_time,maximum_inter_arrival_time, \
+      triggered_by_predecessor,execution_time, \
+      list_of_execution_behaviors_for_component, \
+      m,
+      dur_vars,nreads_vars,UBwrites_vars,njobs_vars,njobseb_vars,exec_vars,seleb_vars,victimdur_vars)
+    return m.objVal,explanation_for_newt_list_of_strings
+  else:
+    print("Error in computet") # normally this should not happen but in case we have a component
+                               # whose WCET > MIT of orig, then this can happen. Fortunately,
+                               # the function check_if_incoming_data_is_too_fast deals with that.
+    print("m.status")
+    print(m.status)
+    exit(-1)
+
+def computeUBql(component_id1,component_id2,t,UBql, \
+          has_externally_specified_mit,minimum_inter_arrival_time,maximum_inter_arrival_time, \
+          triggered_by_predecessor):
+  orig_component_id1 = orig(has_externally_specified_mit,triggered_by_predecessor,component_id1)
+  orig_component_id2 = orig(has_externally_specified_mit,triggered_by_predecessor,component_id2)
+  Jvprime      = t[orig_component_id1-1][component_id1-1]
+  Jvprimeprime = t[orig_component_id2-1][component_id2-1]
+  numerator = maximum_inter_arrival_time[orig_component_id2-1]+Jvprimeprime+Jvprime
+  denominator = minimum_inter_arrival_time[orig_component_id1-1]
+  return math.ceil(numerator/denominator)
+
+def check_if_incoming_data_is_too_fast( \
+    my_explanation_data,
+    ncomponents,has_externally_specified_mit,minimum_inter_arrival_time,execution_time,triggered_by_predecessor):
+  new_explanation_data_for_items = set([])
+  for component_id in range(1,ncomponents+1):
+    orig_w = orig(has_externally_specified_mit,triggered_by_predecessor,component_id)
+    if execution_time[component_id-1]>minimum_inter_arrival_time[orig_w-1]:
+      my_explanation_data_for_item = explanation_data_for_item() 
+      my_explanation_data_for_item.deadline_explanation_or_COMPONENT_OVERLOAD_EXPLANATION = COMPONENT_OVERLOAD_EXPLANATION
+      my_explanation_data_for_item.component_overload_explanation_component_id = \
+        component_id
+      my_explanation_data_for_item.component_overload_explanation_wcet_of_component_id = \
+        execution_time[component_id-1]
+      my_explanation_data_for_item.component_overload_explanation_orig_component_id = \
+        orig_w
+      my_explanation_data_for_item.component_overload_explanation_mit_of_orig_component_id = \
+        minimum_inter_arrival_time[orig_w-1]
+      new_explanation_data_for_items.add(my_explanation_data_for_item)
+  my_explanation_data.explanation_data_for_items.update(new_explanation_data_for_items)
+  return len(new_explanation_data_for_items)==0
+
+def check_if_incoming_data_is_too_fast( \
+    my_explanation_data,
+    ncomponents,has_externally_specified_mit,minimum_inter_arrival_time,execution_time,triggered_by_predecessor):
+  new_explanation_data_for_items = set([])
+  for component_id in range(1,ncomponents+1):
+    orig_w = orig(has_externally_specified_mit,triggered_by_predecessor,component_id)
+    if execution_time[component_id-1]>minimum_inter_arrival_time[orig_w-1]:
+      my_explanation_data_for_item = explanation_data_for_item() 
+      my_explanation_data_for_item.deadline_explanation_or_COMPONENT_OVERLOAD_EXPLANATION = COMPONENT_OVERLOAD_EXPLANATION
+      my_explanation_data_for_item.component_overload_explanation_component_id = \
+        component_id
+      my_explanation_data_for_item.component_overload_explanation_wcet_of_component_id = \
+        execution_time[component_id-1]
+      my_explanation_data_for_item.component_overload_explanation_orig_component_id = \
+        orig_w
+      my_explanation_data_for_item.component_overload_explanation_mit_of_orig_component_id = \
+        minimum_inter_arrival_time[orig_w-1]
+      new_explanation_data_for_items.add(my_explanation_data_for_item)
+  my_explanation_data.explanation_data_for_items.update(new_explanation_data_for_items)
+  return len(new_explanation_data_for_items)==0
+
+def do_sched_test_sufficient_request_based_MILP_models_execution_behavior( \
+      terminate_on_first_missed_deadline, \
+      nmodules,nexecutives,ncomponents,ndeadlines,nprocessors, \
+      module_name,executive_name,executive_priority,executive_proc,executive_pollingperiod, \
+      component_name,belongs_to_module,served_by_executive, \
+      has_externally_specified_mit,minimum_inter_arrival_time,maximum_inter_arrival_time, \
+      triggered_by_predecessor,execution_time, \
+      list_of_execution_behaviors_for_component, \
+      deadline_value,deadline_from,deadline_to,deadline_path):
+  my_explanation_data = explanation_data()
+  OK = check_if_incoming_data_is_too_fast( \
+    my_explanation_data, \
+    ncomponents,has_externally_specified_mit,minimum_inter_arrival_time,execution_time,triggered_by_predecessor)
+  if not OK:
+    return False,my_explanation_data  
+  vp1 = compute_vp1(ncomponents,has_externally_specified_mit,triggered_by_predecessor)
+  vp2 = compute_vp2(ncomponents,ndeadlines,deadline_from,deadline_to)
+  vp3 = compute_vp3(ncomponents,has_externally_specified_mit,triggered_by_predecessor)
+  vp4 = compute_vp4(ncomponents,list_of_execution_behaviors_for_component)
+  if MAXIT_MIT_condition(vp4, \
+    has_externally_specified_mit,minimum_inter_arrival_time,maximum_inter_arrival_time,triggered_by_predecessor, \
+    list_of_execution_behaviors_for_component):
+    path = create_2D_matrix(ncomponents,ncomponents)
+    for (component_id1,component_id2) in vp1:
+      path[component_id1-1][component_id2-1] = \
+        comp_path_vp1(component_id1,component_id2,triggered_by_predecessor)
+    for (component_id1,component_id2) in vp2:
+      path[component_id1-1][component_id2-1] = \
+        comp_path_vp2(component_id1,component_id2,ndeadlines,deadline_from,deadline_to,deadline_path)
+    t = create_2D_matrix(ncomponents,ncomponents)
+    for (component_id1,component_id2) in vp1.union(vp2):
+      t[component_id1-1][component_id2-1] = sum(execution_time[v-1] for v in path[component_id1-1][component_id2-1])
+    explanation_for_t = create_2D_matrix(ncomponents,ncomponents)
+    UBql = create_2D_matrix(ncomponents,ncomponents)
+    for (component_id1,component_id2) in vp3.union(vp4):
+      UBql[component_id1-1][component_id2-1] = 0   
+    changed = True
+    respects_all_deadlines = compute_respects_all_deadlines(t,ndeadlines,deadline_value,deadline_from,deadline_to)
+    while changed and respects_all_deadlines:
+      changed = False
+      for (component_id1,component_id2) in vp1.union(vp2):
+        newt,explanation_for_newt = \
+        computet(component_id1,component_id2,path,t,UBql,vp3,vp4, \
+              nexecutives,ncomponents,nprocessors, \
+              executive_priority,executive_proc,executive_pollingperiod, \
+              served_by_executive, \
+              has_externally_specified_mit,minimum_inter_arrival_time,maximum_inter_arrival_time, \
+              triggered_by_predecessor,execution_time, \
+              list_of_execution_behaviors_for_component)
+        if t[component_id1-1][component_id2-1] < newt:
+          t[component_id1-1][component_id2-1] = newt
+          explanation_for_t[component_id1-1][component_id2-1] = explanation_for_newt
+          changed = True
+      for (component_id1,component_id2) in vp3.union(vp4):
+        newUBql = computeUBql(component_id1,component_id2,t,UBql, \
+          has_externally_specified_mit,minimum_inter_arrival_time,maximum_inter_arrival_time, \
+          triggered_by_predecessor)
+        if UBql[component_id1-1][component_id2-1] < newUBql:
+          UBql[component_id1-1][component_id2-1] = newUBql
+          changed = True
+      respects_all_deadlines = compute_respects_all_deadlines(t,ndeadlines,deadline_value,deadline_from,deadline_to)
+    if respects_all_deadlines:
+      for deadline_id in range(1,ndeadlines+1):
+        r = t[deadline_from[deadline_id-1]-1][deadline_to[deadline_id-1]-1]
+        list_of_strings_for_explanation = explanation_for_t[deadline_from[deadline_id-1]-1][deadline_to[deadline_id-1]-1]
+        my_explanation_data_for_item = explanation_data_for_item()
+        my_explanation_data_for_item.deadline_id          = deadline_id
+        my_explanation_data_for_item.explanation_for_case = EXPLANATION_FOR_CASE_PROPERTY_SATISFIED
+        my_explanation_data_for_item.type_of_explanation  = TYPE_OF_EXPLANATION_NUMBERS
+        my_explanation_data_for_item.list_of_strings_for_explanation = list_of_strings_for_explanation
+        my_explanation_data_for_item.r                    = r
+        #my_explanation_data_for_item.path                 = \
+        #  compute_path(deadline_id,triggered_by_predecessor,deadline_from,deadline_to)
+        my_explanation_data_for_item.path                 = deadline_path[deadline_id-1]
+        my_explanation_data_for_item.subpaths             = []
+        my_explanation_data_for_item.rsubpaths            = []
+        my_explanation_data.explanation_data_for_items.add(my_explanation_data_for_item)
+      return True,my_explanation_data
+    else:
+      return False,None
+  else:
+    return False,None
+
+def give_explanation(my_explanation_data):
+  my_explanation_data.print_explanation_data()
+
+def getWCETForE2EFlow(e2eflow,wcets):
+  for i in range(len(wcets)):
+    for j in range(len(e2eflow)):
+      if wcets[i][0] == e2eflow[j]:
+        return wcets[i][1]
+  return -1
+
+def getFlowFromE2EFlow(e2eflow,wcets):
+  for i in range(len(wcets)):
+    for j in range(len(e2eflow)):
+      if wcets[i][0] == e2eflow[j]:
+        return wcets[i]
+  return -1
+
+
+def getSenderFromPort(port2sender,component_id2idx,port):
+  for i in range(len(port2sender)):
+    if port2sender[i][0] == port:
+      # return the index starting from 1.
+      return component_id2idx[port2sender[i][1]]+1
+  return -1
+  
+def getSenderListFromPortList(port2sender,component_id2idx,portList):
+  senderList = []
+  for i in range(len(portList)):
+    senderList.append(getSenderFromPort(port2sender,component_id2idx,portList[i]))
+  return senderList
+  
+def getActiveSender(port2sender,component,component_id2idx):
+  for i in range(len(port2sender)):
+    if port2sender[i][2] == component:
+      if port2sender[i][3] == True:
+        return component_id2idx[port2sender[i][1]]
+  return None
+  
+def microSecondToSecond(val):
+  if not (val is None):
+    return val / 1000000.0
+  return val
+
+#[WCET,'Aperiodic'?, sender,len(flow[2]),flow[2],getSenderListFromPortList(port2sender,component_id2idx,flow[3])]
+def isSameBehavior(behavior1,behavior2):
+  if behavior1[0] == behavior2[0]:
+    if behavior1[1] == behavior2[1]:
+      if behavior1[2] == behavior2[2] or (behavior1[2] is None and behavior2[2] is None):
+        if behavior1[3] == behavior2[3]:
+          list1 = behavior1[4]
+          list2 = behavior2[4]
+          for i in range(len(list1)):
+            if list1[i] != list2[i]:
+              return False
+          list1 = behavior1[5]
+          list2 = behavior2[5]
+          for i in range(len(list1)):
+            if list1[i] != list2[i]:
+              return False
+          return True
+        else:
+          return False
+      else:
+        return False
+    else:
+      return False
+  else:
+    return False
+
+def addBehaviorIfNotDuplicate(new_behavior,list_behaviors):
+  duplicate = False
+  for k in range(len(list_behaviors)):
+    previous_behavior = list_behaviors[k]
+    duplicate = duplicate or isSameBehavior(new_behavior,previous_behavior)
+  if not duplicate:
+    list_behaviors.append(new_behavior)
+  
+  
+#nmodules,nexecutives,ncomponents,ndeadlines,nprocessors, \
+#  module_name,executive_name,executive_priority,executive_proc,executive_pollingperiod, \
+#  component_name,belongs_to_module,served_by_executive, \
+#  has_externally_specified_mit,minimum_inter_arrival_time,maximum_inter_arrival_time, \
+#  triggered_by_predecessor,execution_time, \
+#  list_of_execution_behaviors_for_component, \
+#  deadline_value,deadline_from,deadline_to,deadline_path = getdefaultsystem()
+#terminate_on_first_missed_deadline = True
+#flag,my_explanation_data = \
+#do_sched_test_sufficient_request_based_MILP_models_execution_behavior( \
+#  terminate_on_first_missed_deadline, \
+#  nmodules,nexecutives,ncomponents,ndeadlines,nprocessors, \
+#  module_name,executive_name,executive_priority,executive_proc,executive_pollingperiod, \
+#  component_name,belongs_to_module,served_by_executive, \
+#  has_externally_specified_mit,minimum_inter_arrival_time,maximum_inter_arrival_time, \
+#  triggered_by_predecessor,execution_time, \
+#  list_of_execution_behaviors_for_component, \
+#  deadline_value,deadline_from,deadline_to,deadline_path)
+#print(flag)
+#give_explanation(my_explanation_data)
+
+def printEndToEndData(e2eflows,modexeccom,port2sender,processors, error0): 
+  module_name=[]
+  executive_name=[]
+  executive_priority=[]
+  executive_proc=[]
+  executive_pollingperiod=[]
+  component_name=[]
+  belongs_to_module=[]
+  served_by_executive=[]
+  has_externally_specified_mit=[]
+  minimum_inter_arrival_time=[]
+  maximum_inter_arrival_time=[]
+  triggered_by_predecessor=[]
+  execution_time=[]
+  executive_proc = []
+  
+  procid2idx={}
+  component_id2idx={}
+  module_id2idx={}
+  executive_id2idx={}
+  
+  compidx=0
+  modidx=0
+  exeidx=0
+  procidx=0
+  
+  for i in range(len(processors)):
+    procid2idx[processors[i][0]] = procidx
+    procidx = procidx + 1
+  
+  for i in range(len(modexeccom)):
+    module_id2idx[modexeccom[i][0]]=modidx
+    modidx = modidx+1
+    module_name.append(modexeccom[i][1])
+    for j in range(len(modexeccom[i][2])):
+      executive_id2idx[modexeccom[i][2][j][0]]=exeidx
+      executive_name.append(modexeccom[i][2][j][1])
+      executive_proc.append(procid2idx[modexeccom[i][2][j][3][0]]+1)
+      executive_priority.append(modexeccom[i][2][j][4])
+      for k in range(len(modexeccom[i][2][j][2])):
+         component_id2idx[modexeccom[i][2][j][2][k][0]]=compidx
+         compidx = compidx+1
+         component_name.append(modexeccom[i][2][j][2][k][1])
+         execution_time.append(modexeccom[i][2][j][2][k][4])
+         belongs_to_module.append(i+1)
+         served_by_executive.append(exeidx+1)
+         if modexeccom[i][2][j][2][k][6] == "Periodic":
+           triggered_by_predecessor.append(None)
+           has_externally_specified_mit.append(True)
+           minimum_inter_arrival_time.append(modexeccom[i][2][j][2][k][2])
+           maximum_inter_arrival_time.append(modexeccom[i][2][j][2][k][2])
+           executive_pollingperiod.append(modexeccom[i][2][j][2][k][2])
+         else:
+           triggered_by_predecessor.append(modexeccom[i][2][j][2][k][0])
+           has_externally_specified_mit.append(False)
+           minimum_inter_arrival_time.append(None)
+           maximum_inter_arrival_time.append(None)
+      exeidx = exeidx+1
+  
+  for i in range(len(triggered_by_predecessor)):
+    predecessor = triggered_by_predecessor[i]
+    if not (predecessor is None):
+      triggered_by_predecessor[i] = getActiveSender(port2sender,predecessor,component_id2idx)
+      if not (triggered_by_predecessor[i] is None):
+      	triggered_by_predecessor[i] = triggered_by_predecessor[i] + 1
+        
+  deadline_value = []
+  deadline_from = []
+  deadline_to = []
+  deadline_path = []
+
+  execution_behaviors = []
+  component_in_flow = []
+  for i in range(len(component_id2idx)):
+    execution_behaviors.append([i+1,[]])
+    component_in_flow.append(False)
+  
+  for i in range(len(e2eflows)):
+    e2eflow = e2eflows[i][4]
+    deadline_value.append(e2eflows[i][2])
+    deadline_from.append(component_id2idx[e2eflows[i][3][0][0]]+1)
+    deadline_to.append(component_id2idx[e2eflows[i][3][-1][0]]+1)
+    path = []
+    sender = None
+    for j in range(len(e2eflows[i][3])):
+      wcets = e2eflows[i][3][j][8]
+      flow = getFlowFromE2EFlow(e2eflow,wcets)
+      component_in_flow[component_id2idx[e2eflows[i][3][j][0]]] = True
+      path.append(component_id2idx[e2eflows[i][3][j][0]]+1)
+      if not (sender is None):
+        # TODO: always getting the active port prevents looking for multiple paths from self activation to e2eflow
+        # previous nodes
+        sender = getActiveSender(port2sender,e2eflows[i][3][j][0],component_id2idx)
+        print("1. Sender != None . getActiveSender(): ",sender+1)
+        sender = sender + 1
+      new_behavior = None
+      triggered_by_queue = e2eflows[i][3][j][5]=='Aperiodic'
+      if not triggered_by_queue:
+        sender = None
+      print("2. component: ",component_id2idx[e2eflows[i][3][j][0]]+1,"flow[2]: ",flow[2]," sender: ",sender)
+      if flow[2] is None:
+        #new_behavior = [getWCETForE2EFlow(e2eflow,wcets),e2eflows[i][3][j][5]=='Aperiodic',sender,0,[],[]]
+        new_behavior = [getWCETForE2EFlow(e2eflow,wcets),triggered_by_queue,sender,0,[],[]]
+      else:
+        #new_behavior = [getWCETForE2EFlow(e2eflow,wcets),e2eflows[i][3][j][5]=='Aperiodic',sender,len(flow[2]),flow[2],getSenderListFromPortList(port2sender,component_id2idx,flow[3])]
+        new_behavior = [getWCETForE2EFlow(e2eflow,wcets),triggered_by_queue,sender,len(flow[2]),flow[2],getSenderListFromPortList(port2sender,component_id2idx,flow[3])]
+      addBehaviorIfNotDuplicate(new_behavior,execution_behaviors[component_id2idx[e2eflows[i][3][j][0]]][1])
+      #duplicate = False
+      #for k in range(len(execution_behaviors[component_id2idx[e2eflows[i][3][j][0]]][1])):
+      #  previous_behavior = execution_behaviors[component_id2idx[e2eflows[i][3][j][0]]][1][k]
+      #  print("3. comp: ",component_id2idx[e2eflows[i][3][j][0]]+1,"previuos behavior: ",previous_behavior," new behavior: ",new_behavior," path: ",path)
+      #  duplicate = duplicate or isSameBehavior(new_behavior,previous_behavior)
+      #if not duplicate:
+      #  execution_behaviors[component_id2idx[e2eflows[i][3][j][0]]][1].append(new_behavior)
+      prevsender = sender
+      sender = component_id2idx[e2eflows[i][3][j][0]]
+      print("prev: ",prevsender," sender: ",sender)
+    deadline_path.append(path)
+
+  # Add execution behavior of components not in a flow 
+  for i in range(len(modexeccom)):
+    for j in range(len(modexeccom[i][2])):
+      for k in range(len(modexeccom[i][2][j][2])):
+        sender = getActiveSender(port2sender,modexeccom[i][2][j][2][k][0],component_id2idx)
+        if not (sender is None):
+          sender = sender + 1
+        # Components not in a flow
+        if not component_in_flow[component_id2idx[modexeccom[i][2][j][2][k][0]]]:
+          execution_behaviors[component_id2idx[modexeccom[i][2][j][2][k][0]]][1].append([modexeccom[i][2][j][2][k][4],modexeccom[i][2][j][2][k][6]=='Aperiodic',sender,0,[],[]])
+        # flows of components not in end to end flow
+        flows = modexeccom[i][2][j][2][k][8]
+        #(flow,et,portlist,msgreadlist)
+        for t in range(len(flows)):
+          queuesreads = flows[t][3]
+          triggered_by_queue = modexeccom[i][2][j][2][k][6]=='Aperiodic'
+          if not triggered_by_queue:
+            sender = None
+          if flows[t][2] is None:
+            senderlist = []
+            new_behavior = [flows[t][1],triggered_by_queue,sender,0,[],[]]            
+          else:
+            senderlist = getSenderListFromPortList(port2sender,component_id2idx,flows[t][2])
+            new_behavior = [flows[t][1],triggered_by_queue,sender,len(queuesreads),queuesreads,senderlist]
+          addBehaviorIfNotDuplicate(new_behavior,execution_behaviors[component_id2idx[modexeccom[i][2][j][2][k][0]]][1])
+  for i in range(len(minimum_inter_arrival_time)):
+    minimum_inter_arrival_time[i] = microSecondToSecond(minimum_inter_arrival_time[i])
+
+  for i in range(len(maximum_inter_arrival_time)):
+    maximum_inter_arrival_time[i] = microSecondToSecond(maximum_inter_arrival_time[i])
+
+  for i in range(len(executive_pollingperiod)):
+    executive_pollingperiod[i] = microSecondToSecond(executive_pollingperiod[i])
+
+  for i in range(len(execution_time)):
+    execution_time[i] = microSecondToSecond(execution_time[i])
+    
+  for i in range(len(deadline_value)):
+    deadline_value[i] = microSecondToSecond(deadline_value[i])
+
+  for i in range(len(execution_behaviors)):
+    for j in range(len(execution_behaviors[i][1])):
+      execution_behaviors[i][1][j][0] = microSecondToSecond(execution_behaviors[i][1][j][0])
+    
+  # Forcing for debugging
+  maximum_inter_arrival_time[0] = 0.034
+
+  nmodules = len(module_name)
+  nexecutives = len(executive_name)
+  ncomponents = len(component_name)
+  ndeadlines = len(deadline_value)
+  nprocessors = len(processors)
+    
+  print("nmodules: ",nmodules)
+  print("nexecutives: ",nexecutives)
+  print("ncomponents: ",ncomponents)
+  print("ndeadlines:",ndeadlines)
+  print("nprocessors: ",nprocessors)
+  print("module_name: ",module_name)
+  print("executive_name: ",executive_name)
+  print("executive_proc: ",executive_proc)
+  print("executive_priority: ",executive_priority)
+  print("component_name: ",component_name)
+  print("belongs_to_module: ",belongs_to_module)
+  print("served_by_executive: ",served_by_executive)
+  print("triggered_by_predecessor: ",triggered_by_predecessor)
+  print("has_externally_specified_mit: ",has_externally_specified_mit)
+  print("minimum_interarrival_time: ",minimum_inter_arrival_time)
+  print("maximum_interarrival_time: ",maximum_inter_arrival_time)
+  print("executive_pollingperiod: ",executive_pollingperiod)
+  print("execution_time: ",execution_time)
+  print("deadline_value: ",deadline_value)
+  print("deadline_from: ",deadline_from)
+  print("deadline_to: ", deadline_to)
+  print("deadline_path: ",deadline_path)  
+  print("execution_behaviors: ",execution_behaviors)
+  
+  list_of_execution_behaviors_for_component = create_list_of_execution_behaviors_for_components(execution_behaviors)
+  
+  
+  terminate_on_first_missed_deadline = True
+  
+  flag,my_explanation_data = \
+  do_sched_test_sufficient_request_based_MILP_models_execution_behavior( \
+  terminate_on_first_missed_deadline, \
+  nmodules,nexecutives,ncomponents,ndeadlines,nprocessors, \
+  module_name,executive_name,executive_priority,executive_proc,executive_pollingperiod, \
+  component_name,belongs_to_module,served_by_executive, \
+  has_externally_specified_mit,minimum_inter_arrival_time,maximum_inter_arrival_time, \
+  triggered_by_predecessor,execution_time, \
+  list_of_execution_behaviors_for_component, \
+  deadline_value,deadline_from,deadline_to,deadline_path)
+  
+  return True
+
+	`}
+
+	domain schedulability {
+		queries
+			val threads = root.allSubcomponents.filter { 
+				s -> s.isThread
+			};
+			val names = threads.map {
+				t-> t.name
+			};
+			val periods = threads.map {
+				t -> t#Period.map {
+					p -> p.scaledTo(us)
+				}
+			};
+			val priorities = threads.map {
+				t -> t#Priority
+			};
+			val deadlines = threads.map {
+				t -> t#Deadline.map {
+					p -> p.scaledTo(us)
+				}
+			};
+			val wcets = threads.map {
+				t -> t#Compute_Execution_Time.map {
+					cet -> cet.maximum.scaledTo(us)
+				}
+			};
+			val protocols = threads.map {
+				t -> t#Dispatch_Protocol
+			};
+			-- only threads in flows?
+			val threadCount = root.allSubcomponents.map{t -> t.isThread}.size;
+			val threadToProcessorBindings = threads.map { t -> (t, t.name, t#Actual_Processor_Binding) };
+			val processors = root.allSubcomponents
+					.filter { s -> s.isProcessor }
+					.map { p ->
+						  val sched = p#Scheduling_Protocol;
+						  (p,p.name,sched)
+					}; 
+			
+			val boundThreads = root.allSubcomponents
+					.filter { s -> s.isProcessor }
+					.map { p -> 
+							val ts = p.processorBindingSources
+									.filter { s -> s.isThread }
+									.map { t ->
+											val period = t#Period.map { v -> v.scaledTo(us)};
+											val wcet = t#Compute_Execution_Time.map {cet -> cet.maximum.scaledTo(us)};
+											val prio = t#Priority;
+											val deadline = t#Deadline.map { v -> v.scaledTo(us)};
+											(t, t.name, period, wcet, prio, deadline)
+									};
+							val schedProtocol = p#Scheduling_Protocol;
+							(p, p.name, ts, schedProtocol)
+					};
+			val modexeccom = root.allSubcomponents
+								.filter{s->s.isProcess}
+								.map{ mod ->
+										val modname = mod.name;
+										val execs = mod.allSubcomponents
+											.filter{ss->ss.isThreadGroup}
+											.map{exec ->
+												val execname = exec.name;
+												val pgs = exec#Actual_Processor_Binding;
+												val procgroup = pgs.map{ x-> x.map{y->y}};
+												val gprio = exec#Priority;
+												val coms = exec.allSubcomponents
+													.filter{cc -> cc.isThread}
+													.map{comp->
+														val compname = comp.name;
+														val period = comp#Period.map {v->v.scaledTo(us)};
+														val deadline = comp#Deadline.map{v->v.scaledTo(us)};
+														val wcet = comp#Compute_Execution_Time.map{cet->cet.maximum.scaledTo(us)};
+														val prio = comp#Priority;
+														val dispatch = comp#Dispatch_Protocol;
+														val p = comp#Actual_Processor_Binding;
+														val proc = p.map{ x -> x.map{ y -> y}};
+														val flows = comp.flowSpecifications.map{flow->
+																	val et = flow#PubSubProperties::Flow_Execution_Time.map{ett->ett.maximum.scaledTo(us)};
+																	val portlist = flow#PubSubProperties::Passive_Ports_Read.map{ x-> x.map{y->y}};
+																	val msgreadlist = flow#PubSubProperties::Num_Messages_From_Port.map{x->x.map{y->y}};
+																	(flow,et,portlist,msgreadlist)};														
+														(comp,compname,period, deadline,wcet,prio,dispatch,proc,flows)
+													};
+												(exec,execname, coms, procgroup,gprio)
+											};
+										(mod,modname,execs)
+								};
+			val e2es = root.allEndToEndFlows;
+			val e2eCount = e2es.size;
+			val connections = root.allConnections;
+			val connectionTiming = connections.map { c -> c#Timing };
+			val connectionNames = connections.map { c -> c.name };
+			val port2sender = connections.map{c->
+											val destport = c.destination;
+											val destComponent = destport.parent;
+											val srcComponent = c.source.parent;
+											val active = destport#PubSubProperties::Active;
+											(destport,srcComponent,destComponent, active)
+											};
+			val connCount = connections.size;
+			val flowComponents = e2es.map { f -> 
+											val latency = f#Latency.map { l -> l.maximum }.map { l -> l.scaledTo(us) };
+											val flowseq = f.flowSpecifications.map{con->
+															con};
+											val ts = f.components
+													.map { t -> 
+														val period = t#Period.map { v -> v.scaledTo(us)};
+														val wcet = t#Compute_Execution_Time.map {cet -> cet.maximum.scaledTo(us)};
+														val deadline = t#Deadline.map { v -> v.scaledTo(us)};
+														val dispatch = t#Dispatch_Protocol;
+														val p = t#Actual_Processor_Binding;
+														val proc = p.map{ x -> x.map{ y -> y}};
+														val execname = t.parent.map{e->e.name};
+														val flows = t.flowSpecifications.map{flow->
+																	val et = flow#PubSubProperties::Flow_Execution_Time.map{ett->ett.maximum.scaledTo(us)};
+																	val portlist = flow#PubSubProperties::Passive_Ports_Read.map{ x-> x.map{y->y}};
+																	val nummsgread = flow#PubSubProperties::Num_Messages_From_Port.map{x->x.map{y->y}};
+																	(flow,et,nummsgread,portlist)};
+														(t, t.name, period, wcet, deadline, dispatch,execname,p,flows)
+													};
+												(f, f.name, latency, ts, flowseq)
+											};
+		declarations 
+			'''
+			Deadlines = IntVector('deadline', ${threadCount$})
+			Responses = IntVector('response', ${threadCount$})
+			Priorities = IntVector('priority', ${threadCount$})
+			SelfSuspendings = BoolVector('selfSuspending', ${threadCount$})
+			Periods = IntVector('period', ${threadCount$})	
+			Periodics = BoolVector('periodic', ${threadCount$})
+			RESPONSETIME_SHORTER_DEADLINES = And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])
+			'''
+	}
+	contract EndToEndDeadlinesContract {
+		domains
+			schedulability;
+		assumptions
+		guarantee
+			<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+		analysis
+			'''printEndToEndData(${flowComponents$},${modexeccom$},${port2sender$},${processors$},error0)''';
+	}
+	
+	verification plan SchedulabilityPlan {
+		component
+			s: PubSubExample::PubSubSystem.i;
+		domains
+			schedulability;
+		claims
+			`And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+		contracts
+			EndToEndDeadlinesContract;
+	}
+	
+	
+	**};
+end PubSubAnalysis;

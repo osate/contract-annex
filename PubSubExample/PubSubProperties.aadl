@@ -1,0 +1,6 @@
+property set PubSubProperties is
+	Active : aadlboolean applies to (port);
+	Flow_Execution_Time: Time_Range applies to (flow);
+	Passive_Ports_Read: list of reference (port) applies to (flow);
+	Num_Messages_From_Port: list of aadlinteger applies to (flow);
+end PubSubProperties;

@@ -1,0 +1,346 @@
+package PubSubExample
+public
+	with PubSubProperties;
+		
+	thread group executive	
+	end executive;
+	
+	thread component
+	end component;
+		
+	thread image_processing extends component
+		features
+			image: out event port;
+			object_loc_request: in data port;
+			object_location: out data port;
+		flows
+			img_read: flow source image;
+	end image_processing;
+	
+	thread implementation image_processing.i
+		flows
+			img_read: flow source image;
+		properties
+			PubSubProperties::Flow_Execution_Time => 50 us .. 50 us applies to img_read;
+			PubSubProperties::Active => false applies to object_loc_request;				
+	end image_processing.i;
+	
+	thread network_output_handler extends component
+		features
+			netin: in event port;
+			netout: out event port;
+		flows
+			netflow: flow path netin->netout;
+	end network_output_handler;
+	
+	thread implementation network_output_handler.i
+		flows
+			netflow: flow path netin->netout;
+		properties
+			PubSubProperties::Flow_Execution_Time => 50 us .. 50 us applies to netflow;	
+			PubSubProperties::Active => true applies to netin;
+	end network_output_handler.i;
+	
+	thread calibrate extends component
+		features
+			datain: in event port;
+			dataout: out event port;
+		flows
+			calibrate_flow: flow path datain->dataout;
+		properties
+			PubSubProperties::Flow_Execution_Time => 50 us .. 50 us applies to calibrate_flow;						
+	end calibrate;
+	
+	thread implementation calibrate.i
+	end calibrate.i;
+	
+	thread network_input_handler extends component
+		features
+			netin: in event port;
+			netout: out event port;
+		flows
+			netflow: flow path netin->netout;
+		properties
+			PubSubProperties::Flow_Execution_Time => 50 us .. 50 us applies to netflow;			
+			PubSubProperties::Active => true applies to netin;
+	end network_input_handler;
+	
+	thread implementation network_input_handler.i
+		flows
+			netflow: flow path netin->netout;
+	end network_input_handler.i;
+	
+	thread state_change_handler extends component
+		features
+			innet: in event port;
+			state: out event port;
+			stateout: out data port;
+		flows
+			stateflow: flow path innet->stateout;
+			stateeventflow: flow path innet->state;
+	end state_change_handler;
+	
+	thread implementation state_change_handler.i
+		flows
+			stateflow: flow path innet->stateout;
+			stateeventflow: flow path innet->state;
+		properties
+			PubSubProperties::Flow_Execution_Time => 50 us .. 50 us applies to stateflow;			
+			PubSubProperties::Flow_Execution_Time => 50 us .. 50 us applies to stateeventflow;			
+			PubSubProperties::Active => true applies to innet;
+	end state_change_handler.i;
+	
+	thread automatic_controller extends component
+		features
+			statein: in event port;
+			-- stateout is to be connected to State change handler
+			-- to model a passive queue. For now the timing models
+			-- is not using this
+			--stateout: out data port;
+			actuation: out event port;
+			object_request: out data port;
+			object_location: in data port;
+		flows
+			statepath: flow path statein -> actuation;
+		properties
+			PubSubProperties::Active => false applies to statein;
+			PubSubProperties::Active => false applies to actuation;
+			PubSubProperties::Active => false applies to object_request;
+	end automatic_controller;
+	
+	thread implementation automatic_controller.i
+		flows
+			statepath: flow path statein -> actuation;
+		properties
+			PubSubProperties::Flow_Execution_Time => 50 us .. 50 us applies to statepath;			
+	end automatic_controller.i;
+	
+	thread manual_controller extends component
+		features
+			statein: in event port;
+			actuation: out event port;
+		flows
+			stateflow: flow path statein->actuation;
+		properties
+			PubSubProperties::Active => true applies to statein;			
+	end manual_controller;
+	
+	thread implementation manual_controller.i
+		flows
+			stateflow: flow path statein->actuation;
+		properties
+			PubSubProperties::Flow_Execution_Time => 50 us .. 50 us applies to stateflow;			
+	end manual_controller.i;
+	
+	thread blaster_controller extends component
+		features
+			manual_actuation: in event port;
+			automatic_actuation: in event port;
+			confirmation: out event port;
+			servo_state: out data port;
+		flows
+			statesink: flow sink automatic_actuation;
+			statesink2: flow sink manual_actuation;
+	end blaster_controller;
+	
+	thread implementation blaster_controller.i
+		flows
+			statesink: flow sink automatic_actuation;
+			statesink2: flow sink manual_actuation;
+		properties
+			PubSubProperties::Flow_Execution_Time => 50 us .. 50 us applies to statesink;			
+			PubSubProperties::Flow_Execution_Time => 50 ms .. 50 ms applies to statesink2;
+			PubSubProperties::Active => true applies to automatic_actuation;			
+			PubSubProperties::Active => false applies to manual_actuation;			
+	end blaster_controller.i;
+	
+	thread group upper_executive extends executive
+		features
+			stateout: out event port;
+			statedataout: out data port;
+			object_loc_request: in data port;
+			object_location: out data port;
+		flows
+			--img_read: flow source statedataout;
+			img_event: flow source stateout;
+	end upper_executive;
+	
+	thread group implementation upper_executive.i
+		subcomponents
+			ip: thread image_processing.i;
+			no: thread network_output_handler.i;
+			ca: thread calibrate.i;
+			ni: thread network_input_handler.i;
+			sc: thread state_change_handler.i;
+		connections
+			c1: port ip.image->no.netin;
+			c2: port no.netout->ni.netin;
+			c3: port ni.netout->ca.datain;
+			c4: port ni.netout->sc.innet;
+			c5: port sc.stateout->statedataout;
+			c6: port sc.state->stateout;
+			c7: port ip.object_location->object_location;
+			c8: port object_loc_request->ip.object_loc_request;
+		flows
+			--img_read: flow source ip.img_read->c1->no.netflow->c2->ni.netflow->c4->sc.stateflow->c5->statedataout;
+			img_event: flow source ip.img_read->c1->no.netflow->c2->ni.netflow->c4->sc.stateeventflow->c6->stateout;
+		properties
+			Dispatch_Protocol => Periodic applies to ip;
+			PubSubProperties::Active => false applies to ip.object_loc_request;
+			
+			Dispatch_Protocol => Aperiodic applies to no;
+			PubSubProperties::Active => true applies to no.netin;
+			
+			Dispatch_Protocol => Aperiodic applies to ca;
+			PubSubProperties::Active => true applies to ca.datain;
+			
+			Dispatch_Protocol => Aperiodic applies to ni;
+			PubSubProperties::Active => true applies to ni.netin;
+			
+			Dispatch_Protocol => Aperiodic applies to sc;
+			PubSubProperties::Active => true applies to sc.innet;
+			
+			Period => 33 ms;
+			Priority =>1;
+			Compute_Execution_Time => 50 us .. 50 us applies to ip;
+			Compute_Execution_Time => 50 us .. 50 us applies to no;
+			Compute_Execution_Time => 50 us .. 50 us applies to ca;
+			Compute_Execution_Time => 50 us .. 50 us applies to ni;
+			Compute_Execution_Time => 50 us .. 50 us applies to sc;
+	end upper_executive.i;
+	
+	process module_upper
+		features
+			stateout: out event port;
+			statedataout: out data port;
+			object_loc_request: in data port;
+			object_location: out data port;
+		flows
+			img_read: flow source statedataout;
+			img_event: flow source stateout;		
+	end module_upper;
+	
+	process implementation module_upper.i
+		subcomponents
+			upper_executive: thread group upper_executive.i;
+		connections
+			c5: port upper_executive.stateout->stateout;
+			c6: port upper_executive.statedataout->statedataout;
+			c7: port upper_executive.object_location->object_location;
+			c8: port object_loc_request->upper_executive.object_loc_request;
+		flows
+			--img_read: flow source upper_executive.img_read->c6->statedataout;
+			img_event: flow source upper_executive.img_event->c5->stateout;
+	end module_upper.i;
+			
+	thread group lower_executive extends executive
+		features
+			statein: in data port;
+			stateeventin: in event port;
+			object_loc_request: out data port;
+			object_loc: in data port;
+		flows
+			--statesink: flow sink statein;
+			stateeventsink: flow sink stateeventin;		
+	end lower_executive;
+	
+	thread group implementation lower_executive.i
+		subcomponents
+			ac: thread automatic_controller.i;
+			mc: thread manual_controller.i;
+			bc: thread blaster_controller.i;
+		connections
+			c1: port statein->mc.statein;
+			c3: port stateeventin->ac.statein;
+			c4: port ac.actuation->bc.automatic_actuation;
+			c5: port ac.object_request->object_loc_request;
+			c6: port object_loc->ac.object_location;
+			c7: port mc.actuation->bc.manual_actuation;
+		flows
+			--statesink: flow sink statein->c1->ac.statepath->c4->bc.statesink;
+			acflow: end to end flow ac.statepath->c4->bc.statesink;
+			-- stateeventsink: flow sink stateeventin->c3->mc.stateflow->c7->bc.statesink2;
+			stateeventsink: flow sink stateeventin->c3->ac.statepath->c4->bc.statesink;		
+		properties
+			Dispatch_Protocol => Periodic applies to ac;
+			PubSubProperties::Active => false applies to ac.statein;
+			PubSubProperties::Passive_Ports_Read => (reference(ac.statein)) applies to ac.statepath;
+			PubSubProperties::Num_Messages_From_Port => (1) applies to ac.statepath;
+			
+			PubSubProperties::Active => false applies to ac.actuation;
+			PubSubProperties::Active => true applies to ac.object_location;
+		
+			Dispatch_Protocol => Aperiodic applies to mc;
+			PubSubProperties::Active => true applies to mc.statein;
+			
+			Dispatch_Protocol => Aperiodic applies to bc;
+			PubSubProperties::Active=> true applies to bc.manual_actuation;
+			PubSubProperties::Passive_Ports_Read =>(reference (bc.manual_actuation)) applies to bc.statesink2;
+			PubSubProperties::Num_Messages_From_Port => (1) applies to bc.statesink2;
+			
+			Period => 25 ms;
+			Period => 25ms applies to ac;
+			Priority =>1;
+			Compute_Execution_Time => 50 us .. 50 us applies to ac;
+			Compute_Execution_Time => 50 us .. 50 us applies to mc;
+			Compute_Execution_Time => 50 us .. 50 us applies to bc;
+	end lower_executive.i;
+	
+	process module_lower
+		features
+			statein: in data port;
+			stateeventin: in event port;
+			object_loc_request: out data port;
+			object_loc: in data port;
+		flows
+			--statesink: flow sink statein;
+			stateeventsink: flow sink stateeventin;
+	end module_lower;
+
+	process implementation module_lower.i
+		subcomponents
+			lower_executive: thread group lower_executive.i;
+		connections
+			c1: port statein->lower_executive.statein;
+			c3: port stateeventin->lower_executive.stateeventin;
+			c5: port lower_executive.object_loc_request->object_loc_request;
+			c6: port object_loc->lower_executive.object_loc;
+		flows
+			--statesink: flow sink statein->c1->lower_executive.statesink;
+			stateeventsink: flow sink stateeventin->c3->lower_executive.stateeventsink;
+	end module_lower.i;
+	
+	system PubSubSystem
+	end PubSubSystem;
+	
+	system implementation PubSubSystem.i
+		subcomponents
+			mod_upper: process module_upper.i;
+			mod_lower: process module_lower.i;
+			proc1: processor;
+			proc2: processor;
+			proc3: processor;
+		connections
+			c1: port mod_upper.object_location->mod_lower.object_loc;
+			c2: port mod_lower.object_loc_request->mod_upper.object_loc_request;
+			c3: port mod_upper.statedataout->mod_lower.statein;
+			c4: port mod_upper.stateout->mod_lower.stateeventin;
+		flows
+			--imgflow: end to end flow mod_upper.img_read->c3->mod_lower.statesink;
+			imgeventflow: end to end flow mod_upper.img_event->c4->mod_lower.stateeventsink;
+		properties
+			--Latency => 100 ms .. 100 ms applies to imgflow;
+			Latency => 300 ms .. 300 ms applies to mod_lower.lower_executive.acflow;
+			PubSubProperties::Flow_Execution_Time => 50 us .. 50 us applies to mod_lower.lower_executive.bc.statesink;
+			PubSubProperties::Flow_Execution_Time => 50 us .. 50 us applies to mod_lower.lower_executive.bc.statesink2;
+			
+			Latency => 300 ms .. 300 ms applies to imgeventflow;
+			Actual_Processor_Binding => (reference (proc1)) applies to mod_upper;
+			Actual_Processor_Binding => (reference (proc1)) applies to mod_lower;
+			Priority => 2 applies to mod_upper.upper_executive;
+			Priority => 1 applies to mod_lower.lower_executive;				
+		annex contract {**
+			verify PubSubAnalysis::SchedulabilityPlan;
+		**};
+	end PubSubSystem.i;
+end PubSubExample;

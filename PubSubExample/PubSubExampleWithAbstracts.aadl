@@ -1,0 +1,245 @@
+package PubSubExampleWithAbstracts
+public
+	abstract image_processing --extends module
+		features
+			image: out event port;
+			object_loc_request: in data port;
+			object_location: out data port;
+		flows
+			img_read: flow source image;
+	end image_processing;
+	
+	abstract implementation image_processing.i
+		flows
+			img_read: flow source image;
+	end image_processing.i;
+	
+	abstract network_output_handler --extends module
+		features
+			netin: in event port;
+			netout: out event port;
+		flows
+			netflow: flow path netin->netout;
+	end network_output_handler;
+	
+	abstract implementation network_output_handler.i
+		flows
+			netflow: flow path netin->netout;
+	end network_output_handler.i;
+	
+	abstract calibrate --extends module
+		features
+			datain: in event port;
+			dataout: out event port;
+	end calibrate;
+	
+	abstract implementation calibrate.i
+	end calibrate.i;
+	
+	abstract network_input_handler --extends module
+		features
+			netin: in event port;
+			netout: out event port;
+		flows
+			netflow: flow path netin->netout;
+	end network_input_handler;
+	
+	abstract implementation network_input_handler.i
+		flows
+			netflow: flow path netin->netout;
+	end network_input_handler.i;
+	
+	abstract state_change_handler --extends module
+		features
+			innet: in event port;
+			state: out event port;
+			stateout: out data port;
+		flows
+			stateflow: flow path innet->stateout;
+			stateeventflow: flow path innet->state;
+	end state_change_handler;
+	
+	abstract implementation state_change_handler.i
+		flows
+			stateflow: flow path innet->stateout;
+			stateeventflow: flow path innet->state;
+	end state_change_handler.i;
+	
+	abstract automatic_controller --extends module
+		features
+			statein: in data port;
+			-- stateout is to be connected to State change handler
+			-- to model a passive queue. For now the timing models
+			-- is not using this
+			--stateout: out data port;
+			actuation: out event port;
+			object_request: out data port;
+			object_location: in data port;
+		flows
+			statepath: flow path statein->actuation;
+	end automatic_controller;
+	
+	abstract implementation automatic_controller.i
+		flows
+			statepath: flow path statein->actuation;
+	end automatic_controller.i;
+	
+	abstract manual_controller --extends module
+		features
+			statein: in event port;
+			actuation: out event port;
+		flows
+			statesink: flow sink statein;
+	end manual_controller;
+	
+	abstract implementation manual_controller.i
+		flows
+			statesink: flow sink statein;
+	end manual_controller.i;
+	
+	abstract blaster_controller --extends module
+		features
+			actuation: in event port;
+			confirmation: out event port;
+			servo_state: out data port;
+		flows
+			statesink: flow sink actuation;
+	end blaster_controller;
+	
+	abstract implementation blaster_controller.i
+		flows
+			statesink: flow sink actuation;
+	end blaster_controller.i;
+	
+	thread upper_executive
+		features
+			stateout: out event port;
+			statedataout: out data port;
+			object_loc_request: in data port;
+			object_location: out data port;
+		flows
+			img_read: flow source statedataout;
+			img_event: flow source stateout;
+	end upper_executive;
+	
+	thread implementation upper_executive.i
+		subcomponents
+			ip: abstract image_processing.i;
+			no: abstract network_output_handler.i;
+			ca: abstract calibrate.i;
+			ni: abstract network_input_handler.i;
+			sc: abstract state_change_handler.i;
+		connections
+			c1: port ip.image->no.netin;
+			c2: port no.netout->ni.netin;
+			c3: port ni.netout->ca.datain;
+			c4: port ni.netout->sc.innet;
+			c5: port sc.stateout->statedataout;
+			c6: port sc.state->stateout;
+			c7: port ip.object_location->object_location;
+			c8: port object_loc_request->ip.object_loc_request;	
+		flows
+			img_read: flow source ip.img_read->c1->no.netflow->c2->ni.netflow->c4->sc.stateflow->c5->statedataout;
+			img_event: flow source ip.img_read->c1->no.netflow->c2->ni.netflow->c4->sc.stateeventflow->c6->stateout;
+	end upper_executive.i;
+	
+	process module_upper
+		features
+			stateout: out event port;
+			statedataout: out data port;
+			object_loc_request: in data port;
+			object_location: out data port;
+		flows
+			img_read: flow source statedataout;
+			img_event: flow source stateout;
+	end module_upper;
+	
+	process implementation module_upper.i
+		subcomponents
+			upper_executive: thread upper_executive.i;
+		connections
+			c5: port upper_executive.stateout->stateout;
+			c6: port upper_executive.statedataout->statedataout;
+			c7: port upper_executive.object_location->object_location;
+			c8: port object_loc_request->upper_executive.object_loc_request;
+		flows
+			img_read: flow source upper_executive.img_read->c6->statedataout;
+			img_event: flow source upper_executive.img_event->c5->stateout;
+	end module_upper.i;
+	
+	thread lower_executive
+		features
+			statein: in data port;
+			stateeventin: in event port;
+			object_loc_request: out data port;
+			object_loc: in data port;
+		flows
+			statesink: flow sink statein;
+			stateeventsink: flow sink stateeventin;
+	end lower_executive;
+	
+	thread implementation lower_executive.i
+		subcomponents
+			ac: abstract automatic_controller.i;
+			mc: abstract manual_controller.i;
+			bc: abstract blaster_controller.i;
+		connections
+			c1: port statein->ac.statein;
+			c3: port stateeventin->mc.statein;
+			c4: port ac.actuation->bc.actuation;
+			c5: port ac.object_request->object_loc_request;
+			c6: port object_loc->ac.object_location;
+			c7: port mc.actuation->bc.actuation;
+		flows
+			statesink: flow sink statein->c1->ac.statepath->c4->bc.statesink;
+			stateeventsink: flow sink stateeventin->c3->mc.statesink;
+	end lower_executive.i;
+	
+	process module_lower
+		features
+			statein: in data port;
+			stateeventin: in event port;
+			object_loc_request: out data port;
+			object_loc: in data port;
+		flows
+			statesink: flow sink statein;
+			stateeventsink: flow sink stateeventin;
+	end module_lower;
+
+	process implementation module_lower.i
+		subcomponents
+			lower_executive: thread lower_executive.i;
+		connections
+			c1: port statein->lower_executive.statein;
+			c3: port stateeventin->lower_executive.stateeventin;
+			c5: port lower_executive.object_loc_request->object_loc_request;
+			c6: port object_loc->lower_executive.object_loc;
+		flows
+			statesink: flow sink statein->c1->lower_executive.statesink;
+			stateeventsink: flow sink stateeventin->c3->lower_executive.stateeventsink;
+	end module_lower.i;
+	
+	system PubSubSystemWithAbstracts
+	end PubSubSystemWithAbstracts;
+	
+	system implementation PubSubSystemWithAbstracts.i
+		subcomponents
+			mod_upper: process module_upper.i;
+			mod_lower: process module_lower.i;
+		connections
+			c1: port mod_upper.object_location->mod_lower.object_loc;
+			c2: port mod_lower.object_loc_request->mod_upper.object_loc_request;
+			c3: port mod_upper.statedataout->mod_lower.statein;
+			c4: port mod_upper.stateout->mod_lower.stateeventin;
+		flows
+			imgflow: end to end flow mod_upper.img_read->c3->mod_lower.statesink;
+			imgeventflow: end to end flow mod_upper.img_event->c4->mod_lower.stateeventsink;
+		properties
+			Latency => 100 ms .. 100 ms applies to imgflow;
+			Latency => 100 ms .. 100 ms applies to imgeventflow;			
+		annex contract {**
+			verify PubSubAnalysis::SchedulabilityPlan;
+		**};
+	end PubSubSystemWithAbstracts.i;
+	
+end PubSubExampleWithAbstracts;
