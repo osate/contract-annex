@@ -10,7 +10,6 @@ import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.IScopeProvider;
-import org.omg.sysml.lang.sysml.SysMLPackage;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
