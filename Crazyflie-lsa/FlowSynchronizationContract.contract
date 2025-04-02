@@ -89,7 +89,7 @@ def allProcessorNonHarmonicBoundSchedulable(boundThreads,error0):
 		for j in range(len(boundThreads[i][2])):
 			util = util + boundThreads[i][2][j][3] / boundThreads[i][2][j][2]
 		if util > 0.69:
-			addError(error0,"processor "+boundThreads[i][1]+" workload exceeds 69% bound ")
+			addError(error0,"{"+str(boundThreads[i][0])+"}processor "+boundThreads[i][1]+" workload exceeds 69% bound ")
 			return False
 	print("allProcessorsNonHarmonicBoundSchedulable=TRUE")
 	return True
@@ -133,9 +133,7 @@ domain schedulability {
 				cet -> cet.maximum.scaledTo(@SIPrefixes::milli)
 			}
 		};
-		-- only threads in flows?
 		val threadCount = threads.size;
---		val threadToProcessorBindings = threads.map { t -> (t, t.name, t#Actual_Processor_Binding) };
 		val threadToProcessorBindings = 
 			self.actualProcessorBindings.map { a -> (a.sw, a.sw.name, a.hw) };
 		val boundThreads = self.allUsages
@@ -162,20 +160,6 @@ domain schedulability {
 						};
 					(p, p.name, threadTuples)
 				};
---		val boundThreads = root.allSubcomponents
---				.filter { s -> s.isProcessor }
---				.map { p -> 
---						val ts = p.processorBindingSources
---								.filter { s -> s.isThread }
---								.map { t ->
---										val period = t#Period.map { v -> v.scaledTo(ms)};
---										val wcet = t#Compute_Execution_Time.map {cet -> cet.maximum.scaledTo(ms)};
---										val prio = t#Priority;
---										val deadline = t#Deadline.map { v -> v.scaledTo(ms)};
---										(t, t.name, period, wcet, prio, deadline)
---								};
---						(p, p.name, ts)
---				};
 		
 	declarations 
 		'''
@@ -208,9 +192,10 @@ contract RMAHarmonicBoundContract {
 		contract RMPrioritiesContract;
 		'''areAllDeadlinesImplicit(${threads$}, ${periods$},${deadlines$},${names$},error0)''';
 		'''arePeriodsHarmonic(${boundThreads$},error0)''';
-		'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
+		-- The sysml model I am using does not allow a thread to be bound to more than one processor.
+--		'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
 	guarantee
-		=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+		<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
 	analysis
 		'''allProcessorHarmonicBoundSchedulable(${boundThreads$},error0)''';
 }
@@ -222,9 +207,10 @@ contract RMANonHarmonicBoundContract {
 		--'''arePrioritiesRM(${boundThreads$},error0)''';
 		contract RMPrioritiesContract;
 		'''areAllDeadlinesImplicit(${threads$},${periods$},${deadlines$},${names$},error0)''';
-		'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
+		-- The sysml model I am using does not allow a thread to be bound to more than one processor.
+--		'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
 	guarantee
-		=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+		<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
 	analysis
 		'''allProcessorNonHarmonicBoundSchedulable(${boundThreads$},error0)''';
 }
@@ -245,14 +231,3 @@ argument schedulabilityArgument {
 			--contract fpResponseTimeContract
 		);
 }
-	
-contract RateMonotonicSchedulable {
-	domains 
-		schedulability;
-	assumptions
-		contract RMPrioritiesContract;
-	guarantee
-		<=> `RESPONSETIME_SHORTER_DEADLINES`;
-}
-	
-
