@@ -28,7 +28,7 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.osate.sysmlv2.contract.Activator;
+import org.osate.sysmlv2.modelsupport.Activator;
 import org.osate.sysmlv2.modelsupport.resources.OsateResourceUtil;
 
 /**

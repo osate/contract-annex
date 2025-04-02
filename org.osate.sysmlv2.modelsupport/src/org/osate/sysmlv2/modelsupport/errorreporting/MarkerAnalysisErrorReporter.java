@@ -30,7 +30,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.omg.sysml.lang.sysml.Element;
-import org.osate.sysmlv2.contract.Activator;
+import org.osate.sysmlv2.modelsupport.Activator;
 import org.osate.sysmlv2.modelsupport.SysMlv2Constants;
 import org.osate.sysmlv2.modelsupport.resources.OsateResourceUtil;
 

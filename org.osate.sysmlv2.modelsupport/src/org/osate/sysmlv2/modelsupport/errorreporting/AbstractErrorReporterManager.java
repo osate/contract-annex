@@ -24,7 +24,7 @@
 package org.osate.sysmlv2.modelsupport.errorreporting;
 
 import org.eclipse.core.runtime.Platform;
-import org.osate.sysmlv2.contract.Activator;
+import org.osate.sysmlv2.modelsupport.Activator;
 
 /**
  * Abstract implementation of
