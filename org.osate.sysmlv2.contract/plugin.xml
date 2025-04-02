@@ -27,6 +27,66 @@
  -->
 
 <plugin>
+
+   <extension
+         id="SysMLv2ObjectMarker"
+         name="SysMLv2 Model Object Marker"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <super
+            type="org.eclipse.emf.ecore.diagnostic">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
+   <extension
+         id="SysMLv2GotoMarker"
+         name="Goto Model Element Marker (SysMLv2)"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.osate.sysmlv2.contract.SysMLv2ObjectMarker">
+      </super>
+      <super
+            type="org.eclipse.emf.ecore.diagnostic">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
+   <extension
+         id="SysMLv2TextMarker"
+         name="SysMLv2 Text Marker"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
+   <extension
+         id="SysMLv2TextGotoMarker"
+         name="Goto SysMLv2 Source Text Marker"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.osate.sysmlv2.contract.SysMLv2TextMarker">
+      </super>
+      <persistent
+            value="false">
+      </persistent>
+   </extension>
+
+   <extension
+         id="ElementMarker"
+         name="SysMLv2 Element Marker"
+         point="org.eclipse.core.resources.markers">
+      <super type="org.osate.sysmlv2.contract.SysMLv2ObjectMarker"/>
+      <persistent value="true"/>
+   </extension>
+
 	<extension point="org.eclipse.emf.ecore.generated_package">
 		<package
 			uri = "http://www.osate.org/contract/ContractForSysMLv2"

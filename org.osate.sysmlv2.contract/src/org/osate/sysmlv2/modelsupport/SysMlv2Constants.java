@@ -11,12 +11,12 @@ public final class SysMlv2Constants {
 
 	public static final String NULL = "<null>";
 
-	public static final String SYSMLOBJECTMARKER = "org.osate.sysmlv2.modelsupport.SysMlv2ObjectMarker";
-	public static final String SYSMLGOTOMARKER = "org.osate.sysmlv2.modelsupport.SysMlv2GotoMarker";
-	public static final String SYSMLTEXTMARKER = "org.osate.sysmlv2.modelsupport.SysMlv2TextMarker";
-	public static final String SYSMLTEXTGOTOMARKER = "org.osate.sysmlv2.modelsupport.SysMlv2TextGotoMarker";
+	public static final String SYSMLOBJECTMARKER = "org.osate.sysmlv2.contract.SysMLv2ObjectMarker";
+	public static final String SYSMLGOTOMARKER = "org.osate.sysmlv2.contract.SysMLv2GotoMarker";
+	public static final String SYSMLTEXTMARKER = "org.osate.sysmlv2.contract.SysMLv2TextMarker";
+	public static final String SYSMLTEXTGOTOMARKER = "org.osate.sysmlv2.contract.SysMLv2TextGotoMarker";
 
-	public static final String SYSML_ELEMENT_MARKER = "org.osate.sysmlv2.modelsupport.ElementMarker";
+	public static final String SYSML_ELEMENT_MARKER = "org.osate.sysmlv2.contract.ElementMarker";
 
 	public static final String SYSMLURI = "uri";
 }
