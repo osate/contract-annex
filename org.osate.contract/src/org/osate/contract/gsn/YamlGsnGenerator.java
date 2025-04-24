@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
-import org.osate.aadl2.AadlPackage;
 import org.osate.aadl2.NamedElement;
 import org.osate.contract.contract.Analysis;
 import org.osate.contract.contract.Argument;
@@ -26,6 +26,7 @@ import org.osate.contract.contract.IStringLiteral;
 import org.osate.contract.contract.IStringVar;
 import org.osate.contract.contract.Source;
 import org.osate.contract.contract.VerificationPlan;
+import org.osate.contract.contract.impl.ContractLibraryImpl;
 import org.stringtemplate.v4.ST;
 
 public final class YamlGsnGenerator {
@@ -74,8 +75,8 @@ public final class YamlGsnGenerator {
 			files.add(new YamlFile("CommonNodes", commonNodes));
 		}
 
-		var aadlPackage = EcoreUtil2.getContainerOfType(verificationPlan, AadlPackage.class);
-		var folderName = aadlPackage.getName() + "_" + verificationPlan.getName();
+		var verificationPlanPackage = (ContractLibraryImpl) EcoreUtil.getRootContainer(verificationPlan);
+		var folderName = verificationPlanPackage.getName() + "_" + verificationPlan.getName();
 		return new YamlFolder(folderName, files);
 	}
 
