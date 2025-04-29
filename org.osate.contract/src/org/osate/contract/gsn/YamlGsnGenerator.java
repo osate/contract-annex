@@ -283,7 +283,8 @@ public final class YamlGsnGenerator {
 		var template = new ST("""
 				%name%:
 				  text: %name%
-				  nodeType: Assumption""", '%', '%');
+				  nodeType: Assumption
+				  url: eclipse+gsnmarker://%name%""", '%', '%');
 		template.add("name", name);
 		return template.render();
 	}

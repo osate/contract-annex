@@ -27,12 +27,9 @@ package org.osate.contract.contract.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.osate.contract.contract.CodeAssumption;
 import org.osate.contract.contract.ContractPackage;
 import org.osate.contract.contract.Guarantee;
@@ -139,7 +136,11 @@ public class CodeAssumptionImpl extends AssumptionElementImpl implements CodeAss
     if (eNotificationRequired())
     {
       ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ContractPackage.CODE_ASSUMPTION__CODE, oldCode, newCode);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      if (msgs == null) {
+		msgs = notification;
+	} else {
+		msgs.add(notification);
+	}
     }
     return msgs;
   }
@@ -155,15 +156,20 @@ public class CodeAssumptionImpl extends AssumptionElementImpl implements CodeAss
     if (newCode != code)
     {
       NotificationChain msgs = null;
-      if (code != null)
-        msgs = ((InternalEObject)code).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ContractPackage.CODE_ASSUMPTION__CODE, null, msgs);
-      if (newCode != null)
-        msgs = ((InternalEObject)newCode).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ContractPackage.CODE_ASSUMPTION__CODE, null, msgs);
+      if (code != null) {
+		msgs = ((InternalEObject)code).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ContractPackage.CODE_ASSUMPTION__CODE, null, msgs);
+	}
+      if (newCode != null) {
+		msgs = ((InternalEObject)newCode).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ContractPackage.CODE_ASSUMPTION__CODE, null, msgs);
+	}
       msgs = basicSetCode(newCode, msgs);
-      if (msgs != null) msgs.dispatch();
+      if (msgs != null) {
+		msgs.dispatch();
+	}
     }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.CODE_ASSUMPTION__CODE, newCode, newCode));
+    else if (eNotificationRequired()) {
+		eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.CODE_ASSUMPTION__CODE, newCode, newCode));
+	}
   }
 
   /**
@@ -187,8 +193,9 @@ public class CodeAssumptionImpl extends AssumptionElementImpl implements CodeAss
   {
     boolean oldExact = exact;
     exact = newExact;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.CODE_ASSUMPTION__EXACT, oldExact, exact));
+    if (eNotificationRequired()) {
+		eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.CODE_ASSUMPTION__EXACT, oldExact, exact));
+	}
   }
 
   /**
@@ -214,7 +221,11 @@ public class CodeAssumptionImpl extends AssumptionElementImpl implements CodeAss
     if (eNotificationRequired())
     {
       ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ContractPackage.CODE_ASSUMPTION__GUARANTEE, oldGuarantee, newGuarantee);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      if (msgs == null) {
+		msgs = notification;
+	} else {
+		msgs.add(notification);
+	}
     }
     return msgs;
   }
@@ -230,15 +241,20 @@ public class CodeAssumptionImpl extends AssumptionElementImpl implements CodeAss
     if (newGuarantee != guarantee)
     {
       NotificationChain msgs = null;
-      if (guarantee != null)
-        msgs = ((InternalEObject)guarantee).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ContractPackage.CODE_ASSUMPTION__GUARANTEE, null, msgs);
-      if (newGuarantee != null)
-        msgs = ((InternalEObject)newGuarantee).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ContractPackage.CODE_ASSUMPTION__GUARANTEE, null, msgs);
+      if (guarantee != null) {
+		msgs = ((InternalEObject)guarantee).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ContractPackage.CODE_ASSUMPTION__GUARANTEE, null, msgs);
+	}
+      if (newGuarantee != null) {
+		msgs = ((InternalEObject)newGuarantee).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ContractPackage.CODE_ASSUMPTION__GUARANTEE, null, msgs);
+	}
       msgs = basicSetGuarantee(newGuarantee, msgs);
-      if (msgs != null) msgs.dispatch();
+      if (msgs != null) {
+		msgs.dispatch();
+	}
     }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.CODE_ASSUMPTION__GUARANTEE, newGuarantee, newGuarantee));
+    else if (eNotificationRequired()) {
+		eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.CODE_ASSUMPTION__GUARANTEE, newGuarantee, newGuarantee));
+	}
   }
 
   /**
@@ -353,7 +369,9 @@ public class CodeAssumptionImpl extends AssumptionElementImpl implements CodeAss
   @Override
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy()) {
+		return super.toString();
+	}
 
     StringBuilder result = new StringBuilder(super.toString());
     result.append(" (exact: ");

@@ -96,6 +96,7 @@ def allProcessorHarmonicBoundSchedulable(boundThreads,error0):
 		if util > 1.0:
 			addError(error0,"{"+str(boundThreads[i][0])+"}processor "+boundThreads[i][1]+" workload exceeds 100% bound ")
 			return False
+	addError(info0,"{"+str(boundThreads[i][0])+"}processor "+boundThreads[i][1]+" Schedulable workload under 100% bound")
 	print("allProcessorsHarmonicBoundSchedulable=TRUE")
 	return True
 
@@ -160,6 +161,7 @@ def allProcessorNonHarmonicBoundSchedulable(boundThreads,error0):
 			addError(error0,"{"+str(boundThreads[i][0])+"}processor "+boundThreads[i][1]+" workload exceeds 69% bound ")
 			return False
 	print("allProcessorsNonHarmonicBoundSchedulable=TRUE")
+	addError(info0,"{"+str(boundThreads[i][0])+"}processor "+boundThreads[i][1]+" Schedulable with workload under 69% bound")
 	return True
 
 def allThreadsBoundToSingleProcessor(bindings,error0):
