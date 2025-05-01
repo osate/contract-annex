@@ -358,4 +358,13 @@ public class SourceImpl extends MinimalEObjectImpl.Container implements Source
     return result.toString();
   }
 
+	String argpath = "";
+
+	public void setArgumentPath(String p) {
+		argpath = p;
+	}
+
+	public String getArgumentPath() {
+		return argpath;
+	}
 } //SourceImpl

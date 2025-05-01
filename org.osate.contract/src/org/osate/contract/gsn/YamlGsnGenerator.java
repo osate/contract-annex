@@ -7,11 +7,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
-import org.osate.aadl2.NamedElement;
 import org.osate.contract.contract.Analysis;
 import org.osate.contract.contract.Argument;
 import org.osate.contract.contract.ArgumentAnd;
@@ -30,12 +30,60 @@ import org.osate.contract.contract.impl.ContractLibraryImpl;
 import org.stringtemplate.v4.ST;
 
 public final class YamlGsnGenerator {
+
+	static protected HashMap<Object, Object> parentContract = new HashMap<Object, Object>();
+
+	static protected ResultFinder resultFinder = null;
+
+	public static String getName(Object c) {
+		if (c instanceof Contract) {
+			return ((Contract) c).getName();
+		} else if (c instanceof VerificationPlan) {
+			return ((VerificationPlan) c).getName();
+		} else if (c instanceof Argument) {
+			return ((Argument) c).getName();
+		}
+
+		return "";
+	}
+
+	public static String getArgumentPath(Object contract) {
+		String path = "";
+		Stack<String> pathSegments = new Stack<String>();
+
+		Object parent = parentContract.get(contract);
+		while (parent != null) {
+			pathSegments.push(getName(parent));
+			parent = parentContract.get(parent);
+		}
+
+		while (!pathSegments.isEmpty()) {
+			String s = pathSegments.pop();
+			if (s.length() > 0) {
+				if (path.length() > 0) {
+					path = path + "." + s;
+				} else {
+					path = path + s;
+				}
+			}
+		}
+
+		if (path.length() > 0) {
+			path = path + "." + getName(contract);
+		} else {
+			path = getName(contract);
+		}
+
+		return path;
+	}
+
 	private YamlGsnGenerator() {
 	}
 
 	public static YamlFolder generateYamlGsn(VerificationPlan verificationPlan) {
-		var files = new ArrayList<YamlFile>();
+		resultFinder = new ResultFinder();
 
+		var files = new ArrayList<YamlFile>();
 		var planNodes = new ArrayList<String>();
 		planNodes.add(generateVerificationPlan(verificationPlan));
 		for (var claim : verificationPlan.getClaims()) {
@@ -53,7 +101,8 @@ public final class YamlGsnGenerator {
 			for (var analysis : contractNodes.analyses) {
 				nodes.add(generateAnalysis(analysis));
 			}
-			files.add(new YamlFile(contract.getName(), nodes));
+			var argpath = getArgumentPath(contract);
+			files.add(new YamlFile(argpath, nodes));
 		});
 		collector.argumentNodes.forEach((argument, argumentNodes) -> {
 			var nodes = new ArrayList<String>();
@@ -61,7 +110,8 @@ public final class YamlGsnGenerator {
 			for (var expression : argumentNodes.argumentExpressions) {
 				nodes.add(generateArgumentExpression(expression));
 			}
-			files.add(new YamlFile(argument.getName(), nodes));
+			var argpath = getArgumentPath(argument);
+			files.add(new YamlFile(argpath, nodes));
 		});
 
 		var commonNodes = new ArrayList<String>();
@@ -99,9 +149,13 @@ public final class YamlGsnGenerator {
 		if (verificationPlan.getContracts().isEmpty()) {
 			template.add("supportedBy", "");
 		} else {
+			for (var contract : verificationPlan.getContracts()) {
+				parentContract.put(contract, verificationPlan);
+				contract.setArgumentPrefix(verificationPlan.getName());
+			}
 			var supportedBy = verificationPlan.getContracts()
 					.stream()
-					.map(NamedElement::getName)
+					.map(Contract::getFullArgumentPath)
 					.distinct()
 					.collect(Collectors.joining(", ", "supportedBy: [", "]"));
 			template.add("supportedBy", supportedBy);
@@ -130,7 +184,8 @@ public final class YamlGsnGenerator {
 				  %inContextOf%
 				  %undeveloped%""", '%', '%');
 
-		template.add("name", contract.getName());
+		String argpath = getArgumentPath(contract);
+		template.add("name", argpath); // contract.getName());
 
 		var guarantee = contract.getGuarantee();
 		if (guarantee == null) {
@@ -144,19 +199,24 @@ public final class YamlGsnGenerator {
 		var supportedBy = new ArrayList<String>();
 		var inContextOf = new ArrayList<String>();
 
+		var assumptionargpath = argpath;
 		for (var assumption : contract.getAssumptions()) {
 			if (assumption instanceof ContractAssumption contractAssumption
 					&& contractAssumption.getContract() instanceof Contract referencedContract) {
-				supportedBy.add(referencedContract.getName());
+				parentContract.put(referencedContract, contract);
+				supportedBy.add(assumptionargpath + "." + referencedContract.getName());
 			} else if (assumption instanceof ArgumentAssumption argumentAssumption
 					&& argumentAssumption.getArgument() instanceof Argument referencedArgument) {
-				supportedBy.add(referencedArgument.getName());
+				parentContract.put(referencedArgument, contract);
+				supportedBy.add(assumptionargpath + "." + referencedArgument.getName());
 			} else if (assumption instanceof CodeAssumption codeAssumption) {
-				inContextOf.add(getAssumptionName(codeAssumption));
+				parentContract.put(codeAssumption, contract);
+				inContextOf.add(assumptionargpath + "." + getAssumptionName(codeAssumption));
 			}
 		}
 		for (var analysis : contract.getAnalyses()) {
-			supportedBy.add(getAnalysisName(analysis));
+			parentContract.put(analysis, contract);
+			supportedBy.add(assumptionargpath + "." + getAnalysisName(analysis));
 		}
 
 		if (supportedBy.isEmpty()) {
@@ -191,11 +251,12 @@ public final class YamlGsnGenerator {
 				  %supportedBy%
 				  %undeveloped%""", '%', '%');
 
-		template.add("name", argument.getName());
+		String argpath = getArgumentPath(argument);
+		template.add("name", argpath);// argument.getName());
 
 		var guarantee = argument.getGuarantee();
 		if (guarantee == null) {
-			template.add("text", argument.getName());
+			template.add("text", argpath);// argument.getName());
 		} else {
 			var symbol = argument.isExact() ? "<=>" : "=>";
 			var source = toString(guarantee.getCode());
@@ -205,6 +266,7 @@ public final class YamlGsnGenerator {
 		var supportedBy = new ArrayList<String>();
 
 		if (argument.getArgumentExpression() != null) {
+			parentContract.put(argument.getArgumentExpression(), argument);
 			supportedBy.add(getArgumentExpressionName(argument, argument.getArgumentExpression()));
 		}
 
@@ -234,12 +296,17 @@ public final class YamlGsnGenerator {
 
 		var supportedBy = new ArrayList<String>();
 		for (var argument : expression.getArguments()) {
-			supportedBy.add(argument.getName());
+			parentContract.put(argument, expression);
+			var argargpath = getArgumentPath(argument);
+			supportedBy.add(argargpath);// argument.getName());
 		}
 		for (var contract : expression.getContracts()) {
-			supportedBy.add(contract.getName());
+			parentContract.put(contract, expression);
+			var contractargpath = getArgumentPath(contract);
+			supportedBy.add(contractargpath);// contract.getName());
 		}
 		for (var nested : expression.getNested()) {
+			parentContract.put(nested, expression);
 			supportedBy.add(getArgumentExpressionName(containingArgument, nested));
 		}
 		template.add("supportedBy", supportedBy.stream().collect(Collectors.joining(", ")));
@@ -262,7 +329,10 @@ public final class YamlGsnGenerator {
 		var allExpressionsOfType = EcoreUtil2.getAllContentsOfType(argument, expression.getClass());
 		var index = allExpressionsOfType.indexOf(expression);
 
-		return argument.getName() + '_' + expressionType + '_' + (index + 1);
+		String argpath = getArgumentPath(argument);
+
+		// return argument.getName() + '_' + expressionType + '_' + (index + 1);
+		return argpath + '_' + expressionType + '_' + (index + 1);
 	}
 
 	private static String generateClaim(Source claim, VerificationPlan verificationPlan) {
@@ -284,8 +354,11 @@ public final class YamlGsnGenerator {
 				%name%:
 				  text: %name%
 				  nodeType: Assumption
-				  url: eclipse+gsnmarker://%name%""", '%', '%');
+				  url: eclipse+gsnmarker://%name%
+				  #result: %result%""", '%', '%');
 		template.add("name", name);
+		var result = resultFinder.getResult(name);
+		template.add("result", result);
 		return template.render();
 	}
 
@@ -298,9 +371,11 @@ public final class YamlGsnGenerator {
 				%name%:
 				  text: %name%
 				  nodeType: Solution
-				  url: eclipse+gsnmarker://%name%""",
-				'%', '%');
+				  url: eclipse+gsnmarker://%name%
+				  #result: %result%""", '%', '%');
 		template.add("name", name);
+		var result = resultFinder.getResult(name);
+		template.add("result", result);
 		return template.render();
 	}
 
@@ -358,6 +433,7 @@ public final class YamlGsnGenerator {
 
 		public NodeCollector(VerificationPlan verificationPlan) {
 			for (var contract : verificationPlan.getContracts()) {
+				parentContract.put(contract, verificationPlan);
 				collect(contract);
 			}
 
@@ -391,8 +467,10 @@ public final class YamlGsnGenerator {
 		}
 
 		private void collect(Contract contract) {
+			var argpath = getArgumentPath(contract);
 			var nodes = contractNodes.computeIfAbsent(contract, key -> new ContractNodes());
 			for (var assumption : contract.getAssumptions()) {
+				parentContract.put(assumption, contract);
 				if (assumption instanceof ContractAssumption contractAssumption
 						&& contractAssumption.getContract() instanceof Contract referencedContract) {
 					collect(referencedContract);
@@ -400,17 +478,18 @@ public final class YamlGsnGenerator {
 						&& argumentAssumption.getArgument() instanceof Argument referencedArgument) {
 					collect(referencedArgument);
 				} else if (assumption instanceof CodeAssumption codeAssumption) {
-					nodes.assumptions.add(getAssumptionName(codeAssumption));
+					nodes.assumptions.add(argpath + "." + getAssumptionName(codeAssumption));
 				}
 			}
 			for (var analysis : contract.getAnalyses()) {
-				nodes.analyses.add(getAnalysisName(analysis));
+				nodes.analyses.add(argpath + "." + getAnalysisName(analysis));
 			}
 		}
 
 		private void collect(Argument argument) {
 			var nodes = argumentNodes.computeIfAbsent(argument, key -> new ArgumentNodes());
 			if (argument.getArgumentExpression() != null) {
+				parentContract.put(argument.getArgumentExpression(), argument);
 				collect(argument.getArgumentExpression(), nodes);
 			}
 		}
@@ -419,15 +498,18 @@ public final class YamlGsnGenerator {
 			nodes.argumentExpressions.add(expression);
 			for (var referencedArgument : expression.getArguments()) {
 				if (referencedArgument instanceof Argument castedArgument) {
+					parentContract.put(castedArgument, expression);
 					collect(castedArgument);
 				}
 			}
 			for (var referencedContract : expression.getContracts()) {
 				if (referencedContract instanceof Contract castedContract) {
+					parentContract.put(castedContract, expression);
 					collect(castedContract);
 				}
 			}
 			for (var nested : expression.getNested()) {
+				parentContract.put(nested, expression);
 				collect(nested, nodes);
 			}
 		}

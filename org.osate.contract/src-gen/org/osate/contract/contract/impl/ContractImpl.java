@@ -1,25 +1,25 @@
 /**
  * Assurance Contract Annex Plugin for OSATE
  * Copyright 2023 Carnegie Mellon University.
- * NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
- * MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
- * WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
- * NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
- * RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
- * ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+ * NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE
+ * MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO
+ * WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT
+ * NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR
+ * RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE
+ * ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT
  * INFRINGEMENT.
- * Released under a BSD (SEI)-style license, please see license.txt or contact 
+ * Released under a BSD (SEI)-style license, please see license.txt or contact
  * permission@sei.cmu.edu for full terms.
- * [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
- * unlimited distribution.  Please see Copyright notice for non-US Government use and 
+ * [DISTRIBUTION STATEMENT A] This material has been approved for public release and
+ * unlimited distribution.  Please see Copyright notice for non-US Government use and
  * distribution.
- * Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+ * Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie
  * Mellon University.
- * This Software includes and/or makes use of the following Third-Party Software subject 
+ * This Software includes and/or makes use of the following Third-Party Software subject
  * to its own license:
- * 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+ * 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft
  * Corporation.
- * 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+ * 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse
  * contributors and others.
  * DM23-0575
  */
@@ -29,18 +29,13 @@ import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-
 import org.osate.contract.contract.Analysis;
 import org.osate.contract.contract.AssumptionElement;
 import org.osate.contract.contract.Contract;
@@ -253,8 +248,9 @@ public class ContractImpl extends ContractElementImpl implements Contract
   {
     boolean oldExact = exact;
     exact = newExact;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.CONTRACT__EXACT, oldExact, exact));
+    if (eNotificationRequired()) {
+		eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.CONTRACT__EXACT, oldExact, exact));
+	}
   }
 
   /**
@@ -280,7 +276,11 @@ public class ContractImpl extends ContractElementImpl implements Contract
     if (eNotificationRequired())
     {
       ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ContractPackage.CONTRACT__GUARANTEE, oldGuarantee, newGuarantee);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      if (msgs == null) {
+		msgs = notification;
+	} else {
+		msgs.add(notification);
+	}
     }
     return msgs;
   }
@@ -296,15 +296,20 @@ public class ContractImpl extends ContractElementImpl implements Contract
     if (newGuarantee != guarantee)
     {
       NotificationChain msgs = null;
-      if (guarantee != null)
-        msgs = ((InternalEObject)guarantee).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ContractPackage.CONTRACT__GUARANTEE, null, msgs);
-      if (newGuarantee != null)
-        msgs = ((InternalEObject)newGuarantee).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ContractPackage.CONTRACT__GUARANTEE, null, msgs);
+      if (guarantee != null) {
+		msgs = ((InternalEObject)guarantee).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ContractPackage.CONTRACT__GUARANTEE, null, msgs);
+	}
+      if (newGuarantee != null) {
+		msgs = ((InternalEObject)newGuarantee).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ContractPackage.CONTRACT__GUARANTEE, null, msgs);
+	}
       msgs = basicSetGuarantee(newGuarantee, msgs);
-      if (msgs != null) msgs.dispatch();
+      if (msgs != null) {
+		msgs.dispatch();
+	}
     }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.CONTRACT__GUARANTEE, newGuarantee, newGuarantee));
+    else if (eNotificationRequired()) {
+		eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.CONTRACT__GUARANTEE, newGuarantee, newGuarantee));
+	}
   }
 
   /**
@@ -486,7 +491,9 @@ public class ContractImpl extends ContractElementImpl implements Contract
   @Override
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy()) {
+		return super.toString();
+	}
 
     StringBuilder result = new StringBuilder(super.toString());
     result.append(" (exact: ");
@@ -494,5 +501,17 @@ public class ContractImpl extends ContractElementImpl implements Contract
     result.append(')');
     return result.toString();
   }
+
+	String prefix = "";
+
+	@Override
+	public void setArgumentPrefix(String p) {
+		prefix = p;
+	}
+
+	@Override
+	public String getFullArgumentPath() {
+		return prefix + "." + getName();
+	}
 
 } //ContractImpl

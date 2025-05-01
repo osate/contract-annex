@@ -55,7 +55,6 @@ import org.osate.contract.contract.ContractLibrary;
 import org.osate.contract.contract.ContractSubclause;
 import org.osate.contract.contract.InputAssumption;
 import org.osate.contract.contract.Language;
-import org.osate.contract.contract.PathSourceImpl;
 import org.osate.contract.contract.VerificationPlan;
 
 public class ContractProcessor {
@@ -311,51 +310,55 @@ public class ContractProcessor {
 				if (ca.getGuarantee() != null) {
 					// add guarantee here and add assumption as separate item later
 					// treat assumption like an unnamed trivial contract
-					// pyExpr.addCode(ca.getGuarantee().getCode(), ",");
-					pyExpr.addCode(new PathSourceImpl(ca.getGuarantee().getCode(), getArgumentPath(contract)), ",");
+					ca.getGuarantee().getCode().setArgumentPath(getArgumentPath(contract));
+					pyExpr.addCode(ca.getGuarantee().getCode(), ",");
 					deferredAssumptions.add(ca);
 				} else {
 					if (ca.getCode().getLanguage() == Language.SMT) {
 						pyExpr.addCode(evalAssumption(ca) + ",");
 					} else {
-						// pyExpr.addCode(ca.getCode(), ",");
-						pyExpr.addCode(new PathSourceImpl(ca.getCode(), getArgumentPath(contract)), ",");
+						ca.getCode().setArgumentPath(getArgumentPath(contract));
+						pyExpr.addCode(ca.getCode(), ",");
 					}
 				}
 			} else if (assumption instanceof ContractAssumption ca) {
 				// add referenced contract's guarantee here and add referenced contract itself later
 				Contract c = (Contract) ca.getContract();
 				parentContract.put(c, contract);
-				pyExpr.addCode(new PathSourceImpl(c.getGuarantee().getCode(), getArgumentPath(contract)), ",");
+				c.getGuarantee().getCode().setArgumentPath(getArgumentPath(contract));
+				pyExpr.addCode(c.getGuarantee().getCode(), ",");
 				deferredContracts.add(c);
 			} else if (assumption instanceof ArgumentAssumption aa) {
 				// add referenced contract's guarantee here and add referenced contract itself later
 				Argument a = (Argument) aa.getArgument();
 				parentContract.put(a, contract);
-				pyExpr.addCode(new PathSourceImpl(a.getGuarantee().getCode(), getArgumentPath(contract)), ",");
+				a.getGuarantee().getCode().setArgumentPath(getArgumentPath(contract));
+				pyExpr.addCode(a.getGuarantee().getCode(), ",");
 				deferredArguments.add(a);
 			}
 		}
 		for (var analysis : contract.getAnalyses()) {
-			// pyExpr.addCode(analysis.getCode());
-			pyExpr.addCode(new PathSourceImpl(analysis.getCode(), getArgumentPath(contract)));
+			analysis.getCode().setArgumentPath(getArgumentPath(contract));
+			pyExpr.addCode(analysis.getCode());
 		}
 		pyExpr.outdent().addCode("""
 				),
 				""");
 		var guarantee = contract.getGuarantee();
 		if (contract.isExact()) {
-			pyExpr.addCode(new PathSourceImpl(guarantee.getCode(), getArgumentPath(contract)), ",");
+			guarantee.getCode().setArgumentPath(getArgumentPath(contract));
+			pyExpr.addCode(guarantee.getCode(), ",");
 			pyExpr.addCode("""
 					Not(
 					""").indent();
-			pyExpr.addCode(new PathSourceImpl(guarantee.getCode(), getArgumentPath(contract)));
+			pyExpr.addCode(guarantee.getCode());
 			pyExpr.outdent(2).addCode("""
 					    )
 					),
 					""");
 		} else {
-			pyExpr.addCode(new PathSourceImpl(guarantee.getCode(), getArgumentPath(contract)), "");
+			guarantee.getCode().setArgumentPath(getArgumentPath(contract));
+			pyExpr.addCode(guarantee.getCode(), "");
 			pyExpr.outdent().addCode("""
 					),
 					""");
@@ -421,21 +424,24 @@ public class ContractProcessor {
 		if (ca.getCode().getLanguage() == Language.SMT) {
 			pyExpr.addCode(evalAssumption(ca) + ",");
 		} else {
-			pyExpr.addCode(new PathSourceImpl(ca.getCode(), getArgumentPath(contract)), ",");
+			ca.getCode().setArgumentPath(getArgumentPath(contract));
+			pyExpr.addCode(ca.getCode(), ",");
 		}
 		var guarantee = ca.getGuarantee();
 		if (ca.isExact()) {
-			pyExpr.addCode(new PathSourceImpl(guarantee.getCode(), getArgumentPath(contract)), ",");
+			guarantee.getCode().setArgumentPath(getArgumentPath(contract));
+			pyExpr.addCode(guarantee.getCode(), ",");
 			pyExpr.addCode("""
 					Not(
 					""").indent();
-			pyExpr.addCode(new PathSourceImpl(guarantee.getCode(), getArgumentPath(contract)));
+			pyExpr.addCode(guarantee.getCode());
 			pyExpr.outdent(2).addCode("""
 					    )
 					),
 					""");
 		} else {
-			pyExpr.addCode(new PathSourceImpl(guarantee.getCode(), getArgumentPath(contract)), "");
+			guarantee.getCode().setArgumentPath(getArgumentPath(contract));
+			pyExpr.addCode(guarantee.getCode(), "");
 			pyExpr.outdent().addCode("""
 					),
 					""");

@@ -38,7 +38,6 @@ import org.osate.contract.contract.ContractLibrary;
 import org.osate.contract.contract.Domain;
 import org.osate.contract.contract.Implementation;
 import org.osate.contract.contract.Language;
-import org.osate.contract.contract.PathSourceImpl;
 import org.osate.contract.contract.Source;
 
 public class PythonBuilder {
@@ -135,9 +134,9 @@ public class PythonBuilder {
 				txt = code.getSource() + term;
 			} else if (code.getInter() != null) {
 				txt = python.interpolateIString(context, code.getInter(), variables);// + term;
-				if (code instanceof PathSourceImpl) {
-					PathSourceImpl pcode = (PathSourceImpl) code;
-					txt = txt.substring(0, txt.length() - 1) + ",'" + pcode.getArgumentPath() + "')";
+				String argpath = code.getArgumentPath();
+				if (argpath.length() > 0) {
+					txt = txt.substring(0, txt.length() - 1) + ",'" + argpath + "')";
 				}
 				txt = txt + term;
 			}
