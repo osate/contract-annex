@@ -1,0 +1,233 @@
+package FlowSynchronizationContract;
+
+contract implementation E2ELatency {`
+import math
+
+def addError(error,msg):
+	error[0]+="|"+msg
+	
+def getResponseTimes(threads):
+	# threads is [(th, th.name, th.period, th.wcet, th.prio, th.deadline)]
+	# in increasing priority order
+	respTimes = [0] * len(threads)
+	for i in range(len(threads)):
+		r = 0
+		r1 = threads[i][3]
+		while r < r1 and r1 <= threads[i][5]:
+			r = r1
+			r1 = threads[i][3]
+			for j in range(0, i):
+				r1 = r1 + math.ceil(r / threads[j][2]) * threads[j][3]
+		respTimes[i] = r1
+	return respTimes
+	
+def areAllPrioritiesSet(boundThreads,priorities,names,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	print("checking if all threads have priorities")
+	for p in range(len(boundThreads)):
+		threads = boundThreads[p][2]
+		for i in range(len(threads)):
+			if threads[i][4] is None:
+				addError(error0,"{"+str(threads[i][0])+"}thread " + threads[i][1] + " does not have priority ")
+				print("Thread "+threads[i][1]+" does not have a priority assigned")
+				return False
+	return True
+		
+def arePeriodsHarmonic(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet)])]
+	for p in range(len(boundThreads)):
+		incPeriods = sorted(boundThreads[p][2], key=lambda td: td[2])
+		for i in range(len(incPeriods)-1):
+			if incPeriods[i+1][2] % incPeriods[i][2] != 0:
+				addError(error0,"{"+str(incPeriods[i][0])+"}period "+str(incPeriods[i+1][2])+" is not a multiple of period "+str(incPeriods[i][2]))
+				return False
+	return True
+
+def areAllDeadlinesImplicit(threads, periods,deadlines,names,error0):
+	for i in range(len(periods)):
+		if periods[i] != deadlines[i]:
+			addError(error0,"{"+str(threads[i])+"}thread "+names[i]+" period is not equal to its deadline (not implicit)")
+			return False
+	return True
+	
+def allProcessorHarmonicBoundSchedulable(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet)])]
+	for i in range(len(boundThreads)):
+		util=0.0
+		for j in range(len(boundThreads[i][2])):
+			util = util + boundThreads[i][2][j][3] / boundThreads[i][2][j][2]
+		if util > 1.0:
+			addError(error0,"{"+str(boundThreads[i][0])+"}processor "+boundThreads[i][1]+" workload exceeds 100% bound ")
+			return False
+	print("allProcessorsHarmonicBoundSchedulable=TRUE")
+	return True
+
+def arePrioritiesRM(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.priom th.deadline)])]
+	#  (t, t.name, period, wcet, prio, deadline)
+	for i in range(len(boundThreads)):
+		util=0.0
+		for j in range(len(boundThreads[i][2])):
+			for k in range(j+1, len(boundThreads[i][2])):
+				periodj = boundThreads[i][2][j][2]
+				priorityj = boundThreads[i][2][j][4]
+				namej = boundThreads[i][2][j][1]
+				periodk = boundThreads[i][2][k][2]
+				priorityk = boundThreads[i][2][k][4]
+				namek = boundThreads[i][2][k][1]
+				if (periodj < periodk and priorityj<priorityk):
+					addError(error0,"{"+str(boundThreads[i][2][j][0])+"}thread "+namej+" has shorter period than thread "+namek+" but lower priority")
+					print(" **NOT RMPRIORITIES thread "+namej+" has shorter period than "+namek+" but lower priority")
+					return False
+	print(" **RMPRIORITIES ")
+	return True
+
+def allProcessorNonHarmonicBoundSchedulable(boundThreads,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet)])]
+	for i in range(len(boundThreads)):
+		util=0.0
+		for j in range(len(boundThreads[i][2])):
+			util = util + boundThreads[i][2][j][3] / boundThreads[i][2][j][2]
+		if util > 0.69:
+			addError(error0,"{"+str(boundThreads[i][0])+"}processor "+boundThreads[i][1]+" workload exceeds 69% bound ")
+			return False
+	print("allProcessorsNonHarmonicBoundSchedulable=TRUE")
+	return True
+
+def allThreadsBoundToSingleProcessor(bindings,error0):
+	for i in range(len(bindings)):
+		if bindings[i][2] is None or len(bindings[i][2]) == 0:
+			addError(error0,"{"+str(bindings[i][0])+"}thread " + bindings[i][1] + " is not assigned to run to any processor")
+			return False
+		if len(bindings[i][2]) > 1:
+			addError(error0,"{"+str(bindings[i][0])+"}thread " + bindings[i][1] + " is assigned to run in more than one processor")
+			return False
+	return True
+`}
+
+domain schedulability {
+	queries
+		val threads = self.allUsages.filter { 
+			s -> s.isThread
+		};
+		val names = threads.map { 
+			t-> t.name
+		};
+		val periods = threads.map {
+			t -> t#Timing_Properties::Period.map {   
+				p -> p.scaledTo(@SIPrefixes::milli)
+			}
+		};
+		val priorities = threads.map {
+			t -> t#Thread_Properties::Priority.map {
+				p -> p.value
+			}
+		};
+		val deadlines = threads.map {
+			t -> t#Timing_Properties::Deadline.map {
+				p -> p.scaledTo(@SIPrefixes::milli)
+			}
+		};
+		val wcets = threads.map {
+			t -> t#Timing_Properties::Compute_Execution_Time.map {
+				cet -> cet.maximum.scaledTo(@SIPrefixes::milli)
+			}
+		};
+		val threadCount = threads.size;
+		val threadToProcessorBindings = 
+			self.actualProcessorBindings.map { a -> (a.sw, a.sw.name, a.hw) };
+		val boundThreads = self.allUsages
+				.filter { s -> s.isProcessor }
+				.map { p ->
+					val threadsBoundToP = self.actualProcessorBindings
+						.filter { a -> a.hw.equals(p) }
+						.map { a -> a.sw };
+					val threadTuples = threadsBoundToP
+						.map { t ->
+							val period = t#Timing_Properties::Period.map {   
+								v -> v.scaledTo(@SIPrefixes::milli)
+							};
+							val wcet = t#Timing_Properties::Compute_Execution_Time.map {
+								cet -> cet.maximum.scaledTo(@SIPrefixes::milli)
+							};
+							val prio = t#Thread_Properties::Priority.map {
+								pr -> pr.value
+							};
+							val deadline  = t#Timing_Properties::Deadline.map {
+								d -> d.scaledTo(@SIPrefixes::milli)
+							};
+							(t, t.name, period, wcet, prio, deadline)
+						};
+					(p, p.name, threadTuples)
+				};
+		
+	declarations 
+		'''
+		Deadlines = IntVector('deadline', ${threadCount$})
+		Responses = IntVector('response', ${threadCount$})
+		Priorities = IntVector('priority', ${threadCount$})
+		SelfSuspendings = BoolVector('selfSuspending', ${threadCount$})
+		Periods = IntVector('period', ${threadCount$})	
+		Periodics = BoolVector('periodic', ${threadCount$})
+		RESPONSETIME_SHORTER_DEADLINES = And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])
+		'''
+}
+	
+contract RMPrioritiesContract {
+	domains
+		schedulability;
+	input assumptions
+		'''areAllPrioritiesSet(${boundThreads$},${priorities$}, ${names$},error0)''';			
+	guarantee
+		<=>`And([(Periods[i]<Periods[j]) == (Priorities[i]>Priorities[j]) for i in range(len(Periods)-1) for j in range(i+1,len(Periods))])`;
+	analysis
+		'''arePrioritiesRM(${boundThreads$},error0)''';	
+}
+	
+contract RMAHarmonicBoundContract {
+	domains
+		schedulability;
+	assumptions
+		--'''arePrioritiesRM(${boundThreads$},error0)''';
+		contract RMPrioritiesContract;
+		'''areAllDeadlinesImplicit(${threads$}, ${periods$},${deadlines$},${names$},error0)''';
+		'''arePeriodsHarmonic(${boundThreads$},error0)''';
+		-- The sysml model I am using does not allow a thread to be bound to more than one processor.
+--		'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
+	guarantee
+		<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+	analysis
+		'''allProcessorHarmonicBoundSchedulable(${boundThreads$},error0)''';
+}
+
+contract RMANonHarmonicBoundContract {
+	domains
+		schedulability;
+	assumptions
+		--'''arePrioritiesRM(${boundThreads$},error0)''';
+		contract RMPrioritiesContract;
+		'''areAllDeadlinesImplicit(${threads$},${periods$},${deadlines$},${names$},error0)''';
+		-- The sysml model I am using does not allow a thread to be bound to more than one processor.
+--		'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
+	guarantee
+		<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+	analysis
+		'''allProcessorNonHarmonicBoundSchedulable(${boundThreads$},error0)''';
+}
+
+argument schedulabilityArgument {
+	domains
+		schedulability;
+	guarantee
+		--<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+		<=> `RESPONSETIME_SHORTER_DEADLINES`;
+	argument
+		and(
+			contract RMPrioritiesContract
+			or(
+			contract RMAHarmonicBoundContract
+			contract RMANonHarmonicBoundContract
+			)
+			--contract fpResponseTimeContract
+		);
+}

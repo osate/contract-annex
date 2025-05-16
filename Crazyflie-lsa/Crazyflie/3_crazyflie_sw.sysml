@@ -41,6 +41,7 @@ package '3. Crazyflie Software' {
 		:>> Priority = 2;
 		:>> Dispatch_Protocol = Sporadic;
 		:>> Period = 1000 [micro * s];
+		:>> Deadline = 1000 [micro * s];
 		:>> Compute_Execution_Time {
 			:>> minimum = 10 [micro * s];
 			:>> maximum = 50 [micro * s];
@@ -53,6 +54,7 @@ package '3. Crazyflie Software' {
 		:>> Priority = 2;
 		:>> Dispatch_Protocol = Sporadic;
 		:>> Period = 1000 [micro * s];
+		:>> Deadline = 1000 [micro * s];
 		:>> Compute_Execution_Time {
 			:>> minimum = 10 [micro * s];
 			:>> maximum = 50 [micro * s];
@@ -63,6 +65,7 @@ package '3. Crazyflie Software' {
 		:>> Priority = 2;
 		:>> Dispatch_Protocol = Periodic;
 		:>> Period = 500 [micro * s];
+		:>> Deadline = 500 [micro * s];
 		:>> Compute_Execution_Time {
 			:>> minimum = 10 [micro * s];
 			:>> maximum = 20 [micro * s];
@@ -72,9 +75,10 @@ package '3. Crazyflie Software' {
 	part def Main_Loop_t :> Thread {
 		// Ignore features for now
 		
-		:>> Priority = 3;
+		:>> Priority = 1;
 		:>> Dispatch_Protocol = Periodic;
 		:>> Period = 2000 [micro * s];
+		:>> Deadline = 2000 [micro * s];
 		:>> Compute_Execution_Time {
 			:>> minimum = 100 [micro * s];
 			:>> maximum = 200 [micro * s];
@@ -109,10 +113,6 @@ package '3. Crazyflie Software' {
 		allocation a4 : Deployment_Properties::Actual_Processor_Binding
 			allocate sw ::> STM32F405_Firmare_i.Main_Loop
 			to hw ::> STM32F405;
-		
-// XXX Error: why?  Came this way...		
-//		connection C4 : PortConnection
-//			connect STM32F405_Firmare_i.Rate1 to props[1].Rate;
 	}
 
 	

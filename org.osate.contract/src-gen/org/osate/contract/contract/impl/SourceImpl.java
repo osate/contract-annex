@@ -1,25 +1,25 @@
 /**
  * Assurance Contract Annex Plugin for OSATE
  * Copyright 2023 Carnegie Mellon University.
- * NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
- * MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
- * WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
- * NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
- * RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
- * ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+ * NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE
+ * MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO
+ * WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT
+ * NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR
+ * RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE
+ * ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT
  * INFRINGEMENT.
- * Released under a BSD (SEI)-style license, please see license.txt or contact 
+ * Released under a BSD (SEI)-style license, please see license.txt or contact
  * permission@sei.cmu.edu for full terms.
- * [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
- * unlimited distribution.  Please see Copyright notice for non-US Government use and 
+ * [DISTRIBUTION STATEMENT A] This material has been approved for public release and
+ * unlimited distribution.  Please see Copyright notice for non-US Government use and
  * distribution.
- * Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+ * Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie
  * Mellon University.
- * This Software includes and/or makes use of the following Third-Party Software subject 
+ * This Software includes and/or makes use of the following Third-Party Software subject
  * to its own license:
- * 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+ * 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft
  * Corporation.
- * 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+ * 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse
  * contributors and others.
  * DM23-0575
  */
@@ -27,13 +27,10 @@ package org.osate.contract.contract.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.osate.contract.contract.ContractPackage;
 import org.osate.contract.contract.IString;
 import org.osate.contract.contract.Language;
@@ -111,7 +108,7 @@ public class SourceImpl extends MinimalEObjectImpl.Container implements Source
    * <!-- end-user-doc -->
    * @generated
    */
-  protected SourceImpl()
+	public SourceImpl()
   {
     super();
   }
@@ -148,8 +145,9 @@ public class SourceImpl extends MinimalEObjectImpl.Container implements Source
   {
     Language oldLanguage = language;
     language = newLanguage == null ? LANGUAGE_EDEFAULT : newLanguage;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.SOURCE__LANGUAGE, oldLanguage, language));
+    if (eNotificationRequired()) {
+		eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.SOURCE__LANGUAGE, oldLanguage, language));
+	}
   }
 
   /**
@@ -173,8 +171,9 @@ public class SourceImpl extends MinimalEObjectImpl.Container implements Source
   {
     String oldSource = source;
     source = newSource;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.SOURCE__SOURCE, oldSource, source));
+    if (eNotificationRequired()) {
+		eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.SOURCE__SOURCE, oldSource, source));
+	}
   }
 
   /**
@@ -200,7 +199,11 @@ public class SourceImpl extends MinimalEObjectImpl.Container implements Source
     if (eNotificationRequired())
     {
       ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ContractPackage.SOURCE__INTER, oldInter, newInter);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      if (msgs == null) {
+		msgs = notification;
+	} else {
+		msgs.add(notification);
+	}
     }
     return msgs;
   }
@@ -216,15 +219,20 @@ public class SourceImpl extends MinimalEObjectImpl.Container implements Source
     if (newInter != inter)
     {
       NotificationChain msgs = null;
-      if (inter != null)
-        msgs = ((InternalEObject)inter).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ContractPackage.SOURCE__INTER, null, msgs);
-      if (newInter != null)
-        msgs = ((InternalEObject)newInter).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ContractPackage.SOURCE__INTER, null, msgs);
+      if (inter != null) {
+		msgs = ((InternalEObject)inter).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ContractPackage.SOURCE__INTER, null, msgs);
+	}
+      if (newInter != null) {
+		msgs = ((InternalEObject)newInter).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ContractPackage.SOURCE__INTER, null, msgs);
+	}
       msgs = basicSetInter(newInter, msgs);
-      if (msgs != null) msgs.dispatch();
+      if (msgs != null) {
+		msgs.dispatch();
+	}
     }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.SOURCE__INTER, newInter, newInter));
+    else if (eNotificationRequired()) {
+		eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.SOURCE__INTER, newInter, newInter));
+	}
   }
 
   /**
@@ -337,7 +345,9 @@ public class SourceImpl extends MinimalEObjectImpl.Container implements Source
   @Override
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+    if (eIsProxy()) {
+		return super.toString();
+	}
 
     StringBuilder result = new StringBuilder(super.toString());
     result.append(" (language: ");
@@ -348,4 +358,13 @@ public class SourceImpl extends MinimalEObjectImpl.Container implements Source
     return result.toString();
   }
 
+	String argpath = "";
+
+	public void setArgumentPath(String p) {
+		argpath = p;
+	}
+
+	public String getArgumentPath() {
+		return argpath;
+	}
 } //SourceImpl
