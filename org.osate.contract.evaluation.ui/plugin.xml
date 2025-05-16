@@ -37,6 +37,10 @@
             id="org.osate.contract.evaluation.ui.generateYamlGsn"
             name="Generate YAML-GSN">
       </command>
+      <command
+            id="org.osate.contract.evaluation.ui.generateSACM"
+            name="Generate SACM">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -52,6 +56,29 @@
       <handler
             class="org.osate.contract.evaluation.ui.GenerateYamlGsnHandler"
             commandId="org.osate.contract.evaluation.ui.generateYamlGsn">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <adapt
+                           type="org.eclipse.xtext.ui.editor.outline.impl.EObjectNode">
+                        <test
+                              forcePluginActivation="true"
+                              property="org.osate.contract.evaluation.ui.superType"
+                              value="VerificationPlan">
+                        </test>
+                     </adapt>
+                  </iterate>
+               </and>
+            </with></enabledWhen>
+      </handler>
+      <handler
+            class="org.osate.contract.evaluation.ui.GenerateSACMHandler"
+            commandId="org.osate.contract.evaluation.ui.generateSACM">
          <enabledWhen>
             <with
                   variable="selection">
@@ -162,6 +189,32 @@
             <visibleWhen
                   checkEnabled="true">
             </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.xtext.ui.outline?after=additions">
+         <command
+               commandId="org.osate.contract.evaluation.ui.generateSACM"
+               style="push">
+            <!--visibleWhen
+                  checkEnabled="true">
+            </visibleWhen-->
+			<visibleWhen checkEnabled="false">
+				<and>
+					<and>
+						<reference definitionId="isXtextEditorActive"/>
+						<with variable="activeEditor">
+							<test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName"
+								value="org.osate.contract.Contract"
+								forcePluginActivation="true"/>
+						</with>
+					</and>
+					<iterate>
+						<adapt type="org.eclipse.xtext.ui.editor.outline.IOutlineNode" />
+					</iterate>
+				</and>
+			</visibleWhen>
          </command>
       </menuContribution>
    </extension>
