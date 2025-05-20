@@ -27,10 +27,12 @@ package org.osate.contract.execution;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.Stack;
 
 import org.eclipse.ease.service.EngineDescription;
 import org.eclipse.xtext.EcoreUtil2;
@@ -82,6 +84,50 @@ public class ContractProcessor {
 
 	private final Iterable<VerificationPlan> plans;
 
+	protected HashMap<Object, Object> parentContract = new HashMap<Object, Object>();
+
+	public String getName(Object c) {
+		if (c instanceof Contract) {
+			return ((Contract) c).getName();
+		} else if (c instanceof VerificationPlan) {
+			return ((VerificationPlan) c).getName();
+		} else if (c instanceof Argument) {
+			return ((Argument) c).getName();
+		}
+
+		return "";
+	}
+
+	public String getArgumentPath(Object contract) {
+		String path = "";
+		Stack<String> pathSegments = new Stack<String>();
+
+		Object parent = parentContract.get(contract);
+		while (parent != null) {
+			pathSegments.push(getName(parent));
+			parent = parentContract.get(parent);
+		}
+
+		while (!pathSegments.isEmpty()) {
+			String s = pathSegments.pop();
+			if (s.length()>0) {
+				if (path.length()>0) {
+					path = path + "." + s;
+				} else {
+					path = path + s;
+				}
+			}
+		}
+
+		if (path.length() > 0) {
+			path = path + "." + getName(contract);
+		} else {
+			path = getName(contract);
+		}
+
+		return path;
+	}
+
 	public ContractProcessor(ComponentInstance context, Iterable<VerificationPlan> plans,
 			EngineDescription description) {
 		this.context = context;
@@ -122,12 +168,13 @@ public class ContractProcessor {
 			pyBuilder.indent();
 		}
 		for (var contract : plan.getContracts()) {
+			parentContract.put(contract, plan);
 			var expr = smtContract(contract);
 			pyBuilder.addCode("# contract " + contract.getFullName());
 			addCode(expr);
 		}
 		/**
-		 * Dio: deferredArguments or contracts can be added while processing
+		 * Dio: deferredArguments or deferredContracts can be added while processing
 		 * previous arguments or contracts
 		 */
 		while (deferredArguments.size() > 0 || deferredContracts.size() > 0) {
@@ -232,6 +279,16 @@ public class ContractProcessor {
 		List<CodeAssumption> deferredAssumptions = new ArrayList<>();
 		ContractLibrary library = EcoreUtil2.getContainerOfType(contract, ContractLibrary.class);
 
+		/**
+		 * DIO: UNDER CONSTRUCTION
+		 *
+		 * Test the argument path construction
+		 * This only works for tree-like arguments. In general they are networked so this should be
+		 * extended.
+		 */
+
+		System.out.println("ARGUMENT PATH: " + getArgumentPath(contract));
+
 		pyBuilder.addImplementations(library);
 		for (var domain : contract.getDomains()) {
 			pyBuilder.addDomain(domain);
@@ -253,28 +310,35 @@ public class ContractProcessor {
 				if (ca.getGuarantee() != null) {
 					// add guarantee here and add assumption as separate item later
 					// treat assumption like an unnamed trivial contract
+					ca.getGuarantee().getCode().setArgumentPath(getArgumentPath(contract));
 					pyExpr.addCode(ca.getGuarantee().getCode(), ",");
 					deferredAssumptions.add(ca);
 				} else {
 					if (ca.getCode().getLanguage() == Language.SMT) {
 						pyExpr.addCode(evalAssumption(ca) + ",");
 					} else {
+						ca.getCode().setArgumentPath(getArgumentPath(contract));
 						pyExpr.addCode(ca.getCode(), ",");
 					}
 				}
 			} else if (assumption instanceof ContractAssumption ca) {
 				// add referenced contract's guarantee here and add referenced contract itself later
 				Contract c = (Contract) ca.getContract();
+				parentContract.put(c, contract);
+				c.getGuarantee().getCode().setArgumentPath(getArgumentPath(contract));
 				pyExpr.addCode(c.getGuarantee().getCode(), ",");
 				deferredContracts.add(c);
 			} else if (assumption instanceof ArgumentAssumption aa) {
 				// add referenced contract's guarantee here and add referenced contract itself later
 				Argument a = (Argument) aa.getArgument();
+				parentContract.put(a, contract);
+				a.getGuarantee().getCode().setArgumentPath(getArgumentPath(contract));
 				pyExpr.addCode(a.getGuarantee().getCode(), ",");
 				deferredArguments.add(a);
 			}
 		}
 		for (var analysis : contract.getAnalyses()) {
+			analysis.getCode().setArgumentPath(getArgumentPath(contract));
 			pyExpr.addCode(analysis.getCode());
 		}
 		pyExpr.outdent().addCode("""
@@ -282,6 +346,7 @@ public class ContractProcessor {
 				""");
 		var guarantee = contract.getGuarantee();
 		if (contract.isExact()) {
+			guarantee.getCode().setArgumentPath(getArgumentPath(contract));
 			pyExpr.addCode(guarantee.getCode(), ",");
 			pyExpr.addCode("""
 					Not(
@@ -292,13 +357,15 @@ public class ContractProcessor {
 					),
 					""");
 		} else {
+			guarantee.getCode().setArgumentPath(getArgumentPath(contract));
 			pyExpr.addCode(guarantee.getCode(), "");
 			pyExpr.outdent().addCode("""
 					),
 					""");
 		}
 		for (var a : deferredAssumptions) {
-			pyExpr.addCode(smtAssumption(a));
+			// TODO: add argumentpath to smtassumption
+			pyExpr.addCode(smtAssumption(a, contract));
 		}
 		pyBuilder.getVariables().putAll(pyExpr.getVariables());
 		return pyExpr.getScript();
@@ -324,7 +391,7 @@ public class ContractProcessor {
 		pb.addCode(ia.getCode());
 		var pyCode = pb.getScript();
 
-		System.out.println("Checking input assumption:\n" + pyCode);
+		System.out.println("Checking input assumption:\n");// + pyCode);
 
 		var result = pyRunner.run(pyCode, pb.getVariables());
 		return result;
@@ -343,7 +410,7 @@ public class ContractProcessor {
 		return txt;
 	};
 
-	public String smtAssumption(CodeAssumption ca) {
+	public String smtAssumption(CodeAssumption ca, Contract contract) {
 		var pyExpr = newPythonBuilder(context);
 		if (ca.isExact()) {
 			pyExpr.addCode("""
@@ -357,10 +424,12 @@ public class ContractProcessor {
 		if (ca.getCode().getLanguage() == Language.SMT) {
 			pyExpr.addCode(evalAssumption(ca) + ",");
 		} else {
+			ca.getCode().setArgumentPath(getArgumentPath(contract));
 			pyExpr.addCode(ca.getCode(), ",");
 		}
 		var guarantee = ca.getGuarantee();
 		if (ca.isExact()) {
+			guarantee.getCode().setArgumentPath(getArgumentPath(contract));
 			pyExpr.addCode(guarantee.getCode(), ",");
 			pyExpr.addCode("""
 					Not(
@@ -371,6 +440,7 @@ public class ContractProcessor {
 					),
 					""");
 		} else {
+			guarantee.getCode().setArgumentPath(getArgumentPath(contract));
 			pyExpr.addCode(guarantee.getCode(), "");
 			pyExpr.outdent().addCode("""
 					),
@@ -393,6 +463,7 @@ public class ContractProcessor {
 					Implies(
 					""").indent();
 		}
+		parentContract.put(argument.getArgumentExpression(), argument);
 		smtArgumentExpression(argument.getArgumentExpression(), pb);
 		var guarantee = argument.getGuarantee();
 		if (argument.isExact()) {
@@ -434,14 +505,17 @@ public class ContractProcessor {
 			Contract c = (Contract) ce;
 			pb.addCode(c.getGuarantee().getCode(), ",");
 			deferredContracts.add(c);
+			parentContract.put(c, ae);
 		}
 		for (var ce : ae.getArguments()) {
 			// add referenced argument's guarantee here and add referenced contract itself later
 			Argument a = (Argument) ce;
 			pb.addCode(a.getGuarantee().getCode(), ",");
 			deferredArguments.add(a);
+			parentContract.put(a, ae);
 		}
 		for (var ne : ae.getNested()) {
+			parentContract.put(ne, ae);
 			smtArgumentExpression(ne, pb);
 		}
 		pb.outdent().addCode("""

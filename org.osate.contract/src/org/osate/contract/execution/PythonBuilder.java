@@ -133,7 +133,12 @@ public class PythonBuilder {
 			if (!Strings.isEmpty(code.getSource())) {
 				txt = code.getSource() + term;
 			} else if (code.getInter() != null) {
-				txt = python.interpolateIString(context, code.getInter(), variables) + term;
+				txt = python.interpolateIString(context, code.getInter(), variables);// + term;
+				String argpath = code.getArgumentPath();
+				if (argpath.length() > 0) {
+					txt = txt.substring(0, txt.length() - 1) + ",'" + argpath + "')";
+				}
+				txt = txt + term;
 			}
 		}
 		if (!Strings.isEmpty(txt)) {
