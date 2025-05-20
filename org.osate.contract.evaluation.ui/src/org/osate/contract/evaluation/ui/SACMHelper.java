@@ -71,8 +71,8 @@ public final class SACMHelper {
 
 	public static ArgumentReasoning newAnalysis(final ArgumentPackage argPackage, final LangString name) {
 		final ArgumentReasoning analysis = Argumentation_Factory.eINSTANCE.createArgumentReasoning();
-		argPackage.getArgumentationElement().add(analysis);
-		analysis.setName(name);
-		return analysis;
+    	argPackage.getArgumentationElement().add(analysis);
+    	analysis.setName(name);
+    	return analysis;
 	}
 }
