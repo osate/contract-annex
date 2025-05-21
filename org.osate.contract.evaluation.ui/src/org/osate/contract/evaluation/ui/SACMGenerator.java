@@ -29,12 +29,17 @@ import org.osate.contract.contract.Source;
 import org.osate.contract.contract.VerificationPlan;
 
 import argumentation.ArgumentPackage;
+import argumentation.ArtifactReference;
 import argumentation.Claim;
+import artifact.ArtifactPackage;
+import artifact.Technique;
 import assuranceCase.AssuranceCasePackage;
 import base.LangString;
 
 final class SACMGenerator {
-	private final ArgumentPackage ap;
+	private final ArgumentPackage argumentPackage;
+	private final ArtifactPackage artifactPackage;
+
 	protected HashMap<Object, Object> parentContract = new HashMap<Object, Object>();
 
 	/*
@@ -46,6 +51,7 @@ final class SACMGenerator {
 	private final Map<String, AssumptionRecord> assumptionsToRecords = new HashMap<>();
 	private final Map<String, AnalysisRecord> analysesToRecords = new HashMap<>();
 	private final Map<String, ArgumentRecord> argumentsToRecords = new HashMap<>();
+	private final Map<String, ArgumentExprRecord> argumentExprToRecords = new HashMap<>();
 
 	// top-level claim has incoming edges from the list of sources
 	private final Map<Claim, List<Source>> vpClaimsEdges = new HashMap<>();
@@ -57,11 +63,14 @@ final class SACMGenerator {
 	private final Map<Claim, List<String>> analysisEdges = new HashMap<>();
 	// Claim has incoming edges from the list of claims; claims are indirectly referenced by argPath
 	private final Map<Claim, List<String>> contractEdges = new HashMap<>();
+	// Claim has incoming edges from the list of arguments; arguments are indirectly referenced by argPath
+	private final Map<Claim, List<String>> argumentEdges = new HashMap<>();
 	// Claim has incoming edges from the list of argument expressions; argument expressions are indirectly referenced by argPath
 	private final Map<Claim, List<String>> argumentExprEdges = new HashMap<>();
 
-	public SACMGenerator(final ArgumentPackage ap) {
-		this.ap = ap;
+	public SACMGenerator(final ArgumentPackage argPack, final ArtifactPackage artPack) {
+		this.argumentPackage = argPack;
+		this.artifactPackage = artPack;
 	}
 
 	public static final void createAssuraceCasePackage(final Resource sacmResource, final VerificationPlan vp) {
@@ -72,14 +81,20 @@ final class SACMGenerator {
 	}
 
 	private static void createAssurancePackage(final AssuranceCasePackage acp, final VerificationPlan vp) {
-		final LangString pName = SACMHelper.newLangString(SACMHelper.LANG_EN, "The Argument");
-		final ArgumentPackage ap = SACMHelper.newArgumentPackage(pName);
-		acp.getArgumentPackage().add(ap);
-		processVerificationPlan(ap, vp);
+		final ArgumentPackage argPack = SACMHelper
+				.newArgumentPackage(SACMHelper.newLangString(SACMHelper.LANG_EN, "The Argument"));
+		acp.getArgumentPackage().add(argPack);
+
+		final ArtifactPackage artPack = SACMHelper
+				.newArtifactPackage(SACMHelper.newLangString(SACMHelper.LANG_EN, "Artifacts"));
+		acp.getArtifactPackage().add(artPack);
+
+		processVerificationPlan(argPack, artPack, vp);
 	}
 
-	private static void processVerificationPlan(final ArgumentPackage ap, final VerificationPlan vp) {
-		final SACMGenerator generator = new SACMGenerator(ap);
+	private static void processVerificationPlan(final ArgumentPackage argPack, final ArtifactPackage artPack,
+			final VerificationPlan vp) {
+		final SACMGenerator generator = new SACMGenerator(argPack, artPack);
 		generator.buildSACM(vp);
 	}
 
@@ -144,7 +159,8 @@ final class SACMGenerator {
 	}
 
 	private Claim generateVerificationPlan(final VerificationPlan vp) {
-		final Claim vpClaim = SACMHelper.newClaim(ap, false, SACMHelper.newLangString(SACMHelper.LANG_EN, vp.getName()),
+		final Claim vpClaim = SACMHelper.newClaim(argumentPackage, false,
+				SACMHelper.newLangString(SACMHelper.LANG_EN, vp.getName()),
 				SACMHelper.newDescription(
 						SACMHelper.newMultiLangString(SACMHelper.newLangString(SACMHelper.LANG_EN, vp.getName()))));
 		vpClaimsEdges.put(vpClaim, vp.getClaims());
@@ -164,7 +180,7 @@ final class SACMGenerator {
 		}
 		final String argPath = getArgumentPath(contract);
 
-		final Claim contractClaim = SACMHelper.newClaim(ap, false,
+		final Claim contractClaim = SACMHelper.newClaim(argumentPackage, false,
 				SACMHelper.newLangString(SACMHelper.LANG_EN, argPath), SACMHelper.newDescription(
 						SACMHelper.newMultiLangString(SACMHelper.newLangString(SACMHelper.LANG_EN, description))));
 		contractsToClaims.put(contract, contractClaim);
@@ -212,7 +228,7 @@ final class SACMGenerator {
 //		return template.render();
 
 		// TODO: Deal with url/link and #result
-		final Claim assumptionClaim = SACMHelper.newClaim(ap, true,
+		final Claim assumptionClaim = SACMHelper.newClaim(argumentPackage, true,
 				SACMHelper.newLangString(SACMHelper.LANG_EN, argPath), SACMHelper.newDescription(
 						SACMHelper.newMultiLangString(SACMHelper.newLangString(SACMHelper.LANG_EN, argPath))));
 
@@ -221,7 +237,7 @@ final class SACMGenerator {
 		return assumptionClaim;
 	}
 
-	private Object generateAnalysis(final String argPath) {
+	private ArtifactReference generateAnalysis(final String argPath) {
 //		private static String generateAnalysis(String name) {
 //			var template = new ST("""
 //					%name%:
@@ -235,12 +251,21 @@ final class SACMGenerator {
 //			return template.render();
 
 		// TODO: Deal with url/link and #result
-		// TODO: What do we create???
-		final Object analysisNode = null;
+
+		final Technique analysisAsTechnique = SACMHelper.newTechnique(artifactPackage,
+				SACMHelper.newLangString(SACMHelper.LANG_EN, argPath), SACMHelper.newDescription(
+						SACMHelper.newMultiLangString(SACMHelper.newLangString(SACMHelper.LANG_EN, argPath))));
+
+		// Actually need a reference to the technique
+		final ArtifactReference ref = SACMHelper.newArtifactReference(argumentPackage,
+				SACMHelper.newLangString(SACMHelper.LANG_EN, argPath), SACMHelper.newDescription(
+						SACMHelper.newMultiLangString(SACMHelper.newLangString(SACMHelper.LANG_EN, argPath))));
+		// XXX: Probably deal with result here!
+		ref.getReferencedArtifactElement().add(analysisAsTechnique);
 
 		// Update record!
-		analysesToRecords.get(argPath).asNode = analysisNode;
-		return analysisNode;
+		analysesToRecords.get(argPath).asArtifactReference = ref;
+		return ref;
 	}
 
 	private Claim generateArgument(final Argument argument) {
@@ -254,7 +279,7 @@ final class SACMGenerator {
 			var source = toString(guarantee.getCode());
 			description = symbol + ' ' + source;
 		}
-		final Claim argumentClaim = SACMHelper.newClaim(ap, false,
+		final Claim argumentClaim = SACMHelper.newClaim(argumentPackage, false,
 				SACMHelper.newLangString(SACMHelper.LANG_EN, argPath), SACMHelper.newDescription(
 						SACMHelper.newMultiLangString(SACMHelper.newLangString(SACMHelper.LANG_EN, description))));
 
@@ -269,6 +294,40 @@ final class SACMGenerator {
 		// Updated record!
 		argumentsToRecords.get(argPath).asClaim = argumentClaim;
 		return argumentClaim;
+	}
+
+	private Claim generateArgumentExpression(final ArgumentExpression expression) {
+		final Argument containingArgument = EcoreUtil2.getContainerOfType(expression, Argument.class);
+		final String name = getArgumentExpressionName(containingArgument, expression);
+		final Claim argumentExprClaim = SACMHelper.newClaim(argumentPackage, false,
+				SACMHelper.newLangString(SACMHelper.LANG_EN, name), SACMHelper.newDescription(
+						SACMHelper.newMultiLangString(SACMHelper.newLangString(SACMHelper.LANG_EN, name))));
+
+		final List<String> supportingArguments = new ArrayList<>();
+		final List<String> supportingContracts = new ArrayList<>();
+		final List<String> supportingArgExprs = new ArrayList<>();
+		for (var argument : expression.getArguments()) {
+			parentContract.put(argument, expression);
+			var argargpath = getArgumentPath(argument);
+			supportingArguments.add(argargpath);// argument.getName());
+		}
+		for (var contract : expression.getContracts()) {
+			parentContract.put(contract, expression);
+			var contractargpath = getArgumentPath(contract);
+			supportingContracts.add(contractargpath);// contract.getName());
+		}
+		for (var nested : expression.getNested()) {
+			parentContract.put(nested, expression);
+			supportingArgExprs.add(getArgumentExpressionName(containingArgument, nested));
+		}
+
+		argumentEdges.put(argumentExprClaim, supportingArguments);
+		contractEdges.put(argumentExprClaim, supportingContracts);
+		argumentExprEdges.put(argumentExprClaim, supportingArgExprs);
+
+		// Updated record!
+		argumentsToRecords.get(name).asClaim = argumentExprClaim;
+		return argumentExprClaim;
 	}
 
 	// --
@@ -470,7 +529,7 @@ final class SACMGenerator {
 	}
 
 	// unchanged
-	private static String getArgumentExpressionName(Argument argument, ArgumentExpression expression) {
+	private String getArgumentExpressionName(Argument argument, ArgumentExpression expression) {
 		String expressionType;
 		if (expression instanceof ArgumentAnd) {
 			expressionType = "and";
@@ -524,7 +583,7 @@ final class SACMGenerator {
 	private static class AnalysisRecord {
 		// XXX: Might not need this?
 		public final Analysis analysis;
-		public Object asNode; // TODO: What is this?
+		public ArtifactReference asArtifactReference; // TODO: What is this?
 
 		public AnalysisRecord(final Analysis analysis) {
 			this.analysis = analysis;
@@ -538,6 +597,16 @@ final class SACMGenerator {
 
 		public ArgumentRecord(final Argument argument) {
 			this.argument = argument;
+		}
+	}
+
+	private static class ArgumentExprRecord {
+		// XXX: Might not need this?
+		public final ArgumentExpression argumentExpr;
+		public Claim asClaim;
+
+		public ArgumentExprRecord(final ArgumentExpression argumentExpr) {
+			this.argumentExpr = argumentExpr;
 		}
 	}
 }

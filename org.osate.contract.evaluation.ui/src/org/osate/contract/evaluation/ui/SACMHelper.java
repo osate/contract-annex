@@ -5,9 +5,14 @@ import java.util.Arrays;
 import argumentation.ArgumentPackage;
 import argumentation.ArgumentReasoning;
 import argumentation.Argumentation_Factory;
+import argumentation.ArtifactReference;
+import argumentation.AssertedEvidence;
 import argumentation.AssertedInference;
 import argumentation.AssertionDeclaration;
 import argumentation.Claim;
+import artifact.ArtifactPackage;
+import artifact.Artifact_Factory;
+import artifact.Technique;
 import assuranceCase.AssuranceCasePackage;
 import assuranceCase.AssuranceCase_Factory;
 import base.Base_Factory;
@@ -47,6 +52,12 @@ public final class SACMHelper {
 		return ap;
 	}
 
+	public static final ArtifactPackage newArtifactPackage(final LangString name) {
+		final ArtifactPackage ap = Artifact_Factory.eINSTANCE.createArtifactPackage();
+		ap.setName(name);
+		return ap;
+	}
+
 	public static Description newDescription(final MultiLangString content) {
 		final Description description = Base_Factory.eINSTANCE.createDescription();
 		description.setContent(content);
@@ -63,16 +74,40 @@ public final class SACMHelper {
 		return claim;
 	}
 
-	public static AssertedInference newInference(final ArgumentPackage argPackage) {
+	public static Technique newTechnique(final ArtifactPackage artPackage, final LangString name,
+			final Description description) {
+		final Technique technique = Artifact_Factory.eINSTANCE.createTechnique();
+		artPackage.getArtifactElement().add(technique);
+		technique.setName(name);
+		technique.setDescription(description);
+		return technique;
+	}
+
+	public static ArtifactReference newArtifactReference(final ArgumentPackage argPackage, final LangString name,
+			final Description description) {
+		final ArtifactReference ref = Argumentation_Factory.eINSTANCE.createArtifactReference();
+		argPackage.getArgumentationElement().add(ref);
+		ref.setName(name);
+		ref.setDescription(description);
+		return ref;
+	}
+
+	public static AssertedInference newAssertedInference(final ArgumentPackage argPackage) {
 		final AssertedInference inference = Argumentation_Factory.eINSTANCE.createAssertedInference();
 		argPackage.getArgumentationElement().add(inference);
 		return inference;
 	}
 
-	public static ArgumentReasoning newAnalysis(final ArgumentPackage argPackage, final LangString name) {
-		final ArgumentReasoning analysis = Argumentation_Factory.eINSTANCE.createArgumentReasoning();
-    	argPackage.getArgumentationElement().add(analysis);
-    	analysis.setName(name);
-    	return analysis;
+	public static AssertedEvidence newAssertedEvidence(final ArgumentPackage argPackage) {
+		final AssertedEvidence evidence = Argumentation_Factory.eINSTANCE.createAssertedEvidence();
+		argPackage.getArgumentationElement().add(evidence);
+		return evidence;
+	}
+
+	public static ArgumentReasoning newArgumentReasoning(final ArgumentPackage argPackage, final LangString name) {
+		final ArgumentReasoning reasoning = Argumentation_Factory.eINSTANCE.createArgumentReasoning();
+    	argPackage.getArgumentationElement().add(reasoning);
+    	reasoning.setName(name);
+    	return reasoning;
 	}
 }
