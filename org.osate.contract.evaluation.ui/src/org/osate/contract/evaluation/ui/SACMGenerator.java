@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.resource.Resource;
@@ -28,8 +29,11 @@ import org.osate.contract.contract.IStringVar;
 import org.osate.contract.contract.Source;
 import org.osate.contract.contract.VerificationPlan;
 
+import argumentation.ArgumentAsset;
 import argumentation.ArgumentPackage;
+import argumentation.ArgumentReasoning;
 import argumentation.ArtifactReference;
+import argumentation.AssertedRelationship;
 import argumentation.Claim;
 import artifact.ArtifactPackage;
 import artifact.Technique;
@@ -149,21 +153,88 @@ final class SACMGenerator {
 //			files.add(new YamlFile("CommonNodes", commonNodes));
 //		}
 
-		buildEdges();
+		addAllEdges(vpClaim);
 
 		return vpClaim;
 	}
 
-	private void buildEdges() {
-		// XXX: TO DO
+	private void addAllEdges(final Claim vpClaim) {
+//		// top-level claim has incoming edges from the list of sources
+//		private List<String> vpClaimsEdges;
+//		// top-level claim has incoming edges from the list of Contracts
+//		private List<String> vpContractEdges;
+//		// Claim has incoming edges from the list of Assumptions; assumptions are indirectly referenced by argPath
+//		private final Map<Claim, List<String>> assumptionEdges = new HashMap<>();
+//		// Claim has incoming edges from the list of analyses; analyses are indirectly referenced by argPath
+//		private final Map<Claim, List<String>> analysisEdges = new HashMap<>();
+//		// Claim has incoming edges from the list of claims; claims are indirectly referenced by argPath
+//		private final Map<Claim, List<String>> contractEdges = new HashMap<>();
+//		// Claim has incoming edges from the list of arguments; arguments are indirectly referenced by argPath
+//		private final Map<Claim, List<String>> argumentEdges = new HashMap<>();
+//		// Claim has incoming edges from the list of argument expressions; argument expressions are indirectly referenced by argPath
+//		private final Map<Claim, List<String>> argumentExprEdges = new HashMap<>();
 
-//		// add inference between vp and its claims
-//		final ArgumentReasoning analysis = SACMHelper.newAnalysis(ap,
-//				SACMHelper.newLangString(SACMHelper.LANG_EN, "TBD"));
-//		final AssertedInference inference = SACMHelper.newInference(ap);
-//		inference.getSource().addAll(assumed);
-//		inference.getTarget().add(vpClaim);
-//		inference.setReasoning(analysis);
+		generateEdgesToClaim(vpClaim, vpClaimsEdges, claimPathToClaim, SACMHelper::newAssertedInference, "assumptions");
+		generateEdgesToClaim(vpClaim, vpContractEdges, contractPathToClaim, SACMHelper::newAssertedInference,
+				"contracts");
+
+		// XXX: something wrong here: The created references don't have the same names as the edges
+//		generateEdgesToClaims(analysisEdges, analysisPathToArtifactReference, SACMHelper::newAssertedEvidence,
+//				"analyses");
+		generateEdgesToClaims(assumptionEdges, assumptionPathToClaim, SACMHelper::newAssertedInference, "assumptions");
+		generateEdgesToClaims(contractEdges, contractPathToClaim, SACMHelper::newAssertedInference, "contracts");
+		generateEdgesToClaims(argumentEdges, argumentPathToClaim, SACMHelper::newAssertedInference, "arguments");
+		generateEdgesToClaims(argumentExprEdges, argumentExprPathToClaim, SACMHelper::newAssertedInference,
+				"arg exprs");
+
+//		generateEdgesToClaims(analysisEdges, ana, "assumptions");
+
+	}
+
+//	// add inference between vp and its claims
+//	final ArgumentReasoning analysis = SACMHelper.newAnalysis(ap,
+//			SACMHelper.newLangString(SACMHelper.LANG_EN, "TBD"));
+//	final AssertedInference inference = SACMHelper.newInference(ap);
+//	inference.getSource().addAll(assumed);
+//	inference.getTarget().add(vpClaim);
+//	inference.setReasoning(analysis);
+
+	private <T extends ArgumentAsset> void generateEdgesToClaims(final Map<Claim, List<String>> claimEdges,
+			final Map<String, T> argPathToAsset,
+			final Function<ArgumentPackage, AssertedRelationship> assertionFunction, final String label) {
+		for (var entry : claimEdges.entrySet()) {
+			generateEdgesToClaim(entry.getKey(), entry.getValue(), argPathToAsset,
+					assertionFunction, label);
+		}
+	}
+
+//	private void generateEdgesToClaim(final Claim target, final List<String> sourceArgPaths,
+//			final Map<String, Claim> argPathToClaim, final String label) {
+//		final ArgumentReasoning reasoning = SACMHelper.newArgumentReasoning(argumentPackage,
+//				SACMHelper.newLangString(SACMHelper.LANG_EN, label));
+//		final AssertedInference inference = SACMHelper.newAssertedInference(argumentPackage);
+//		inference.setReasoning(reasoning);
+//		inference.getTarget().add(target);
+//
+//		for (final String argPath : sourceArgPaths) {
+//			final Claim source = argPathToClaim.get(argPath);
+//			inference.getSource().add(source);
+//		}
+//	}
+
+	private <T extends ArgumentAsset> void generateEdgesToClaim(final Claim target, final List<String> sourceArgPaths,
+			final Map<String, T> argPathToAsset,
+			final Function<ArgumentPackage, AssertedRelationship> assertionFunction, final String label) {
+		final ArgumentReasoning reasoning = SACMHelper.newArgumentReasoning(argumentPackage,
+				SACMHelper.newLangString(SACMHelper.LANG_EN, label));
+		final AssertedRelationship relationship = assertionFunction.apply(argumentPackage);
+		relationship.setReasoning(reasoning);
+		relationship.getTarget().add(target);
+
+		for (final String argPath : sourceArgPaths) {
+			final T source = argPathToAsset.get(argPath);
+			relationship.getSource().add(source);
+		}
 	}
 
 	private Claim generateVerificationPlan(final VerificationPlan vp) {
