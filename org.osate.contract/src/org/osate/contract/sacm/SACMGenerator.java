@@ -57,10 +57,12 @@ public final class SACMGenerator {
 	private final Map<String, Claim> argumentPathToClaim = new HashMap<>();
 	private final Map<String, Claim> argumentExprPathToClaim = new HashMap<>();
 
+
 	// top-level claim has incoming edges from the list of sources
 	private List<String> vpClaimsEdges;
 	// top-level claim has incoming edges from the list of Contracts
 	private List<String> vpContractEdges;
+
 	// Claim has incoming edges from the list of Assumptions; assumptions are indirectly referenced by argPath
 	private final Map<Claim, List<String>> assumptionEdges = new HashMap<>();
 	// Claim has incoming edges from the list of analyses; analyses are indirectly referenced by argPath
@@ -103,18 +105,22 @@ public final class SACMGenerator {
 	}
 
 	public Claim buildSACM(final VerificationPlan vp) {
+		/* This generates the top level portion of the argument. */
 		final Claim vpClaim = generateVerificationPlan(vp);
 		for (var claim : vp.getClaims()) {
 			generateClaim(claim, vp);
 		}
-		// XXX: One argument package?
-//		files.add(new YamlFile(verificationPlan.getName(), planNodes));
 
 		// --
 
 		final NodeCollector collector = new NodeCollector();
 		collector.collect(vp);
 		collector.contractNodes.forEach((contract, contractNodes) -> {
+			/*
+			 * YAML-GSN version creates a different file for each contract. Mostly that is
+			 * for graph-making convenience. But we could switch to a new ArgumentPackage
+			 * here if we wanted to.
+			 */
 			generateContract(contract);
 			for (var assumption : contractNodes.assumptions) {
 				generateAssumption(assumption);
@@ -122,23 +128,26 @@ public final class SACMGenerator {
 			for (var analysis : contractNodes.analyses) {
 				generateAnalysis(analysis);
 			}
-			// XXX: Another argument package?
-//			var argpath = getArgumentPath(contract);
-//			files.add(new YamlFile(argpath, nodes));
-
 		});
 		collector.argumentNodes.forEach((argument, argumentNodes) -> {
-			var nodes = new ArrayList<String>();
+			/*
+			 * YAML-GSN version creates a different file for each argument. Mostly that is
+			 * for graph-making convenience. But we could switch to a new ArgumentPackage
+			 * here if we wanted to.
+			 */
 			generateArgument(argument);
 			for (var expression : argumentNodes.argumentExpressions) {
 				generateArgumentExpression(expression);
 			}
-			// XXX: Another argument package?
-//			var argpath = getArgumentPath(argument);
-//			files.add(new YamlFile(argpath, nodes));
 		});
 
 		// --
+
+		/*
+		 * YAML-GSN version creates a new file for the common elements. Mostly that is
+		 * for graph-making convenience. But we could switch to a new ArgumentPackage
+		 * here if we wanted to.
+		 */
 
 		for (var assumption : collector.commonAssumptions) {
 			generateAssumption(assumption);
@@ -146,11 +155,12 @@ public final class SACMGenerator {
 		for (var analysis : collector.commonAnalyses) {
 			generateAnalysis(analysis);
 		}
-		// XXX: Another argument package?
-//		if (!commonNodes.isEmpty()) {
-//			files.add(new YamlFile("CommonNodes", commonNodes));
-//		}
 
+		/*
+		 * If we create multiple ArgumentPackages, the edge creation becomes a little
+		 * trickier because we will have store somewhere which package an edge should
+		 * be placed in.
+		 */
 		addAllEdges(vpClaim);
 
 		return vpClaim;
