@@ -1,4 +1,4 @@
-package org.osate.contract.evaluation.ui;
+package org.osate.contract.sacm;
 
 import java.util.Arrays;
 

@@ -1,4 +1,4 @@
-package org.osate.contract.evaluation.ui;
+package org.osate.contract.sacm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +40,7 @@ import artifact.Technique;
 import assuranceCase.AssuranceCasePackage;
 import base.LangString;
 
-final class SACMGenerator {
+public final class SACMGenerator {
 	private final ArgumentPackage argumentPackage;
 	private final ArtifactPackage artifactPackage;
 
@@ -187,7 +187,6 @@ final class SACMGenerator {
 		generateEdgesToClaims(argumentExprEdges, argumentExprPathToClaim, SACMHelper::newAssertedInference,
 				"arg exprs");
 
-//		generateEdgesToClaims(analysisEdges, ana, "assumptions");
 
 	}
 
@@ -233,7 +232,11 @@ final class SACMGenerator {
 
 		for (final String argPath : sourceArgPaths) {
 			final T source = argPathToAsset.get(argPath);
-			relationship.getSource().add(source);
+			if (source == null) {
+				System.out.println("Cannot find node for '" + argPath + "'");
+			} else {
+				relationship.getSource().add(source);
+			}
 		}
 	}
 

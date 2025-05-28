@@ -20,6 +20,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode;
 import org.osate.aadl2.modelsupport.resources.OsateResourceUtil;
 import org.osate.contract.contract.VerificationPlan;
+import org.osate.contract.sacm.SACMGenerator;
 
 public class GenerateSACMHandler extends AbstractHandler {
 	private static final String SACM_DIR = "sacm";
