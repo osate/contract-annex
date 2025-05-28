@@ -50,8 +50,6 @@ public final class SACMGenerator {
 	 * Need to create all the nodes before creating the edges, so need to maintain a list of
 	 * nodes that have been created and all the edges that need to be created.
 	 */
-//	private final Map<String, ContractRecord> contractToRecords = new HashMap<>();
-
 	private final Map<String, Claim> claimPathToClaim = new HashMap<>(); // N.B. ETMAC "claim" to SACM Claim
 	private final Map<String, Claim> contractPathToClaim = new HashMap<>();
 	private final Map<String, Claim> assumptionPathToClaim = new HashMap<>();
@@ -159,44 +157,18 @@ public final class SACMGenerator {
 	}
 
 	private void addAllEdges(final Claim vpClaim) {
-//		// top-level claim has incoming edges from the list of sources
-//		private List<String> vpClaimsEdges;
-//		// top-level claim has incoming edges from the list of Contracts
-//		private List<String> vpContractEdges;
-//		// Claim has incoming edges from the list of Assumptions; assumptions are indirectly referenced by argPath
-//		private final Map<Claim, List<String>> assumptionEdges = new HashMap<>();
-//		// Claim has incoming edges from the list of analyses; analyses are indirectly referenced by argPath
-//		private final Map<Claim, List<String>> analysisEdges = new HashMap<>();
-//		// Claim has incoming edges from the list of claims; claims are indirectly referenced by argPath
-//		private final Map<Claim, List<String>> contractEdges = new HashMap<>();
-//		// Claim has incoming edges from the list of arguments; arguments are indirectly referenced by argPath
-//		private final Map<Claim, List<String>> argumentEdges = new HashMap<>();
-//		// Claim has incoming edges from the list of argument expressions; argument expressions are indirectly referenced by argPath
-//		private final Map<Claim, List<String>> argumentExprEdges = new HashMap<>();
-
 		generateEdgesToClaim(vpClaim, vpClaimsEdges, claimPathToClaim, SACMHelper::newAssertedInference, "assumptions");
 		generateEdgesToClaim(vpClaim, vpContractEdges, contractPathToClaim, SACMHelper::newAssertedInference,
 				"contracts");
 
-		// XXX: something wrong here: The created references don't have the same names as the edges
-//		generateEdgesToClaims(analysisEdges, analysisPathToArtifactReference, SACMHelper::newAssertedEvidence,
-//				"analyses");
+		generateEdgesToClaims(analysisEdges, analysisPathToArtifactReference, SACMHelper::newAssertedEvidence,
+				"analyses");
 		generateEdgesToClaims(assumptionEdges, assumptionPathToClaim, SACMHelper::newAssertedInference, "assumptions");
 		generateEdgesToClaims(contractEdges, contractPathToClaim, SACMHelper::newAssertedInference, "contracts");
 		generateEdgesToClaims(argumentEdges, argumentPathToClaim, SACMHelper::newAssertedInference, "arguments");
 		generateEdgesToClaims(argumentExprEdges, argumentExprPathToClaim, SACMHelper::newAssertedInference,
 				"arg exprs");
-
-
 	}
-
-//	// add inference between vp and its claims
-//	final ArgumentReasoning analysis = SACMHelper.newAnalysis(ap,
-//			SACMHelper.newLangString(SACMHelper.LANG_EN, "TBD"));
-//	final AssertedInference inference = SACMHelper.newInference(ap);
-//	inference.getSource().addAll(assumed);
-//	inference.getTarget().add(vpClaim);
-//	inference.setReasoning(analysis);
 
 	private <T extends ArgumentAsset> void generateEdgesToClaims(final Map<Claim, List<String>> claimEdges,
 			final Map<String, T> argPathToAsset,
@@ -206,20 +178,6 @@ public final class SACMGenerator {
 					assertionFunction, label);
 		}
 	}
-
-//	private void generateEdgesToClaim(final Claim target, final List<String> sourceArgPaths,
-//			final Map<String, Claim> argPathToClaim, final String label) {
-//		final ArgumentReasoning reasoning = SACMHelper.newArgumentReasoning(argumentPackage,
-//				SACMHelper.newLangString(SACMHelper.LANG_EN, label));
-//		final AssertedInference inference = SACMHelper.newAssertedInference(argumentPackage);
-//		inference.setReasoning(reasoning);
-//		inference.getTarget().add(target);
-//
-//		for (final String argPath : sourceArgPaths) {
-//			final Claim source = argPathToClaim.get(argPath);
-//			inference.getSource().add(source);
-//		}
-//	}
 
 	private <T extends ArgumentAsset> void generateEdgesToClaim(final Claim target, final List<String> sourceArgPaths,
 			final Map<String, T> argPathToAsset,
@@ -669,54 +627,4 @@ public final class SACMGenerator {
 			return s.substring(0, paren);
 		}
 	}
-
-//	private static class SourceRecord {
-//		// XXX: Might not need this?
-//		public final Source source;
-//		public Claim asClaim;
-//
-//		public SourceRecord(final Source source) {
-//			this.source = source;
-//		}
-//	}
-//
-//	private static class AssumptionRecord {
-//		// XXX: Might not need this?
-//		public final AssumptionElement assumption;
-//		public Claim asClaim;
-//
-//		public AssumptionRecord(final AssumptionElement assumption) {
-//			this.assumption = assumption;
-//		}
-//	}
-//
-//	private static class AnalysisRecord {
-//		// XXX: Might not need this?
-//		public final Analysis analysis;
-//		public ArtifactReference asArtifactReference; // TODO: What is this?
-//
-//		public AnalysisRecord(final Analysis analysis) {
-//			this.analysis = analysis;
-//		}
-//	}
-//
-//	private static class ArgumentRecord {
-//		// XXX: Might not need this?
-//		public final Argument argument;
-//		public Claim asClaim;
-//
-//		public ArgumentRecord(final Argument argument) {
-//			this.argument = argument;
-//		}
-//	}
-//
-//	private static class ArgumentExprRecord {
-//		// XXX: Might not need this?
-//		public final ArgumentExpression argumentExpr;
-//		public Claim asClaim;
-//
-//		public ArgumentExprRecord(final ArgumentExpression argumentExpr) {
-//			this.argumentExpr = argumentExpr;
-//		}
-//	}
 }
