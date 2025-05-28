@@ -83,11 +83,9 @@ public class GenerateSACMHandler extends AbstractHandler {
 	}
 
 	private static URI getSACMModeURI(final VerificationPlan vp) {
-		final Resource res = vp.eResource();
-		final URI modeluri = res.getURI();
+		final URI projectURI = OsateResourceUtil
+				.toResourceURI(OsateResourceUtil.toIFile(vp.eResource().getURI()).getProject());
 		final String filename = vp.getName();
-		final URI path = modeluri.trimSegments(1);
-		URI instanceURI = path.appendSegment(SACM_DIR).appendSegment(filename).appendFileExtension(SACM_FILE_EXT);
-		return instanceURI;
+		return projectURI.appendSegment(SACM_DIR).appendSegment(filename).appendFileExtension(SACM_FILE_EXT);
 	}
 }
