@@ -23,7 +23,8 @@ Require-Bundle: org.eclipse.xtext,
  org.osate.xtext.aadl2,
  org.osate.aadl2,
  org.osate.aadl2.errormodel.instance,
- org.eclipse.urischeme
+ org.eclipse.urischeme,
+ org.eclipse.acme.sacm;bundle-version="2.3.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.osate.contract,
  org.osate.contract.contract,
@@ -35,6 +36,7 @@ Export-Package: org.osate.contract,
  org.osate.contract.gsn,
  org.osate.contract.parser.antlr,
  org.osate.contract.parser.antlr.internal,
+ org.osate.contract.sacm,
  org.osate.contract.scoping,
  org.osate.contract.serializer,
  org.osate.contract.services,
