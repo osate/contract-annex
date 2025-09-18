@@ -14,6 +14,7 @@ import org.osate.aadl2.AadlPackage;
 import org.osate.aadl2.DefaultAnnexLibrary;
 import org.osate.contract.contract.Contract;
 import org.osate.contract.contract.ContractLibrary;
+import org.osate.contract.contract.SingleValDeclaration;
 import org.osate.contract.tests.ContractInjectorProvider;
 import org.osate.testsupport.TestHelper;
 
@@ -41,12 +42,14 @@ public class CheckTypeArgumentTest {
 		with(issues.get(0), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("Invalid type argument 'Foo'", issue.getMessage());
-			assertEquals(EcoreUtil.getURI(contract.getQueries().get(1).getValue()), issue.getUriToProblem());
+			assertEquals(EcoreUtil.getURI(((SingleValDeclaration) contract.getQueries().get(1)).getValue()),
+					issue.getUriToProblem());
 		});
 		with(issues.get(1), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("Invalid type argument 'List'", issue.getMessage());
-			assertEquals(EcoreUtil.getURI(contract.getQueries().get(2).getValue()), issue.getUriToProblem());
+			assertEquals(EcoreUtil.getURI(((SingleValDeclaration) contract.getQueries().get(2)).getValue()),
+					issue.getUriToProblem());
 		});
 	}
 }

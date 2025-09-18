@@ -102,6 +102,8 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
       case ContractPackage.ARGUMENT_EXPRESSION: return createArgumentExpression();
       case ContractPackage.VERIFICATION_PLAN: return createVerificationPlan();
       case ContractPackage.QUERY: return createQuery();
+      case ContractPackage.SINGLE_DECLARATION: return createSingleDeclaration();
+      case ContractPackage.SINGLE_SYS_ML_DECLARATION: return createSingleSysMLDeclaration();
       case ContractPackage.SINGLE_VAL_DECLARATION: return createSingleValDeclaration();
       case ContractPackage.TUPLE_NAME: return createTupleName();
       case ContractPackage.EXPRESSION: return createExpression();
@@ -340,6 +342,30 @@ public class ContractFactoryImpl extends EFactoryImpl implements ContractFactory
   {
     QueryImpl query = new QueryImpl();
     return query;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public SingleDeclaration createSingleDeclaration()
+  {
+    SingleDeclarationImpl singleDeclaration = new SingleDeclarationImpl();
+    return singleDeclaration;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public SingleSysMLDeclaration createSingleSysMLDeclaration()
+  {
+    SingleSysMLDeclarationImpl singleSysMLDeclaration = new SingleSysMLDeclarationImpl();
+    return singleSysMLDeclaration;
   }
 
   /**

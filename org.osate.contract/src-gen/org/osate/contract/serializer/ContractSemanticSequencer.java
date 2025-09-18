@@ -84,6 +84,7 @@ import org.osate.contract.contract.PropertyLookup;
 import org.osate.contract.contract.RootExpression;
 import org.osate.contract.contract.SelfExpression;
 import org.osate.contract.contract.SingleParameter;
+import org.osate.contract.contract.SingleSysMLDeclaration;
 import org.osate.contract.contract.SingleValDeclaration;
 import org.osate.contract.contract.Source;
 import org.osate.contract.contract.TupleDeclaration;
@@ -304,6 +305,9 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 				return; 
 			case ContractPackage.SINGLE_PARAMETER:
 				sequence_SingleParameter(context, (SingleParameter) semanticObject); 
+				return; 
+			case ContractPackage.SINGLE_SYS_ML_DECLARATION:
+				sequence_SingleSysMLDeclaration(context, (SingleSysMLDeclaration) semanticObject); 
 				return; 
 			case ContractPackage.SINGLE_VAL_DECLARATION:
 				sequence_SingleValDeclaration(context, (SingleValDeclaration) semanticObject); 
@@ -700,7 +704,7 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	 *     IStringInter returns IStringVar
 	 *
 	 * Constraint:
-	 *     (direct?=':'? ((domain=[Domain|ID]? query=[SingleValDeclaration|ID]) | predefined=Predefined))
+	 *     (direct?=':'? ((domain=[Domain|ID]? query=[SingleDeclaration|ID]) | predefined=Predefined))
 	 * </pre>
 	 */
 	protected void sequence_IStringInter(ISerializationContext context, IStringVar semanticObject) {
@@ -945,9 +949,37 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 	/**
 	 * <pre>
 	 * Contexts:
+	 *     Element returns SingleSysMLDeclaration
+	 *     NamedElement returns SingleSysMLDeclaration
+	 *     Query returns SingleSysMLDeclaration
+	 *     SingleDeclaration returns SingleSysMLDeclaration
+	 *     SingleSysMLDeclaration returns SingleSysMLDeclaration
+	 *
+	 * Constraint:
+	 *     (name=ID value=STRING)
+	 * </pre>
+	 */
+	protected void sequence_SingleSysMLDeclaration(ISerializationContext context, SingleSysMLDeclaration semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, Aadl2Package.eINSTANCE.getNamedElement_Name()) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, Aadl2Package.eINSTANCE.getNamedElement_Name()));
+			if (transientValues.isValueTransient(semanticObject, ContractPackage.Literals.SINGLE_SYS_ML_DECLARATION__VALUE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ContractPackage.Literals.SINGLE_SYS_ML_DECLARATION__VALUE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getSingleSysMLDeclarationAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getSingleSysMLDeclarationAccess().getValueSTRINGTerminalRuleCall_3_0(), semanticObject.getValue());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
 	 *     Element returns SingleValDeclaration
 	 *     NamedElement returns SingleValDeclaration
 	 *     Query returns SingleValDeclaration
+	 *     SingleDeclaration returns SingleValDeclaration
 	 *     SingleValDeclaration returns SingleValDeclaration
 	 *
 	 * Constraint:
@@ -958,8 +990,8 @@ public class ContractSemanticSequencer extends PropertiesSemanticSequencer {
 		if (errorAcceptor != null) {
 			if (transientValues.isValueTransient(semanticObject, Aadl2Package.eINSTANCE.getNamedElement_Name()) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, Aadl2Package.eINSTANCE.getNamedElement_Name()));
-			if (transientValues.isValueTransient(semanticObject, ContractPackage.Literals.QUERY__VALUE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ContractPackage.Literals.QUERY__VALUE));
+			if (transientValues.isValueTransient(semanticObject, ContractPackage.Literals.SINGLE_VAL_DECLARATION__VALUE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ContractPackage.Literals.SINGLE_VAL_DECLARATION__VALUE));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getSingleValDeclarationAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());

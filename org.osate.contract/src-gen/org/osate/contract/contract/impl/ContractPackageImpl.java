@@ -74,7 +74,9 @@ import org.osate.contract.contract.PropertyLookup;
 import org.osate.contract.contract.Query;
 import org.osate.contract.contract.RootExpression;
 import org.osate.contract.contract.SelfExpression;
+import org.osate.contract.contract.SingleDeclaration;
 import org.osate.contract.contract.SingleParameter;
+import org.osate.contract.contract.SingleSysMLDeclaration;
 import org.osate.contract.contract.SingleValDeclaration;
 import org.osate.contract.contract.Source;
 import org.osate.contract.contract.StringLiteral;
@@ -189,6 +191,20 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   private EClass queryEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass singleDeclarationEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass singleSysMLDeclarationEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -941,9 +957,31 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
    * @generated
    */
   @Override
-  public EReference getQuery_Value()
+  public EClass getSingleDeclaration()
   {
-    return (EReference)queryEClass.getEStructuralFeatures().get(0);
+    return singleDeclarationEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getSingleSysMLDeclaration()
+  {
+    return singleSysMLDeclarationEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getSingleSysMLDeclaration_Value()
+  {
+    return (EAttribute)singleSysMLDeclarationEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -955,6 +993,17 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
   public EClass getSingleValDeclaration()
   {
     return singleValDeclarationEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getSingleValDeclaration_Value()
+  {
+    return (EReference)singleValDeclarationEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1329,6 +1378,17 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
   public EReference getTupleDeclaration_Names()
   {
     return (EReference)tupleDeclarationEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getTupleDeclaration_Value()
+  {
+    return (EReference)tupleDeclarationEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1736,9 +1796,14 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     createEReference(verificationPlanEClass, VERIFICATION_PLAN__CONTRACTS);
 
     queryEClass = createEClass(QUERY);
-    createEReference(queryEClass, QUERY__VALUE);
+
+    singleDeclarationEClass = createEClass(SINGLE_DECLARATION);
+
+    singleSysMLDeclarationEClass = createEClass(SINGLE_SYS_ML_DECLARATION);
+    createEAttribute(singleSysMLDeclarationEClass, SINGLE_SYS_ML_DECLARATION__VALUE);
 
     singleValDeclarationEClass = createEClass(SINGLE_VAL_DECLARATION);
+    createEReference(singleValDeclarationEClass, SINGLE_VAL_DECLARATION__VALUE);
 
     tupleNameEClass = createEClass(TUPLE_NAME);
 
@@ -1790,6 +1855,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
 
     tupleDeclarationEClass = createEClass(TUPLE_DECLARATION);
     createEReference(tupleDeclarationEClass, TUPLE_DECLARATION__NAMES);
+    createEReference(tupleDeclarationEClass, TUPLE_DECLARATION__VALUE);
 
     orExpressionEClass = createEClass(OR_EXPRESSION);
     createEReference(orExpressionEClass, OR_EXPRESSION__LEFT);
@@ -1875,8 +1941,11 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     argumentEClass.getESuperTypes().add(this.getContractElement());
     verificationPlanEClass.getESuperTypes().add(this.getContractElement());
     queryEClass.getESuperTypes().add(theAadl2Package.getElement());
-    singleValDeclarationEClass.getESuperTypes().add(theAadl2Package.getNamedElement());
+    singleDeclarationEClass.getESuperTypes().add(theAadl2Package.getNamedElement());
+    singleSysMLDeclarationEClass.getESuperTypes().add(this.getQuery());
+    singleSysMLDeclarationEClass.getESuperTypes().add(this.getSingleDeclaration());
     singleValDeclarationEClass.getESuperTypes().add(this.getQuery());
+    singleValDeclarationEClass.getESuperTypes().add(this.getSingleDeclaration());
     tupleNameEClass.getESuperTypes().add(theAadl2Package.getNamedElement());
     lambdaEClass.getESuperTypes().add(theAadl2Package.getElement());
     parameterEClass.getESuperTypes().add(theAadl2Package.getElement());
@@ -1959,9 +2028,14 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     initEReference(getVerificationPlan_Contracts(), this.getContract(), null, "contracts", null, 0, -1, VerificationPlan.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(queryEClass, Query.class, "Query", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getQuery_Value(), this.getExpression(), null, "value", null, 0, 1, Query.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(singleDeclarationEClass, SingleDeclaration.class, "SingleDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(singleSysMLDeclarationEClass, SingleSysMLDeclaration.class, "SingleSysMLDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getSingleSysMLDeclaration_Value(), theEcorePackage.getEString(), "value", null, 0, 1, SingleSysMLDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(singleValDeclarationEClass, SingleValDeclaration.class, "SingleValDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSingleValDeclaration_Value(), this.getExpression(), null, "value", null, 0, 1, SingleValDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(tupleNameEClass, TupleName.class, "TupleName", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -1991,7 +2065,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
     initEClass(iStringVarEClass, IStringVar.class, "IStringVar", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getIStringVar_Direct(), theEcorePackage.getEBoolean(), "direct", null, 0, 1, IStringVar.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getIStringVar_Domain(), this.getDomain(), null, "domain", null, 0, 1, IStringVar.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getIStringVar_Query(), this.getSingleValDeclaration(), null, "query", null, 0, 1, IStringVar.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getIStringVar_Query(), this.getSingleDeclaration(), null, "query", null, 0, 1, IStringVar.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getIStringVar_Predefined(), this.getPredefined(), "predefined", null, 0, 1, IStringVar.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(contractAssumptionEClass, ContractAssumption.class, "ContractAssumption", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2013,6 +2087,7 @@ public class ContractPackageImpl extends EPackageImpl implements ContractPackage
 
     initEClass(tupleDeclarationEClass, TupleDeclaration.class, "TupleDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getTupleDeclaration_Names(), this.getTupleName(), null, "names", null, 0, -1, TupleDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getTupleDeclaration_Value(), this.getExpression(), null, "value", null, 0, 1, TupleDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(orExpressionEClass, OrExpression.class, "OrExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getOrExpression_Left(), this.getExpression(), null, "left", null, 0, 1, OrExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

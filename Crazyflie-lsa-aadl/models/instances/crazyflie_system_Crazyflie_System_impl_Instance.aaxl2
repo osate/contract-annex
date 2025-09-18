@@ -954,7 +954,7 @@
               <minimum xsi:type="aadl2:IntegerLiteral" value="10">
                 <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
               </minimum>
-              <maximum xsi:type="aadl2:IntegerLiteral" value="50">
+              <maximum xsi:type="aadl2:IntegerLiteral" value="10">
                 <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
               </maximum>
             </ownedValue>
@@ -1013,7 +1013,7 @@
               <minimum xsi:type="aadl2:IntegerLiteral" value="10">
                 <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
               </minimum>
-              <maximum xsi:type="aadl2:IntegerLiteral" value="50">
+              <maximum xsi:type="aadl2:IntegerLiteral" value="10">
                 <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
               </maximum>
             </ownedValue>
@@ -1075,7 +1075,7 @@
               <minimum xsi:type="aadl2:IntegerLiteral" value="10">
                 <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
               </minimum>
-              <maximum xsi:type="aadl2:IntegerLiteral" value="20">
+              <maximum xsi:type="aadl2:IntegerLiteral" value="10">
                 <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
               </maximum>
             </ownedValue>
@@ -1125,10 +1125,10 @@
           <property href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
           <ownedValue>
             <ownedValue xsi:type="aadl2:RangeValue">
-              <minimum xsi:type="aadl2:IntegerLiteral" value="100">
+              <minimum xsi:type="aadl2:IntegerLiteral" value="50">
                 <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
               </minimum>
-              <maximum xsi:type="aadl2:IntegerLiteral" value="200">
+              <maximum xsi:type="aadl2:IntegerLiteral" value="50">
                 <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
               </maximum>
             </ownedValue>

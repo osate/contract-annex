@@ -37,14 +37,19 @@ def isResponseTimeSchedulable(boundThreads,error0):
 	
 def areAllPrioritiesSet(boundThreads,priorities,names,error0):
 	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
-	print("checking if all threads have priorities")
+	print("checking if all threads have priorities for: "+str(len(boundThreads))+" processors")
 	for p in range(len(boundThreads)):
 		threads = boundThreads[p][2]
+		print("checking processor: "+boundThreads[p][1])
 		for i in range(len(threads)):
+			print("checking thread: "+threads[i][1])
 			if threads[i][4] is None:
 				addError(error0,"{"+str(threads[i][0])+"}thread " + threads[i][1] + " does not have priority ")
 				print("Thread "+threads[i][1]+" does not have a priority assigned")
 				return False
+			else:
+				print("Thread "+threads[i][1]+" has a priority assigned")
+	print("Returning True")
 	return True
 	#if len(priorities) == len(names):
 	#	for i in range(len(priorities)):
@@ -52,6 +57,19 @@ def areAllPrioritiesSet(boundThreads,priorities,names,error0):
 	#			return False
 	#	return True
 	#return False
+
+def areAllPeriodsSet(boundThreads,priorities,names,error0):
+	# [(p, p.name, [(th, th.name, th.period, th.wcet, th.prio, th.deadline)])]
+	print("checking if all threads have periods")
+	for p in range(len(boundThreads)):
+		threads = boundThreads[p][2]
+		for i in range(len(threads)):
+			if threads[i][2] is None:
+				addError(error0,"{"+str(threads[i][0])+"}thread " + threads[i][1] + " does not have period ")
+				print("Thread "+threads[i][1]+" does not have a period assigned")
+				return False
+	return True
+
 	
 def areAllThreadsPeriodic(threads, threadActivations, names,error0):
 	for i in range(len(threads)):
@@ -88,6 +106,7 @@ def areAllDeadlinesConstrained(threads,periods,deadlines,names,error0):
 	return True
 	
 def allProcessorHarmonicBoundSchedulable(boundThreads,error0):
+	print("EXECUTING allProcessorHarmonicBoundSchedulable")
 	# [(p, p.name, [(th, th.name, th.period, th.wcet)])]
 	for i in range(len(boundThreads)):
 		util=0.0
@@ -96,6 +115,8 @@ def allProcessorHarmonicBoundSchedulable(boundThreads,error0):
 		if util > 1.0:
 			addError(error0,"{"+str(boundThreads[i][0])+"}processor "+boundThreads[i][1]+" workload exceeds 100% bound ")
 			return False
+		else:
+			addError(info0,"{"+str(boundThreads[i][0])+"}processor Schedulable (Harmonic Bound)")
 	print("allProcessorsHarmonicBoundSchedulable=TRUE")
 	return True
 
@@ -151,6 +172,7 @@ def z3getRMPrioritiesConstraints(periods, priorities, names):
 	return "And("+rmconstraints +"+"+periodconstraints+"+"+prioritiesconstraints+")"
 
 def allProcessorNonHarmonicBoundSchedulable(boundThreads,error0):
+	print("EXECUTING all processor non harmonic bound schedulable")
 	# [(p, p.name, [(th, th.name, th.period, th.wcet)])]
 	for i in range(len(boundThreads)):
 		util=0.0
@@ -159,6 +181,8 @@ def allProcessorNonHarmonicBoundSchedulable(boundThreads,error0):
 		if util > 0.69:
 			addError(error0,"{"+str(boundThreads[i][0])+"}processor "+boundThreads[i][1]+" workload exceeds 69% bound ")
 			return False
+		else:
+			addError(info0,"{"+str(boundThreads[i][0])+"}processor "+boundThreads[i][1]+" Schedulable (Non-Harmonic Bound)")
 	print("allProcessorsNonHarmonicBoundSchedulable=TRUE")
 	return True
 
@@ -494,6 +518,10 @@ def isE2EFlowProbabilityOfFailureMet(replicatede2eflows,error0):
 			else:
 				addError(info0,"{"+str(replicatede2eflows[i][0])+"}Reliability of replicated flow :"+str(1-probcutsets)+" meet or exceeds its target: "+str(replicatede2eflows[i][1]))
 	return True
+	
+def testSysMLVariable(testvar, error0):
+	print("sysval: "+testvar)
+	return True
 
 def emptyAnalysis():
 	return True
@@ -538,6 +566,7 @@ domain synchronization {
 
 domain schedulability {
 	queries
+		sysmlval testvar = 'test';
 		val threads = root.allSubcomponents.filter { 
 			s -> s.isThread
 		};
@@ -682,7 +711,8 @@ contract RMPrioritiesContract {
 	domains
 		schedulability;
 	input assumptions
-		'''areAllPrioritiesSet(${boundThreads$},${priorities$}, ${names$},error0)''';			
+		'''areAllPrioritiesSet(${boundThreads$},${priorities$}, ${names$},error0)''';
+		'''areAllPeriodsSet(${boundThreads$},${priorities$}, ${names$},error0)''';			
 	guarantee
 		<=>`And([(Periods[i]<Periods[j]) == (Priorities[i]>Priorities[j]) for i in range(len(Periods)-1) for j in range(i+1,len(Periods))])`;
 	analysis
@@ -716,6 +746,16 @@ contract RMANonHarmonicBoundContract {
 		<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
 	analysis
 		'''allProcessorNonHarmonicBoundSchedulable(${boundThreads$},error0)''';
+}
+
+contract TestSyMLVariablesContract {
+	domains
+		schedulability;
+	assumptions
+	guarantee
+		<=> `True`;
+	analysis
+		'''testSysMLVariable(${testvar$}, error0)'''; 
 }
 
 argument schedulabilityArgument {

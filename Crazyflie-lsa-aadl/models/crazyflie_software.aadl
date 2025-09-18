@@ -89,7 +89,7 @@ public
     Priority => 2;
     Dispatch_Protocol => Sporadic;
     Period => 100 us;
-    Compute_Execution_Time => 10 us .. 50 us;
+    Compute_Execution_Time => 10 us .. 10 us;
   end CRTP_Tx_Task;
 
   thread CRTP_Rx_Task
@@ -102,7 +102,7 @@ public
     Priority => 2;
     Dispatch_Protocol => Sporadic;
     Period => 100 us;
-    Compute_Execution_Time => 10 us .. 50 us;
+    Compute_Execution_Time => 10 us .. 10 us;
   end CRTP_Rx_Task;
 
   thread Power_Management
@@ -110,7 +110,7 @@ public
     Priority => 2;
     Dispatch_Protocol => Periodic;
     Period => 50 us;
-    Compute_Execution_Time => 10 us .. 20 us;
+    Compute_Execution_Time => 10 us .. 10 us;
   end Power_Management;
 
   thread Main_Loop
@@ -133,7 +133,7 @@ public
     Priority => 1;
     Dispatch_Protocol => Periodic;
     Period => 200 us;
-    Compute_Execution_Time => 100 us .. 200 us;
+    Compute_Execution_Time => 50 us .. 50 us;
   end Main_Loop;
 
 end Crazyflie_Software;

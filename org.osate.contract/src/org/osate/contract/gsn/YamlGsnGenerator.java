@@ -24,6 +24,8 @@ import org.osate.contract.contract.Contract;
 import org.osate.contract.contract.ContractAssumption;
 import org.osate.contract.contract.IStringLiteral;
 import org.osate.contract.contract.IStringVar;
+import org.osate.contract.contract.SingleSysMLDeclaration;
+import org.osate.contract.contract.SingleValDeclaration;
 import org.osate.contract.contract.Source;
 import org.osate.contract.contract.VerificationPlan;
 import org.stringtemplate.v4.ST;
@@ -324,7 +326,14 @@ public final class YamlGsnGenerator {
 							result.append(stringVar.getDomain().getName());
 							result.append("::");
 						}
-						result.append(stringVar.getQuery().getName());
+						var q = stringVar.getQuery();
+						var name1 = switch (q) {
+						case SingleValDeclaration decl -> decl.getName();
+						case SingleSysMLDeclaration decl -> decl.getName();
+						default -> "";
+						};
+
+						result.append(name1);
 					} else {
 						result.append(stringVar.getPredefined());
 					}

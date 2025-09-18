@@ -172,6 +172,24 @@ public interface ContractFactory extends EFactory
   Query createQuery();
 
   /**
+   * Returns a new object of class '<em>Single Declaration</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Single Declaration</em>'.
+   * @generated
+   */
+  SingleDeclaration createSingleDeclaration();
+
+  /**
+   * Returns a new object of class '<em>Single Sys ML Declaration</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Single Sys ML Declaration</em>'.
+   * @generated
+   */
+  SingleSysMLDeclaration createSingleSysMLDeclaration();
+
+  /**
    * Returns a new object of class '<em>Single Val Declaration</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

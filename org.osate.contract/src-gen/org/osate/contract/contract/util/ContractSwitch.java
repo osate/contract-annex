@@ -218,12 +218,33 @@ public class ContractSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case ContractPackage.SINGLE_DECLARATION:
+      {
+        SingleDeclaration singleDeclaration = (SingleDeclaration)theEObject;
+        T result = caseSingleDeclaration(singleDeclaration);
+        if (result == null) result = caseNamedElement(singleDeclaration);
+        if (result == null) result = caseElement(singleDeclaration);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ContractPackage.SINGLE_SYS_ML_DECLARATION:
+      {
+        SingleSysMLDeclaration singleSysMLDeclaration = (SingleSysMLDeclaration)theEObject;
+        T result = caseSingleSysMLDeclaration(singleSysMLDeclaration);
+        if (result == null) result = caseQuery(singleSysMLDeclaration);
+        if (result == null) result = caseSingleDeclaration(singleSysMLDeclaration);
+        if (result == null) result = caseNamedElement(singleSysMLDeclaration);
+        if (result == null) result = caseElement(singleSysMLDeclaration);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case ContractPackage.SINGLE_VAL_DECLARATION:
       {
         SingleValDeclaration singleValDeclaration = (SingleValDeclaration)theEObject;
         T result = caseSingleValDeclaration(singleValDeclaration);
-        if (result == null) result = caseNamedElement(singleValDeclaration);
         if (result == null) result = caseQuery(singleValDeclaration);
+        if (result == null) result = caseSingleDeclaration(singleValDeclaration);
+        if (result == null) result = caseNamedElement(singleValDeclaration);
         if (result == null) result = caseElement(singleValDeclaration);
         if (result == null) result = defaultCase(theEObject);
         return result;
@@ -677,6 +698,38 @@ public class ContractSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseQuery(Query object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Single Declaration</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Single Declaration</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSingleDeclaration(SingleDeclaration object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Single Sys ML Declaration</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Single Sys ML Declaration</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSingleSysMLDeclaration(SingleSysMLDeclaration object)
   {
     return null;
   }

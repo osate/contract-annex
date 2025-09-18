@@ -36,7 +36,7 @@ import org.osate.contract.contract.ContractPackage;
 import org.osate.contract.contract.Domain;
 import org.osate.contract.contract.IStringVar;
 import org.osate.contract.contract.Predefined;
-import org.osate.contract.contract.SingleValDeclaration;
+import org.osate.contract.contract.SingleDeclaration;
 
 /**
  * <!-- begin-user-doc -->
@@ -94,7 +94,7 @@ public class IStringVarImpl extends IStringPartImpl implements IStringVar
    * @generated
    * @ordered
    */
-  protected SingleValDeclaration query;
+  protected SingleDeclaration query;
 
   /**
    * The default value of the '{@link #getPredefined() <em>Predefined</em>}' attribute.
@@ -213,12 +213,12 @@ public class IStringVarImpl extends IStringPartImpl implements IStringVar
    * @generated
    */
   @Override
-  public SingleValDeclaration getQuery()
+  public SingleDeclaration getQuery()
   {
     if (query != null && query.eIsProxy())
     {
       InternalEObject oldQuery = (InternalEObject)query;
-      query = (SingleValDeclaration)eResolveProxy(oldQuery);
+      query = (SingleDeclaration)eResolveProxy(oldQuery);
       if (query != oldQuery)
       {
         if (eNotificationRequired())
@@ -233,7 +233,7 @@ public class IStringVarImpl extends IStringPartImpl implements IStringVar
    * <!-- end-user-doc -->
    * @generated
    */
-  public SingleValDeclaration basicGetQuery()
+  public SingleDeclaration basicGetQuery()
   {
     return query;
   }
@@ -244,9 +244,9 @@ public class IStringVarImpl extends IStringPartImpl implements IStringVar
    * @generated
    */
   @Override
-  public void setQuery(SingleValDeclaration newQuery)
+  public void setQuery(SingleDeclaration newQuery)
   {
-    SingleValDeclaration oldQuery = query;
+    SingleDeclaration oldQuery = query;
     query = newQuery;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.ISTRING_VAR__QUERY, oldQuery, query));
@@ -318,7 +318,7 @@ public class IStringVarImpl extends IStringPartImpl implements IStringVar
         setDomain((Domain)newValue);
         return;
       case ContractPackage.ISTRING_VAR__QUERY:
-        setQuery((SingleValDeclaration)newValue);
+        setQuery((SingleDeclaration)newValue);
         return;
       case ContractPackage.ISTRING_VAR__PREDEFINED:
         setPredefined((Predefined)newValue);
@@ -344,7 +344,7 @@ public class IStringVarImpl extends IStringPartImpl implements IStringVar
         setDomain((Domain)null);
         return;
       case ContractPackage.ISTRING_VAR__QUERY:
-        setQuery((SingleValDeclaration)null);
+        setQuery((SingleDeclaration)null);
         return;
       case ContractPackage.ISTRING_VAR__PREDEFINED:
         setPredefined(PREDEFINED_EDEFAULT);

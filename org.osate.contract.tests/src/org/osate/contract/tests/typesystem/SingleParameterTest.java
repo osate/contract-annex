@@ -39,6 +39,7 @@ import org.osate.contract.contract.Contract;
 import org.osate.contract.contract.ContractLibrary;
 import org.osate.contract.contract.MemberCall;
 import org.osate.contract.contract.SingleParameter;
+import org.osate.contract.contract.SingleValDeclaration;
 import org.osate.contract.tests.ContractInjectorProvider;
 import org.osate.contract.typing.ContractTypeSystem;
 import org.osate.testsupport.TestHelper;
@@ -68,19 +69,19 @@ public class SingleParameterTest {
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		assertEquals(3, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
-			var call = (MemberCall) query.getValue();
+			var call = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var parameter = (SingleParameter) call.getLambda().getParameter();
 			var type = typeSystem.namedType(parameter).getValue();
 			assertEquals("ComponentInstance", type.toString());
 		});
 		with(contract.getQueries().get(1), query -> {
-			var call = (MemberCall) query.getValue();
+			var call = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var parameter = (SingleParameter) call.getLambda().getParameter();
 			var type = typeSystem.namedType(parameter).getValue();
 			assertEquals("ComponentInstance", type.toString());
 		});
 		with(contract.getQueries().get(2), query -> {
-			var call = (MemberCall) query.getValue();
+			var call = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var parameter = (SingleParameter) call.getLambda().getParameter();
 			var type = typeSystem.namedType(parameter).getValue();
 			assertEquals("ComponentInstance", type.toString());

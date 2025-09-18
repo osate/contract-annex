@@ -63,6 +63,13 @@ public class ScriptRunner {
 
 			ScriptResult sresult = engine.execute(pyCode);
 			engine.schedule();
+			try {
+				// Wait for the execution to finish
+				engine.joinEngine();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			String o = sresult.toString().trim();
 			var res = o.toLowerCase().startsWith("true");
 

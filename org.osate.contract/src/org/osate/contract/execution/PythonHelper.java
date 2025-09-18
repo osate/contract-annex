@@ -42,8 +42,13 @@ import org.osate.contract.contract.IString;
 import org.osate.contract.contract.IStringLiteral;
 import org.osate.contract.contract.IStringVar;
 import org.osate.contract.contract.Predefined;
+import org.osate.contract.contract.Query;
+import org.osate.contract.contract.SingleSysMLDeclaration;
+import org.osate.contract.contract.SingleValDeclaration;
+import org.osate.contract.contract.impl.SingleSysMLDeclarationImpl;
 import org.osate.contract.tuples.Tuple;
 import org.osate.contract.typing.ContractInterpreter;
+import org.osate.contract.uml.SysMLQueryInterpreter;
 
 public class PythonHelper {
 
@@ -54,6 +59,8 @@ public class PythonHelper {
 			.get(ContractInterpreter.class);
 
 	private InstanceObjectIDMapper ioid = null;
+
+	SysMLQueryInterpreter sysmlInterpreter = new SysMLQueryInterpreter();
 
 	public static PythonHelper get() {
 		return INSTANCE;
@@ -73,6 +80,7 @@ public class PythonHelper {
 		var root = (SystemInstance) context.eResource().getContents().get(0);
 		ioid = InstanceObjectIDMapper.getMapper(root);
 
+		// TODO:Dio:sysmlv1:execute the sysval replacement here
 		for (var part : is.getParts()) {
 			if (part instanceof IStringLiteral literal) {
 				sb.append(literal.getValue());
@@ -85,23 +93,36 @@ public class PythonHelper {
 					}
 				} else {
 					var q = svar.getQuery();
-					var result = queryInterpreter.evaluateQuery(env, q);
-					if (result.failed()) {
-						System.out.println(result.getRuleFailedException());
+
+					if (q instanceof SingleSysMLDeclarationImpl decl) {
+//						String value = sysmlInterpreter.parseAndExecuteQuery(decl.getName(), decl.getValue());
+//						decl.setValue(value);
+						sb.append(decl.getValue());
 					} else {
-						Object o = result.getValue().get(q.getName());
-						if (svar.isDirect()) {
-							if (variables.containsKey(q.getName())) {
-								if (variables.get(q.getName()) != o) {
-									throw new IllegalArgumentException("Inconsistent value for query " + q.getName());
-								}
-							} else {
-								variables.put(q.getName(), o);
-							}
-							sb.append(q.getName());
+						var result = queryInterpreter.evaluateQuery(env, (Query) q);
+						if (result.failed()) {
+							System.out.println(result.getRuleFailedException());
 						} else {
-							var value = toPythonString(o);
-							sb.append(value);
+							var name1 = switch (q) {
+							case SingleValDeclaration decl -> decl.getName();
+							case SingleSysMLDeclaration decl -> decl.getName();
+							default -> "";
+							};
+
+							Object o = result.getValue().get(name1);
+							if (svar.isDirect()) {
+								if (variables.containsKey(name1)) {
+									if (variables.get(name1) != o) {
+										throw new IllegalArgumentException("Inconsistent value for query " + name1);
+									}
+								} else {
+									variables.put(name1, o);
+								}
+								sb.append(name1);
+							} else {
+								var value = toPythonString(o);
+								sb.append(value);
+							}
 						}
 					}
 				}

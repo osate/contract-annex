@@ -65,6 +65,7 @@ public class ContractParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getArgumentNotAccess().getAlternatives_2(), "rule__ArgumentNot__Alternatives_2");
 			builder.put(grammarAccess.getArgumentTermAccess().getAlternatives(), "rule__ArgumentTerm__Alternatives");
 			builder.put(grammarAccess.getQueryAccess().getAlternatives(), "rule__Query__Alternatives");
+			builder.put(grammarAccess.getSingleDeclarationAccess().getAlternatives(), "rule__SingleDeclaration__Alternatives");
 			builder.put(grammarAccess.getNotExpressionAccess().getAlternatives(), "rule__NotExpression__Alternatives");
 			builder.put(grammarAccess.getCallExpressionAccess().getAlternatives_1(), "rule__CallExpression__Alternatives_1");
 			builder.put(grammarAccess.getParameterAccess().getAlternatives(), "rule__Parameter__Alternatives");
@@ -122,8 +123,9 @@ public class ContractParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getVerificationPlanAccess().getGroup_11(), "rule__VerificationPlan__Group_11__0");
 			builder.put(grammarAccess.getVerificationPlanAccess().getGroup_11_1(), "rule__VerificationPlan__Group_11_1__0");
 			builder.put(grammarAccess.getClaimsAccess().getGroup(), "rule__Claims__Group__0");
-			builder.put(grammarAccess.getQueryAccess().getGroup_1(), "rule__Query__Group_1__0");
-			builder.put(grammarAccess.getQueryAccess().getGroup_1_4(), "rule__Query__Group_1_4__0");
+			builder.put(grammarAccess.getQueryAccess().getGroup_2(), "rule__Query__Group_2__0");
+			builder.put(grammarAccess.getQueryAccess().getGroup_2_4(), "rule__Query__Group_2_4__0");
+			builder.put(grammarAccess.getSingleSysMLDeclarationAccess().getGroup(), "rule__SingleSysMLDeclaration__Group__0");
 			builder.put(grammarAccess.getSingleValDeclarationAccess().getGroup(), "rule__SingleValDeclaration__Group__0");
 			builder.put(grammarAccess.getExpressionAccess().getGroup(), "rule__Expression__Group__0");
 			builder.put(grammarAccess.getExpressionAccess().getGroup_1(), "rule__Expression__Group_1__0");
@@ -237,9 +239,11 @@ public class ContractParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getVerificationPlanAccess().getComponentImplementationAssignment_7(), "rule__VerificationPlan__ComponentImplementationAssignment_7");
 			builder.put(grammarAccess.getVerificationPlanAccess().getContractsAssignment_11_1_0(), "rule__VerificationPlan__ContractsAssignment_11_1_0");
 			builder.put(grammarAccess.getClaimsAccess().getClaimsAssignment_0(), "rule__Claims__ClaimsAssignment_0");
-			builder.put(grammarAccess.getQueryAccess().getNamesAssignment_1_3(), "rule__Query__NamesAssignment_1_3");
-			builder.put(grammarAccess.getQueryAccess().getNamesAssignment_1_4_1(), "rule__Query__NamesAssignment_1_4_1");
-			builder.put(grammarAccess.getQueryAccess().getValueAssignment_1_7(), "rule__Query__ValueAssignment_1_7");
+			builder.put(grammarAccess.getQueryAccess().getNamesAssignment_2_3(), "rule__Query__NamesAssignment_2_3");
+			builder.put(grammarAccess.getQueryAccess().getNamesAssignment_2_4_1(), "rule__Query__NamesAssignment_2_4_1");
+			builder.put(grammarAccess.getQueryAccess().getValueAssignment_2_7(), "rule__Query__ValueAssignment_2_7");
+			builder.put(grammarAccess.getSingleSysMLDeclarationAccess().getNameAssignment_1(), "rule__SingleSysMLDeclaration__NameAssignment_1");
+			builder.put(grammarAccess.getSingleSysMLDeclarationAccess().getValueAssignment_3(), "rule__SingleSysMLDeclaration__ValueAssignment_3");
 			builder.put(grammarAccess.getSingleValDeclarationAccess().getNameAssignment_1(), "rule__SingleValDeclaration__NameAssignment_1");
 			builder.put(grammarAccess.getSingleValDeclarationAccess().getValueAssignment_3(), "rule__SingleValDeclaration__ValueAssignment_3");
 			builder.put(grammarAccess.getTupleNameAccess().getNameAssignment(), "rule__TupleName__NameAssignment");

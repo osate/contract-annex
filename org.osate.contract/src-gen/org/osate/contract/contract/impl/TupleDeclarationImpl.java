@@ -27,6 +27,7 @@ package org.osate.contract.contract.impl;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
@@ -34,10 +35,13 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.osate.contract.contract.ContractPackage;
+import org.osate.contract.contract.Expression;
 import org.osate.contract.contract.TupleDeclaration;
 import org.osate.contract.contract.TupleName;
 
@@ -50,6 +54,7 @@ import org.osate.contract.contract.TupleName;
  * </p>
  * <ul>
  *   <li>{@link org.osate.contract.contract.impl.TupleDeclarationImpl#getNames <em>Names</em>}</li>
+ *   <li>{@link org.osate.contract.contract.impl.TupleDeclarationImpl#getValue <em>Value</em>}</li>
  * </ul>
  *
  * @generated
@@ -65,6 +70,16 @@ public class TupleDeclarationImpl extends QueryImpl implements TupleDeclaration
    * @ordered
    */
   protected EList<TupleName> names;
+
+  /**
+   * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getValue()
+   * @generated
+   * @ordered
+   */
+  protected Expression value;
 
   /**
    * <!-- begin-user-doc -->
@@ -108,12 +123,64 @@ public class TupleDeclarationImpl extends QueryImpl implements TupleDeclaration
    * @generated
    */
   @Override
+  public Expression getValue()
+  {
+    return value;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetValue(Expression newValue, NotificationChain msgs)
+  {
+    Expression oldValue = value;
+    value = newValue;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ContractPackage.TUPLE_DECLARATION__VALUE, oldValue, newValue);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setValue(Expression newValue)
+  {
+    if (newValue != value)
+    {
+      NotificationChain msgs = null;
+      if (value != null)
+        msgs = ((InternalEObject)value).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ContractPackage.TUPLE_DECLARATION__VALUE, null, msgs);
+      if (newValue != null)
+        msgs = ((InternalEObject)newValue).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ContractPackage.TUPLE_DECLARATION__VALUE, null, msgs);
+      msgs = basicSetValue(newValue, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, ContractPackage.TUPLE_DECLARATION__VALUE, newValue, newValue));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
     switch (featureID)
     {
       case ContractPackage.TUPLE_DECLARATION__NAMES:
         return ((InternalEList<?>)getNames()).basicRemove(otherEnd, msgs);
+      case ContractPackage.TUPLE_DECLARATION__VALUE:
+        return basicSetValue(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -130,6 +197,8 @@ public class TupleDeclarationImpl extends QueryImpl implements TupleDeclaration
     {
       case ContractPackage.TUPLE_DECLARATION__NAMES:
         return getNames();
+      case ContractPackage.TUPLE_DECLARATION__VALUE:
+        return getValue();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -149,6 +218,9 @@ public class TupleDeclarationImpl extends QueryImpl implements TupleDeclaration
         getNames().clear();
         getNames().addAll((Collection<? extends TupleName>)newValue);
         return;
+      case ContractPackage.TUPLE_DECLARATION__VALUE:
+        setValue((Expression)newValue);
+        return;
     }
     super.eSet(featureID, newValue);
   }
@@ -166,6 +238,9 @@ public class TupleDeclarationImpl extends QueryImpl implements TupleDeclaration
       case ContractPackage.TUPLE_DECLARATION__NAMES:
         getNames().clear();
         return;
+      case ContractPackage.TUPLE_DECLARATION__VALUE:
+        setValue((Expression)null);
+        return;
     }
     super.eUnset(featureID);
   }
@@ -182,6 +257,8 @@ public class TupleDeclarationImpl extends QueryImpl implements TupleDeclaration
     {
       case ContractPackage.TUPLE_DECLARATION__NAMES:
         return names != null && !names.isEmpty();
+      case ContractPackage.TUPLE_DECLARATION__VALUE:
+        return value != null;
     }
     return super.eIsSet(featureID);
   }

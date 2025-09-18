@@ -40,6 +40,7 @@ import org.osate.aadl2.DefaultAnnexLibrary;
 import org.osate.contract.contract.Contract;
 import org.osate.contract.contract.ContractLibrary;
 import org.osate.contract.contract.MemberCall;
+import org.osate.contract.contract.SingleValDeclaration;
 import org.osate.contract.tests.ContractInjectorProvider;
 import org.osate.testsupport.TestHelper;
 
@@ -67,7 +68,8 @@ public class CheckMemberCallTest {
 		with(issues.get(0), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("'foo' is not a member of the type ComponentInstance", issue.getMessage());
-			assertEquals(EcoreUtil.getURI(contract.getQueries().get(1).getValue()), issue.getUriToProblem());
+			assertEquals(EcoreUtil.getURI(((SingleValDeclaration) contract.getQueries().get(1)).getValue()),
+					issue.getUriToProblem());
 		});
 	}
 
@@ -82,7 +84,8 @@ public class CheckMemberCallTest {
 		with(issues.get(0), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("'foo' is not a member of the type SystemInstance", issue.getMessage());
-			assertEquals(EcoreUtil.getURI(contract.getQueries().get(1).getValue()), issue.getUriToProblem());
+			assertEquals(EcoreUtil.getURI(((SingleValDeclaration) contract.getQueries().get(1)).getValue()),
+					issue.getUriToProblem());
 		});
 	}
 
@@ -97,7 +100,8 @@ public class CheckMemberCallTest {
 		with(issues.get(0), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("'foo' is not a member of the type String", issue.getMessage());
-			assertEquals(EcoreUtil.getURI(contract.getQueries().get(0).getValue()), issue.getUriToProblem());
+			assertEquals(EcoreUtil.getURI(((SingleValDeclaration) contract.getQueries().get(0)).getValue()),
+					issue.getUriToProblem());
 		});
 	}
 
@@ -113,7 +117,8 @@ public class CheckMemberCallTest {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("'foo' is not a member of the type LongWithUnits<AADL_Project::Time_Units>?",
 					issue.getMessage());
-			assertEquals(EcoreUtil.getURI(contract.getQueries().get(1).getValue()), issue.getUriToProblem());
+			assertEquals(EcoreUtil.getURI(((SingleValDeclaration) contract.getQueries().get(1)).getValue()),
+					issue.getUriToProblem());
 		});
 	}
 
@@ -131,7 +136,8 @@ public class CheckMemberCallTest {
 					issue.getMessage());
 			assertEquals(
 					EcoreUtil.getURI(
-							((MemberCall) contract.getQueries().get(1).getValue()).getLambda().getReturnValue()),
+							((MemberCall) ((SingleValDeclaration) contract.getQueries().get(1)).getValue()).getLambda()
+									.getReturnValue()),
 					issue.getUriToProblem());
 		});
 	}
@@ -147,12 +153,14 @@ public class CheckMemberCallTest {
 		with(issues.get(0), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("Lambda expected for call to 'map'", issue.getMessage());
-			assertEquals(EcoreUtil.getURI(contract.getQueries().get(1).getValue()), issue.getUriToProblem());
+			assertEquals(EcoreUtil.getURI(((SingleValDeclaration) contract.getQueries().get(1)).getValue()),
+					issue.getUriToProblem());
 		});
 		with(issues.get(1), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("Lambda expected for call to 'map'", issue.getMessage());
-			assertEquals(EcoreUtil.getURI(contract.getQueries().get(2).getValue()), issue.getUriToProblem());
+			assertEquals(EcoreUtil.getURI(((SingleValDeclaration) contract.getQueries().get(2)).getValue()),
+					issue.getUriToProblem());
 		});
 	}
 
@@ -167,14 +175,17 @@ public class CheckMemberCallTest {
 		with(issues.get(0), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("Unexpected lambda for call to 'name'", issue.getMessage());
-			assertEquals(EcoreUtil.getURI(((MemberCall) contract.getQueries().get(1).getValue()).getLambda()),
+			assertEquals(EcoreUtil.getURI(
+					((MemberCall) ((SingleValDeclaration) contract.getQueries().get(1)).getValue()).getLambda()),
 					issue.getUriToProblem());
 		});
 		with(issues.get(1), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("Unexpected lambda for call to 'get'", issue.getMessage());
 			assertEquals(EcoreUtil.getURI(
-					((MemberCall) ((MemberCall) contract.getQueries().get(2).getValue()).getLambda().getReturnValue())
+					((MemberCall) ((MemberCall) ((SingleValDeclaration) contract.getQueries().get(2)).getValue())
+							.getLambda()
+							.getReturnValue())
 							.getLambda()),
 					issue.getUriToProblem());
 		});
@@ -193,7 +204,8 @@ public class CheckMemberCallTest {
 			assertEquals("Argument expected for call to 'scaledTo'", issue.getMessage());
 			assertEquals(
 					EcoreUtil.getURI(
-							((MemberCall) contract.getQueries().get(1).getValue()).getLambda().getReturnValue()),
+							((MemberCall) ((SingleValDeclaration) contract.getQueries().get(1)).getValue()).getLambda()
+									.getReturnValue()),
 					issue.getUriToProblem());
 		});
 		with(issues.get(1), issue -> {
@@ -201,7 +213,8 @@ public class CheckMemberCallTest {
 			assertEquals("Argument expected for call to 'get'", issue.getMessage());
 			assertEquals(
 					EcoreUtil.getURI(
-							((MemberCall) contract.getQueries().get(2).getValue()).getLambda().getReturnValue()),
+							((MemberCall) ((SingleValDeclaration) contract.getQueries().get(2)).getValue()).getLambda()
+									.getReturnValue()),
 					issue.getUriToProblem());
 		});
 	}
@@ -217,13 +230,15 @@ public class CheckMemberCallTest {
 		with(issues.get(0), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("Couldn't resolve reference to 'ms'.", issue.getMessage());
-			assertEquals(EcoreUtil.getURI(((MemberCall) contract.getQueries().get(1).getValue()).getArgument()),
+			assertEquals(EcoreUtil.getURI(
+					((MemberCall) ((SingleValDeclaration) contract.getQueries().get(1)).getValue()).getArgument()),
 					issue.getUriToProblem());
 		});
 		with(issues.get(1), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("Unexpected argument for call to 'name'", issue.getMessage());
-			assertEquals(EcoreUtil.getURI(contract.getQueries().get(1).getValue()), issue.getUriToProblem());
+			assertEquals(EcoreUtil.getURI(((SingleValDeclaration) contract.getQueries().get(1)).getValue()),
+					issue.getUriToProblem());
 		});
 	}
 
@@ -238,7 +253,8 @@ public class CheckMemberCallTest {
 		with(issues.get(0), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("Type argument expected for call to 'filterType'", issue.getMessage());
-			assertEquals(EcoreUtil.getURI(contract.getQueries().get(1).getValue()), issue.getUriToProblem());
+			assertEquals(EcoreUtil.getURI(((SingleValDeclaration) contract.getQueries().get(1)).getValue()),
+					issue.getUriToProblem());
 		});
 	}
 
@@ -253,7 +269,8 @@ public class CheckMemberCallTest {
 		with(issues.get(0), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("Unexpected type argument for call to 'name'", issue.getMessage());
-			assertEquals(EcoreUtil.getURI(contract.getQueries().get(1).getValue()), issue.getUriToProblem());
+			assertEquals(EcoreUtil.getURI(((SingleValDeclaration) contract.getQueries().get(1)).getValue()),
+					issue.getUriToProblem());
 		});
 	}
 
@@ -268,24 +285,28 @@ public class CheckMemberCallTest {
 		with(issues.get(0), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("'filterPresent' is not a member of the type List<ComponentInstance>", issue.getMessage());
-			assertEquals(EcoreUtil.getURI(contract.getQueries().get(1).getValue()), issue.getUriToProblem());
+			assertEquals(EcoreUtil.getURI(((SingleValDeclaration) contract.getQueries().get(1)).getValue()),
+					issue.getUriToProblem());
 		});
 		with(issues.get(1), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("'filterTupleElementsPresent' is not a member of the type List<ComponentInstance>",
 					issue.getMessage());
-			assertEquals(EcoreUtil.getURI(contract.getQueries().get(3).getValue()), issue.getUriToProblem());
+			assertEquals(EcoreUtil.getURI(((SingleValDeclaration) contract.getQueries().get(3)).getValue()),
+					issue.getUriToProblem());
 		});
 		with(issues.get(2), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("'filterTupleElementsPresent' is not a member of the type List<(String, ComponentCategory)>",
 					issue.getMessage());
-			assertEquals(EcoreUtil.getURI(contract.getQueries().get(4).getValue()), issue.getUriToProblem());
+			assertEquals(EcoreUtil.getURI(((SingleValDeclaration) contract.getQueries().get(4)).getValue()),
+					issue.getUriToProblem());
 		});
 		with(issues.get(3), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("'flatten' is not a member of the type List<String>", issue.getMessage());
-			assertEquals(EcoreUtil.getURI(contract.getQueries().get(6).getValue()), issue.getUriToProblem());
+			assertEquals(EcoreUtil.getURI(((SingleValDeclaration) contract.getQueries().get(6)).getValue()),
+					issue.getUriToProblem());
 		});
 	}
 }

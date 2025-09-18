@@ -37,6 +37,7 @@ import org.osate.aadl2.AadlPackage;
 import org.osate.aadl2.DefaultAnnexLibrary;
 import org.osate.contract.contract.Contract;
 import org.osate.contract.contract.ContractLibrary;
+import org.osate.contract.contract.SingleValDeclaration;
 import org.osate.contract.tests.ContractInjectorProvider;
 import org.osate.contract.typing.ContractTypeSystem;
 import org.osate.testsupport.TestHelper;
@@ -66,11 +67,11 @@ public class NameReferenceTest {
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		assertEquals(2, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("String", type.toString());
 		});
 		with(contract.getQueries().get(1), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("String", type.toString());
 		});
 	}

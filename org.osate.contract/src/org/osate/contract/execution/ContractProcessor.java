@@ -53,7 +53,9 @@ import org.osate.contract.contract.ContractLibrary;
 import org.osate.contract.contract.ContractSubclause;
 import org.osate.contract.contract.InputAssumption;
 import org.osate.contract.contract.Language;
+import org.osate.contract.contract.SingleSysMLDeclaration;
 import org.osate.contract.contract.VerificationPlan;
+import org.osate.contract.uml.SysMLQueryInterpreter;
 
 public class ContractProcessor {
 
@@ -82,6 +84,8 @@ public class ContractProcessor {
 
 	private final Iterable<VerificationPlan> plans;
 
+	SysMLQueryInterpreter sysmlInterpreter = null;
+
 	public ContractProcessor(ComponentInstance context, Iterable<VerificationPlan> plans,
 			EngineDescription description) {
 		this.context = context;
@@ -90,6 +94,7 @@ public class ContractProcessor {
 		info.add("");
 		pyBuilder = newPythonBuilder(context);
 		pyRunner = new ScriptRunner(description, error, info);
+		sysmlInterpreter = new SysMLQueryInterpreter();
 	}
 
 	private PythonBuilder newPythonBuilder(ComponentInstance context) {
@@ -237,6 +242,18 @@ public class ContractProcessor {
 			pyBuilder.addDomain(domain);
 		}
 		var pyExpr = newPythonBuilder(context);
+
+		for (var domain : contract.getDomains()) {
+			for (var q : domain.getQueries()) {
+				var sysmldecl = q;
+				if (sysmldecl instanceof SingleSysMLDeclaration decl) {
+					String value = sysmlInterpreter.parseAndExecuteQuery(decl.getName(), decl.getValue());
+					decl.setValue(value);
+					pyExpr.getVariables().put(decl.getName(), decl.getValue());
+				}
+			}
+		}
+
 		if (contract.isExact()) {
 			pyExpr.addCode("""
 					If(

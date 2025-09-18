@@ -925,22 +925,150 @@ public interface ContractPackage extends EPackage
   int QUERY__OWNED_COMMENT = Aadl2Package.ELEMENT__OWNED_COMMENT;
 
   /**
-   * The feature id for the '<em><b>Value</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int QUERY__VALUE = Aadl2Package.ELEMENT_FEATURE_COUNT + 0;
-
-  /**
    * The number of structural features of the '<em>Query</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int QUERY_FEATURE_COUNT = Aadl2Package.ELEMENT_FEATURE_COUNT + 1;
+  int QUERY_FEATURE_COUNT = Aadl2Package.ELEMENT_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link org.osate.contract.contract.impl.SingleDeclarationImpl <em>Single Declaration</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.osate.contract.contract.impl.SingleDeclarationImpl
+   * @see org.osate.contract.contract.impl.ContractPackageImpl#getSingleDeclaration()
+   * @generated
+   */
+  int SINGLE_DECLARATION = 14;
+
+  /**
+   * The feature id for the '<em><b>Owned Element</b></em>' reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SINGLE_DECLARATION__OWNED_ELEMENT = Aadl2Package.NAMED_ELEMENT__OWNED_ELEMENT;
+
+  /**
+   * The feature id for the '<em><b>Owned Comment</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SINGLE_DECLARATION__OWNED_COMMENT = Aadl2Package.NAMED_ELEMENT__OWNED_COMMENT;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SINGLE_DECLARATION__NAME = Aadl2Package.NAMED_ELEMENT__NAME;
+
+  /**
+   * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SINGLE_DECLARATION__QUALIFIED_NAME = Aadl2Package.NAMED_ELEMENT__QUALIFIED_NAME;
+
+  /**
+   * The feature id for the '<em><b>Owned Property Association</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SINGLE_DECLARATION__OWNED_PROPERTY_ASSOCIATION = Aadl2Package.NAMED_ELEMENT__OWNED_PROPERTY_ASSOCIATION;
+
+  /**
+   * The number of structural features of the '<em>Single Declaration</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SINGLE_DECLARATION_FEATURE_COUNT = Aadl2Package.NAMED_ELEMENT_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link org.osate.contract.contract.impl.SingleSysMLDeclarationImpl <em>Single Sys ML Declaration</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.osate.contract.contract.impl.SingleSysMLDeclarationImpl
+   * @see org.osate.contract.contract.impl.ContractPackageImpl#getSingleSysMLDeclaration()
+   * @generated
+   */
+  int SINGLE_SYS_ML_DECLARATION = 15;
+
+  /**
+   * The feature id for the '<em><b>Owned Element</b></em>' reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SINGLE_SYS_ML_DECLARATION__OWNED_ELEMENT = QUERY__OWNED_ELEMENT;
+
+  /**
+   * The feature id for the '<em><b>Owned Comment</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SINGLE_SYS_ML_DECLARATION__OWNED_COMMENT = QUERY__OWNED_COMMENT;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SINGLE_SYS_ML_DECLARATION__NAME = QUERY_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SINGLE_SYS_ML_DECLARATION__QUALIFIED_NAME = QUERY_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Owned Property Association</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SINGLE_SYS_ML_DECLARATION__OWNED_PROPERTY_ASSOCIATION = QUERY_FEATURE_COUNT + 2;
+
+  /**
+   * The feature id for the '<em><b>Value</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SINGLE_SYS_ML_DECLARATION__VALUE = QUERY_FEATURE_COUNT + 3;
+
+  /**
+   * The number of structural features of the '<em>Single Sys ML Declaration</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SINGLE_SYS_ML_DECLARATION_FEATURE_COUNT = QUERY_FEATURE_COUNT + 4;
 
   /**
    * The meta object id for the '{@link org.osate.contract.contract.impl.SingleValDeclarationImpl <em>Single Val Declaration</em>}' class.
@@ -950,7 +1078,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getSingleValDeclaration()
    * @generated
    */
-  int SINGLE_VAL_DECLARATION = 14;
+  int SINGLE_VAL_DECLARATION = 16;
 
   /**
    * The feature id for the '<em><b>Owned Element</b></em>' reference list.
@@ -959,7 +1087,7 @@ public interface ContractPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SINGLE_VAL_DECLARATION__OWNED_ELEMENT = Aadl2Package.NAMED_ELEMENT__OWNED_ELEMENT;
+  int SINGLE_VAL_DECLARATION__OWNED_ELEMENT = QUERY__OWNED_ELEMENT;
 
   /**
    * The feature id for the '<em><b>Owned Comment</b></em>' containment reference list.
@@ -968,7 +1096,7 @@ public interface ContractPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SINGLE_VAL_DECLARATION__OWNED_COMMENT = Aadl2Package.NAMED_ELEMENT__OWNED_COMMENT;
+  int SINGLE_VAL_DECLARATION__OWNED_COMMENT = QUERY__OWNED_COMMENT;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -977,7 +1105,7 @@ public interface ContractPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SINGLE_VAL_DECLARATION__NAME = Aadl2Package.NAMED_ELEMENT__NAME;
+  int SINGLE_VAL_DECLARATION__NAME = QUERY_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
@@ -986,7 +1114,7 @@ public interface ContractPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SINGLE_VAL_DECLARATION__QUALIFIED_NAME = Aadl2Package.NAMED_ELEMENT__QUALIFIED_NAME;
+  int SINGLE_VAL_DECLARATION__QUALIFIED_NAME = QUERY_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Owned Property Association</b></em>' containment reference list.
@@ -995,7 +1123,7 @@ public interface ContractPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SINGLE_VAL_DECLARATION__OWNED_PROPERTY_ASSOCIATION = Aadl2Package.NAMED_ELEMENT__OWNED_PROPERTY_ASSOCIATION;
+  int SINGLE_VAL_DECLARATION__OWNED_PROPERTY_ASSOCIATION = QUERY_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' containment reference.
@@ -1004,7 +1132,7 @@ public interface ContractPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SINGLE_VAL_DECLARATION__VALUE = Aadl2Package.NAMED_ELEMENT_FEATURE_COUNT + 0;
+  int SINGLE_VAL_DECLARATION__VALUE = QUERY_FEATURE_COUNT + 3;
 
   /**
    * The number of structural features of the '<em>Single Val Declaration</em>' class.
@@ -1013,7 +1141,7 @@ public interface ContractPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SINGLE_VAL_DECLARATION_FEATURE_COUNT = Aadl2Package.NAMED_ELEMENT_FEATURE_COUNT + 1;
+  int SINGLE_VAL_DECLARATION_FEATURE_COUNT = QUERY_FEATURE_COUNT + 4;
 
   /**
    * The meta object id for the '{@link org.osate.contract.contract.impl.TupleNameImpl <em>Tuple Name</em>}' class.
@@ -1023,7 +1151,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getTupleName()
    * @generated
    */
-  int TUPLE_NAME = 15;
+  int TUPLE_NAME = 17;
 
   /**
    * The feature id for the '<em><b>Owned Element</b></em>' reference list.
@@ -1087,7 +1215,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getExpression()
    * @generated
    */
-  int EXPRESSION = 16;
+  int EXPRESSION = 18;
 
   /**
    * The number of structural features of the '<em>Expression</em>' class.
@@ -1106,7 +1234,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getLambda()
    * @generated
    */
-  int LAMBDA = 17;
+  int LAMBDA = 19;
 
   /**
    * The feature id for the '<em><b>Owned Element</b></em>' reference list.
@@ -1170,7 +1298,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getParameter()
    * @generated
    */
-  int PARAMETER = 18;
+  int PARAMETER = 20;
 
   /**
    * The feature id for the '<em><b>Owned Element</b></em>' reference list.
@@ -1207,7 +1335,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getSingleParameter()
    * @generated
    */
-  int SINGLE_PARAMETER = 19;
+  int SINGLE_PARAMETER = 21;
 
   /**
    * The feature id for the '<em><b>Owned Element</b></em>' reference list.
@@ -1271,7 +1399,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getContractSubclause()
    * @generated
    */
-  int CONTRACT_SUBCLAUSE = 20;
+  int CONTRACT_SUBCLAUSE = 22;
 
   /**
    * The feature id for the '<em><b>Use Queries</b></em>' reference list.
@@ -1308,7 +1436,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getIString()
    * @generated
    */
-  int ISTRING = 21;
+  int ISTRING = 23;
 
   /**
    * The feature id for the '<em><b>Parts</b></em>' containment reference list.
@@ -1336,7 +1464,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getIStringPart()
    * @generated
    */
-  int ISTRING_PART = 22;
+  int ISTRING_PART = 24;
 
   /**
    * The number of structural features of the '<em>IString Part</em>' class.
@@ -1355,7 +1483,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getIStringLiteral()
    * @generated
    */
-  int ISTRING_LITERAL = 23;
+  int ISTRING_LITERAL = 25;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -1383,7 +1511,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getIStringVar()
    * @generated
    */
-  int ISTRING_VAR = 24;
+  int ISTRING_VAR = 26;
 
   /**
    * The feature id for the '<em><b>Direct</b></em>' attribute.
@@ -1438,7 +1566,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getContractAssumption()
    * @generated
    */
-  int CONTRACT_ASSUMPTION = 25;
+  int CONTRACT_ASSUMPTION = 27;
 
   /**
    * The feature id for the '<em><b>Contract</b></em>' reference.
@@ -1466,7 +1594,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getArgumentAssumption()
    * @generated
    */
-  int ARGUMENT_ASSUMPTION = 26;
+  int ARGUMENT_ASSUMPTION = 28;
 
   /**
    * The feature id for the '<em><b>Argument</b></em>' reference.
@@ -1494,7 +1622,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getCodeAssumption()
    * @generated
    */
-  int CODE_ASSUMPTION = 27;
+  int CODE_ASSUMPTION = 29;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1540,7 +1668,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getArgumentAnd()
    * @generated
    */
-  int ARGUMENT_AND = 28;
+  int ARGUMENT_AND = 30;
 
   /**
    * The feature id for the '<em><b>Contracts</b></em>' reference list.
@@ -1586,7 +1714,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getArgumentOr()
    * @generated
    */
-  int ARGUMENT_OR = 29;
+  int ARGUMENT_OR = 31;
 
   /**
    * The feature id for the '<em><b>Contracts</b></em>' reference list.
@@ -1632,7 +1760,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getArgumentNot()
    * @generated
    */
-  int ARGUMENT_NOT = 30;
+  int ARGUMENT_NOT = 32;
 
   /**
    * The feature id for the '<em><b>Contracts</b></em>' reference list.
@@ -1678,7 +1806,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getTupleDeclaration()
    * @generated
    */
-  int TUPLE_DECLARATION = 31;
+  int TUPLE_DECLARATION = 33;
 
   /**
    * The feature id for the '<em><b>Owned Element</b></em>' reference list.
@@ -1699,15 +1827,6 @@ public interface ContractPackage extends EPackage
   int TUPLE_DECLARATION__OWNED_COMMENT = QUERY__OWNED_COMMENT;
 
   /**
-   * The feature id for the '<em><b>Value</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int TUPLE_DECLARATION__VALUE = QUERY__VALUE;
-
-  /**
    * The feature id for the '<em><b>Names</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1717,13 +1836,22 @@ public interface ContractPackage extends EPackage
   int TUPLE_DECLARATION__NAMES = QUERY_FEATURE_COUNT + 0;
 
   /**
+   * The feature id for the '<em><b>Value</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TUPLE_DECLARATION__VALUE = QUERY_FEATURE_COUNT + 1;
+
+  /**
    * The number of structural features of the '<em>Tuple Declaration</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int TUPLE_DECLARATION_FEATURE_COUNT = QUERY_FEATURE_COUNT + 1;
+  int TUPLE_DECLARATION_FEATURE_COUNT = QUERY_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link org.osate.contract.contract.impl.OrExpressionImpl <em>Or Expression</em>}' class.
@@ -1733,7 +1861,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getOrExpression()
    * @generated
    */
-  int OR_EXPRESSION = 32;
+  int OR_EXPRESSION = 34;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1770,7 +1898,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getAndExpression()
    * @generated
    */
-  int AND_EXPRESSION = 33;
+  int AND_EXPRESSION = 35;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1807,7 +1935,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getNotExpression()
    * @generated
    */
-  int NOT_EXPRESSION = 34;
+  int NOT_EXPRESSION = 36;
 
   /**
    * The feature id for the '<em><b>Operand</b></em>' containment reference.
@@ -1835,7 +1963,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getMemberCall()
    * @generated
    */
-  int MEMBER_CALL = 35;
+  int MEMBER_CALL = 37;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1899,7 +2027,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getPropertyLookup()
    * @generated
    */
-  int PROPERTY_LOOKUP = 36;
+  int PROPERTY_LOOKUP = 38;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1936,7 +2064,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getTupleParameter()
    * @generated
    */
-  int TUPLE_PARAMETER = 37;
+  int TUPLE_PARAMETER = 39;
 
   /**
    * The feature id for the '<em><b>Owned Element</b></em>' reference list.
@@ -1982,7 +2110,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getSelfExpression()
    * @generated
    */
-  int SELF_EXPRESSION = 38;
+  int SELF_EXPRESSION = 40;
 
   /**
    * The number of structural features of the '<em>Self Expression</em>' class.
@@ -2001,7 +2129,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getRootExpression()
    * @generated
    */
-  int ROOT_EXPRESSION = 39;
+  int ROOT_EXPRESSION = 41;
 
   /**
    * The number of structural features of the '<em>Root Expression</em>' class.
@@ -2020,7 +2148,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getStringLiteral()
    * @generated
    */
-  int STRING_LITERAL = 40;
+  int STRING_LITERAL = 42;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2048,7 +2176,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getNameReference()
    * @generated
    */
-  int NAME_REFERENCE = 41;
+  int NAME_REFERENCE = 43;
 
   /**
    * The feature id for the '<em><b>Reference</b></em>' reference.
@@ -2076,7 +2204,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getTupleExpression()
    * @generated
    */
-  int TUPLE_EXPRESSION = 42;
+  int TUPLE_EXPRESSION = 44;
 
   /**
    * The feature id for the '<em><b>Elements</b></em>' containment reference list.
@@ -2104,7 +2232,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getLanguage()
    * @generated
    */
-  int LANGUAGE = 43;
+  int LANGUAGE = 45;
 
   /**
    * The meta object id for the '{@link org.osate.contract.contract.Predefined <em>Predefined</em>}' enum.
@@ -2114,7 +2242,7 @@ public interface ContractPackage extends EPackage
    * @see org.osate.contract.contract.impl.ContractPackageImpl#getPredefined()
    * @generated
    */
-  int PREDEFINED = 44;
+  int PREDEFINED = 46;
 
 
   /**
@@ -2566,15 +2694,35 @@ public interface ContractPackage extends EPackage
   EClass getQuery();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.osate.contract.contract.Query#getValue <em>Value</em>}'.
+   * Returns the meta object for class '{@link org.osate.contract.contract.SingleDeclaration <em>Single Declaration</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Value</em>'.
-   * @see org.osate.contract.contract.Query#getValue()
-   * @see #getQuery()
+   * @return the meta object for class '<em>Single Declaration</em>'.
+   * @see org.osate.contract.contract.SingleDeclaration
    * @generated
    */
-  EReference getQuery_Value();
+  EClass getSingleDeclaration();
+
+  /**
+   * Returns the meta object for class '{@link org.osate.contract.contract.SingleSysMLDeclaration <em>Single Sys ML Declaration</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Single Sys ML Declaration</em>'.
+   * @see org.osate.contract.contract.SingleSysMLDeclaration
+   * @generated
+   */
+  EClass getSingleSysMLDeclaration();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.osate.contract.contract.SingleSysMLDeclaration#getValue <em>Value</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Value</em>'.
+   * @see org.osate.contract.contract.SingleSysMLDeclaration#getValue()
+   * @see #getSingleSysMLDeclaration()
+   * @generated
+   */
+  EAttribute getSingleSysMLDeclaration_Value();
 
   /**
    * Returns the meta object for class '{@link org.osate.contract.contract.SingleValDeclaration <em>Single Val Declaration</em>}'.
@@ -2585,6 +2733,17 @@ public interface ContractPackage extends EPackage
    * @generated
    */
   EClass getSingleValDeclaration();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.osate.contract.contract.SingleValDeclaration#getValue <em>Value</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Value</em>'.
+   * @see org.osate.contract.contract.SingleValDeclaration#getValue()
+   * @see #getSingleValDeclaration()
+   * @generated
+   */
+  EReference getSingleValDeclaration_Value();
 
   /**
    * Returns the meta object for class '{@link org.osate.contract.contract.TupleName <em>Tuple Name</em>}'.
@@ -2942,6 +3101,17 @@ public interface ContractPackage extends EPackage
    * @generated
    */
   EReference getTupleDeclaration_Names();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.osate.contract.contract.TupleDeclaration#getValue <em>Value</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Value</em>'.
+   * @see org.osate.contract.contract.TupleDeclaration#getValue()
+   * @see #getTupleDeclaration()
+   * @generated
+   */
+  EReference getTupleDeclaration_Value();
 
   /**
    * Returns the meta object for class '{@link org.osate.contract.contract.OrExpression <em>Or Expression</em>}'.
@@ -3637,12 +3807,32 @@ public interface ContractPackage extends EPackage
     EClass QUERY = eINSTANCE.getQuery();
 
     /**
-     * The meta object literal for the '<em><b>Value</b></em>' containment reference feature.
+     * The meta object literal for the '{@link org.osate.contract.contract.impl.SingleDeclarationImpl <em>Single Declaration</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.osate.contract.contract.impl.SingleDeclarationImpl
+     * @see org.osate.contract.contract.impl.ContractPackageImpl#getSingleDeclaration()
+     * @generated
+     */
+    EClass SINGLE_DECLARATION = eINSTANCE.getSingleDeclaration();
+
+    /**
+     * The meta object literal for the '{@link org.osate.contract.contract.impl.SingleSysMLDeclarationImpl <em>Single Sys ML Declaration</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.osate.contract.contract.impl.SingleSysMLDeclarationImpl
+     * @see org.osate.contract.contract.impl.ContractPackageImpl#getSingleSysMLDeclaration()
+     * @generated
+     */
+    EClass SINGLE_SYS_ML_DECLARATION = eINSTANCE.getSingleSysMLDeclaration();
+
+    /**
+     * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference QUERY__VALUE = eINSTANCE.getQuery_Value();
+    EAttribute SINGLE_SYS_ML_DECLARATION__VALUE = eINSTANCE.getSingleSysMLDeclaration_Value();
 
     /**
      * The meta object literal for the '{@link org.osate.contract.contract.impl.SingleValDeclarationImpl <em>Single Val Declaration</em>}' class.
@@ -3653,6 +3843,14 @@ public interface ContractPackage extends EPackage
      * @generated
      */
     EClass SINGLE_VAL_DECLARATION = eINSTANCE.getSingleValDeclaration();
+
+    /**
+     * The meta object literal for the '<em><b>Value</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference SINGLE_VAL_DECLARATION__VALUE = eINSTANCE.getSingleValDeclaration_Value();
 
     /**
      * The meta object literal for the '{@link org.osate.contract.contract.impl.TupleNameImpl <em>Tuple Name</em>}' class.
@@ -3959,6 +4157,14 @@ public interface ContractPackage extends EPackage
      * @generated
      */
     EReference TUPLE_DECLARATION__NAMES = eINSTANCE.getTupleDeclaration_Names();
+
+    /**
+     * The meta object literal for the '<em><b>Value</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference TUPLE_DECLARATION__VALUE = eINSTANCE.getTupleDeclaration_Value();
 
     /**
      * The meta object literal for the '{@link org.osate.contract.contract.impl.OrExpressionImpl <em>Or Expression</em>}' class.
