@@ -52,6 +52,7 @@ import org.osate.contract.contract.IStringVar;
 import org.osate.contract.contract.Lambda;
 import org.osate.contract.contract.MemberCall;
 import org.osate.contract.contract.NameReference;
+import org.osate.contract.contract.SingleDeclaration;
 import org.osate.contract.contract.SingleParameter;
 import org.osate.contract.contract.SingleValDeclaration;
 import org.osate.contract.contract.TupleDeclaration;
@@ -163,7 +164,7 @@ public class ContractScopeProvider extends AbstractContractScopeProvider {
 					if (EcoreUtil.isAncestor(query, context)) {
 						break;
 					}
-					if (query instanceof SingleValDeclaration singleValDeclaration) {
+					if (query instanceof SingleDeclaration singleValDeclaration) {
 						names.add(singleValDeclaration);
 					} else if (query instanceof TupleDeclaration tupleDeclaration) {
 						names.addAll(tupleDeclaration.getNames());
@@ -174,7 +175,7 @@ public class ContractScopeProvider extends AbstractContractScopeProvider {
 					if (EcoreUtil.isAncestor(query, context)) {
 						break;
 					}
-					if (query instanceof SingleValDeclaration singleValDeclaration) {
+					if (query instanceof SingleDeclaration singleValDeclaration) {
 						names.add(singleValDeclaration);
 					} else if (query instanceof TupleDeclaration tupleDeclaration) {
 						names.addAll(tupleDeclaration.getNames());
@@ -182,7 +183,7 @@ public class ContractScopeProvider extends AbstractContractScopeProvider {
 				}
 				for (var domain : contract.getDomains()) {
 					for (var query : domain.getQueries()) {
-						if (query instanceof SingleValDeclaration singleValDeclaration) {
+						if (query instanceof SingleDeclaration singleValDeclaration) {
 							names.add(singleValDeclaration);
 						} else if (query instanceof TupleDeclaration tupleDeclaration) {
 							names.addAll(tupleDeclaration.getNames());
@@ -192,7 +193,7 @@ public class ContractScopeProvider extends AbstractContractScopeProvider {
 			} else if (current instanceof VerificationPlan plan) {
 				for (var domain : plan.getDomains()) {
 					for (var query : domain.getQueries()) {
-						if (query instanceof SingleValDeclaration singleValDeclaration) {
+						if (query instanceof SingleDeclaration singleValDeclaration) {
 							names.add(singleValDeclaration);
 						} else if (query instanceof TupleDeclaration tupleDeclaration) {
 							names.addAll(tupleDeclaration.getNames());
@@ -204,7 +205,7 @@ public class ContractScopeProvider extends AbstractContractScopeProvider {
 					if (EcoreUtil.isAncestor(query, context)) {
 						break;
 					}
-					if (query instanceof SingleValDeclaration singleValDeclaration) {
+					if (query instanceof SingleDeclaration singleValDeclaration) {
 						names.add(singleValDeclaration);
 					} else if (query instanceof TupleDeclaration tupleDeclaration) {
 						names.addAll(tupleDeclaration.getNames());

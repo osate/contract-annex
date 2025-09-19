@@ -40,7 +40,7 @@ Element returns aadl2::Element:
 ;
 
 NamedElement returns aadl2::NamedElement:
-	ContractElement | SingleValDeclaration | TupleName | SingleParameter
+	ContractElement | SingleDeclaration | TupleName | SingleParameter 
 ;
 
 ContractLibrary:
@@ -217,9 +217,17 @@ enum Language:
 
 Query:
 	SingleValDeclaration |
+	SingleSysMLDeclaration |
 	{TupleDeclaration} 'val' '(' names+=TupleName (',' names+=TupleName)+ ')' '=' value=Expression
 ;
 
+SingleDeclaration:
+	SingleSysMLDeclaration | SingleValDeclaration	
+;
+
+SingleSysMLDeclaration:
+	'sysmlval' name=ID '=' value= STRING
+;
 SingleValDeclaration:
 	'val' name=ID '=' value=Expression
 ;
@@ -317,7 +325,7 @@ enum Predefined:
 IStringInter returns IStringVar:
 	direct?=":"? 
 	(
-	  ((domain=[Domain|ID] '::')? query=([SingleValDeclaration|ID]))
+	  ((domain=[Domain|ID] '::')? query=([SingleDeclaration|ID]))
 	| predefined=Predefined
 	)
 ;

@@ -38,6 +38,7 @@ import org.osate.aadl2.DefaultAnnexLibrary;
 import org.osate.contract.contract.Contract;
 import org.osate.contract.contract.ContractLibrary;
 import org.osate.contract.contract.MemberCall;
+import org.osate.contract.contract.SingleValDeclaration;
 import org.osate.contract.contract.TupleDeclaration;
 import org.osate.contract.contract.TupleParameter;
 import org.osate.contract.tests.ContractInjectorProvider;
@@ -95,7 +96,7 @@ public class TupleNameTest {
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		assertEquals(3, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
-			var call = (MemberCall) query.getValue();
+			var call = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var parameter = (TupleParameter) call.getLambda().getParameter();
 			assertEquals(3, parameter.getNames().size());
 			with(parameter.getNames().get(0), tupleName -> {
@@ -112,7 +113,7 @@ public class TupleNameTest {
 			});
 		});
 		with(contract.getQueries().get(1), query -> {
-			var call = (MemberCall) query.getValue();
+			var call = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var parameter = (TupleParameter) call.getLambda().getParameter();
 			assertEquals(3, parameter.getNames().size());
 			with(parameter.getNames().get(0), tupleName -> {
@@ -129,7 +130,7 @@ public class TupleNameTest {
 			});
 		});
 		with(contract.getQueries().get(2), query -> {
-			var call = (MemberCall) query.getValue();
+			var call = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var parameter = (TupleParameter) call.getLambda().getParameter();
 			assertEquals(3, parameter.getNames().size());
 			with(parameter.getNames().get(0), tupleName -> {

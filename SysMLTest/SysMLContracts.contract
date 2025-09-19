@@ -1,0 +1,79 @@
+package SysMLContracts;
+
+contract implementation SysMLTestImplementation {`
+import math
+
+def addError(error,msg):
+	error[0]+="|"+msg
+
+def areTasksHarmonicBoundSchedulable(tasks,error0):
+	util = 0.0
+	counted = set()
+	for i in range(len(tasks)):
+		e2eflow = tasks[i]
+		j=0
+		nodeType = True
+		while j< len(e2eflow):
+			if nodeType:
+				node = e2eflow[j]
+				id = node[0]
+				period = node[2]
+				deadline = node[3]
+				wcet = node[4]
+				if not id in counted:
+					counted.add(id)
+					#print(f"name({node[1]}) period({period}) wcet({wcet})")
+					util = util + float(wcet)/ float(period) 
+				nodeType = False
+			else:
+				nodeType = True
+				msg = e2eflow[j]							
+			j = j +1
+	#print(f"Utilization: {util}")
+	return util <= 1.0
+
+# testvar = [[[0,comSensors],[1,GroundDetected],[2,com,100],[3,setTurnRate],[4,AeleronActuator]]]
+def testSysMLVariable(testvar, error0):
+	for i in range(len(testvar)):
+		e2eflow = testvar[i]
+		print("e2eflow: ",e2eflow)
+		j=0
+		nodeType = True
+		while j< len(e2eflow):
+			if nodeType:
+				srcNode = e2eflow[j]
+				nodeType = False
+				#print(f"Node(id({srcNode[0]}),name({srcNode[1]}),params:{srcNode[2:]})")
+			else:
+				nodeType = True
+				msg = e2eflow[j]							
+				print(f"msg(id({msg[0]}) name({msg[1]}))")
+			j = j +1
+	#print("sysval: ",testvar)
+	return True
+	
+`}
+
+domain sysmldomain {
+	queries
+		sysmlval model = 'loadModel(C:/SEI/Tools/cameo/temp/MQLTest1.uml)';
+		sysmlval sequence = 'loadDiagram(model,SelfCheckingPair1Sequence)';
+		sysmlval e2eflows = 'end2endFlows(sequence,name,period,deadline,wcet)';
+	declarations
+		'''
+		Deadlines = IntVector('deadline', 1)
+		Responses = IntVector('response', 1)		
+		'''
+}
+
+contract TestSyMLVariablesContract {
+	domains
+		sysmldomain;
+	assumptions
+	guarantee
+		<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+
+	analysis
+		'''areTasksHarmonicBoundSchedulable(${e2eflows$}, error0)'''; 
+}
+

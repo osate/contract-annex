@@ -1770,28 +1770,37 @@ ruleQuery returns [EObject current=null]
 			afterParserOrEnumRuleCall();
 		}
 		    |
+		{
+			newCompositeNode(grammarAccess.getQueryAccess().getSingleSysMLDeclarationParserRuleCall_1());
+		}
+		this_SingleSysMLDeclaration_1=ruleSingleSysMLDeclaration
+		{
+			$current = $this_SingleSysMLDeclaration_1.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
 		(
 			(
 				{
 					$current = forceCreateModelElement(
-						grammarAccess.getQueryAccess().getTupleDeclarationAction_1_0(),
+						grammarAccess.getQueryAccess().getTupleDeclarationAction_2_0(),
 						$current);
 				}
 			)
-			otherlv_2='val'
+			otherlv_3='val'
 			{
-				newLeafNode(otherlv_2, grammarAccess.getQueryAccess().getValKeyword_1_1());
+				newLeafNode(otherlv_3, grammarAccess.getQueryAccess().getValKeyword_2_1());
 			}
-			otherlv_3='('
+			otherlv_4='('
 			{
-				newLeafNode(otherlv_3, grammarAccess.getQueryAccess().getLeftParenthesisKeyword_1_2());
+				newLeafNode(otherlv_4, grammarAccess.getQueryAccess().getLeftParenthesisKeyword_2_2());
 			}
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getQueryAccess().getNamesTupleNameParserRuleCall_1_3_0());
+						newCompositeNode(grammarAccess.getQueryAccess().getNamesTupleNameParserRuleCall_2_3_0());
 					}
-					lv_names_4_0=ruleTupleName
+					lv_names_5_0=ruleTupleName
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getQueryRule());
@@ -1799,23 +1808,23 @@ ruleQuery returns [EObject current=null]
 						add(
 							$current,
 							"names",
-							lv_names_4_0,
+							lv_names_5_0,
 							"org.osate.contract.Contract.TupleName");
 						afterParserOrEnumRuleCall();
 					}
 				)
 			)
 			(
-				otherlv_5=','
+				otherlv_6=','
 				{
-					newLeafNode(otherlv_5, grammarAccess.getQueryAccess().getCommaKeyword_1_4_0());
+					newLeafNode(otherlv_6, grammarAccess.getQueryAccess().getCommaKeyword_2_4_0());
 				}
 				(
 					(
 						{
-							newCompositeNode(grammarAccess.getQueryAccess().getNamesTupleNameParserRuleCall_1_4_1_0());
+							newCompositeNode(grammarAccess.getQueryAccess().getNamesTupleNameParserRuleCall_2_4_1_0());
 						}
-						lv_names_6_0=ruleTupleName
+						lv_names_7_0=ruleTupleName
 						{
 							if ($current==null) {
 								$current = createModelElementForParent(grammarAccess.getQueryRule());
@@ -1823,27 +1832,27 @@ ruleQuery returns [EObject current=null]
 							add(
 								$current,
 								"names",
-								lv_names_6_0,
+								lv_names_7_0,
 								"org.osate.contract.Contract.TupleName");
 							afterParserOrEnumRuleCall();
 						}
 					)
 				)
 			)+
-			otherlv_7=')'
+			otherlv_8=')'
 			{
-				newLeafNode(otherlv_7, grammarAccess.getQueryAccess().getRightParenthesisKeyword_1_5());
+				newLeafNode(otherlv_8, grammarAccess.getQueryAccess().getRightParenthesisKeyword_2_5());
 			}
-			otherlv_8='='
+			otherlv_9='='
 			{
-				newLeafNode(otherlv_8, grammarAccess.getQueryAccess().getEqualsSignKeyword_1_6());
+				newLeafNode(otherlv_9, grammarAccess.getQueryAccess().getEqualsSignKeyword_2_6());
 			}
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getQueryAccess().getValueExpressionParserRuleCall_1_7_0());
+						newCompositeNode(grammarAccess.getQueryAccess().getValueExpressionParserRuleCall_2_7_0());
 					}
-					lv_value_9_0=ruleExpression
+					lv_value_10_0=ruleExpression
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getQueryRule());
@@ -1851,11 +1860,110 @@ ruleQuery returns [EObject current=null]
 						set(
 							$current,
 							"value",
-							lv_value_9_0,
+							lv_value_10_0,
 							"org.osate.contract.Contract.Expression");
 						afterParserOrEnumRuleCall();
 					}
 				)
+			)
+		)
+	)
+;
+
+// Entry rule entryRuleSingleDeclaration
+entryRuleSingleDeclaration returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getSingleDeclarationRule()); }
+	iv_ruleSingleDeclaration=ruleSingleDeclaration
+	{ $current=$iv_ruleSingleDeclaration.current; }
+	EOF;
+
+// Rule SingleDeclaration
+ruleSingleDeclaration returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		{
+			newCompositeNode(grammarAccess.getSingleDeclarationAccess().getSingleSysMLDeclarationParserRuleCall_0());
+		}
+		this_SingleSysMLDeclaration_0=ruleSingleSysMLDeclaration
+		{
+			$current = $this_SingleSysMLDeclaration_0.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getSingleDeclarationAccess().getSingleValDeclarationParserRuleCall_1());
+		}
+		this_SingleValDeclaration_1=ruleSingleValDeclaration
+		{
+			$current = $this_SingleValDeclaration_1.current;
+			afterParserOrEnumRuleCall();
+		}
+	)
+;
+
+// Entry rule entryRuleSingleSysMLDeclaration
+entryRuleSingleSysMLDeclaration returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getSingleSysMLDeclarationRule()); }
+	iv_ruleSingleSysMLDeclaration=ruleSingleSysMLDeclaration
+	{ $current=$iv_ruleSingleSysMLDeclaration.current; }
+	EOF;
+
+// Rule SingleSysMLDeclaration
+ruleSingleSysMLDeclaration returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		otherlv_0='sysmlval'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getSingleSysMLDeclarationAccess().getSysmlvalKeyword_0());
+		}
+		(
+			(
+				lv_name_1_0=RULE_ID
+				{
+					newLeafNode(lv_name_1_0, grammarAccess.getSingleSysMLDeclarationAccess().getNameIDTerminalRuleCall_1_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getSingleSysMLDeclarationRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"name",
+						lv_name_1_0,
+						"org.osate.xtext.aadl2.properties.Properties.ID");
+				}
+			)
+		)
+		otherlv_2='='
+		{
+			newLeafNode(otherlv_2, grammarAccess.getSingleSysMLDeclarationAccess().getEqualsSignKeyword_2());
+		}
+		(
+			(
+				lv_value_3_0=RULE_STRING
+				{
+					newLeafNode(lv_value_3_0, grammarAccess.getSingleSysMLDeclarationAccess().getValueSTRINGTerminalRuleCall_3_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getSingleSysMLDeclarationRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"value",
+						lv_value_3_0,
+						"org.osate.xtext.aadl2.properties.Properties.STRING");
+				}
 			)
 		)
 	)
@@ -2996,7 +3104,7 @@ ruleIStringInter returns [EObject current=null]
 						}
 						otherlv_3=RULE_ID
 						{
-							newLeafNode(otherlv_3, grammarAccess.getIStringInterAccess().getQuerySingleValDeclarationCrossReference_1_0_1_0());
+							newLeafNode(otherlv_3, grammarAccess.getIStringInterAccess().getQuerySingleDeclarationCrossReference_1_0_1_0());
 						}
 					)
 				)

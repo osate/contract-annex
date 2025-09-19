@@ -41,6 +41,9 @@ import org.osate.contract.contract.IString;
 import org.osate.contract.contract.IStringLiteral;
 import org.osate.contract.contract.IStringVar;
 import org.osate.contract.contract.Predefined;
+import org.osate.contract.contract.Query;
+import org.osate.contract.contract.SingleSysMLDeclaration;
+import org.osate.contract.contract.SingleValDeclaration;
 import org.osate.contract.typing.ContractInterpreter;
 
 public class JavaHelper {
@@ -78,11 +81,16 @@ public class JavaHelper {
 					}
 				} else {
 					var q = sVar.getQuery();
-					var result = queryInterpreter.evaluateQuery(env, q);
+					var result = queryInterpreter.evaluateQuery(env, (Query) q);
 					if (result.failed()) {
 						System.out.println(result.getRuleFailedException());
 					} else {
-						args.add(extractOptional(result.getValue().get(q.getName())));
+						var name1 = switch (q) {
+						case SingleValDeclaration decl -> decl.getName();
+						case SingleSysMLDeclaration decl -> decl.getName();
+						default -> "";
+						};
+						args.add(extractOptional(result.getValue().get(name1)));
 					}
 				}
 			}

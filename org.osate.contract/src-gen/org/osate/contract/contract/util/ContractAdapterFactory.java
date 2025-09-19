@@ -172,6 +172,16 @@ public class ContractAdapterFactory extends AdapterFactoryImpl
         return createQueryAdapter();
       }
       @Override
+      public Adapter caseSingleDeclaration(SingleDeclaration object)
+      {
+        return createSingleDeclarationAdapter();
+      }
+      @Override
+      public Adapter caseSingleSysMLDeclaration(SingleSysMLDeclaration object)
+      {
+        return createSingleSysMLDeclarationAdapter();
+      }
+      @Override
       public Adapter caseSingleValDeclaration(SingleValDeclaration object)
       {
         return createSingleValDeclarationAdapter();
@@ -559,6 +569,36 @@ public class ContractAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createQueryAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.osate.contract.contract.SingleDeclaration <em>Single Declaration</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.osate.contract.contract.SingleDeclaration
+   * @generated
+   */
+  public Adapter createSingleDeclarationAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.osate.contract.contract.SingleSysMLDeclaration <em>Single Sys ML Declaration</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.osate.contract.contract.SingleSysMLDeclaration
+   * @generated
+   */
+  public Adapter createSingleSysMLDeclarationAdapter()
   {
     return null;
   }

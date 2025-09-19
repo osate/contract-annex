@@ -96,12 +96,12 @@ public interface IStringVar extends IStringPart
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Query</em>' reference.
-   * @see #setQuery(SingleValDeclaration)
+   * @see #setQuery(SingleDeclaration)
    * @see org.osate.contract.contract.ContractPackage#getIStringVar_Query()
    * @model
    * @generated
    */
-  SingleValDeclaration getQuery();
+  SingleDeclaration getQuery();
 
   /**
    * Sets the value of the '{@link org.osate.contract.contract.IStringVar#getQuery <em>Query</em>}' reference.
@@ -111,7 +111,7 @@ public interface IStringVar extends IStringPart
    * @see #getQuery()
    * @generated
    */
-  void setQuery(SingleValDeclaration value);
+  void setQuery(SingleDeclaration value);
 
   /**
    * Returns the value of the '<em><b>Predefined</b></em>' attribute.

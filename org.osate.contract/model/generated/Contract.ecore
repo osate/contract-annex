@@ -82,11 +82,15 @@
     <eLiterals name="JAVA" value="1" literal="java"/>
     <eLiterals name="SMT" value="2" literal="smt"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Query" eSuperTypes="platform:/resource/org.osate.aadl2/model/aadl2.ecore#//Element">
+  <eClassifiers xsi:type="ecore:EClass" name="Query" eSuperTypes="platform:/resource/org.osate.aadl2/model/aadl2.ecore#//Element"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SingleDeclaration" eSuperTypes="platform:/resource/org.osate.aadl2/model/aadl2.ecore#//NamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SingleSysMLDeclaration" eSuperTypes="#//Query #//SingleDeclaration">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SingleValDeclaration" eSuperTypes="#//Query #//SingleDeclaration">
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//Expression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SingleValDeclaration" eSuperTypes="platform:/resource/org.osate.aadl2/model/aadl2.ecore#//NamedElement #//Query"/>
   <eClassifiers xsi:type="ecore:EClass" name="TupleName" eSuperTypes="platform:/resource/org.osate.aadl2/model/aadl2.ecore#//NamedElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="Expression"/>
   <eClassifiers xsi:type="ecore:EClass" name="Lambda" eSuperTypes="platform:/resource/org.osate.aadl2/model/aadl2.ecore#//Element">
@@ -120,7 +124,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="IStringVar" eSuperTypes="#//IStringPart">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="direct" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="domain" eType="#//Domain"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="query" eType="#//SingleValDeclaration"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="query" eType="#//SingleDeclaration"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="predefined" eType="#//Predefined"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContractAssumption" eSuperTypes="#//AssumptionElement">
@@ -142,6 +146,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="TupleDeclaration" eSuperTypes="#//Query">
     <eStructuralFeatures xsi:type="ecore:EReference" name="names" upperBound="-1"
         eType="#//TupleName" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//Expression"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="OrExpression" eSuperTypes="#//Expression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//Expression"

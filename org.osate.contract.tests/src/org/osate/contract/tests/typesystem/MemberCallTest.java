@@ -38,6 +38,7 @@ import org.osate.aadl2.DefaultAnnexLibrary;
 import org.osate.contract.contract.Contract;
 import org.osate.contract.contract.ContractLibrary;
 import org.osate.contract.contract.MemberCall;
+import org.osate.contract.contract.SingleValDeclaration;
 import org.osate.contract.tests.ContractInjectorProvider;
 import org.osate.contract.typing.ContractTypeSystem;
 import org.osate.testsupport.TestHelper;
@@ -67,147 +68,147 @@ public class MemberCallTest {
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		assertEquals(36, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("String", type.toString());
 		});
 		with(contract.getQueries().get(1), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("ComponentCategory", type.toString());
 		});
 		with(contract.getQueries().get(2), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ComponentInstance>", type.toString());
 		});
 		with(contract.getQueries().get(3), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ComponentInstance>", type.toString());
 		});
 		with(contract.getQueries().get(4), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ComponentInstance>", type.toString());
 		});
 		with(contract.getQueries().get(5), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<FeatureInstance>", type.toString());
 		});
 		with(contract.getQueries().get(6), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<FeatureInstance>", type.toString());
 		});
 		with(contract.getQueries().get(7), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ModeInstance>", type.toString());
 		});
 		with(contract.getQueries().get(8), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ModeInstance>", type.toString());
 		});
 		with(contract.getQueries().get(9), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ModeTransitionInstance>", type.toString());
 		});
 		with(contract.getQueries().get(10), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ModeTransitionInstance>", type.toString());
 		});
 		with(contract.getQueries().get(11), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<FlowSpecificationInstance>", type.toString());
 		});
 		with(contract.getQueries().get(12), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<FlowSpecificationInstance>", type.toString());
 		});
 		with(contract.getQueries().get(13), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<EndToEndFlowInstance>", type.toString());
 		});
 		with(contract.getQueries().get(14), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<EndToEndFlowInstance>", type.toString());
 		});
 		with(contract.getQueries().get(15), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ConnectionInstance>", type.toString());
 		});
 		with(contract.getQueries().get(16), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ConnectionInstance>", type.toString());
 		});
 		with(contract.getQueries().get(17), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ModeInstance>", type.toString());
 		});
 		with(contract.getQueries().get(18), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("ComponentInstance?", type.toString());
 		});
 		with(contract.getQueries().get(19), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(20), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(21), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(22), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(23), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(24), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(25), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(26), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(27), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(28), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(29), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(30), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(31), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(32), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(33), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ComponentInstance>", type.toString());
 		});
 		with(contract.getQueries().get(34), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<StateInstance>", type.toString());
 		});
 		with(contract.getQueries().get(35), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<EventInstance>", type.toString());
 		});
 	}
@@ -221,139 +222,139 @@ public class MemberCallTest {
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		assertEquals(34, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("String", type.toString());
 		});
 		with(contract.getQueries().get(1), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("ComponentCategory", type.toString());
 		});
 		with(contract.getQueries().get(2), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ComponentInstance>", type.toString());
 		});
 		with(contract.getQueries().get(3), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ComponentInstance>", type.toString());
 		});
 		with(contract.getQueries().get(4), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ComponentInstance>", type.toString());
 		});
 		with(contract.getQueries().get(5), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<FeatureInstance>", type.toString());
 		});
 		with(contract.getQueries().get(6), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<FeatureInstance>", type.toString());
 		});
 		with(contract.getQueries().get(7), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ModeInstance>", type.toString());
 		});
 		with(contract.getQueries().get(8), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ModeInstance>", type.toString());
 		});
 		with(contract.getQueries().get(9), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ModeTransitionInstance>", type.toString());
 		});
 		with(contract.getQueries().get(10), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ModeTransitionInstance>", type.toString());
 		});
 		with(contract.getQueries().get(11), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<FlowSpecificationInstance>", type.toString());
 		});
 		with(contract.getQueries().get(12), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<FlowSpecificationInstance>", type.toString());
 		});
 		with(contract.getQueries().get(13), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<EndToEndFlowInstance>", type.toString());
 		});
 		with(contract.getQueries().get(14), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<EndToEndFlowInstance>", type.toString());
 		});
 		with(contract.getQueries().get(15), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ConnectionInstance>", type.toString());
 		});
 		with(contract.getQueries().get(16), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ConnectionInstance>", type.toString());
 		});
 		with(contract.getQueries().get(17), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<SystemOperationMode>", type.toString());
 		});
 		with(contract.getQueries().get(18), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(19), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(20), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(21), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(22), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(23), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(24), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(25), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(26), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(27), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(28), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(29), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(30), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(31), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(32), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<StateInstance>", type.toString());
 		});
 		with(contract.getQueries().get(33), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<EventInstance>", type.toString());
 		});
 	}
@@ -367,73 +368,73 @@ public class MemberCallTest {
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		assertEquals(17, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Long", type.toString());
 		});
 		with(contract.getQueries().get(1), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(2), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("ComponentInstance?", type.toString());
 		});
 		with(contract.getQueries().get(3), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("ConnectionInstance?", type.toString());
 		});
 		with(contract.getQueries().get(4), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ComponentInstance>", type.toString());
 		});
 		with(contract.getQueries().get(5), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ConnectionInstance>", type.toString());
 		});
 		with(contract.getQueries().get(6), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<String>", type.toString());
 		});
 		with(contract.getQueries().get(7), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<ComponentCategory>", type.toString());
 		});
 		with(contract.getQueries().get(8), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 		with(contract.getQueries().get(9), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("List<FeatureInstance>", type.toString());
 		});
 		with(contract.getQueries().get(10), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("List<ComponentInstance>", type.toString());
 		});
 		with(contract.getQueries().get(11), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<LongWithUnits<AADL_Project::Time_Units>>", type.toString());
 		});
 		with(contract.getQueries().get(12), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<LongWithUnits<AADL_Project::Time_Units>>", type.toString());
 		});
 		with(contract.getQueries().get(13), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<(String, Long)>", type.toString());
 		});
 		with(contract.getQueries().get(14), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<FeatureInstance>", type.toString());
 		});
 		with(contract.getQueries().get(15), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("List<FeatureInstance>", type.toString());
 		});
 		with(contract.getQueries().get(16), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});
 	}
@@ -447,19 +448,19 @@ public class MemberCallTest {
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		assertEquals(4, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("String?", type.toString());
 		});
 		with(contract.getQueries().get(1), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("ComponentCategory?", type.toString());
 		});
 		with(contract.getQueries().get(2), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("LongRangeWithUnits<AADL_Project::Time_Units>?", type.toString());
 		});
 		with(contract.getQueries().get(3), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("ComponentInstance?", type.toString());
 		});
 	}
@@ -473,7 +474,7 @@ public class MemberCallTest {
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		assertEquals(1, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("Double", type.toString());
 		});
@@ -488,17 +489,17 @@ public class MemberCallTest {
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		assertEquals(3, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("Long", type.toString());
 		});
 		with(contract.getQueries().get(1), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("Long", type.toString());
 		});
 		with(contract.getQueries().get(2), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("Long?", type.toString());
 		});
@@ -513,17 +514,17 @@ public class MemberCallTest {
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		assertEquals(3, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("LongWithUnits<AADL_Project::Time_Units>", type.toString());
 		});
 		with(contract.getQueries().get(1), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("LongWithUnits<AADL_Project::Time_Units>", type.toString());
 		});
 		with(contract.getQueries().get(2), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("LongWithUnits<AADL_Project::Time_Units>?", type.toString());
 		});
@@ -538,17 +539,17 @@ public class MemberCallTest {
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		assertEquals(3, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("Double", type.toString());
 		});
 		with(contract.getQueries().get(1), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("Double", type.toString());
 		});
 		with(contract.getQueries().get(2), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("Double?", type.toString());
 		});
@@ -563,17 +564,17 @@ public class MemberCallTest {
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		assertEquals(3, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("DoubleWithUnits<AADL_Project::Time_Units>", type.toString());
 		});
 		with(contract.getQueries().get(1), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("DoubleWithUnits<AADL_Project::Time_Units>", type.toString());
 		});
 		with(contract.getQueries().get(2), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("DoubleWithUnits<AADL_Project::Time_Units>?", type.toString());
 		});
@@ -588,77 +589,77 @@ public class MemberCallTest {
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		assertEquals(15, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("Boolean?", type.toString());
 		});
 		with(contract.getQueries().get(1), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("String?", type.toString());
 		});
 		with(contract.getQueries().get(2), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("Classifier?", type.toString());
 		});
 		with(contract.getQueries().get(3), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("Enumeration<ps::record_property.enum>?", type.toString());
 		});
 		with(contract.getQueries().get(4), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("Long?", type.toString());
 		});
 		with(contract.getQueries().get(5), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("LongWithUnits<AADL_Project::Time_Units>?", type.toString());
 		});
 		with(contract.getQueries().get(6), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("Double?", type.toString());
 		});
 		with(contract.getQueries().get(7), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("DoubleWithUnits<AADL_Project::Time_Units>?", type.toString());
 		});
 		with(contract.getQueries().get(8), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("LongRange?", type.toString());
 		});
 		with(contract.getQueries().get(9), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("LongRangeWithUnits<AADL_Project::Time_Units>?", type.toString());
 		});
 		with(contract.getQueries().get(10), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("DoubleRange?", type.toString());
 		});
 		with(contract.getQueries().get(11), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("DoubleRangeWithUnits<AADL_Project::Time_Units>?", type.toString());
 		});
 		with(contract.getQueries().get(12), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("Record<ps::record_property.nested_record>?", type.toString());
 		});
 		with(contract.getQueries().get(13), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("InstanceObject?", type.toString());
 		});
 		with(contract.getQueries().get(14), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("List<String>?", type.toString());
 		});
@@ -673,17 +674,17 @@ public class MemberCallTest {
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		assertEquals(3, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("List<FlowSpecificationInstance>", type.toString());
 		});
 		with(contract.getQueries().get(1), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("List<ConnectionInstance>", type.toString());
 		});
 		with(contract.getQueries().get(2), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("List<ComponentInstance>", type.toString());
 		});
@@ -698,7 +699,7 @@ public class MemberCallTest {
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		assertEquals(1, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("String", type.toString());
 		});
@@ -713,7 +714,7 @@ public class MemberCallTest {
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		assertEquals(1, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("String", type.toString());
 		});
@@ -728,22 +729,22 @@ public class MemberCallTest {
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		assertEquals(4, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("String", type.toString());
 		});
 		with(contract.getQueries().get(1), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("ConnectionInstanceEnd", type.toString());
 		});
 		with(contract.getQueries().get(2), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("ConnectionInstanceEnd", type.toString());
 		});
 		with(contract.getQueries().get(3), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("List<ConnectionInstanceEnd>", type.toString());
 		});
@@ -758,17 +759,17 @@ public class MemberCallTest {
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		assertEquals(3, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("String", type.toString());
 		});
 		with(contract.getQueries().get(1), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("ComponentInstance", type.toString());
 		});
 		with(contract.getQueries().get(2), query -> {
-			var mapCall = (MemberCall) query.getValue();
+			var mapCall = (MemberCall) ((SingleValDeclaration) query).getValue();
 			var type = typeSystem.expressionType(mapCall.getLambda().getReturnValue()).getValue();
 			assertEquals("Boolean", type.toString());
 		});

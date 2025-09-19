@@ -89,23 +89,23 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.NamedElement");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final RuleCall cContractElementParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final RuleCall cSingleValDeclarationParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cSingleDeclarationParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		private final RuleCall cTupleNameParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
 		private final RuleCall cSingleParameterParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		
 		//NamedElement returns aadl2::NamedElement:
-		//    ContractElement | SingleValDeclaration | TupleName | SingleParameter
+		//    ContractElement | SingleDeclaration | TupleName | SingleParameter
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//ContractElement | SingleValDeclaration | TupleName | SingleParameter
+		//ContractElement | SingleDeclaration | TupleName | SingleParameter
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//ContractElement
 		public RuleCall getContractElementParserRuleCall_0() { return cContractElementParserRuleCall_0; }
 		
-		//SingleValDeclaration
-		public RuleCall getSingleValDeclarationParserRuleCall_1() { return cSingleValDeclarationParserRuleCall_1; }
+		//SingleDeclaration
+		public RuleCall getSingleDeclarationParserRuleCall_1() { return cSingleDeclarationParserRuleCall_1; }
 		
 		//TupleName
 		public RuleCall getTupleNameParserRuleCall_2() { return cTupleNameParserRuleCall_2; }
@@ -1357,75 +1357,137 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.Query");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final RuleCall cSingleValDeclarationParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
-		private final Action cTupleDeclarationAction_1_0 = (Action)cGroup_1.eContents().get(0);
-		private final Keyword cValKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
-		private final Keyword cLeftParenthesisKeyword_1_2 = (Keyword)cGroup_1.eContents().get(2);
-		private final Assignment cNamesAssignment_1_3 = (Assignment)cGroup_1.eContents().get(3);
-		private final RuleCall cNamesTupleNameParserRuleCall_1_3_0 = (RuleCall)cNamesAssignment_1_3.eContents().get(0);
-		private final Group cGroup_1_4 = (Group)cGroup_1.eContents().get(4);
-		private final Keyword cCommaKeyword_1_4_0 = (Keyword)cGroup_1_4.eContents().get(0);
-		private final Assignment cNamesAssignment_1_4_1 = (Assignment)cGroup_1_4.eContents().get(1);
-		private final RuleCall cNamesTupleNameParserRuleCall_1_4_1_0 = (RuleCall)cNamesAssignment_1_4_1.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_1_5 = (Keyword)cGroup_1.eContents().get(5);
-		private final Keyword cEqualsSignKeyword_1_6 = (Keyword)cGroup_1.eContents().get(6);
-		private final Assignment cValueAssignment_1_7 = (Assignment)cGroup_1.eContents().get(7);
-		private final RuleCall cValueExpressionParserRuleCall_1_7_0 = (RuleCall)cValueAssignment_1_7.eContents().get(0);
+		private final RuleCall cSingleSysMLDeclarationParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final Group cGroup_2 = (Group)cAlternatives.eContents().get(2);
+		private final Action cTupleDeclarationAction_2_0 = (Action)cGroup_2.eContents().get(0);
+		private final Keyword cValKeyword_2_1 = (Keyword)cGroup_2.eContents().get(1);
+		private final Keyword cLeftParenthesisKeyword_2_2 = (Keyword)cGroup_2.eContents().get(2);
+		private final Assignment cNamesAssignment_2_3 = (Assignment)cGroup_2.eContents().get(3);
+		private final RuleCall cNamesTupleNameParserRuleCall_2_3_0 = (RuleCall)cNamesAssignment_2_3.eContents().get(0);
+		private final Group cGroup_2_4 = (Group)cGroup_2.eContents().get(4);
+		private final Keyword cCommaKeyword_2_4_0 = (Keyword)cGroup_2_4.eContents().get(0);
+		private final Assignment cNamesAssignment_2_4_1 = (Assignment)cGroup_2_4.eContents().get(1);
+		private final RuleCall cNamesTupleNameParserRuleCall_2_4_1_0 = (RuleCall)cNamesAssignment_2_4_1.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_2_5 = (Keyword)cGroup_2.eContents().get(5);
+		private final Keyword cEqualsSignKeyword_2_6 = (Keyword)cGroup_2.eContents().get(6);
+		private final Assignment cValueAssignment_2_7 = (Assignment)cGroup_2.eContents().get(7);
+		private final RuleCall cValueExpressionParserRuleCall_2_7_0 = (RuleCall)cValueAssignment_2_7.eContents().get(0);
 		
 		//Query:
 		//    SingleValDeclaration |
+		//    SingleSysMLDeclaration |
 		//    {TupleDeclaration} 'val' '(' names+=TupleName (',' names+=TupleName)+ ')' '=' value=Expression
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//SingleValDeclaration |
+		//SingleSysMLDeclaration |
 		//{TupleDeclaration} 'val' '(' names+=TupleName (',' names+=TupleName)+ ')' '=' value=Expression
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//SingleValDeclaration
 		public RuleCall getSingleValDeclarationParserRuleCall_0() { return cSingleValDeclarationParserRuleCall_0; }
 		
+		//SingleSysMLDeclaration
+		public RuleCall getSingleSysMLDeclarationParserRuleCall_1() { return cSingleSysMLDeclarationParserRuleCall_1; }
+		
 		//{TupleDeclaration} 'val' '(' names+=TupleName (',' names+=TupleName)+ ')' '=' value=Expression
-		public Group getGroup_1() { return cGroup_1; }
+		public Group getGroup_2() { return cGroup_2; }
 		
 		//{TupleDeclaration}
-		public Action getTupleDeclarationAction_1_0() { return cTupleDeclarationAction_1_0; }
+		public Action getTupleDeclarationAction_2_0() { return cTupleDeclarationAction_2_0; }
 		
 		//'val'
-		public Keyword getValKeyword_1_1() { return cValKeyword_1_1; }
+		public Keyword getValKeyword_2_1() { return cValKeyword_2_1; }
 		
 		//'('
-		public Keyword getLeftParenthesisKeyword_1_2() { return cLeftParenthesisKeyword_1_2; }
+		public Keyword getLeftParenthesisKeyword_2_2() { return cLeftParenthesisKeyword_2_2; }
 		
 		//names+=TupleName
-		public Assignment getNamesAssignment_1_3() { return cNamesAssignment_1_3; }
+		public Assignment getNamesAssignment_2_3() { return cNamesAssignment_2_3; }
 		
 		//TupleName
-		public RuleCall getNamesTupleNameParserRuleCall_1_3_0() { return cNamesTupleNameParserRuleCall_1_3_0; }
+		public RuleCall getNamesTupleNameParserRuleCall_2_3_0() { return cNamesTupleNameParserRuleCall_2_3_0; }
 		
 		//(',' names+=TupleName)+
-		public Group getGroup_1_4() { return cGroup_1_4; }
+		public Group getGroup_2_4() { return cGroup_2_4; }
 		
 		//','
-		public Keyword getCommaKeyword_1_4_0() { return cCommaKeyword_1_4_0; }
+		public Keyword getCommaKeyword_2_4_0() { return cCommaKeyword_2_4_0; }
 		
 		//names+=TupleName
-		public Assignment getNamesAssignment_1_4_1() { return cNamesAssignment_1_4_1; }
+		public Assignment getNamesAssignment_2_4_1() { return cNamesAssignment_2_4_1; }
 		
 		//TupleName
-		public RuleCall getNamesTupleNameParserRuleCall_1_4_1_0() { return cNamesTupleNameParserRuleCall_1_4_1_0; }
+		public RuleCall getNamesTupleNameParserRuleCall_2_4_1_0() { return cNamesTupleNameParserRuleCall_2_4_1_0; }
 		
 		//')'
-		public Keyword getRightParenthesisKeyword_1_5() { return cRightParenthesisKeyword_1_5; }
+		public Keyword getRightParenthesisKeyword_2_5() { return cRightParenthesisKeyword_2_5; }
 		
 		//'='
-		public Keyword getEqualsSignKeyword_1_6() { return cEqualsSignKeyword_1_6; }
+		public Keyword getEqualsSignKeyword_2_6() { return cEqualsSignKeyword_2_6; }
 		
 		//value=Expression
-		public Assignment getValueAssignment_1_7() { return cValueAssignment_1_7; }
+		public Assignment getValueAssignment_2_7() { return cValueAssignment_2_7; }
 		
 		//Expression
-		public RuleCall getValueExpressionParserRuleCall_1_7_0() { return cValueExpressionParserRuleCall_1_7_0; }
+		public RuleCall getValueExpressionParserRuleCall_2_7_0() { return cValueExpressionParserRuleCall_2_7_0; }
+	}
+	public class SingleDeclarationElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.SingleDeclaration");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cSingleSysMLDeclarationParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cSingleValDeclarationParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		
+		//SingleDeclaration:
+		//    SingleSysMLDeclaration | SingleValDeclaration
+		//;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//SingleSysMLDeclaration | SingleValDeclaration
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//SingleSysMLDeclaration
+		public RuleCall getSingleSysMLDeclarationParserRuleCall_0() { return cSingleSysMLDeclarationParserRuleCall_0; }
+		
+		//SingleValDeclaration
+		public RuleCall getSingleValDeclarationParserRuleCall_1() { return cSingleValDeclarationParserRuleCall_1; }
+	}
+	public class SingleSysMLDeclarationElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.SingleSysMLDeclaration");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cSysmlvalKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Keyword cEqualsSignKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cValueAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cValueSTRINGTerminalRuleCall_3_0 = (RuleCall)cValueAssignment_3.eContents().get(0);
+		
+		//SingleSysMLDeclaration:
+		//    'sysmlval' name=ID '=' value= STRING
+		//;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'sysmlval' name=ID '=' value= STRING
+		public Group getGroup() { return cGroup; }
+		
+		//'sysmlval'
+		public Keyword getSysmlvalKeyword_0() { return cSysmlvalKeyword_0; }
+		
+		//name=ID
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		
+		//ID
+		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		
+		//'='
+		public Keyword getEqualsSignKeyword_2() { return cEqualsSignKeyword_2; }
+		
+		//value= STRING
+		public Assignment getValueAssignment_3() { return cValueAssignment_3; }
+		
+		//STRING
+		public RuleCall getValueSTRINGTerminalRuleCall_3_0() { return cValueSTRINGTerminalRuleCall_3_0; }
 	}
 	public class SingleValDeclarationElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.osate.contract.Contract.SingleValDeclaration");
@@ -2210,15 +2272,15 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		private final RuleCall cDomainDomainIDTerminalRuleCall_1_0_0_0_0_1 = (RuleCall)cDomainDomainCrossReference_1_0_0_0_0.eContents().get(1);
 		private final Keyword cColonColonKeyword_1_0_0_1 = (Keyword)cGroup_1_0_0.eContents().get(1);
 		private final Assignment cQueryAssignment_1_0_1 = (Assignment)cGroup_1_0.eContents().get(1);
-		private final CrossReference cQuerySingleValDeclarationCrossReference_1_0_1_0 = (CrossReference)cQueryAssignment_1_0_1.eContents().get(0);
-		private final RuleCall cQuerySingleValDeclarationIDTerminalRuleCall_1_0_1_0_1 = (RuleCall)cQuerySingleValDeclarationCrossReference_1_0_1_0.eContents().get(1);
+		private final CrossReference cQuerySingleDeclarationCrossReference_1_0_1_0 = (CrossReference)cQueryAssignment_1_0_1.eContents().get(0);
+		private final RuleCall cQuerySingleDeclarationIDTerminalRuleCall_1_0_1_0_1 = (RuleCall)cQuerySingleDeclarationCrossReference_1_0_1_0.eContents().get(1);
 		private final Assignment cPredefinedAssignment_1_1 = (Assignment)cAlternatives_1.eContents().get(1);
 		private final RuleCall cPredefinedPredefinedEnumRuleCall_1_1_0 = (RuleCall)cPredefinedAssignment_1_1.eContents().get(0);
 		
 		//IStringInter returns IStringVar:
 		//    direct?=":"?
 		//    (
-		//      ((domain=[Domain|ID] '::')? query=([SingleValDeclaration|ID]))
+		//      ((domain=[Domain|ID] '::')? query=([SingleDeclaration|ID]))
 		//    | predefined=Predefined
 		//    )
 		//;
@@ -2226,7 +2288,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		
 		//direct?=":"?
 		//(
-		//  ((domain=[Domain|ID] '::')? query=([SingleValDeclaration|ID]))
+		//  ((domain=[Domain|ID] '::')? query=([SingleDeclaration|ID]))
 		//| predefined=Predefined
 		//)
 		public Group getGroup() { return cGroup; }
@@ -2238,12 +2300,12 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		public Keyword getDirectColonKeyword_0_0() { return cDirectColonKeyword_0_0; }
 		
 		//(
-		//  ((domain=[Domain|ID] '::')? query=([SingleValDeclaration|ID]))
+		//  ((domain=[Domain|ID] '::')? query=([SingleDeclaration|ID]))
 		//| predefined=Predefined
 		//)
 		public Alternatives getAlternatives_1() { return cAlternatives_1; }
 		
-		//((domain=[Domain|ID] '::')? query=([SingleValDeclaration|ID]))
+		//((domain=[Domain|ID] '::')? query=([SingleDeclaration|ID]))
 		public Group getGroup_1_0() { return cGroup_1_0; }
 		
 		//(domain=[Domain|ID] '::')?
@@ -2261,14 +2323,14 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		//'::'
 		public Keyword getColonColonKeyword_1_0_0_1() { return cColonColonKeyword_1_0_0_1; }
 		
-		//query=([SingleValDeclaration|ID])
+		//query=([SingleDeclaration|ID])
 		public Assignment getQueryAssignment_1_0_1() { return cQueryAssignment_1_0_1; }
 		
-		//([SingleValDeclaration|ID])
-		public CrossReference getQuerySingleValDeclarationCrossReference_1_0_1_0() { return cQuerySingleValDeclarationCrossReference_1_0_1_0; }
+		//([SingleDeclaration|ID])
+		public CrossReference getQuerySingleDeclarationCrossReference_1_0_1_0() { return cQuerySingleDeclarationCrossReference_1_0_1_0; }
 		
 		//ID
-		public RuleCall getQuerySingleValDeclarationIDTerminalRuleCall_1_0_1_0_1() { return cQuerySingleValDeclarationIDTerminalRuleCall_1_0_1_0_1; }
+		public RuleCall getQuerySingleDeclarationIDTerminalRuleCall_1_0_1_0_1() { return cQuerySingleDeclarationIDTerminalRuleCall_1_0_1_0_1; }
 		
 		//predefined=Predefined
 		public Assignment getPredefinedAssignment_1_1() { return cPredefinedAssignment_1_1; }
@@ -2398,6 +2460,8 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	private final ClaimsElements pClaims;
 	private final LanguageElements eLanguage;
 	private final QueryElements pQuery;
+	private final SingleDeclarationElements pSingleDeclaration;
+	private final SingleSysMLDeclarationElements pSingleSysMLDeclaration;
 	private final SingleValDeclarationElements pSingleValDeclaration;
 	private final TupleNameElements pTupleName;
 	private final ExpressionElements pExpression;
@@ -2463,6 +2527,8 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		this.pClaims = new ClaimsElements();
 		this.eLanguage = new LanguageElements();
 		this.pQuery = new QueryElements();
+		this.pSingleDeclaration = new SingleDeclarationElements();
+		this.pSingleSysMLDeclaration = new SingleSysMLDeclarationElements();
 		this.pSingleValDeclaration = new SingleValDeclarationElements();
 		this.pTupleName = new TupleNameElements();
 		this.pExpression = new ExpressionElements();
@@ -2542,7 +2608,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	}
 	
 	//NamedElement returns aadl2::NamedElement:
-	//    ContractElement | SingleValDeclaration | TupleName | SingleParameter
+	//    ContractElement | SingleDeclaration | TupleName | SingleParameter
 	//;
 	public NamedElementElements getNamedElementAccess() {
 		return pNamedElement;
@@ -2892,6 +2958,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	
 	//Query:
 	//    SingleValDeclaration |
+	//    SingleSysMLDeclaration |
 	//    {TupleDeclaration} 'val' '(' names+=TupleName (',' names+=TupleName)+ ')' '=' value=Expression
 	//;
 	public QueryElements getQueryAccess() {
@@ -2900,6 +2967,28 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	
 	public ParserRule getQueryRule() {
 		return getQueryAccess().getRule();
+	}
+	
+	//SingleDeclaration:
+	//    SingleSysMLDeclaration | SingleValDeclaration
+	//;
+	public SingleDeclarationElements getSingleDeclarationAccess() {
+		return pSingleDeclaration;
+	}
+	
+	public ParserRule getSingleDeclarationRule() {
+		return getSingleDeclarationAccess().getRule();
+	}
+	
+	//SingleSysMLDeclaration:
+	//    'sysmlval' name=ID '=' value= STRING
+	//;
+	public SingleSysMLDeclarationElements getSingleSysMLDeclarationAccess() {
+		return pSingleSysMLDeclaration;
+	}
+	
+	public ParserRule getSingleSysMLDeclarationRule() {
+		return getSingleSysMLDeclarationAccess().getRule();
 	}
 	
 	//SingleValDeclaration:
@@ -3123,7 +3212,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	//IStringInter returns IStringVar:
 	//    direct?=":"?
 	//    (
-	//      ((domain=[Domain|ID] '::')? query=([SingleValDeclaration|ID]))
+	//      ((domain=[Domain|ID] '::')? query=([SingleDeclaration|ID]))
 	//    | predefined=Predefined
 	//    )
 	//;

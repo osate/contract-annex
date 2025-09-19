@@ -1,25 +1,25 @@
 /*******************************************************************************
  * Assurance Contract Annex Plugin for OSATE
  * Copyright 2023 Carnegie Mellon University.
- * NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE 
- * MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO 
- * WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT 
- * NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR 
- * RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE 
- * ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT 
+ * NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE
+ * MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO
+ * WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT
+ * NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR
+ * RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE
+ * ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT
  * INFRINGEMENT.
- * Released under a BSD (SEI)-style license, please see license.txt or contact 
+ * Released under a BSD (SEI)-style license, please see license.txt or contact
  * permission@sei.cmu.edu for full terms.
- * [DISTRIBUTION STATEMENT A] This material has been approved for public release and 
- * unlimited distribution.  Please see Copyright notice for non-US Government use and 
+ * [DISTRIBUTION STATEMENT A] This material has been approved for public release and
+ * unlimited distribution.  Please see Copyright notice for non-US Government use and
  * distribution.
- * Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie 
+ * Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie
  * Mellon University.
- * This Software includes and/or makes use of the following Third-Party Software subject 
+ * This Software includes and/or makes use of the following Third-Party Software subject
  * to its own license:
- * 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft 
+ * 1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft
  * Corporation.
- * 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse 
+ * 2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse
  * contributors and others.
  * DM23-0575
  *******************************************************************************/
@@ -40,6 +40,7 @@ import org.osate.aadl2.DefaultAnnexLibrary;
 import org.osate.contract.contract.Contract;
 import org.osate.contract.contract.ContractLibrary;
 import org.osate.contract.contract.MemberCall;
+import org.osate.contract.contract.SingleValDeclaration;
 import org.osate.contract.contract.TupleDeclaration;
 import org.osate.contract.contract.TupleParameter;
 import org.osate.contract.tests.ContractInjectorProvider;
@@ -119,7 +120,9 @@ public class CheckDuplicateNameTest {
 			assertEquals("'duplicate' is already declared", issue.getMessage());
 			assertEquals(
 					EcoreUtil.getURI(
-							((MemberCall) contract.getQueries().get(0).getValue()).getLambda().getQueries().get(0)),
+							((MemberCall) ((SingleValDeclaration) contract.getQueries().get(0)).getValue()).getLambda()
+									.getQueries()
+									.get(0)),
 					issue.getUriToProblem());
 		});
 		with(issues.get(1), issue -> {
@@ -127,7 +130,9 @@ public class CheckDuplicateNameTest {
 			assertEquals("'tupleName1' is already declared", issue.getMessage());
 			assertEquals(
 					EcoreUtil.getURI(
-							((MemberCall) contract.getQueries().get(1).getValue()).getLambda().getQueries().get(0)),
+							((MemberCall) ((SingleValDeclaration) contract.getQueries().get(1)).getValue()).getLambda()
+									.getQueries()
+									.get(0)),
 					issue.getUriToProblem());
 		});
 	}
@@ -145,7 +150,9 @@ public class CheckDuplicateNameTest {
 			assertEquals("'duplicateVal' is already declared", issue.getMessage());
 			assertEquals(
 					EcoreUtil.getURI(
-							((MemberCall) contract.getQueries().get(0).getValue()).getLambda().getQueries().get(2)),
+							((MemberCall) ((SingleValDeclaration) contract.getQueries().get(0)).getValue()).getLambda()
+									.getQueries()
+									.get(2)),
 					issue.getUriToProblem());
 		});
 		with(issues.get(1), issue -> {
@@ -153,14 +160,17 @@ public class CheckDuplicateNameTest {
 			assertEquals("'duplicateTuple1' is already declared", issue.getMessage());
 			assertEquals(
 					EcoreUtil.getURI(
-							((MemberCall) contract.getQueries().get(0).getValue()).getLambda().getQueries().get(3)),
+							((MemberCall) ((SingleValDeclaration) contract.getQueries().get(0)).getValue()).getLambda()
+									.getQueries()
+									.get(3)),
 					issue.getUriToProblem());
 		});
 		with(issues.get(2), issue -> {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("'duplicateVal' is already declared", issue.getMessage());
 			assertEquals(EcoreUtil
-					.getURI(((TupleDeclaration) ((MemberCall) contract.getQueries().get(0).getValue()).getLambda()
+					.getURI(((TupleDeclaration) ((MemberCall) ((SingleValDeclaration) contract.getQueries().get(0))
+							.getValue()).getLambda()
 							.getQueries()
 							.get(4)).getNames().get(0)),
 					issue.getUriToProblem());
@@ -169,7 +179,8 @@ public class CheckDuplicateNameTest {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("'duplicateTuple2' is already declared", issue.getMessage());
 			assertEquals(EcoreUtil
-					.getURI(((TupleDeclaration) ((MemberCall) contract.getQueries().get(0).getValue()).getLambda()
+					.getURI(((TupleDeclaration) ((MemberCall) ((SingleValDeclaration) contract.getQueries().get(0))
+							.getValue()).getLambda()
 							.getQueries()
 							.get(4)).getNames().get(1)),
 					issue.getUriToProblem());
@@ -188,7 +199,9 @@ public class CheckDuplicateNameTest {
 			assertEquals(Severity.ERROR, issue.getSeverity());
 			assertEquals("'duplicate' is already declared", issue.getMessage());
 			assertEquals(EcoreUtil.getURI(
-					((TupleParameter) ((MemberCall) contract.getQueries().get(0).getValue()).getLambda().getParameter())
+					((TupleParameter) ((MemberCall) ((SingleValDeclaration) contract.getQueries().get(0)).getValue())
+							.getLambda()
+							.getParameter())
 							.getNames()
 							.get(1)),
 					issue.getUriToProblem());

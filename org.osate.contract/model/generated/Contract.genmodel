@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="Assurance Contract Annex Plugin for OSATE&#xA;Copyright 2023 Carnegie Mellon University.&#xA;NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE &#xA;MATERIAL IS FURNISHED ON AN &quot;AS-IS&quot; BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO &#xA;WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT &#xA;NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR &#xA;RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE &#xA;ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT &#xA;INFRINGEMENT.&#xA;Released under a BSD (SEI)-style license, please see license.txt or contact &#xA;permission@sei.cmu.edu for full terms.&#xA;[DISTRIBUTION STATEMENT A] This material has been approved for public release and &#xA;unlimited distribution.  Please see Copyright notice for non-US Government use and &#xA;distribution.&#xA;Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie &#xA;Mellon University.&#xA;This Software includes and/or makes use of the following Third-Party Software subject &#xA;to its own license:&#xA;1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft &#xA;Corporation.&#xA;2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse &#xA;contributors and others.&#xA;DM23-0575"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="Assurance Contract Annex Plugin for OSATE&#xD;&#xA;Copyright 2023 Carnegie Mellon University.&#xD;&#xA;NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE &#xD;&#xA;MATERIAL IS FURNISHED ON AN &quot;AS-IS&quot; BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO &#xD;&#xA;WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT &#xD;&#xA;NOT LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY, EXCLUSIVITY, OR &#xD;&#xA;RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE MELLON UNIVERSITY DOES NOT MAKE &#xD;&#xA;ANY WARRANTY OF ANY KIND WITH RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT &#xD;&#xA;INFRINGEMENT.&#xD;&#xA;Released under a BSD (SEI)-style license, please see license.txt or contact &#xD;&#xA;permission@sei.cmu.edu for full terms.&#xD;&#xA;[DISTRIBUTION STATEMENT A] This material has been approved for public release and &#xD;&#xA;unlimited distribution.  Please see Copyright notice for non-US Government use and &#xD;&#xA;distribution.&#xD;&#xA;Carnegie Mellon® is registered in the U.S. Patent and Trademark Office by Carnegie &#xD;&#xA;Mellon University.&#xD;&#xA;This Software includes and/or makes use of the following Third-Party Software subject &#xD;&#xA;to its own license:&#xD;&#xA;1. Z3 (https://github.com/Z3Prover/z3/blob/master/LICENSE.txt) Copyright Microsoft &#xD;&#xA;Corporation.&#xD;&#xA;2. Eclipse (https://www.eclipse.org/legal/epl-2.0/) Copyright 2000, 2023 Eclipse &#xD;&#xA;contributors and others.&#xD;&#xA;DM23-0575"
     modelDirectory="/org.osate.contract/src-gen" modelPluginID="org.osate.contract"
     forceOverwrite="true" modelName="Contract" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
-    complianceLevel="11.0" copyrightFields="false" runtimeVersion="2.29" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/resource/org.osate.aadl2/model/aadl2.genmodel#//aadl2">
+    complianceLevel="17.0" copyrightFields="false" runtimeVersion="2.36" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/resource/org.osate.aadl2/model/aadl2.genmodel#//aadl2">
   <genPackages prefix="Contract" basePackage="org.osate.contract" disposableProviderFactory="true"
       fileExtensions="contract" ecorePackage="Contract.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Contract.ecore#//Language">
@@ -67,10 +67,14 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//VerificationPlan/claims"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Contract.ecore#//VerificationPlan/contracts"/>
     </genClasses>
-    <genClasses ecoreClass="Contract.ecore#//Query">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//Query/value"/>
+    <genClasses ecoreClass="Contract.ecore#//Query"/>
+    <genClasses ecoreClass="Contract.ecore#//SingleDeclaration"/>
+    <genClasses ecoreClass="Contract.ecore#//SingleSysMLDeclaration">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Contract.ecore#//SingleSysMLDeclaration/value"/>
     </genClasses>
-    <genClasses ecoreClass="Contract.ecore#//SingleValDeclaration"/>
+    <genClasses ecoreClass="Contract.ecore#//SingleValDeclaration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//SingleValDeclaration/value"/>
+    </genClasses>
     <genClasses ecoreClass="Contract.ecore#//TupleName"/>
     <genClasses ecoreClass="Contract.ecore#//Expression"/>
     <genClasses ecoreClass="Contract.ecore#//Lambda">
@@ -113,6 +117,7 @@
     <genClasses ecoreClass="Contract.ecore#//ArgumentNot"/>
     <genClasses ecoreClass="Contract.ecore#//TupleDeclaration">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//TupleDeclaration/names"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//TupleDeclaration/value"/>
     </genClasses>
     <genClasses ecoreClass="Contract.ecore#//OrExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Contract.ecore#//OrExpression/left"/>

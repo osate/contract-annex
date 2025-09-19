@@ -1,0 +1,15 @@
+package VerificationPlans; 
+
+verification plan verifySchedualability {
+	component
+		s: Crazyflie_System::Crazyflie_System.impl;
+	domains
+		FlowSynchronizationContract::schedulability; 
+	claims
+		`And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+	contracts
+		FlowSynchronizationContract::RMAHarmonicBoundContract;
+		FlowSynchronizationContract::RMANonHarmonicBoundContract;
+		FlowSynchronizationContract::TestSyMLVariablesContract;
+}
+ 

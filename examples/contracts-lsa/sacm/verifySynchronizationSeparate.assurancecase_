@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="ASCII"?>
+<assuranceCase_:AssuranceCasePackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:argumentation_="http://omg.sacm/2.3/argumentation" xmlns:artifact_="http://omg.sacm/2.3/artifact" xmlns:assuranceCase_="http://omg.sacm/2.3/assurancecase">
+  <name lang="en" content="Verification Plan verifySynchronizationSeparate"/>
+  <artifactPackage>
+    <name lang="en" content="Artifacts"/>
+    <artifactElement xsi:type="artifact_:Technique">
+      <name lang="en" content="verifySynchronizationSeparate.SamplingSynchronizationContract.areFlowsInSync1"/>
+      <description>
+        <content>
+          <value lang="en" content="verifySynchronizationSeparate.SamplingSynchronizationContract.areFlowsInSync1"/>
+        </content>
+      </description>
+    </artifactElement>
+    <artifactElement xsi:type="artifact_:Technique">
+      <name lang="en" content="verifySynchronizationSeparate.EndToEndDelayedCommunicationContract.meetEndToEndLatencies"/>
+      <description>
+        <content>
+          <value lang="en" content="verifySynchronizationSeparate.EndToEndDelayedCommunicationContract.meetEndToEndLatencies"/>
+        </content>
+      </description>
+    </artifactElement>
+    <artifactElement xsi:type="artifact_:Technique">
+      <name lang="en" content="areConnectionsDelayedContract.areConnectionsDelayed"/>
+      <description>
+        <content>
+          <value lang="en" content="areConnectionsDelayedContract.areConnectionsDelayed"/>
+        </content>
+      </description>
+    </artifactElement>
+    <artifactElement xsi:type="artifact_:Technique">
+      <name lang="en" content="schedulabilityArgument.RMPrioritiesContract.arePrioritiesRM"/>
+      <description>
+        <content>
+          <value lang="en" content="schedulabilityArgument.RMPrioritiesContract.arePrioritiesRM"/>
+        </content>
+      </description>
+    </artifactElement>
+    <artifactElement xsi:type="artifact_:Technique">
+      <name lang="en" content="schedulabilityArgument.RMAHarmonicBoundContract.allProcessorHarmonicBoundSchedulable"/>
+      <description>
+        <content>
+          <value lang="en" content="schedulabilityArgument.RMAHarmonicBoundContract.allProcessorHarmonicBoundSchedulable"/>
+        </content>
+      </description>
+    </artifactElement>
+    <artifactElement xsi:type="artifact_:Technique">
+      <name lang="en" content="schedulabilityArgument.RMANonHarmonicBoundContract.allProcessorNonHarmonicBoundSchedulable"/>
+      <description>
+        <content>
+          <value lang="en" content="schedulabilityArgument.RMANonHarmonicBoundContract.allProcessorNonHarmonicBoundSchedulable"/>
+        </content>
+      </description>
+    </artifactElement>
+  </artifactPackage>
+  <argumentPackage>
+    <name lang="en" content="The Argument"/>
+    <argumentationElement xsi:type="argumentation_:Claim">
+      <name lang="en" content="verifySynchronizationSeparate"/>
+      <description>
+        <content>
+          <value lang="en" content="verifySynchronizationSeparate"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:Claim" assertionDeclaration="assumed">
+      <name lang="en" content="verifySynchronizationSeparate_claim_1"/>
+      <description>
+        <content>
+          <value lang="en" content="And([E2ESamplingJitter[i] &lt;= E2ESamplingJitterTolerance[i]&#xD;&#xA;&#x9;&#x9;&#x9;for i in range(len(E2ESamplingJitter))])"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:Claim" assertionDeclaration="assumed">
+      <name lang="en" content="verifySynchronizationSeparate_claim_2"/>
+      <description>
+        <content>
+          <value lang="en" content="And([E2EResponses[i] &lt;= E2ELatencies[i] for i in&#xD;&#xA;&#x9;&#x9;&#x9;range(len(E2EResponses))])"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:Claim">
+      <name lang="en" content="verifySynchronizationSeparate.SamplingSynchronizationContract"/>
+      <description>
+        <content>
+          <value lang="en" content="&lt;=> And([E2ESamplingJitter[i] &lt;= E2ESamplingJitterTolerance[i] for i in range(len(E2ESamplingJitter))])"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:Claim" assertionDeclaration="assumed">
+      <name lang="en" content="verifySynchronizationSeparate.SamplingSynchronizationContract.areReplicasOnIndependentProcessors"/>
+      <description>
+        <content>
+          <value lang="en" content="verifySynchronizationSeparate.SamplingSynchronizationContract.areReplicasOnIndependentProcessors"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:ArtifactReference" referencedArtifactElement="//@artifactPackage.0/@artifactElement.0">
+      <name lang="en" content="verifySynchronizationSeparate.SamplingSynchronizationContract.areFlowsInSync1"/>
+      <description>
+        <content>
+          <value lang="en" content="verifySynchronizationSeparate.SamplingSynchronizationContract.areFlowsInSync1"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:Claim">
+      <name lang="en" content="verifySynchronizationSeparate.EndToEndDelayedCommunicationContract"/>
+      <description>
+        <content>
+          <value lang="en" content="&lt;=> And([E2EResponses[i] &lt;= E2ELatencies[i] for i in range(len(E2EResponses))])"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:Claim" assertionDeclaration="assumed">
+      <name lang="en" content="verifySynchronizationSeparate.EndToEndDelayedCommunicationContract.areAllThreadsPeriodic"/>
+      <description>
+        <content>
+          <value lang="en" content="verifySynchronizationSeparate.EndToEndDelayedCommunicationContract.areAllThreadsPeriodic"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:Claim" assertionDeclaration="assumed">
+      <name lang="en" content="verifySynchronizationSeparate.EndToEndDelayedCommunicationContract.areAllDeadlinesConstrained"/>
+      <description>
+        <content>
+          <value lang="en" content="verifySynchronizationSeparate.EndToEndDelayedCommunicationContract.areAllDeadlinesConstrained"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:ArtifactReference" referencedArtifactElement="//@artifactPackage.0/@artifactElement.1">
+      <name lang="en" content="verifySynchronizationSeparate.EndToEndDelayedCommunicationContract.meetEndToEndLatencies"/>
+      <description>
+        <content>
+          <value lang="en" content="verifySynchronizationSeparate.EndToEndDelayedCommunicationContract.meetEndToEndLatencies"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:Claim">
+      <name lang="en" content="verifySynchronizationSeparate.EndToEndDelayedCommunicationContract.areConnectionsDelayedContract"/>
+      <description>
+        <content>
+          <value lang="en" content="&lt;=> And([DelayedConnections[i] for i in range(len(DelayedConnections))])"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:ArtifactReference" referencedArtifactElement="//@artifactPackage.0/@artifactElement.2">
+      <name lang="en" content="areConnectionsDelayedContract.areConnectionsDelayed"/>
+      <description>
+        <content>
+          <value lang="en" content="areConnectionsDelayedContract.areConnectionsDelayed"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:Claim">
+      <name lang="en" content="verifySynchronizationSeparate.EndToEndDelayedCommunicationContract.schedulabilityArgument.RMPrioritiesContract"/>
+      <description>
+        <content>
+          <value lang="en" content="&lt;=> And([(Periods[i]&lt;Periods[j]) == (Priorities[i]>Priorities[j]) for i in range(len(Periods)-1) for j in range(i+1,len(Periods))])"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:ArtifactReference" referencedArtifactElement="//@artifactPackage.0/@artifactElement.3">
+      <name lang="en" content="schedulabilityArgument.RMPrioritiesContract.arePrioritiesRM"/>
+      <description>
+        <content>
+          <value lang="en" content="schedulabilityArgument.RMPrioritiesContract.arePrioritiesRM"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:Claim">
+      <name lang="en" content="verifySynchronizationSeparate.EndToEndDelayedCommunicationContract.schedulabilityArgument.RMAHarmonicBoundContract"/>
+      <description>
+        <content>
+          <value lang="en" content="=> And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:Claim" assertionDeclaration="assumed">
+      <name lang="en" content="schedulabilityArgument.RMAHarmonicBoundContract.areAllDeadlinesImplicit"/>
+      <description>
+        <content>
+          <value lang="en" content="schedulabilityArgument.RMAHarmonicBoundContract.areAllDeadlinesImplicit"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:Claim" assertionDeclaration="assumed">
+      <name lang="en" content="schedulabilityArgument.RMAHarmonicBoundContract.arePeriodsHarmonic"/>
+      <description>
+        <content>
+          <value lang="en" content="schedulabilityArgument.RMAHarmonicBoundContract.arePeriodsHarmonic"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:Claim" assertionDeclaration="assumed">
+      <name lang="en" content="schedulabilityArgument.RMAHarmonicBoundContract.allThreadsBoundToSingleProcessor"/>
+      <description>
+        <content>
+          <value lang="en" content="schedulabilityArgument.RMAHarmonicBoundContract.allThreadsBoundToSingleProcessor"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:ArtifactReference" referencedArtifactElement="//@artifactPackage.0/@artifactElement.4">
+      <name lang="en" content="schedulabilityArgument.RMAHarmonicBoundContract.allProcessorHarmonicBoundSchedulable"/>
+      <description>
+        <content>
+          <value lang="en" content="schedulabilityArgument.RMAHarmonicBoundContract.allProcessorHarmonicBoundSchedulable"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:Claim">
+      <name lang="en" content="verifySynchronizationSeparate.EndToEndDelayedCommunicationContract.schedulabilityArgument.RMANonHarmonicBoundContract"/>
+      <description>
+        <content>
+          <value lang="en" content="=> And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:Claim" assertionDeclaration="assumed">
+      <name lang="en" content="schedulabilityArgument.RMANonHarmonicBoundContract.areAllDeadlinesImplicit"/>
+      <description>
+        <content>
+          <value lang="en" content="schedulabilityArgument.RMANonHarmonicBoundContract.areAllDeadlinesImplicit"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:Claim" assertionDeclaration="assumed">
+      <name lang="en" content="schedulabilityArgument.RMANonHarmonicBoundContract.allThreadsBoundToSingleProcessor"/>
+      <description>
+        <content>
+          <value lang="en" content="schedulabilityArgument.RMANonHarmonicBoundContract.allThreadsBoundToSingleProcessor"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:ArtifactReference" referencedArtifactElement="//@artifactPackage.0/@artifactElement.5">
+      <name lang="en" content="schedulabilityArgument.RMANonHarmonicBoundContract.allProcessorNonHarmonicBoundSchedulable"/>
+      <description>
+        <content>
+          <value lang="en" content="schedulabilityArgument.RMANonHarmonicBoundContract.allProcessorNonHarmonicBoundSchedulable"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:Claim">
+      <name lang="en" content="verifySynchronizationSeparate.EndToEndDelayedCommunicationContract.schedulabilityArgument"/>
+      <description>
+        <content>
+          <value lang="en" content="&lt;=> RESPONSETIME_SHORTER_DEADLINES"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:Claim">
+      <name lang="en" content="verifySynchronizationSeparate.EndToEndDelayedCommunicationContract.schedulabilityArgument_and_1"/>
+      <description>
+        <content>
+          <value lang="en" content="verifySynchronizationSeparate.EndToEndDelayedCommunicationContract.schedulabilityArgument_and_1"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:Claim">
+      <name lang="en" content="verifySynchronizationSeparate.EndToEndDelayedCommunicationContract.schedulabilityArgument_or_1"/>
+      <description>
+        <content>
+          <value lang="en" content="verifySynchronizationSeparate.EndToEndDelayedCommunicationContract.schedulabilityArgument_or_1"/>
+        </content>
+      </description>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="assumptions"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedInference" source="//@argumentPackage.0/@argumentationElement.1 //@argumentPackage.0/@argumentationElement.2" target="//@argumentPackage.0/@argumentationElement.0" reasoning="//@argumentPackage.0/@argumentationElement.26"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="contracts"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedInference" source="//@argumentPackage.0/@argumentationElement.3 //@argumentPackage.0/@argumentationElement.6" target="//@argumentPackage.0/@argumentationElement.0" reasoning="//@argumentPackage.0/@argumentationElement.28"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="analyses"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedEvidence" source="//@argumentPackage.0/@argumentationElement.5" target="//@argumentPackage.0/@argumentationElement.3" reasoning="//@argumentPackage.0/@argumentationElement.30"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="analyses"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedEvidence" target="//@argumentPackage.0/@argumentationElement.14" reasoning="//@argumentPackage.0/@argumentationElement.32"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="analyses"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedEvidence" target="//@argumentPackage.0/@argumentationElement.19" reasoning="//@argumentPackage.0/@argumentationElement.34"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="analyses"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedEvidence" target="//@argumentPackage.0/@argumentationElement.12" reasoning="//@argumentPackage.0/@argumentationElement.36"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="analyses"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedEvidence" target="//@argumentPackage.0/@argumentationElement.10" reasoning="//@argumentPackage.0/@argumentationElement.38"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="analyses"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedEvidence" source="//@argumentPackage.0/@argumentationElement.9" target="//@argumentPackage.0/@argumentationElement.6" reasoning="//@argumentPackage.0/@argumentationElement.40"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="assumptions"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedInference" source="//@argumentPackage.0/@argumentationElement.4" target="//@argumentPackage.0/@argumentationElement.3" reasoning="//@argumentPackage.0/@argumentationElement.42"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="assumptions"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedInference" target="//@argumentPackage.0/@argumentationElement.14" reasoning="//@argumentPackage.0/@argumentationElement.44"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="assumptions"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedInference" target="//@argumentPackage.0/@argumentationElement.19" reasoning="//@argumentPackage.0/@argumentationElement.46"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="assumptions"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedInference" target="//@argumentPackage.0/@argumentationElement.12" reasoning="//@argumentPackage.0/@argumentationElement.48"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="assumptions"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedInference" target="//@argumentPackage.0/@argumentationElement.10" reasoning="//@argumentPackage.0/@argumentationElement.50"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="assumptions"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedInference" source="//@argumentPackage.0/@argumentationElement.7 //@argumentPackage.0/@argumentationElement.8" target="//@argumentPackage.0/@argumentationElement.6" reasoning="//@argumentPackage.0/@argumentationElement.52"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="contracts"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedInference" target="//@argumentPackage.0/@argumentationElement.3" reasoning="//@argumentPackage.0/@argumentationElement.54"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="contracts"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedInference" source="//@argumentPackage.0/@argumentationElement.14 //@argumentPackage.0/@argumentationElement.19" target="//@argumentPackage.0/@argumentationElement.25" reasoning="//@argumentPackage.0/@argumentationElement.56"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="contracts"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedInference" target="//@argumentPackage.0/@argumentationElement.14" reasoning="//@argumentPackage.0/@argumentationElement.58"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="contracts"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedInference" target="//@argumentPackage.0/@argumentationElement.19" reasoning="//@argumentPackage.0/@argumentationElement.60"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="contracts"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedInference" source="//@argumentPackage.0/@argumentationElement.12" target="//@argumentPackage.0/@argumentationElement.24" reasoning="//@argumentPackage.0/@argumentationElement.62"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="contracts"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedInference" target="//@argumentPackage.0/@argumentationElement.12" reasoning="//@argumentPackage.0/@argumentationElement.64"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="contracts"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedInference" target="//@argumentPackage.0/@argumentationElement.10" reasoning="//@argumentPackage.0/@argumentationElement.66"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="contracts"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedInference" source="//@argumentPackage.0/@argumentationElement.10" target="//@argumentPackage.0/@argumentationElement.6" reasoning="//@argumentPackage.0/@argumentationElement.68"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="arguments"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedInference" target="//@argumentPackage.0/@argumentationElement.25" reasoning="//@argumentPackage.0/@argumentationElement.70"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="arguments"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedInference" target="//@argumentPackage.0/@argumentationElement.24" reasoning="//@argumentPackage.0/@argumentationElement.72"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="arg exprs"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedInference" source="//@argumentPackage.0/@argumentationElement.24" target="//@argumentPackage.0/@argumentationElement.23" reasoning="//@argumentPackage.0/@argumentationElement.74"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="arg exprs"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedInference" target="//@argumentPackage.0/@argumentationElement.25" reasoning="//@argumentPackage.0/@argumentationElement.76"/>
+    <argumentationElement xsi:type="argumentation_:ArgumentReasoning">
+      <name lang="en" content="arg exprs"/>
+    </argumentationElement>
+    <argumentationElement xsi:type="argumentation_:AssertedInference" source="//@argumentPackage.0/@argumentationElement.25" target="//@argumentPackage.0/@argumentationElement.24" reasoning="//@argumentPackage.0/@argumentationElement.78"/>
+  </argumentPackage>
+</assuranceCase_:AssuranceCasePackage>

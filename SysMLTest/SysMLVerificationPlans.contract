@@ -1,0 +1,12 @@
+package SysMLVerificationPlans; 
+
+verification plan verifySchedualability {
+	component
+		s: SysMLSystemTest::test.i;
+	domains
+		SysMLContracts::sysmldomain; 
+	claims
+		`And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+	contracts
+		SysMLContracts::TestSyMLVariablesContract;
+}

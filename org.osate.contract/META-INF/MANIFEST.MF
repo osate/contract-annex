@@ -24,8 +24,12 @@ Require-Bundle: org.eclipse.xtext,
  org.osate.aadl2,
  org.osate.aadl2.errormodel.instance,
  org.eclipse.urischeme,
- org.eclipse.acme.sacm;bundle-version="2.3.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+ org.eclipse.acme.sacm;bundle-version="2.3.0",
+ org.eclipse.uml2;bundle-version="5.5.3",
+ org.eclipse.emf.ecore,
+ org.eclipse.uml2.uml.resources;bundle-version="5.5.0"
+  
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Export-Package: org.osate.contract,
  org.osate.contract.contract,
  org.osate.contract.contract.impl,

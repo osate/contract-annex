@@ -15,6 +15,7 @@ import org.osate.aadl2.DefaultAnnexLibrary;
 import org.osate.contract.contract.Contract;
 import org.osate.contract.contract.ContractLibrary;
 import org.osate.contract.contract.MemberCall;
+import org.osate.contract.contract.SingleValDeclaration;
 import org.osate.contract.tests.ContractInjectorProvider;
 import org.osate.testsupport.TestHelper;
 
@@ -44,7 +45,8 @@ public class CheckArgumentTypeTest {
 			assertEquals("Expected UnitLiteral; found ComponentInstance", issue.getMessage());
 			assertEquals(
 					EcoreUtil.getURI(
-							((MemberCall) contract.getQueries().get(1).getValue()).getLambda().getReturnValue()),
+							((MemberCall) ((SingleValDeclaration) contract.getQueries().get(1)).getValue()).getLambda()
+									.getReturnValue()),
 					issue.getUriToProblem());
 		});
 	}
@@ -62,7 +64,8 @@ public class CheckArgumentTypeTest {
 			assertEquals("Expected RecordField; found Boolean", issue.getMessage());
 			assertEquals(
 					EcoreUtil.getURI(
-							((MemberCall) contract.getQueries().get(1).getValue()).getLambda().getReturnValue()),
+							((MemberCall) ((SingleValDeclaration) contract.getQueries().get(1)).getValue()).getLambda()
+									.getReturnValue()),
 					issue.getUriToProblem());
 		});
 	}

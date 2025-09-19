@@ -12,6 +12,7 @@ import org.osate.aadl2.AadlPackage;
 import org.osate.aadl2.DefaultAnnexLibrary;
 import org.osate.contract.contract.Contract;
 import org.osate.contract.contract.ContractLibrary;
+import org.osate.contract.contract.SingleValDeclaration;
 import org.osate.contract.tests.ContractInjectorProvider;
 import org.osate.contract.typing.ContractTypeSystem;
 import org.osate.testsupport.TestHelper;
@@ -41,19 +42,19 @@ public class UnnamedTypesTest {
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		assertEquals(4, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("LongWithUnits<ps::integer_with_units>?", type.toString());
 		});
 		with(contract.getQueries().get(1), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("DoubleWithUnits<ps::real_type_with_units>?", type.toString());
 		});
 		with(contract.getQueries().get(2), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("LongWithUnits<ps::record_with_integer.integer_field>??", type.toString());
 		});
 		with(contract.getQueries().get(3), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("LongWithUnits<ps::deeply_nested_record.field1.field2.field3>????", type.toString());
 		});
 	}
@@ -67,27 +68,27 @@ public class UnnamedTypesTest {
 		var contract = (Contract) contractLibrary.getContractElements().get(0);
 		assertEquals(6, contract.getQueries().size());
 		with(contract.getQueries().get(0), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("LongWithUnits<ps::integer_with_units>?", type.toString());
 		});
 		with(contract.getQueries().get(1), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("DoubleWithUnits<ps::real_type_with_units>?", type.toString());
 		});
 		with(contract.getQueries().get(2), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("LongRangeWithUnits<ps::integer_range_with_units>?", type.toString());
 		});
 		with(contract.getQueries().get(3), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("DoubleRangeWithUnits<ps::real_range_with_units>?", type.toString());
 		});
 		with(contract.getQueries().get(4), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Enumeration<ps::enum_property>?", type.toString());
 		});
 		with(contract.getQueries().get(5), query -> {
-			var type = typeSystem.expressionType(query.getValue()).getValue();
+			var type = typeSystem.expressionType(((SingleValDeclaration) query).getValue()).getValue();
 			assertEquals("Record<ps::record_with_integer>?", type.toString());
 		});
 	}

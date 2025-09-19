@@ -1,0 +1,12 @@
+package SysMLSystemTest
+public
+	system test
+	end test;
+	
+	system implementation test.i
+		annex contract {**
+			verify SysMLVerificationPlans::verifySchedualability;
+  		**};
+		
+	end test.i;
+end SysMLSystemTest;
