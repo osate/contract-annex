@@ -66,6 +66,10 @@ public class PythonHelper {
 		return INSTANCE;
 	}
 
+	public SysMLQueryInterpreter getSysMLQueryInterpreter() {
+		return sysmlInterpreter;
+	}
+
 	public InstanceObjectIDMapper getInstanceObjectMapper() {
 		return ioid;
 	}
@@ -95,8 +99,15 @@ public class PythonHelper {
 					var q = svar.getQuery();
 
 					if (q instanceof SingleSysMLDeclarationImpl decl) {
-//						String value = sysmlInterpreter.parseAndExecuteQuery(decl.getName(), decl.getValue());
-//						decl.setValue(value);
+						String objvalue = (String) sysmlInterpreter.getQueryVariableValue(decl.getName());
+						String value = "";
+						if (objvalue == null) {
+							value = sysmlInterpreter.parseAndExecuteQuery(decl.getName(), decl.getValue());
+						}
+						if (objvalue instanceof String) {
+							value = objvalue;
+						}
+						decl.setValue(value);
 						sb.append(decl.getValue());
 					} else {
 						var result = queryInterpreter.evaluateQuery(env, (Query) q);

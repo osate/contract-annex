@@ -30,6 +30,10 @@ def areTasksHarmonicBoundSchedulable(tasks,error0):
 				msg = e2eflow[j]							
 			j = j +1
 	#print(f"Utilization: {util}")
+	if util <= 1.0:
+		addError(info0,"{} tasks are schedulable")
+	else:
+		addError(error0,"{} tasks are not schedulable")
 	return util <= 1.0
 
 # testvar = [[[0,comSensors],[1,GroundDetected],[2,com,100],[3,setTurnRate],[4,AeleronActuator]]]
@@ -52,6 +56,37 @@ def testSysMLVariable(testvar, error0):
 	#print("sysval: ",testvar)
 	return True
 	
+def areEndToEndLatenciesLessThanMax(tasks,error0):
+	counted = set()
+	for i in range(len(tasks)):
+		e2eflow = tasks[i]
+		j=0
+		nodeType = True
+		maxLatency = 0
+		latency = 0
+		while j< len(e2eflow):
+			if nodeType:
+				node = e2eflow[j]
+				id = node[0]
+				period = node[2]
+				deadline = node[3]
+				wcet = node[4]
+				if len(node)>5:
+					maxLatency = node[5]
+				latency += wcet				
+				nodeType = False
+			else:
+				nodeType = True
+				msg = e2eflow[j]							
+			j = j +1
+		if latency > maxLatency:
+			addError(error0,"{} latency greater than max latecy")
+			return False
+		else:
+			addError(info0,"{} latency less than max latency")
+	#print(f"Utilization: {util}")
+	return True
+	 
 `}
 
 domain sysmldomain {
@@ -59,14 +94,17 @@ domain sysmldomain {
 		sysmlval model = 'loadModel(C:/SEI/Tools/cameo/temp/MQLTest1.uml)';
 		sysmlval sequence = 'loadDiagram(model,SelfCheckingPair1Sequence)';
 		sysmlval e2eflows = 'end2endFlows(sequence,name,period,deadline,wcet)';
+		sysmlval e2eflows1 = 'end2endFlows(sequence,name,period,deadline,wcet,maxendtoendlatency)';
 	declarations
 		'''
 		Deadlines = IntVector('deadline', 1)
-		Responses = IntVector('response', 1)		
+		Responses = IntVector('response', 1)
+		Latency = IntVector('latency',1)
+		MaxLatency = IntVector('maxlatency',1)	
 		'''
 }
 
-contract TestSyMLVariablesContract {
+contract SysMLSchedulabilityContract {
 	domains
 		sysmldomain;
 	assumptions
@@ -74,6 +112,16 @@ contract TestSyMLVariablesContract {
 		<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
 
 	analysis
-		'''areTasksHarmonicBoundSchedulable(${e2eflows$}, error0)'''; 
+		'''areTasksHarmonicBoundSchedulable(${e2eflows$})'''; 
+}
+
+contract SysMLEndToEndDelayContract {
+	domains
+		sysmldomain;
+	assumptions
+	guarantee
+		<=> `And([Latency[i] <= MaxLatency[i] for i in range(len(Latency))])`;
+	analysis
+		'''areEndToEndLatenciesLessThanMax(${e2eflows1$})''';
 }
 

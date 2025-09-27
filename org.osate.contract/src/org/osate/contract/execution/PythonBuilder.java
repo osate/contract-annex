@@ -77,6 +77,10 @@ public class PythonBuilder {
 		variables.put("to_java", python.getInstanceObjectMapper());
 	}
 
+	public PythonHelper getHelper() {
+		return python;
+	}
+
 	PythonBuilder addZ3Import() {
 		z3Import = true;
 		return this;

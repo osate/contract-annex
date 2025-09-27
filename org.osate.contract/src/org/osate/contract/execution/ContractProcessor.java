@@ -140,7 +140,7 @@ public class ContractProcessor {
 		info.add("");
 		pyBuilder = newPythonBuilder(context);
 		pyRunner = new ScriptRunner(description, error, info);
-		sysmlInterpreter = new SysMLQueryInterpreter();
+		sysmlInterpreter = pyBuilder.getHelper().getSysMLQueryInterpreter();
 	}
 
 	private PythonBuilder newPythonBuilder(ComponentInstance context) {
@@ -304,7 +304,14 @@ public class ContractProcessor {
 			for (var q : domain.getQueries()) {
 				var sysmldecl = q;
 				if (sysmldecl instanceof SingleSysMLDeclaration decl) {
-					String value = sysmlInterpreter.parseAndExecuteQuery(decl.getName(), decl.getValue());
+					Object objvalue = sysmlInterpreter.getQueryVariableValue(decl.getName());
+					String value = "";
+					if (objvalue == null) {
+						objvalue = sysmlInterpreter.parseAndExecuteQuery(decl.getName(), decl.getValue());
+					}
+					if (objvalue instanceof String) {
+						value = (String) objvalue;
+					}
 					decl.setValue(value);
 					pyExpr.getVariables().put(decl.getName(), decl.getValue());
 				}

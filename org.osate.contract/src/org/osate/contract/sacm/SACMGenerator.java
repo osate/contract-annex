@@ -34,9 +34,10 @@ import argumentation.ArgumentPackage;
 import argumentation.ArgumentReasoning;
 import argumentation.ArtifactReference;
 import argumentation.AssertedRelationship;
+import argumentation.AssertionDeclaration;
 import argumentation.Claim;
+import argumentation.impl.ClaimImpl;
 import artifact.ArtifactPackage;
-import artifact.Technique;
 import assuranceCase.AssuranceCasePackage;
 import base.LangString;
 
@@ -54,6 +55,7 @@ public final class SACMGenerator {
 	private final Map<String, Claim> contractPathToClaim = new HashMap<>();
 	private final Map<String, Claim> assumptionPathToClaim = new HashMap<>();
 	private final Map<String, ArtifactReference> analysisPathToArtifactReference = new HashMap<>();
+	private final Map<String, ArgumentReasoning> analysisPathToArgumentReasoning = new HashMap<>();
 	private final Map<String, Claim> argumentPathToClaim = new HashMap<>();
 	private final Map<String, Claim> argumentExprPathToClaim = new HashMap<>();
 
@@ -73,6 +75,8 @@ public final class SACMGenerator {
 	private final Map<Claim, List<String>> argumentEdges = new HashMap<>();
 	// Claim has incoming edges from the list of argument expressions; argument expressions are indirectly referenced by argPath
 	private final Map<Claim, List<String>> argumentExprEdges = new HashMap<>();
+
+	private final Map<Claim, List<Claim>> claimToAssumptions = new HashMap<>();
 
 	public SACMGenerator(final ArgumentPackage argPack, final ArtifactPackage artPack) {
 		this.argumentPackage = argPack;
@@ -167,43 +171,109 @@ public final class SACMGenerator {
 	}
 
 	private void addAllEdges(final Claim vpClaim) {
-		generateEdgesToClaim(vpClaim, vpClaimsEdges, claimPathToClaim, SACMHelper::newAssertedInference, "assumptions");
+		generateEdgesToClaim(vpClaim, vpClaimsEdges, claimPathToClaim, SACMHelper::newAssertedInference,
+				"claim-assumptions");
 		generateEdgesToClaim(vpClaim, vpContractEdges, contractPathToClaim, SACMHelper::newAssertedInference,
 				"contracts");
 
-		generateEdgesToClaims(analysisEdges, analysisPathToArtifactReference, SACMHelper::newAssertedEvidence,
-				"analyses");
+		// Dio.TODO: commenting this out to find our if we can transform into ArgumentReasoning
+//		generateEdgesToClaims(analysisEdges, analysisPathToArtifactReference, SACMHelper::newAssertedEvidence,
+//				"analyses");
+
+
+		// Dio: changed the analysis for an ArgumentReasoning and connect it to the claims through an AssertedInference
+//		generateEdgesToClaims(analysisEdges, analysisPathToArgumentReasoning, SACMHelper::newAssertedInference,
+//				"analyses");
+
 		generateEdgesToClaims(assumptionEdges, assumptionPathToClaim, SACMHelper::newAssertedInference, "assumptions");
 		generateEdgesToClaims(contractEdges, contractPathToClaim, SACMHelper::newAssertedInference, "contracts");
 		generateEdgesToClaims(argumentEdges, argumentPathToClaim, SACMHelper::newAssertedInference, "arguments");
 		generateEdgesToClaims(argumentExprEdges, argumentExprPathToClaim, SACMHelper::newAssertedInference,
 				"arg exprs");
+
+		// Dio: changed the analysis for an ArgumentReasoning and connect it to the claims through an AssertedInference
+		generateEdgesToClaims(analysisEdges, analysisPathToArgumentReasoning, SACMHelper::newAssertedInference,
+				"analyses");
+
 	}
 
 	private <T extends ArgumentAsset> void generateEdgesToClaims(final Map<Claim, List<String>> claimEdges,
 			final Map<String, T> argPathToAsset,
 			final Function<ArgumentPackage, AssertedRelationship> assertionFunction, final String label) {
 		for (var entry : claimEdges.entrySet()) {
-			generateEdgesToClaim(entry.getKey(), entry.getValue(), argPathToAsset,
-					assertionFunction, label);
+			generateEdgesToClaim(entry.getKey(), entry.getValue(), argPathToAsset, assertionFunction, label);
 		}
 	}
 
 	private <T extends ArgumentAsset> void generateEdgesToClaim(final Claim target, final List<String> sourceArgPaths,
 			final Map<String, T> argPathToAsset,
 			final Function<ArgumentPackage, AssertedRelationship> assertionFunction, final String label) {
-		final ArgumentReasoning reasoning = SACMHelper.newArgumentReasoning(argumentPackage,
-				SACMHelper.newLangString(SACMHelper.LANG_EN, label));
-		final AssertedRelationship relationship = assertionFunction.apply(argumentPackage);
-		relationship.setReasoning(reasoning);
-		relationship.getTarget().add(target);
+
+		// if no source arg paths return
+		if (sourceArgPaths.size() == 0) {
+			return;
+		}
+
+		// create the relationship on demand depending on whether multiple claims will be connected or one by one
+		AssertedRelationship relationship = null;
 
 		for (final String argPath : sourceArgPaths) {
 			final T source = argPathToAsset.get(argPath);
 			if (source == null) {
 				System.out.println("Cannot find node for '" + argPath + "'");
 			} else {
-				relationship.getSource().add(source);
+				if (source instanceof ArgumentReasoning) {
+					if (relationship == null) {
+						relationship = assertionFunction.apply(argumentPackage);
+						relationship.getTarget().add(target);
+					}
+					relationship.setReasoning((ArgumentReasoning) source);
+				} else if (source instanceof ClaimImpl claim) {
+					if (claim.getAssertionDeclaration() == AssertionDeclaration.ASSUMED) {
+						// Assumption now add reverse mapping from claim to assumption.
+						List<Claim> assumptions = claimToAssumptions.get(target);
+						if (assumptions == null) {
+							assumptions = new ArrayList<Claim>();
+							claimToAssumptions.put(target, assumptions);
+						}
+						assumptions.add(claim);
+						if (relationship == null) {
+							final ArgumentReasoning reasoning = SACMHelper.newArgumentReasoning(argumentPackage,
+									SACMHelper.newLangString(SACMHelper.LANG_EN, label));
+							relationship = assertionFunction.apply(argumentPackage);
+							relationship.setReasoning(reasoning);
+							relationship.getTarget().add(target);
+						}
+						relationship.getSource().add(source);
+					} else {
+						if (target.getAssertionDeclaration() == AssertionDeclaration.ASSERTED) {
+							if (relationship == null) {
+								relationship = assertionFunction.apply(argumentPackage);
+							}
+							relationship.setAssertionDeclaration(AssertionDeclaration.ASSUMED);
+							List<Claim> assumptions = claimToAssumptions.get(target);
+							if (assumptions != null) {
+								Claim assumption = assumptions.getFirst();
+								if (assumption != null) {
+									assumptions.remove(assumption);
+									relationship.getTarget().clear();
+									relationship.getTarget().add(assumption);
+								}
+								// Direct connection from claim to assumption -- no reasoning
+								relationship.getSource().add(source);
+								// now invalidate to create a new relationship for the next assumption
+								relationship = null;
+							} else {
+								System.out.println("generateEdgesToClaims: no assumptions to connect to");
+							}
+						} else {
+							System.out.println("generateEdgesToClaims: incorrect asserted claim to asserted claim");
+						}
+					}
+				} else {
+					// source is not a claim
+					System.out.println("source is not a claim");
+				}
 			}
 		}
 	}
@@ -281,9 +351,17 @@ public final class SACMGenerator {
 			supportingAnalyses.add(argPath + "." + getAnalysisName(analysis));
 		}
 
-		assumptionEdges.put(contractClaim, supportingAssumptions);
-		analysisEdges.put(contractClaim, supportingAnalyses);
-		contractEdges.put(contractClaim, supportingContracts);
+		if (!supportingAssumptions.isEmpty()) {
+			assumptionEdges.put(contractClaim, supportingAssumptions);
+		}
+
+		if (!supportingAnalyses.isEmpty()) {
+			analysisEdges.put(contractClaim, supportingAnalyses);
+		}
+
+		if (!supportingContracts.isEmpty()) {
+			contractEdges.put(contractClaim, supportingContracts);
+		}
 
 		contractPathToClaim.put(argPath, contractClaim);
 		return contractClaim;
@@ -325,19 +403,24 @@ public final class SACMGenerator {
 
 		// TODO: Deal with url/link and #result
 
-		final Technique analysisAsTechnique = SACMHelper.newTechnique(artifactPackage,
-				SACMHelper.newLangString(SACMHelper.LANG_EN, argPath), SACMHelper.newDescription(
-						SACMHelper.newMultiLangString(SACMHelper.newLangString(SACMHelper.LANG_EN, argPath))));
+		// Dio: remove the technique and its artifact reference
+//		final Technique analysisAsTechnique = SACMHelper.newTechnique(artifactPackage,
+//				SACMHelper.newLangString(SACMHelper.LANG_EN, argPath), SACMHelper.newDescription(
+//						SACMHelper.newMultiLangString(SACMHelper.newLangString(SACMHelper.LANG_EN, argPath))));
+
+		final ArgumentReasoning argumentReasoning = SACMHelper.newArgumentReasoning(argumentPackage,
+				SACMHelper.newLangString(SACMHelper.LANG_EN, argPath));
 
 		// Actually need a reference to the technique
-		final ArtifactReference ref = SACMHelper.newArtifactReference(argumentPackage,
-				SACMHelper.newLangString(SACMHelper.LANG_EN, argPath), SACMHelper.newDescription(
-						SACMHelper.newMultiLangString(SACMHelper.newLangString(SACMHelper.LANG_EN, argPath))));
-		// XXX: Probably deal with result here!
-		ref.getReferencedArtifactElement().add(analysisAsTechnique);
+//		final ArtifactReference ref = SACMHelper.newArtifactReference(argumentPackage,
+//				SACMHelper.newLangString(SACMHelper.LANG_EN, argPath), SACMHelper.newDescription(
+//						SACMHelper.newMultiLangString(SACMHelper.newLangString(SACMHelper.LANG_EN, argPath))));
+//		// XXX: Probably deal with result here!
+//		ref.getReferencedArtifactElement().add(analysisAsTechnique);
 
-		analysisPathToArtifactReference.put(argPath, ref);
-		return ref;
+		analysisPathToArgumentReasoning.put(argPath, argumentReasoning);
+//		analysisPathToArtifactReference.put(argPath, ref);
+		return null;// ref;
 	}
 
 	private Claim generateArgument(final Argument argument) {

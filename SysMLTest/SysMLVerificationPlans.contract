@@ -7,6 +7,8 @@ verification plan verifySchedualability {
 		SysMLContracts::sysmldomain; 
 	claims
 		`And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
+		`And([Latency[i] <= MaxLatency[i] for i in range(len(Latency))])`;
 	contracts
-		SysMLContracts::TestSyMLVariablesContract;
+		SysMLContracts::SysMLSchedulabilityContract;
+		SysMLContracts::SysMLEndToEndDelayContract;
 }

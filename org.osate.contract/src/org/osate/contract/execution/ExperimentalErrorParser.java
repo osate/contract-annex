@@ -97,7 +97,11 @@ public class ExperimentalErrorParser {
 			if (token.contains("{")) {
 				String ref = token.substring(token.indexOf("{") + 1, token.indexOf("}"));
 				errMessage = token.substring(token.indexOf("}") + 1);
-				int index = Integer.parseInt(ref);
+				int index = 0;
+				try {
+					index = Integer.parseInt(ref);
+				} catch (Exception e) {
+				}
 				instance = getObjectInstanceFromId(index);
 			}
 			errors.add(new ErrorPair(instance, contractName + ":" + errMessage));

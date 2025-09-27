@@ -566,7 +566,6 @@ domain synchronization {
 
 domain schedulability {
 	queries
-		sysmlval testvar = 'test';
 		val threads = root.allSubcomponents.filter { 
 			s -> s.isThread
 		};
@@ -678,7 +677,7 @@ contract ReliabilityContract {
 		<=> `And([Reliability[i]>=ReliabiiltyTarget[i] for i in range(len(Reliability))])`;
 	analysis
 --			'''isProbabilityOfFailureThresholdMet(${redundantSystems$},${replicatedThreads$},${procFailureProbabilities$},error0)''';
-		'''isE2EFlowProbabilityOfFailureMet(${replicatede2es$},error0)''';			
+		'''isE2EFlowProbabilityOfFailureMet(${replicatede2es$})''';			
 }
 	
 contract areConnectionsDelayedContract {
@@ -688,7 +687,7 @@ contract areConnectionsDelayedContract {
 	guarantee
 		<=> `And([DelayedConnections[i] for i in range(len(DelayedConnections))])`;
 	analysis
-		'''areConnectionsDelayed(${synchronization::connections$}, ${synchronization::connectionTiming$}, ${synchronization::connectionNames$},error0)''';
+		'''areConnectionsDelayed(${synchronization::connections$}, ${synchronization::connectionTiming$}, ${synchronization::connectionNames$})''';
 }	
 	
 contract fpResponseTimeContract {
@@ -696,27 +695,27 @@ contract fpResponseTimeContract {
 		schedulability;
 	queries
 	input assumptions
-		'''areAllPrioritiesSet(${boundThreads$},${priorities$}, ${names$},error0)''';
+		'''areAllPrioritiesSet(${boundThreads$},${priorities$}, ${names$})''';
 	assumptions
-		'''areAllDeadlinesConstrained(${threads$},${periods$}, ${deadlines$}, ${names$},error0)''';
-		'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
+		'''areAllDeadlinesConstrained(${threads$},${periods$}, ${deadlines$}, ${names$})''';
+		'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$})''';
 		`True` => `Not(Or([SelfSuspendings[i] for i in range(len(SelfSuspendings))]))`;
 	guarantee
 		<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
 	invocation
-		'''isResponseTimeSchedulable(${boundThreads$},error0)''';
+		'''isResponseTimeSchedulable(${boundThreads$})''';
 }
 	
 contract RMPrioritiesContract {
 	domains
 		schedulability;
 	input assumptions
-		'''areAllPrioritiesSet(${boundThreads$},${priorities$}, ${names$},error0)''';
-		'''areAllPeriodsSet(${boundThreads$},${priorities$}, ${names$},error0)''';			
+		'''areAllPrioritiesSet(${boundThreads$},${priorities$}, ${names$})''';
+		'''areAllPeriodsSet(${boundThreads$},${priorities$}, ${names$})''';			
 	guarantee
 		<=>`And([(Periods[i]<Periods[j]) == (Priorities[i]>Priorities[j]) for i in range(len(Periods)-1) for j in range(i+1,len(Periods))])`;
 	analysis
-		'''arePrioritiesRM(${boundThreads$},error0)''';	
+		'''arePrioritiesRM(${boundThreads$})''';	
 }
 	
 contract RMAHarmonicBoundContract {
@@ -725,13 +724,13 @@ contract RMAHarmonicBoundContract {
 	assumptions
 		--'''arePrioritiesRM(${boundThreads$},error0)''';
 		contract RMPrioritiesContract;
-		'''areAllDeadlinesImplicit(${threads$}, ${periods$},${deadlines$},${names$},error0)''';
-		'''arePeriodsHarmonic(${boundThreads$},error0)''';
-		'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
+		'''areAllDeadlinesImplicit(${threads$}, ${periods$},${deadlines$},${names$})''';
+		'''arePeriodsHarmonic(${boundThreads$})''';
+		'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$})''';
 	guarantee
 		<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
 	analysis
-		'''allProcessorHarmonicBoundSchedulable(${boundThreads$},error0)''';
+		'''allProcessorHarmonicBoundSchedulable(${boundThreads$})''';
 }
 
 contract RMANonHarmonicBoundContract {
@@ -740,23 +739,23 @@ contract RMANonHarmonicBoundContract {
 	assumptions
 		--'''arePrioritiesRM(${boundThreads$},error0)''';
 		contract RMPrioritiesContract;
-		'''areAllDeadlinesImplicit(${threads$},${periods$},${deadlines$},${names$},error0)''';
-		'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$},error0)''';
+		'''areAllDeadlinesImplicit(${threads$},${periods$},${deadlines$},${names$})''';
+		'''allThreadsBoundToSingleProcessor(${threadToProcessorBindings$})''';
 	guarantee
 		<=> `And([Deadlines[i] >= Responses[i] for i in range(len(Deadlines))])`;
 	analysis
-		'''allProcessorNonHarmonicBoundSchedulable(${boundThreads$},error0)''';
+		'''allProcessorNonHarmonicBoundSchedulable(${boundThreads$})''';
 }
 
-contract TestSyMLVariablesContract {
-	domains
-		schedulability;
-	assumptions
-	guarantee
-		<=> `True`;
-	analysis
-		'''testSysMLVariable(${testvar$}, error0)'''; 
-}
+--contract TestSyMLVariablesContract {
+--	domains
+--		schedulability;
+--	assumptions
+--	guarantee
+--		<=> `True`;
+--	analysis
+--		'''testSysMLVariable(${testvar$}, error0)'''; 
+--}
 
 argument schedulabilityArgument {
 	domains

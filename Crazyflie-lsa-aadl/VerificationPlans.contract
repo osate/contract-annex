@@ -10,6 +10,5 @@ verification plan verifySchedualability {
 	contracts
 		FlowSynchronizationContract::RMAHarmonicBoundContract;
 		FlowSynchronizationContract::RMANonHarmonicBoundContract;
-		FlowSynchronizationContract::TestSyMLVariablesContract;
 }
  

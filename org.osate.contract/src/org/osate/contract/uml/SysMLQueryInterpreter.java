@@ -174,7 +174,7 @@ public class SysMLQueryInterpreter {
 			String sep = "";
 			for (int i = 1; i < propertyArray.length; i++) {
 				propertyList += sep + propertyArray[i];
-				sep += ",";
+				sep = ",";
 			}
 			setvar_endToEndFlows(varname, diagQueryVarName, propertyList);
 			result = (String) getQueryVariableValue(varname);

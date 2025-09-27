@@ -105,7 +105,7 @@ def allThreadsBoundToSingleProcessor(bindings,error0):
 	return True
 `}
 
-domain schedulability {
+domain schedulability { 
 	queries
 		val threads = self.allUsages.filter { 
 			s -> s.isThread
