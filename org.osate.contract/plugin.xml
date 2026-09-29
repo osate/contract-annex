@@ -27,6 +27,30 @@
  -->
 
 <plugin>
+	<extension
+			point="org.osate.annexsupport.parser">
+		<parser
+				annexName="contract"
+				class="org.osate.contract.annex.ContractAnnexParser"
+				name="Contract Annex Parser"
+				id="org.osate.contract.parser"/>
+	</extension>
+	<extension
+			point="org.osate.annexsupport.linkingservice">
+		<linkingservice
+				annexName="contract"
+				class="org.osate.contract.annex.ContractAnnexLinkingService"
+				name="Contract Annex Linking Service"
+				id="org.osate.contract.linkingservice"/>
+	</extension>
+	<extension
+			point="org.osate.annexsupport.unparser">
+		<unparser
+				annexName="contract"
+				class="org.osate.contract.annex.ContractAnnexUnparser"
+				id="org.osate.contract.unparser"
+				name="Contract Annex Unparser"/>
+	</extension>
 	<extension point="org.eclipse.emf.ecore.generated_package">
 		<package
 			uri = "http://www.osate.org/contract/Contract"

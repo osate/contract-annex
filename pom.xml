@@ -51,7 +51,6 @@
 	
 	<modules>
 		<module>org.osate.contract</module>
-		<module>org.osate.contract.annex</module>
 		<module>org.osate.contract.evaluation.ui</module>
 		<module>org.osate.contract.ide</module>
 		<module>org.osate.contract.ui</module>
