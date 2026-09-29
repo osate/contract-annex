@@ -13,9 +13,8 @@ plugins, Xtext, EMF, and Xsemantics. Maven builds use Tycho and inherit configur
 from the OSATE parent POM.
 
 - `org.osate.contract`: language runtime, grammar, type system, interpreter,
-  validation, execution, generators, and GSN support.
-- `org.osate.contract.annex`: integration with OSATE annex parsing, linking, and
-  unparsing.
+  validation, execution, generators, GSN support, and integration with OSATE annex
+  parsing, linking, and unparsing.
 - `org.osate.contract.ide` and `org.osate.contract.ui`: IDE services and Eclipse
   editor integration.
 - `org.osate.contract.evaluation.ui`: commands for evaluating contracts, executing

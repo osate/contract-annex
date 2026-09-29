@@ -27,53 +27,35 @@ package org.osate.contract.annex;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
+import org.eclipse.xtext.serializer.ISerializer;
 import org.osate.aadl2.AnnexLibrary;
 import org.osate.aadl2.AnnexSubclause;
-import org.osate.aadl2.modelsupport.errorreporting.ParseErrorReporter;
-import org.osate.annexsupport.AnnexParseUtil;
-import org.osate.annexsupport.AnnexParser;
-import org.osate.contract.parser.antlr.ContractParser;
-import org.osate.contract.services.ContractGrammarAccess;
+import org.osate.annexsupport.AnnexUnparser;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
-public class ContractAnnexParser implements AnnexParser {
-
+public class ContractAnnexUnparser implements AnnexUnparser {
 	@Inject
-	private ContractParser contractParser;
+	ISerializer serializer;
 
-	public ContractAnnexParser() {
+	public ContractAnnexUnparser() {
 		Injector injector = IResourceServiceProvider.Registry.INSTANCE
 				.getResourceServiceProvider(URI.createFileURI("dummy.contract"))
 				.get(Injector.class);
 		injector.injectMembers(this);
 	}
 
-	protected ContractGrammarAccess getGrammarAccess() {
-		return contractParser.getGrammarAccess();
+	@Override
+	public String unparseAnnexLibrary(AnnexLibrary library, String indent) {
+		// We are only called if it is the actual parsed annex, not the DefaultAnnexLibrary
+		return serializer.serialize(library);
 	}
 
 	@Override
-	public AnnexLibrary parseAnnexLibrary(String annexName, String source, String filename, int line, int column,
-			ParseErrorReporter errReporter) {
-		AnnexLibrary eal = (AnnexLibrary) AnnexParseUtil.parse(contractParser, source,
-				getGrammarAccess().getContractLibraryRule(), filename, line, column, errReporter);
-		return eal;
-
+	public String unparseAnnexSubclause(AnnexSubclause subclause, String indent) {
+		// We are only called if it is the actual parsed annex, not the DefaultAnnexLibrary
+		subclause.setName("unnamed_subclause");
+		return serializer.serialize(subclause);
 	}
-
-	@Override
-	public AnnexSubclause parseAnnexSubclause(String annexName, String source, String filename, int line, int column,
-			ParseErrorReporter errReporter) {
-		AnnexSubclause eas = (AnnexSubclause) AnnexParseUtil.parse(contractParser, source,
-				getGrammarAccess().getContractSubclauseRule(), filename, line, column, errReporter);
-		return eas;
-	}
-
-	@Override
-	public String getFileExtension() {
-		return "contract";
-	}
-
 }
