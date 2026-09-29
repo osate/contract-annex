@@ -1,0 +1,24 @@
+package Emv2BeforeContract
+public
+	annex EMV2 {**
+		error types
+			E: type;
+			ES: type set {E};
+		end types;
+	**};
+
+	annex contract {**
+		verification plan simplePlan {
+			component s: Emv2BeforeContract::s.i;
+		}
+	**};
+
+	system s
+	end s;
+
+	system implementation s.i
+		annex contract {**
+			verify Emv2BeforeContract::simplePlan;
+		**};
+	end s.i;
+end Emv2BeforeContract;

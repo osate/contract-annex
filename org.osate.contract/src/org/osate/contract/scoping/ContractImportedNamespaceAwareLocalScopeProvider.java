@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Assurance Contract Annex Plugin for OSATE
- * Copyright 2023 Carnegie Mellon University.
+ * Copyright 2023, 2026 Carnegie Mellon University.
  * NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE ENGINEERING INSTITUTE
  * MATERIAL IS FURNISHED ON AN "AS-IS" BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO
  * WARRANTIES OF ANY KIND, EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT
@@ -28,11 +28,17 @@ package org.osate.contract.scoping;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.naming.QualifiedName;
+import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.resource.ISelectable;
+import org.eclipse.xtext.scoping.Scopes;
 import org.eclipse.xtext.scoping.impl.ImportNormalizer;
 import org.eclipse.xtext.scoping.impl.ImportedNamespaceAwareLocalScopeProvider;
+import org.eclipse.xtext.scoping.impl.MultimapBasedSelectable;
 import org.eclipse.xtext.util.IResourceScopeCache;
 import org.osate.aadl2.modelsupport.util.AadlUtil;
 
@@ -53,6 +59,21 @@ public class ContractImportedNamespaceAwareLocalScopeProvider extends ImportedNa
 
 	@Override
 	protected ISelectable getAllDescriptions(Resource resource) {
+		// Other annex scope providers can populate the default cache with language-specific descriptions.
 		return cache.get("internalGetAllDescriptions-contract", resource, () -> internalGetAllDescriptions(resource));
+	}
+
+	@Override
+	protected ISelectable internalGetAllDescriptions(Resource resource) {
+		var serviceProvider = resource.getURI() == null ? null
+				: IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(resource.getURI());
+		var nameProvider = serviceProvider == null ? null : serviceProvider.get(IQualifiedNameProvider.class);
+		if (nameProvider == null) {
+			return super.internalGetAllDescriptions(resource);
+		}
+
+		// The containing AADL resource names classifiers as well as declarations from each registered annex.
+		Iterable<EObject> allContents = () -> EcoreUtil.getAllContents(resource, false);
+		return new MultimapBasedSelectable(Scopes.scopedElementsFor(allContents, nameProvider));
 	}
 }
