@@ -2,17 +2,22 @@ Manifest-Version: 1.0
 Automatic-Module-Name: org.osate.contract.tests
 Bundle-ManifestVersion: 2
 Bundle-Name: org.osate.contract.tests
-Bundle-Vendor: My Company
+Bundle-Vendor: CMU/SEI
 Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: org.osate.contract.tests; singleton:=true
 Bundle-ActivationPolicy: lazy
-Require-Bundle: org.osate.contract,
- org.junit.jupiter.api;bundle-version="[5.1.0,6.0.0)",
+Require-Bundle: org.opentest4j;bundle-version="1.2.0",
  org.osate.aadl2;bundle-version="4.0.3",
  org.osate.testsupport;bundle-version="3.1.0",
  org.osate.pluginsupport;bundle-version="7.2.1",
  org.osate.aadl2.instantiation,
  org.eclipse.xsemantics.runtime,
- org.osate.aadl2.errormodel.instance
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+ org.osate.xtext.aadl2.errormodel;bundle-version="8.0.1",
+ org.osate.aadl2.errormodel.instance;bundle-version="5.0.0",
+ org.osate.contract.annex;bundle-version="1.0.0",
+ org.osate.contract;bundle-version="1.0.0"
+Import-Package: org.junit.jupiter.api;version="[5.9.0,6.0.0)",
+ org.junit.jupiter.api.extension;version="[5.9.0,6.0.0)",
+ org.junit.jupiter.api.function;version="[5.9.0,6.0.0)"
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Export-Package: org.osate.contract.tests;x-internal=true

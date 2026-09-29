@@ -4,7 +4,7 @@ Bundle-Name: Contract Annex
 Bundle-SymbolicName: org.osate.contract.annex;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: org.osate.contract.annex
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
  org.osate.annexsupport,

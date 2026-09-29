@@ -3228,10 +3228,10 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	//     ownedValue+=OptionalModalPropertyValue
 	//    ( ',' ownedValue+=OptionalModalPropertyValue )*
 	//    )
-	//    (AppliesToKeywords appliesTo+=ContainmentPath
+	//    ('applies' 'to' appliesTo+=ContainmentPath
 	//        (',' appliesTo+=ContainmentPath)*
 	//    )?
-	//    (InBindingKeywords '(' inBinding+=[aadl2::Classifier|QCREF]')')?
+	//    ('in' 'binding' '(' inBinding+=[aadl2::Classifier|QCREF]')')?
 	//    ';';
 	public PropertiesGrammarAccess.ContainedPropertyAssociationElements getContainedPropertyAssociationAccess() {
 		return gaProperties.getContainedPropertyAssociationAccess();
@@ -3248,7 +3248,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	//     ownedValue+=OptionalModalPropertyValue
 	//    ( ',' ownedValue+=OptionalModalPropertyValue )*
 	//    )
-	//    (InBindingKeywords '(' inBinding+=[aadl2::Classifier|QCREF]')')?
+	//    ('in' 'binding' '(' inBinding+=[aadl2::Classifier|QCREF]')')?
 	//    ';'
 	//    ;
 	public PropertiesGrammarAccess.PropertyAssociationElements getPropertyAssociationAccess() {
@@ -3287,7 +3287,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	////     namedElement=[aadl2::NamedElement|IDANNEXTEXT];
 	//ModalPropertyValue returns aadl2::ModalPropertyValue:
 	//    ownedValue=PropertyExpression
-	//    InModesKeywords '('
+	//    'in' 'modes' '('
 	//    inMode+=[aadl2::Mode|ID] (',' inMode+=[aadl2::Mode|ID])*
 	//    ')'
 	//    ;
@@ -3302,7 +3302,7 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 	//OptionalModalPropertyValue returns aadl2::ModalPropertyValue:
 	//    ownedValue=PropertyExpression
 	//    // phf made this optional: need to check separately that only the last one is optional
-	//    ( InModesKeywords '('
+	//    ( 'in' 'modes' '('
 	//    inMode+=[aadl2::Mode|ID] (',' inMode+=[aadl2::Mode|ID])*
 	//    ')')?
 	//    ;
@@ -3624,39 +3624,6 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		return getNumAltAccess().getRule();
 	}
 	
-	//AppliesToKeywords:
-	//    'applies' 'to'
-	//;
-	public PropertiesGrammarAccess.AppliesToKeywordsElements getAppliesToKeywordsAccess() {
-		return gaProperties.getAppliesToKeywordsAccess();
-	}
-	
-	public ParserRule getAppliesToKeywordsRule() {
-		return getAppliesToKeywordsAccess().getRule();
-	}
-	
-	//InBindingKeywords:
-	//    'in' 'binding'
-	//;
-	public PropertiesGrammarAccess.InBindingKeywordsElements getInBindingKeywordsAccess() {
-		return gaProperties.getInBindingKeywordsAccess();
-	}
-	
-	public ParserRule getInBindingKeywordsRule() {
-		return getInBindingKeywordsAccess().getRule();
-	}
-	
-	//InModesKeywords:
-	//    'in' 'modes'
-	//;
-	public PropertiesGrammarAccess.InModesKeywordsElements getInModesKeywordsAccess() {
-		return gaProperties.getInModesKeywordsAccess();
-	}
-	
-	public ParserRule getInModesKeywordsRule() {
-		return getInModesKeywordsAccess().getRule();
-	}
-	
 	//INTVALUE returns aadl2::Integer:
 	//    INTEGER_LIT //NUMERAL
 	//;
@@ -3758,10 +3725,9 @@ public class ContractGrammarAccess extends AbstractElementFinder.AbstractGrammar
 		return getSTARAccess().getRule();
 	}
 	
-	//terminal STRING    :
-	//            '"' ( '\\' ('b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\') | !('\\'|'"') )* '"' |
-	//            "'" ( '\\' ('b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\') | !('\\'|"'") )* "'"
-	//        ;
+	//terminal STRING:
+	//    '"' ('""' | !'"')* '"'
+	//;
 	public TerminalRule getSTRINGRule() {
 		return gaProperties.getSTRINGRule();
 	}

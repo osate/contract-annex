@@ -3194,19 +3194,20 @@ ruleContainedPropertyAssociation returns [EObject current=null]
 			)*
 		)
 		(
+			otherlv_7='applies'
 			{
-				newCompositeNode(grammarAccess.getContainedPropertyAssociationAccess().getAppliesToKeywordsParserRuleCall_4_0());
+				newLeafNode(otherlv_7, grammarAccess.getContainedPropertyAssociationAccess().getAppliesKeyword_4_0());
 			}
-			ruleAppliesToKeywords
+			otherlv_8='to'
 			{
-				afterParserOrEnumRuleCall();
+				newLeafNode(otherlv_8, grammarAccess.getContainedPropertyAssociationAccess().getToKeyword_4_1());
 			}
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getContainedPropertyAssociationAccess().getAppliesToContainmentPathParserRuleCall_4_1_0());
+						newCompositeNode(grammarAccess.getContainedPropertyAssociationAccess().getAppliesToContainmentPathParserRuleCall_4_2_0());
 					}
-					lv_appliesTo_8_0=ruleContainmentPath
+					lv_appliesTo_9_0=ruleContainmentPath
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getContainedPropertyAssociationRule());
@@ -3214,23 +3215,23 @@ ruleContainedPropertyAssociation returns [EObject current=null]
 						add(
 							$current,
 							"appliesTo",
-							lv_appliesTo_8_0,
+							lv_appliesTo_9_0,
 							"org.osate.xtext.aadl2.properties.Properties.ContainmentPath");
 						afterParserOrEnumRuleCall();
 					}
 				)
 			)
 			(
-				otherlv_9=','
+				otherlv_10=','
 				{
-					newLeafNode(otherlv_9, grammarAccess.getContainedPropertyAssociationAccess().getCommaKeyword_4_2_0());
+					newLeafNode(otherlv_10, grammarAccess.getContainedPropertyAssociationAccess().getCommaKeyword_4_3_0());
 				}
 				(
 					(
 						{
-							newCompositeNode(grammarAccess.getContainedPropertyAssociationAccess().getAppliesToContainmentPathParserRuleCall_4_2_1_0());
+							newCompositeNode(grammarAccess.getContainedPropertyAssociationAccess().getAppliesToContainmentPathParserRuleCall_4_3_1_0());
 						}
-						lv_appliesTo_10_0=ruleContainmentPath
+						lv_appliesTo_11_0=ruleContainmentPath
 						{
 							if ($current==null) {
 								$current = createModelElementForParent(grammarAccess.getContainedPropertyAssociationRule());
@@ -3238,7 +3239,7 @@ ruleContainedPropertyAssociation returns [EObject current=null]
 							add(
 								$current,
 								"appliesTo",
-								lv_appliesTo_10_0,
+								lv_appliesTo_11_0,
 								"org.osate.xtext.aadl2.properties.Properties.ContainmentPath");
 							afterParserOrEnumRuleCall();
 						}
@@ -3247,16 +3248,17 @@ ruleContainedPropertyAssociation returns [EObject current=null]
 			)*
 		)?
 		(
+			otherlv_12='in'
 			{
-				newCompositeNode(grammarAccess.getContainedPropertyAssociationAccess().getInBindingKeywordsParserRuleCall_5_0());
+				newLeafNode(otherlv_12, grammarAccess.getContainedPropertyAssociationAccess().getInKeyword_5_0());
 			}
-			ruleInBindingKeywords
+			otherlv_13='binding'
 			{
-				afterParserOrEnumRuleCall();
+				newLeafNode(otherlv_13, grammarAccess.getContainedPropertyAssociationAccess().getBindingKeyword_5_1());
 			}
-			otherlv_12='('
+			otherlv_14='('
 			{
-				newLeafNode(otherlv_12, grammarAccess.getContainedPropertyAssociationAccess().getLeftParenthesisKeyword_5_1());
+				newLeafNode(otherlv_14, grammarAccess.getContainedPropertyAssociationAccess().getLeftParenthesisKeyword_5_2());
 			}
 			(
 				(
@@ -3266,7 +3268,7 @@ ruleContainedPropertyAssociation returns [EObject current=null]
 						}
 					}
 					{
-						newCompositeNode(grammarAccess.getContainedPropertyAssociationAccess().getInBindingClassifierCrossReference_5_2_0());
+						newCompositeNode(grammarAccess.getContainedPropertyAssociationAccess().getInBindingClassifierCrossReference_5_3_0());
 					}
 					ruleQCREF
 					{
@@ -3274,14 +3276,14 @@ ruleContainedPropertyAssociation returns [EObject current=null]
 					}
 				)
 			)
-			otherlv_14=')'
+			otherlv_16=')'
 			{
-				newLeafNode(otherlv_14, grammarAccess.getContainedPropertyAssociationAccess().getRightParenthesisKeyword_5_3());
+				newLeafNode(otherlv_16, grammarAccess.getContainedPropertyAssociationAccess().getRightParenthesisKeyword_5_4());
 			}
 		)?
-		otherlv_15=';'
+		otherlv_17=';'
 		{
-			newLeafNode(otherlv_15, grammarAccess.getContainedPropertyAssociationAccess().getSemicolonKeyword_6());
+			newLeafNode(otherlv_17, grammarAccess.getContainedPropertyAssociationAccess().getSemicolonKeyword_6());
 		}
 	)
 ;
@@ -3358,16 +3360,17 @@ ruleOptionalModalPropertyValue returns [EObject current=null]
 			)
 		)
 		(
+			otherlv_1='in'
 			{
-				newCompositeNode(grammarAccess.getOptionalModalPropertyValueAccess().getInModesKeywordsParserRuleCall_1_0());
+				newLeafNode(otherlv_1, grammarAccess.getOptionalModalPropertyValueAccess().getInKeyword_1_0());
 			}
-			ruleInModesKeywords
+			otherlv_2='modes'
 			{
-				afterParserOrEnumRuleCall();
+				newLeafNode(otherlv_2, grammarAccess.getOptionalModalPropertyValueAccess().getModesKeyword_1_1());
 			}
-			otherlv_2='('
+			otherlv_3='('
 			{
-				newLeafNode(otherlv_2, grammarAccess.getOptionalModalPropertyValueAccess().getLeftParenthesisKeyword_1_1());
+				newLeafNode(otherlv_3, grammarAccess.getOptionalModalPropertyValueAccess().getLeftParenthesisKeyword_1_2());
 			}
 			(
 				(
@@ -3376,16 +3379,16 @@ ruleOptionalModalPropertyValue returns [EObject current=null]
 							$current = createModelElement(grammarAccess.getOptionalModalPropertyValueRule());
 						}
 					}
-					otherlv_3=RULE_ID
+					otherlv_4=RULE_ID
 					{
-						newLeafNode(otherlv_3, grammarAccess.getOptionalModalPropertyValueAccess().getInModeModeCrossReference_1_2_0());
+						newLeafNode(otherlv_4, grammarAccess.getOptionalModalPropertyValueAccess().getInModeModeCrossReference_1_3_0());
 					}
 				)
 			)
 			(
-				otherlv_4=','
+				otherlv_5=','
 				{
-					newLeafNode(otherlv_4, grammarAccess.getOptionalModalPropertyValueAccess().getCommaKeyword_1_3_0());
+					newLeafNode(otherlv_5, grammarAccess.getOptionalModalPropertyValueAccess().getCommaKeyword_1_4_0());
 				}
 				(
 					(
@@ -3394,16 +3397,16 @@ ruleOptionalModalPropertyValue returns [EObject current=null]
 								$current = createModelElement(grammarAccess.getOptionalModalPropertyValueRule());
 							}
 						}
-						otherlv_5=RULE_ID
+						otherlv_6=RULE_ID
 						{
-							newLeafNode(otherlv_5, grammarAccess.getOptionalModalPropertyValueAccess().getInModeModeCrossReference_1_3_1_0());
+							newLeafNode(otherlv_6, grammarAccess.getOptionalModalPropertyValueAccess().getInModeModeCrossReference_1_4_1_0());
 						}
 					)
 				)
 			)*
-			otherlv_6=')'
+			otherlv_7=')'
 			{
-				newLeafNode(otherlv_6, grammarAccess.getOptionalModalPropertyValueAccess().getRightParenthesisKeyword_1_4());
+				newLeafNode(otherlv_7, grammarAccess.getOptionalModalPropertyValueAccess().getRightParenthesisKeyword_1_5());
 			}
 		)?
 	)
@@ -4629,93 +4632,6 @@ ruleNumAlt returns [EObject current=null]
 	)
 ;
 
-// Entry rule entryRuleAppliesToKeywords
-entryRuleAppliesToKeywords returns [String current=null]:
-	{ newCompositeNode(grammarAccess.getAppliesToKeywordsRule()); }
-	iv_ruleAppliesToKeywords=ruleAppliesToKeywords
-	{ $current=$iv_ruleAppliesToKeywords.current.getText(); }
-	EOF;
-
-// Rule AppliesToKeywords
-ruleAppliesToKeywords returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		kw='applies'
-		{
-			$current.merge(kw);
-			newLeafNode(kw, grammarAccess.getAppliesToKeywordsAccess().getAppliesKeyword_0());
-		}
-		kw='to'
-		{
-			$current.merge(kw);
-			newLeafNode(kw, grammarAccess.getAppliesToKeywordsAccess().getToKeyword_1());
-		}
-	)
-;
-
-// Entry rule entryRuleInBindingKeywords
-entryRuleInBindingKeywords returns [String current=null]:
-	{ newCompositeNode(grammarAccess.getInBindingKeywordsRule()); }
-	iv_ruleInBindingKeywords=ruleInBindingKeywords
-	{ $current=$iv_ruleInBindingKeywords.current.getText(); }
-	EOF;
-
-// Rule InBindingKeywords
-ruleInBindingKeywords returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		kw='in'
-		{
-			$current.merge(kw);
-			newLeafNode(kw, grammarAccess.getInBindingKeywordsAccess().getInKeyword_0());
-		}
-		kw='binding'
-		{
-			$current.merge(kw);
-			newLeafNode(kw, grammarAccess.getInBindingKeywordsAccess().getBindingKeyword_1());
-		}
-	)
-;
-
-// Entry rule entryRuleInModesKeywords
-entryRuleInModesKeywords returns [String current=null]:
-	{ newCompositeNode(grammarAccess.getInModesKeywordsRule()); }
-	iv_ruleInModesKeywords=ruleInModesKeywords
-	{ $current=$iv_ruleInModesKeywords.current.getText(); }
-	EOF;
-
-// Rule InModesKeywords
-ruleInModesKeywords returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		kw='in'
-		{
-			$current.merge(kw);
-			newLeafNode(kw, grammarAccess.getInModesKeywordsAccess().getInKeyword_0());
-		}
-		kw='modes'
-		{
-			$current.merge(kw);
-			newLeafNode(kw, grammarAccess.getInModesKeywordsAccess().getModesKeyword_1());
-		}
-	)
-;
-
 // Entry rule entryRuleINTVALUE
 entryRuleINTVALUE returns [String current=null]:
 	{ newCompositeNode(grammarAccess.getINTVALUERule()); }
@@ -4946,7 +4862,7 @@ fragment RULE_EXTENDED_DIGIT : ('0'..'9'|'a'..'f'|'A'..'F');
 
 fragment RULE_BASED_INTEGER : RULE_EXTENDED_DIGIT ('_'? RULE_EXTENDED_DIGIT)*;
 
-RULE_STRING : ('"' ('\\' ('b'|'t'|'n'|'f'|'r'|'u'|'"'|'\''|'\\')|~(('\\'|'"')))* '"'|'\'' ('\\' ('b'|'t'|'n'|'f'|'r'|'u'|'"'|'\''|'\\')|~(('\\'|'\'')))* '\'');
+RULE_STRING : '"' ('""'|~('"'))* '"';
 
 RULE_ID : ('a'..'z'|'A'..'Z') ('_'? ('a'..'z'|'A'..'Z'|'0'..'9'))*;
 

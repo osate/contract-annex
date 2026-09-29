@@ -45,7 +45,6 @@ import org.osate.aadl2.DefaultAnnexLibrary;
 import org.osate.aadl2.EnumerationLiteral;
 import org.osate.aadl2.IntegerLiteral;
 import org.osate.aadl2.NamedElement;
-import org.osate.aadl2.RangeValue;
 import org.osate.aadl2.RealLiteral;
 import org.osate.aadl2.SystemImplementation;
 import org.osate.aadl2.instance.ComponentInstance;
@@ -159,11 +158,11 @@ public class EvaluatePropertyLookupTest {
 			assertEquals(2, recordValue.getOwnedFieldValues().size());
 			with(recordValue.getOwnedFieldValues().get(0), field -> {
 				assertEquals("Fixed", field.getProperty().getName());
-				assertEquals("[10 ms .. 20 ms]", ((RangeValue) field.getOwnedValue()).toString());
+				assertEquals("[10 ms .. 20 ms]", (field.getOwnedValue()).toString());
 			});
 			with(recordValue.getOwnedFieldValues().get(1), field -> {
 				assertEquals("PerByte", field.getProperty().getName());
-				assertEquals("[30 ms .. 40 ms]", ((RangeValue) field.getOwnedValue()).toString());
+				assertEquals("[30 ms .. 40 ms]", (field.getOwnedValue()).toString());
 			});
 		});
 		with(contract.getQueries().get(14), query -> {

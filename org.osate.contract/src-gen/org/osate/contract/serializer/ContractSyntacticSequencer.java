@@ -93,26 +93,9 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 	
 	@Override
 	protected String getUnassignedRuleCallToken(EObject semanticObject, RuleCall ruleCall, INode node) {
-		if (ruleCall.getRule() == grammarAccess.getAppliesToKeywordsRule())
-			return getAppliesToKeywordsToken(semanticObject, ruleCall, node);
-		else if (ruleCall.getRule() == grammarAccess.getIDRule())
+		if (ruleCall.getRule() == grammarAccess.getIDRule())
 			return getIDToken(semanticObject, ruleCall, node);
-		else if (ruleCall.getRule() == grammarAccess.getInBindingKeywordsRule())
-			return getInBindingKeywordsToken(semanticObject, ruleCall, node);
-		else if (ruleCall.getRule() == grammarAccess.getInModesKeywordsRule())
-			return getInModesKeywordsToken(semanticObject, ruleCall, node);
 		return "";
-	}
-	
-	/**
-	 * AppliesToKeywords:
-	 * 	'applies' 'to'
-	 * ;
-	 */
-	protected String getAppliesToKeywordsToken(EObject semanticObject, RuleCall ruleCall, INode node) {
-		if (node != null)
-			return getTokenText(node);
-		return "applies to";
 	}
 	
 	/**
@@ -126,28 +109,6 @@ public class ContractSyntacticSequencer extends AbstractSyntacticSequencer {
 		if (node != null)
 			return getTokenText(node);
 		return "";
-	}
-	
-	/**
-	 * InBindingKeywords:
-	 * 	'in' 'binding'
-	 * ;
-	 */
-	protected String getInBindingKeywordsToken(EObject semanticObject, RuleCall ruleCall, INode node) {
-		if (node != null)
-			return getTokenText(node);
-		return "in binding";
-	}
-	
-	/**
-	 * InModesKeywords:
-	 * 	'in' 'modes'
-	 * ;
-	 */
-	protected String getInModesKeywordsToken(EObject semanticObject, RuleCall ruleCall, INode node) {
-		if (node != null)
-			return getTokenText(node);
-		return "in modes";
 	}
 	
 	@Override

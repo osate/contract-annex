@@ -169,13 +169,13 @@ public class EvaluateMemberCallTest {
 		with(contract.getQueries().get(10), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(List.of("outer_m1_ep1_outer_m2"),
+			assertIterableEquals(List.of("outer_transition1"),
 					((List<ModeTransitionInstance>) result.get("v11")).stream().map(NamedElement::getName).toList());
 		});
 		with(contract.getQueries().get(11), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(List.of("inner_m1_ep2_inner_m2", "inner_m1_ep2_inner_m2", "outer_m1_ep1_outer_m2"),
+			assertIterableEquals(List.of("inner_transition1", "inner_transition1", "outer_transition1"),
 					((List<ModeTransitionInstance>) result.get("v12")).stream().map(NamedElement::getName).toList());
 		});
 		with(contract.getQueries().get(12), query -> {
@@ -442,13 +442,13 @@ public class EvaluateMemberCallTest {
 		with(contract.getQueries().get(10), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(List.of("outer_m1_ep1_outer_m2"),
+			assertIterableEquals(List.of("outer_transition1"),
 					((List<ModeTransitionInstance>) result.get("v11")).stream().map(NamedElement::getName).toList());
 		});
 		with(contract.getQueries().get(11), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(List.of("inner_m1_ep2_inner_m2", "inner_m1_ep2_inner_m2", "outer_m1_ep1_outer_m2"),
+			assertIterableEquals(List.of("inner_transition1", "inner_transition1", "outer_transition1"),
 					((List<ModeTransitionInstance>) result.get("v12")).stream().map(NamedElement::getName).toList());
 		});
 		with(contract.getQueries().get(12), query -> {
@@ -1151,20 +1151,21 @@ public class EvaluateMemberCallTest {
 		with(contract.getQueries().get(0), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(List.of("left_device.temperature_out -> right_device.temperature_in",
-					"left_process.left_tg.left_thread.thread_out -> right_process.right_tg.right_thread.thread_in"),
+			assertIterableEquals(List.of(
+					"left_process.left_tg.left_thread.thread_out -> right_process.right_tg.right_thread.thread_in",
+					"left_device.temperature_out -> right_device.temperature_in"),
 					(List<String>) result.get("v1"));
 		});
 		with(contract.getQueries().get(1), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(List.of("temperature_out", "thread_out"),
+			assertIterableEquals(List.of("thread_out", "temperature_out"),
 					((List<ConnectionInstanceEnd>) result.get("v2")).stream().map(NamedElement::getName).toList());
 		});
 		with(contract.getQueries().get(2), query -> {
 			var result = interpreter.evaluateQuery(environment, query).getValue();
 			assertEquals(1, result.size());
-			assertIterableEquals(List.of("temperature_in", "thread_in"),
+			assertIterableEquals(List.of("thread_in", "temperature_in"),
 					((List<ConnectionInstanceEnd>) result.get("v3")).stream().map(NamedElement::getName).toList());
 		});
 		with(contract.getQueries().get(3), query -> {
@@ -1172,9 +1173,9 @@ public class EvaluateMemberCallTest {
 			assertEquals(1, result.size());
 			var value = (List<List<ConnectionInstanceEnd>>) result.get("v4");
 			assertEquals(2, value.size());
-			assertIterableEquals(List.of("temperature_out", "temperature_in"),
-					value.get(0).stream().map(NamedElement::getName).toList());
 			assertIterableEquals(List.of("thread_out", "tg_out", "process_out", "process_in", "tg_in", "thread_in"),
+					value.get(0).stream().map(NamedElement::getName).toList());
+			assertIterableEquals(List.of("temperature_out", "temperature_in"),
 					value.get(1).stream().map(NamedElement::getName).toList());
 		});
 	}
